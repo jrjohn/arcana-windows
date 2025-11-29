@@ -3,8 +3,8 @@ using Arcana.Plugins.Core;
 using Arcana.Plugins.Data;
 using Arcana.Plugins.Services;
 using FluentAssertions;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -23,7 +23,6 @@ public class PluginSystemIntegrationTests : IDisposable
     private readonly string _testAssemblyPath;
     private readonly ServiceProvider _serviceProvider;
     private readonly PluginDbContext _dbContext;
-    private readonly SqliteConnection _connection;
 
     public PluginSystemIntegrationTests()
     {
@@ -32,15 +31,12 @@ public class PluginSystemIntegrationTests : IDisposable
 
         _testAssemblyPath = Assembly.GetExecutingAssembly().Location;
 
-        // Use SQLite in-memory with shared connection to support transactions
-        _connection = new SqliteConnection("DataSource=:memory:");
-        _connection.Open();
-
         var services = new ServiceCollection();
 
-        // Register DbContext with SQLite
+        // Use InMemory database for cross-platform compatibility
         services.AddDbContext<PluginDbContext>(options =>
-            options.UseSqlite(_connection));
+            options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning)));
 
         // Register logging
         services.AddLogging(builder => builder.AddDebug());
@@ -56,17 +52,16 @@ public class PluginSystemIntegrationTests : IDisposable
 
         _serviceProvider = services.BuildServiceProvider();
         _dbContext = _serviceProvider.GetRequiredService<PluginDbContext>();
-        _dbContext.Database.EnsureCreated();
     }
 
     public void Dispose()
     {
         _serviceProvider.Dispose();
-        _connection.Dispose();
         if (Directory.Exists(_testDataPath))
         {
             Directory.Delete(_testDataPath, recursive: true);
         }
+        GC.SuppressFinalize(this);
     }
 
     #region Permission and Version Repository Integration

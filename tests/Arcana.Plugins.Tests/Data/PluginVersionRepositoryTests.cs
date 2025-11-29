@@ -1,37 +1,33 @@
 using Arcana.Plugins.Contracts;
 using Arcana.Plugins.Data;
 using FluentAssertions;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Xunit;
 
 namespace Arcana.Plugins.Tests.Data;
 
 public class PluginVersionRepositoryTests : IDisposable
 {
-    private readonly SqliteConnection _connection;
     private readonly PluginDbContext _context;
     private readonly PluginVersionRepository _repository;
 
     public PluginVersionRepositoryTests()
     {
-        // Use SQLite in-memory with a shared connection to support transactions
-        _connection = new SqliteConnection("DataSource=:memory:");
-        _connection.Open();
-
+        // Use InMemory database for cross-platform compatibility
         var options = new DbContextOptionsBuilder<PluginDbContext>()
-            .UseSqlite(_connection)
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
 
         _context = new PluginDbContext(options);
-        _context.Database.EnsureCreated();
         _repository = new PluginVersionRepository(_context);
     }
 
     public void Dispose()
     {
         _context.Dispose();
-        _connection.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     #region GetVersionsAsync Tests
