@@ -14,26 +14,141 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Title Bar -->
-        <Grid x:Name="AppTitleBar" Height="48" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+        <!-- Title Bar with Menu -->
+        <Grid x:Name="AppTitleBar" Height="32" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal" Spacing="12" Margin="16,0">
-                <Image Source="Assets/app-icon.png" Width="20" Height="20" VerticalAlignment="Center"/>
-                <TextBlock Text="Arcana" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+            <!-- App Icon and Name -->
+            <StackPanel Orientation="Horizontal" Spacing="8" Margin="12,0">
+                <Image Source="Assets/app-icon.png" Width="16" Height="16" VerticalAlignment="Center"/>
+                <TextBlock Text="Arcana" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" FontWeight="SemiBold"/>
             </StackPanel>
 
+            <!-- VSCode-style Menu Bar -->
+            <MenuBar Grid.Column="1" VerticalAlignment="Center">
+                <MenuBarItem Title="檔案">
+                    <MenuFlyoutItem Text="新增訂單" Click="Menu_NewOrder_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="N"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="開啟..." Click="Menu_Open_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="O"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="儲存" Click="Menu_Save_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="另存新檔..." Click="Menu_SaveAs_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control,Shift" Key="S"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="匯出..." Click="Menu_Export_Click"/>
+                    <MenuFlyoutItem Text="匯入..." Click="Menu_Import_Click"/>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="離開" Click="Menu_Exit_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Menu" Key="F4"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
+                <MenuBarItem Title="編輯">
+                    <MenuFlyoutItem Text="復原" Click="Menu_Undo_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Z"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="重做" Click="Menu_Redo_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Y"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="剪下" Click="Menu_Cut_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="X"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="複製" Click="Menu_Copy_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="C"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="貼上" Click="Menu_Paste_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="V"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="全選" Click="Menu_SelectAll_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="A"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
+                <MenuBarItem Title="檢視">
+                    <MenuFlyoutItem Text="重新整理" Click="Menu_Refresh_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="F5"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <ToggleMenuFlyoutItem x:Name="MenuToggleSidebar" Text="側邊欄" IsChecked="True" Click="Menu_ToggleSidebar_Click"/>
+                    <ToggleMenuFlyoutItem x:Name="MenuToggleStatusBar" Text="狀態列" IsChecked="True" Click="Menu_ToggleStatusBar_Click"/>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="放大" Click="Menu_ZoomIn_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Add"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="縮小" Click="Menu_ZoomOut_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Subtract"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="重設縮放" Click="Menu_ZoomReset_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Number0"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
+                <MenuBarItem Title="工具">
+                    <MenuFlyoutItem Text="Plugin Manager" Click="Menu_PluginManager_Click"/>
+                    <MenuFlyoutItem Text="同步狀態" Click="Menu_SyncStatus_Click"/>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="設定" Click="Menu_Settings_Click"/>
+                </MenuBarItem>
+                <MenuBarItem Title="說明">
+                    <MenuFlyoutItem Text="說明文件" Click="Menu_Help_Click">
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="F1"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem Text="檢查更新..." Click="Menu_CheckUpdates_Click"/>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="關於 Arcana" Click="Menu_About_Click"/>
+                </MenuBarItem>
+            </MenuBar>
+
             <!-- Search Box -->
-            <AutoSuggestBox Grid.Column="1"
+            <AutoSuggestBox Grid.Column="2"
                            PlaceholderText="搜尋命令或功能... (Ctrl+K)"
                            QueryIcon="Find"
-                           Width="400"
+                           Width="300"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           Margin="0,4"/>
         </Grid>
 
         <!-- Main Content -->
@@ -41,8 +156,9 @@
                        Grid.Row="1"
                        IsBackButtonVisible="Auto"
                        IsSettingsVisible="True"
-                       PaneDisplayMode="LeftCompact"
-                       OpenPaneLength="280"
+                       PaneDisplayMode="Left"
+                       IsPaneOpen="True"
+                       OpenPaneLength="240"
                        SelectionChanged="NavView_SelectionChanged"
                        BackRequested="NavView_BackRequested">
 
@@ -100,7 +216,7 @@
         </NavigationView>
 
         <!-- Status Bar -->
-        <Grid Grid.Row="2" Height="24" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+        <Grid x:Name="StatusBar" Grid.Row="2" Height="24" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>

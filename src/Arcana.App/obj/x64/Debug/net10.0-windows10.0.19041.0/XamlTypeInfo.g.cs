@@ -224,7 +224,7 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
 
         private void InitTypeTables()
         {
-            _typeNameTable = new string[79];
+            _typeNameTable = new string[84];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -272,40 +272,45 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             _typeNameTable[44] = "Microsoft.UI.Xaml.Controls.TabViewWidthMode";
             _typeNameTable[45] = "System.Windows.Input.ICommand";
             _typeNameTable[46] = "Microsoft.UI.Xaml.Controls.TabViewCloseButtonOverlayMode";
-            _typeNameTable[47] = "Arcana.App.MainWindow";
-            _typeNameTable[48] = "Microsoft.UI.Xaml.Window";
-            _typeNameTable[49] = "Arcana.App.Views.CustomerListPage";
-            _typeNameTable[50] = "Microsoft.UI.Xaml.Controls.Page";
-            _typeNameTable[51] = "Microsoft.UI.Xaml.Controls.UserControl";
-            _typeNameTable[52] = "Arcana.App.Views.HomePage";
-            _typeNameTable[53] = "Microsoft.UI.Xaml.Controls.ProgressRing";
-            _typeNameTable[54] = "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings";
-            _typeNameTable[55] = "Microsoft.UI.Xaml.Controls.NumberBox";
-            _typeNameTable[56] = "Windows.Globalization.NumberFormatting.INumberFormatter2";
-            _typeNameTable[57] = "Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase";
-            _typeNameTable[58] = "Microsoft.UI.Xaml.Media.SolidColorBrush";
-            _typeNameTable[59] = "Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode";
-            _typeNameTable[60] = "Microsoft.UI.Xaml.TextReadingOrder";
-            _typeNameTable[61] = "Microsoft.UI.Xaml.Controls.NumberBoxValidationMode";
-            _typeNameTable[62] = "Arcana.App.Views.OrderDetailPage";
-            _typeNameTable[63] = "Arcana.App.Views.OrderListPage";
-            _typeNameTable[64] = "Microsoft.UI.Xaml.Controls.InfoBar";
-            _typeNameTable[65] = "Microsoft.UI.Xaml.Controls.InfoBarSeverity";
-            _typeNameTable[66] = "Microsoft.UI.Xaml.Controls.Primitives.ButtonBase";
-            _typeNameTable[67] = "Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings";
-            _typeNameTable[68] = "Microsoft.UI.Xaml.Controls.ProgressBar";
-            _typeNameTable[69] = "Microsoft.UI.Xaml.Controls.Primitives.RangeBase";
-            _typeNameTable[70] = "Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings";
-            _typeNameTable[71] = "Arcana.App.Views.PluginManagerPage";
-            _typeNameTable[72] = "Arcana.App.ViewModels.PluginManagerViewModel";
-            _typeNameTable[73] = "Arcana.App.ViewModels.ViewModelBase";
-            _typeNameTable[74] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
-            _typeNameTable[75] = "Arcana.App.Views.ProductListPage";
-            _typeNameTable[76] = "Arcana.App.Views.SettingsPage";
-            _typeNameTable[77] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[78] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[47] = "Microsoft.UI.Xaml.Controls.MenuBar";
+            _typeNameTable[48] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.MenuBarItem>";
+            _typeNameTable[49] = "Microsoft.UI.Xaml.Controls.MenuBarItem";
+            _typeNameTable[50] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase>";
+            _typeNameTable[51] = "Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase";
+            _typeNameTable[52] = "Arcana.App.MainWindow";
+            _typeNameTable[53] = "Microsoft.UI.Xaml.Window";
+            _typeNameTable[54] = "Arcana.App.Views.CustomerListPage";
+            _typeNameTable[55] = "Microsoft.UI.Xaml.Controls.Page";
+            _typeNameTable[56] = "Microsoft.UI.Xaml.Controls.UserControl";
+            _typeNameTable[57] = "Arcana.App.Views.HomePage";
+            _typeNameTable[58] = "Microsoft.UI.Xaml.Controls.ProgressRing";
+            _typeNameTable[59] = "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings";
+            _typeNameTable[60] = "Microsoft.UI.Xaml.Controls.NumberBox";
+            _typeNameTable[61] = "Windows.Globalization.NumberFormatting.INumberFormatter2";
+            _typeNameTable[62] = "Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase";
+            _typeNameTable[63] = "Microsoft.UI.Xaml.Media.SolidColorBrush";
+            _typeNameTable[64] = "Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode";
+            _typeNameTable[65] = "Microsoft.UI.Xaml.TextReadingOrder";
+            _typeNameTable[66] = "Microsoft.UI.Xaml.Controls.NumberBoxValidationMode";
+            _typeNameTable[67] = "Arcana.App.Views.OrderDetailPage";
+            _typeNameTable[68] = "Arcana.App.Views.OrderListPage";
+            _typeNameTable[69] = "Microsoft.UI.Xaml.Controls.InfoBar";
+            _typeNameTable[70] = "Microsoft.UI.Xaml.Controls.InfoBarSeverity";
+            _typeNameTable[71] = "Microsoft.UI.Xaml.Controls.Primitives.ButtonBase";
+            _typeNameTable[72] = "Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings";
+            _typeNameTable[73] = "Microsoft.UI.Xaml.Controls.ProgressBar";
+            _typeNameTable[74] = "Microsoft.UI.Xaml.Controls.Primitives.RangeBase";
+            _typeNameTable[75] = "Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings";
+            _typeNameTable[76] = "Arcana.App.Views.PluginManagerPage";
+            _typeNameTable[77] = "Arcana.App.ViewModels.PluginManagerViewModel";
+            _typeNameTable[78] = "Arcana.App.ViewModels.ViewModelBase";
+            _typeNameTable[79] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
+            _typeNameTable[80] = "Arcana.App.Views.ProductListPage";
+            _typeNameTable[81] = "Arcana.App.Views.SettingsPage";
+            _typeNameTable[82] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[83] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
 
-            _typeTable = new global::System.Type[79];
+            _typeTable = new global::System.Type[84];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -353,38 +358,43 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             _typeTable[44] = typeof(global::Microsoft.UI.Xaml.Controls.TabViewWidthMode);
             _typeTable[45] = typeof(global::System.Windows.Input.ICommand);
             _typeTable[46] = typeof(global::Microsoft.UI.Xaml.Controls.TabViewCloseButtonOverlayMode);
-            _typeTable[47] = typeof(global::Arcana.App.MainWindow);
-            _typeTable[48] = typeof(global::Microsoft.UI.Xaml.Window);
-            _typeTable[49] = typeof(global::Arcana.App.Views.CustomerListPage);
-            _typeTable[50] = typeof(global::Microsoft.UI.Xaml.Controls.Page);
-            _typeTable[51] = typeof(global::Microsoft.UI.Xaml.Controls.UserControl);
-            _typeTable[52] = typeof(global::Arcana.App.Views.HomePage);
-            _typeTable[53] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing);
-            _typeTable[54] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings);
-            _typeTable[55] = typeof(global::Microsoft.UI.Xaml.Controls.NumberBox);
-            _typeTable[56] = typeof(global::Windows.Globalization.NumberFormatting.INumberFormatter2);
-            _typeTable[57] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase);
-            _typeTable[58] = typeof(global::Microsoft.UI.Xaml.Media.SolidColorBrush);
-            _typeTable[59] = typeof(global::Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode);
-            _typeTable[60] = typeof(global::Microsoft.UI.Xaml.TextReadingOrder);
-            _typeTable[61] = typeof(global::Microsoft.UI.Xaml.Controls.NumberBoxValidationMode);
-            _typeTable[62] = typeof(global::Arcana.App.Views.OrderDetailPage);
-            _typeTable[63] = typeof(global::Arcana.App.Views.OrderListPage);
-            _typeTable[64] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBar);
-            _typeTable[65] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBarSeverity);
-            _typeTable[66] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.ButtonBase);
-            _typeTable[67] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings);
-            _typeTable[68] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressBar);
-            _typeTable[69] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.RangeBase);
-            _typeTable[70] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings);
-            _typeTable[71] = typeof(global::Arcana.App.Views.PluginManagerPage);
-            _typeTable[72] = typeof(global::Arcana.App.ViewModels.PluginManagerViewModel);
-            _typeTable[73] = typeof(global::Arcana.App.ViewModels.ViewModelBase);
-            _typeTable[74] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
-            _typeTable[75] = typeof(global::Arcana.App.Views.ProductListPage);
-            _typeTable[76] = typeof(global::Arcana.App.Views.SettingsPage);
-            _typeTable[77] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[78] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[47] = typeof(global::Microsoft.UI.Xaml.Controls.MenuBar);
+            _typeTable[48] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.MenuBarItem>);
+            _typeTable[49] = typeof(global::Microsoft.UI.Xaml.Controls.MenuBarItem);
+            _typeTable[50] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase>);
+            _typeTable[51] = typeof(global::Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase);
+            _typeTable[52] = typeof(global::Arcana.App.MainWindow);
+            _typeTable[53] = typeof(global::Microsoft.UI.Xaml.Window);
+            _typeTable[54] = typeof(global::Arcana.App.Views.CustomerListPage);
+            _typeTable[55] = typeof(global::Microsoft.UI.Xaml.Controls.Page);
+            _typeTable[56] = typeof(global::Microsoft.UI.Xaml.Controls.UserControl);
+            _typeTable[57] = typeof(global::Arcana.App.Views.HomePage);
+            _typeTable[58] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRing);
+            _typeTable[59] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings);
+            _typeTable[60] = typeof(global::Microsoft.UI.Xaml.Controls.NumberBox);
+            _typeTable[61] = typeof(global::Windows.Globalization.NumberFormatting.INumberFormatter2);
+            _typeTable[62] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase);
+            _typeTable[63] = typeof(global::Microsoft.UI.Xaml.Media.SolidColorBrush);
+            _typeTable[64] = typeof(global::Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode);
+            _typeTable[65] = typeof(global::Microsoft.UI.Xaml.TextReadingOrder);
+            _typeTable[66] = typeof(global::Microsoft.UI.Xaml.Controls.NumberBoxValidationMode);
+            _typeTable[67] = typeof(global::Arcana.App.Views.OrderDetailPage);
+            _typeTable[68] = typeof(global::Arcana.App.Views.OrderListPage);
+            _typeTable[69] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBar);
+            _typeTable[70] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBarSeverity);
+            _typeTable[71] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.ButtonBase);
+            _typeTable[72] = typeof(global::Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings);
+            _typeTable[73] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressBar);
+            _typeTable[74] = typeof(global::Microsoft.UI.Xaml.Controls.Primitives.RangeBase);
+            _typeTable[75] = typeof(global::Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings);
+            _typeTable[76] = typeof(global::Arcana.App.Views.PluginManagerPage);
+            _typeTable[77] = typeof(global::Arcana.App.ViewModels.PluginManagerViewModel);
+            _typeTable[78] = typeof(global::Arcana.App.ViewModels.ViewModelBase);
+            _typeTable[79] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
+            _typeTable[80] = typeof(global::Arcana.App.Views.ProductListPage);
+            _typeTable[81] = typeof(global::Arcana.App.Views.SettingsPage);
+            _typeTable[82] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[83] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -436,20 +446,22 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
         private object Activate_39_NavigationViewItemHeader() { return new global::Microsoft.UI.Xaml.Controls.NavigationViewItemHeader(); }
         private object Activate_42_InfoBadgeTemplateSettings() { return new global::Microsoft.UI.Xaml.Controls.InfoBadgeTemplateSettings(); }
         private object Activate_43_TabView() { return new global::Microsoft.UI.Xaml.Controls.TabView(); }
-        private object Activate_47_MainWindow() { return new global::Arcana.App.MainWindow(); }
-        private object Activate_49_CustomerListPage() { return new global::Arcana.App.Views.CustomerListPage(); }
-        private object Activate_52_HomePage() { return new global::Arcana.App.Views.HomePage(); }
-        private object Activate_53_ProgressRing() { return new global::Microsoft.UI.Xaml.Controls.ProgressRing(); }
-        private object Activate_55_NumberBox() { return new global::Microsoft.UI.Xaml.Controls.NumberBox(); }
-        private object Activate_62_OrderDetailPage() { return new global::Arcana.App.Views.OrderDetailPage(); }
-        private object Activate_63_OrderListPage() { return new global::Arcana.App.Views.OrderListPage(); }
-        private object Activate_64_InfoBar() { return new global::Microsoft.UI.Xaml.Controls.InfoBar(); }
-        private object Activate_67_InfoBarTemplateSettings() { return new global::Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings(); }
-        private object Activate_68_ProgressBar() { return new global::Microsoft.UI.Xaml.Controls.ProgressBar(); }
-        private object Activate_71_PluginManagerPage() { return new global::Arcana.App.Views.PluginManagerPage(); }
-        private object Activate_75_ProductListPage() { return new global::Arcana.App.Views.ProductListPage(); }
-        private object Activate_76_SettingsPage() { return new global::Arcana.App.Views.SettingsPage(); }
-        private object Activate_77_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_47_MenuBar() { return new global::Microsoft.UI.Xaml.Controls.MenuBar(); }
+        private object Activate_49_MenuBarItem() { return new global::Microsoft.UI.Xaml.Controls.MenuBarItem(); }
+        private object Activate_52_MainWindow() { return new global::Arcana.App.MainWindow(); }
+        private object Activate_54_CustomerListPage() { return new global::Arcana.App.Views.CustomerListPage(); }
+        private object Activate_57_HomePage() { return new global::Arcana.App.Views.HomePage(); }
+        private object Activate_58_ProgressRing() { return new global::Microsoft.UI.Xaml.Controls.ProgressRing(); }
+        private object Activate_60_NumberBox() { return new global::Microsoft.UI.Xaml.Controls.NumberBox(); }
+        private object Activate_67_OrderDetailPage() { return new global::Arcana.App.Views.OrderDetailPage(); }
+        private object Activate_68_OrderListPage() { return new global::Arcana.App.Views.OrderListPage(); }
+        private object Activate_69_InfoBar() { return new global::Microsoft.UI.Xaml.Controls.InfoBar(); }
+        private object Activate_72_InfoBarTemplateSettings() { return new global::Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings(); }
+        private object Activate_73_ProgressBar() { return new global::Microsoft.UI.Xaml.Controls.ProgressBar(); }
+        private object Activate_76_PluginManagerPage() { return new global::Arcana.App.Views.PluginManagerPage(); }
+        private object Activate_80_ProductListPage() { return new global::Arcana.App.Views.ProductListPage(); }
+        private object Activate_81_SettingsPage() { return new global::Arcana.App.Views.SettingsPage(); }
+        private object Activate_82_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -463,7 +475,19 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             var newItem = (global::System.Object)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_78_IList(object instance, object item)
+        private void VectorAdd_48_IList(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.MenuBarItem>)instance;
+            var newItem = (global::Microsoft.UI.Xaml.Controls.MenuBarItem)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_50_IList(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase>)instance;
+            var newItem = (global::Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_83_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -562,6 +586,7 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 userType.AddMemberName("IsBackButtonVisible");
                 userType.AddMemberName("IsSettingsVisible");
                 userType.AddMemberName("PaneDisplayMode");
+                userType.AddMemberName("IsPaneOpen");
                 userType.AddMemberName("OpenPaneLength");
                 userType.AddMemberName("MenuItems");
                 userType.AddMemberName("FooterMenuItems");
@@ -576,7 +601,6 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 userType.AddMemberName("Header");
                 userType.AddMemberName("HeaderTemplate");
                 userType.AddMemberName("IsBackEnabled");
-                userType.AddMemberName("IsPaneOpen");
                 userType.AddMemberName("IsPaneToggleButtonVisible");
                 userType.AddMemberName("IsPaneVisible");
                 userType.AddMemberName("IsTitleBarAutoPaddingEnabled");
@@ -821,42 +845,77 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 47:   //  Arcana.App.MainWindow
-                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
-                userType.Activator = Activate_47_MainWindow;
-                userType.SetIsLocalType();
-                xamlType = userType;
-                break;
-
-            case 48:   //  Microsoft.UI.Xaml.Window
-                xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 49:   //  Arcana.App.Views.CustomerListPage
-                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_49_CustomerListPage;
-                userType.SetIsLocalType();
-                xamlType = userType;
-                break;
-
-            case 50:   //  Microsoft.UI.Xaml.Controls.Page
-                xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 51:   //  Microsoft.UI.Xaml.Controls.UserControl
-                xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 52:   //  Arcana.App.Views.HomePage
-                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_52_HomePage;
-                userType.SetIsLocalType();
-                xamlType = userType;
-                break;
-
-            case 53:   //  Microsoft.UI.Xaml.Controls.ProgressRing
+            case 47:   //  Microsoft.UI.Xaml.Controls.MenuBar
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
-                userType.Activator = Activate_53_ProgressRing;
+                userType.Activator = Activate_47_MenuBar;
+                userType.SetContentPropertyName("Microsoft.UI.Xaml.Controls.MenuBar.Items");
+                userType.AddMemberName("Items");
+                xamlType = userType;
+                break;
+
+            case 48:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.MenuBarItem>
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, null);
+                userType.CollectionAdd = VectorAdd_48_IList;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 49:   //  Microsoft.UI.Xaml.Controls.MenuBarItem
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
+                userType.Activator = Activate_49_MenuBarItem;
+                userType.SetContentPropertyName("Microsoft.UI.Xaml.Controls.MenuBarItem.Items");
+                userType.AddMemberName("Items");
+                userType.AddMemberName("Title");
+                xamlType = userType;
+                break;
+
+            case 50:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase>
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, null);
+                userType.CollectionAdd = VectorAdd_50_IList;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 51:   //  Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase
+                xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 52:   //  Arcana.App.MainWindow
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Window"));
+                userType.Activator = Activate_52_MainWindow;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 53:   //  Microsoft.UI.Xaml.Window
+                xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 54:   //  Arcana.App.Views.CustomerListPage
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
+                userType.Activator = Activate_54_CustomerListPage;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 55:   //  Microsoft.UI.Xaml.Controls.Page
+                xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 56:   //  Microsoft.UI.Xaml.Controls.UserControl
+                xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
+                break;
+
+            case 57:   //  Arcana.App.Views.HomePage
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
+                userType.Activator = Activate_57_HomePage;
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 58:   //  Microsoft.UI.Xaml.Controls.ProgressRing
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
+                userType.Activator = Activate_58_ProgressRing;
                 userType.AddMemberName("IsActive");
                 userType.AddMemberName("IsIndeterminate");
                 userType.AddMemberName("Maximum");
@@ -866,15 +925,15 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 54:   //  Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings
+            case 59:   //  Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 55:   //  Microsoft.UI.Xaml.Controls.NumberBox
+            case 60:   //  Microsoft.UI.Xaml.Controls.NumberBox
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
-                userType.Activator = Activate_55_NumberBox;
+                userType.Activator = Activate_60_NumberBox;
                 userType.AddMemberName("Value");
                 userType.AddMemberName("Minimum");
                 userType.AddMemberName("Maximum");
@@ -897,21 +956,21 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 56:   //  Windows.Globalization.NumberFormatting.INumberFormatter2
+            case 61:   //  Windows.Globalization.NumberFormatting.INumberFormatter2
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, null);
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 57:   //  Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase
+            case 62:   //  Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase
                 xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 58:   //  Microsoft.UI.Xaml.Media.SolidColorBrush
+            case 63:   //  Microsoft.UI.Xaml.Media.SolidColorBrush
                 xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 59:   //  Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode
+            case 64:   //  Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Enum"));
                 userType.AddEnumValue("Hidden", global::Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode.Hidden);
                 userType.AddEnumValue("Compact", global::Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode.Compact);
@@ -919,34 +978,34 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 60:   //  Microsoft.UI.Xaml.TextReadingOrder
+            case 65:   //  Microsoft.UI.Xaml.TextReadingOrder
                 xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 61:   //  Microsoft.UI.Xaml.Controls.NumberBoxValidationMode
+            case 66:   //  Microsoft.UI.Xaml.Controls.NumberBoxValidationMode
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Enum"));
                 userType.AddEnumValue("InvalidInputOverwritten", global::Microsoft.UI.Xaml.Controls.NumberBoxValidationMode.InvalidInputOverwritten);
                 userType.AddEnumValue("Disabled", global::Microsoft.UI.Xaml.Controls.NumberBoxValidationMode.Disabled);
                 xamlType = userType;
                 break;
 
-            case 62:   //  Arcana.App.Views.OrderDetailPage
+            case 67:   //  Arcana.App.Views.OrderDetailPage
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_62_OrderDetailPage;
+                userType.Activator = Activate_67_OrderDetailPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 63:   //  Arcana.App.Views.OrderListPage
+            case 68:   //  Arcana.App.Views.OrderListPage
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_63_OrderListPage;
+                userType.Activator = Activate_68_OrderListPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 64:   //  Microsoft.UI.Xaml.Controls.InfoBar
+            case 69:   //  Microsoft.UI.Xaml.Controls.InfoBar
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Control"));
-                userType.Activator = Activate_64_InfoBar;
+                userType.Activator = Activate_69_InfoBar;
                 userType.SetContentPropertyName("Microsoft.UI.Xaml.Controls.InfoBar.Content");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("IsOpen");
@@ -965,7 +1024,7 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 65:   //  Microsoft.UI.Xaml.Controls.InfoBarSeverity
+            case 70:   //  Microsoft.UI.Xaml.Controls.InfoBarSeverity
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.Enum"));
                 userType.AddEnumValue("Informational", global::Microsoft.UI.Xaml.Controls.InfoBarSeverity.Informational);
                 userType.AddEnumValue("Success", global::Microsoft.UI.Xaml.Controls.InfoBarSeverity.Success);
@@ -974,19 +1033,19 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 66:   //  Microsoft.UI.Xaml.Controls.Primitives.ButtonBase
+            case 71:   //  Microsoft.UI.Xaml.Controls.Primitives.ButtonBase
                 xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 67:   //  Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings
+            case 72:   //  Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 68:   //  Microsoft.UI.Xaml.Controls.ProgressBar
+            case 73:   //  Microsoft.UI.Xaml.Controls.ProgressBar
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Primitives.RangeBase"));
-                userType.Activator = Activate_68_ProgressBar;
+                userType.Activator = Activate_73_ProgressBar;
                 userType.AddMemberName("IsIndeterminate");
                 userType.AddMemberName("ShowError");
                 userType.AddMemberName("ShowPaused");
@@ -994,59 +1053,59 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 69:   //  Microsoft.UI.Xaml.Controls.Primitives.RangeBase
+            case 74:   //  Microsoft.UI.Xaml.Controls.Primitives.RangeBase
                 xamlType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 70:   //  Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings
+            case 75:   //  Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
 
-            case 71:   //  Arcana.App.Views.PluginManagerPage
+            case 76:   //  Arcana.App.Views.PluginManagerPage
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_71_PluginManagerPage;
+                userType.Activator = Activate_76_PluginManagerPage;
                 userType.AddMemberName("ViewModel");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 72:   //  Arcana.App.ViewModels.PluginManagerViewModel
+            case 77:   //  Arcana.App.ViewModels.PluginManagerViewModel
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Arcana.App.ViewModels.ViewModelBase"));
                 userType.SetIsReturnTypeStub();
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 73:   //  Arcana.App.ViewModels.ViewModelBase
+            case 78:   //  Arcana.App.ViewModels.ViewModelBase
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("CommunityToolkit.Mvvm.ComponentModel.ObservableObject"));
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 74:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
+            case 79:   //  CommunityToolkit.Mvvm.ComponentModel.ObservableObject
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
                 xamlType = userType;
                 break;
 
-            case 75:   //  Arcana.App.Views.ProductListPage
+            case 80:   //  Arcana.App.Views.ProductListPage
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_75_ProductListPage;
+                userType.Activator = Activate_80_ProductListPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 76:   //  Arcana.App.Views.SettingsPage
+            case 81:   //  Arcana.App.Views.SettingsPage
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_76_SettingsPage;
+                userType.Activator = Activate_81_SettingsPage;
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 77:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 82:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_77_TreeViewNode;
+                userType.Activator = Activate_82_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -1058,9 +1117,9 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 78:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 83:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.CollectionAdd = VectorAdd_78_IList;
+                userType.CollectionAdd = VectorAdd_83_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
@@ -1175,140 +1234,140 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
             that.PaneDisplayMode = (global::Microsoft.UI.Xaml.Controls.NavigationViewPaneDisplayMode)Value;
         }
-        private object get_4_NavigationView_OpenPaneLength(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.OpenPaneLength;
-        }
-        private void set_4_NavigationView_OpenPaneLength(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.OpenPaneLength = (global::System.Double)Value;
-        }
-        private object get_5_NavigationView_MenuItems(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.MenuItems;
-        }
-        private object get_6_NavigationView_FooterMenuItems(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.FooterMenuItems;
-        }
-        private object get_7_NavigationView_AlwaysShowHeader(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.AlwaysShowHeader;
-        }
-        private void set_7_NavigationView_AlwaysShowHeader(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.AlwaysShowHeader = (global::System.Boolean)Value;
-        }
-        private object get_8_NavigationView_AutoSuggestBox(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.AutoSuggestBox;
-        }
-        private void set_8_NavigationView_AutoSuggestBox(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.AutoSuggestBox = (global::Microsoft.UI.Xaml.Controls.AutoSuggestBox)Value;
-        }
-        private object get_9_NavigationView_CompactModeThresholdWidth(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.CompactModeThresholdWidth;
-        }
-        private void set_9_NavigationView_CompactModeThresholdWidth(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.CompactModeThresholdWidth = (global::System.Double)Value;
-        }
-        private object get_10_NavigationView_CompactPaneLength(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.CompactPaneLength;
-        }
-        private void set_10_NavigationView_CompactPaneLength(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.CompactPaneLength = (global::System.Double)Value;
-        }
-        private object get_11_NavigationView_ContentOverlay(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.ContentOverlay;
-        }
-        private void set_11_NavigationView_ContentOverlay(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.ContentOverlay = (global::Microsoft.UI.Xaml.UIElement)Value;
-        }
-        private object get_12_NavigationView_DisplayMode(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.DisplayMode;
-        }
-        private object get_13_NavigationView_ExpandedModeThresholdWidth(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.ExpandedModeThresholdWidth;
-        }
-        private void set_13_NavigationView_ExpandedModeThresholdWidth(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.ExpandedModeThresholdWidth = (global::System.Double)Value;
-        }
-        private object get_14_NavigationView_FooterMenuItemsSource(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.FooterMenuItemsSource;
-        }
-        private void set_14_NavigationView_FooterMenuItemsSource(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.FooterMenuItemsSource = (global::System.Object)Value;
-        }
-        private object get_15_NavigationView_Header(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.Header;
-        }
-        private void set_15_NavigationView_Header(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.Header = (global::System.Object)Value;
-        }
-        private object get_16_NavigationView_HeaderTemplate(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.HeaderTemplate;
-        }
-        private void set_16_NavigationView_HeaderTemplate(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.HeaderTemplate = (global::Microsoft.UI.Xaml.DataTemplate)Value;
-        }
-        private object get_17_NavigationView_IsBackEnabled(object instance)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            return that.IsBackEnabled;
-        }
-        private void set_17_NavigationView_IsBackEnabled(object instance, object Value)
-        {
-            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
-            that.IsBackEnabled = (global::System.Boolean)Value;
-        }
-        private object get_18_NavigationView_IsPaneOpen(object instance)
+        private object get_4_NavigationView_IsPaneOpen(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
             return that.IsPaneOpen;
         }
-        private void set_18_NavigationView_IsPaneOpen(object instance, object Value)
+        private void set_4_NavigationView_IsPaneOpen(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
             that.IsPaneOpen = (global::System.Boolean)Value;
+        }
+        private object get_5_NavigationView_OpenPaneLength(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.OpenPaneLength;
+        }
+        private void set_5_NavigationView_OpenPaneLength(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.OpenPaneLength = (global::System.Double)Value;
+        }
+        private object get_6_NavigationView_MenuItems(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.MenuItems;
+        }
+        private object get_7_NavigationView_FooterMenuItems(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.FooterMenuItems;
+        }
+        private object get_8_NavigationView_AlwaysShowHeader(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.AlwaysShowHeader;
+        }
+        private void set_8_NavigationView_AlwaysShowHeader(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.AlwaysShowHeader = (global::System.Boolean)Value;
+        }
+        private object get_9_NavigationView_AutoSuggestBox(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.AutoSuggestBox;
+        }
+        private void set_9_NavigationView_AutoSuggestBox(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.AutoSuggestBox = (global::Microsoft.UI.Xaml.Controls.AutoSuggestBox)Value;
+        }
+        private object get_10_NavigationView_CompactModeThresholdWidth(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.CompactModeThresholdWidth;
+        }
+        private void set_10_NavigationView_CompactModeThresholdWidth(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.CompactModeThresholdWidth = (global::System.Double)Value;
+        }
+        private object get_11_NavigationView_CompactPaneLength(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.CompactPaneLength;
+        }
+        private void set_11_NavigationView_CompactPaneLength(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.CompactPaneLength = (global::System.Double)Value;
+        }
+        private object get_12_NavigationView_ContentOverlay(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.ContentOverlay;
+        }
+        private void set_12_NavigationView_ContentOverlay(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.ContentOverlay = (global::Microsoft.UI.Xaml.UIElement)Value;
+        }
+        private object get_13_NavigationView_DisplayMode(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.DisplayMode;
+        }
+        private object get_14_NavigationView_ExpandedModeThresholdWidth(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.ExpandedModeThresholdWidth;
+        }
+        private void set_14_NavigationView_ExpandedModeThresholdWidth(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.ExpandedModeThresholdWidth = (global::System.Double)Value;
+        }
+        private object get_15_NavigationView_FooterMenuItemsSource(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.FooterMenuItemsSource;
+        }
+        private void set_15_NavigationView_FooterMenuItemsSource(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.FooterMenuItemsSource = (global::System.Object)Value;
+        }
+        private object get_16_NavigationView_Header(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.Header;
+        }
+        private void set_16_NavigationView_Header(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.Header = (global::System.Object)Value;
+        }
+        private object get_17_NavigationView_HeaderTemplate(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.HeaderTemplate;
+        }
+        private void set_17_NavigationView_HeaderTemplate(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.HeaderTemplate = (global::Microsoft.UI.Xaml.DataTemplate)Value;
+        }
+        private object get_18_NavigationView_IsBackEnabled(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            return that.IsBackEnabled;
+        }
+        private void set_18_NavigationView_IsBackEnabled(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.NavigationView)instance;
+            that.IsBackEnabled = (global::System.Boolean)Value;
         }
         private object get_19_NavigationView_IsPaneToggleButtonVisible(object instance)
         {
@@ -1780,472 +1839,492 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             var that = (global::Microsoft.UI.Xaml.Controls.TabView)instance;
             that.TabStripHeaderTemplate = (global::Microsoft.UI.Xaml.DataTemplate)Value;
         }
-        private object get_69_ProgressRing_IsActive(object instance)
+        private object get_69_MenuBar_Items(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.MenuBar)instance;
+            return that.Items;
+        }
+        private object get_70_MenuBarItem_Items(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.MenuBarItem)instance;
+            return that.Items;
+        }
+        private object get_71_MenuBarItem_Title(object instance)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.MenuBarItem)instance;
+            return that.Title;
+        }
+        private void set_71_MenuBarItem_Title(object instance, object Value)
+        {
+            var that = (global::Microsoft.UI.Xaml.Controls.MenuBarItem)instance;
+            that.Title = (global::System.String)Value;
+        }
+        private object get_72_ProgressRing_IsActive(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.IsActive;
         }
-        private void set_69_ProgressRing_IsActive(object instance, object Value)
+        private void set_72_ProgressRing_IsActive(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.IsActive = (global::System.Boolean)Value;
         }
-        private object get_70_ProgressRing_IsIndeterminate(object instance)
+        private object get_73_ProgressRing_IsIndeterminate(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.IsIndeterminate;
         }
-        private void set_70_ProgressRing_IsIndeterminate(object instance, object Value)
+        private void set_73_ProgressRing_IsIndeterminate(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.IsIndeterminate = (global::System.Boolean)Value;
         }
-        private object get_71_ProgressRing_Maximum(object instance)
+        private object get_74_ProgressRing_Maximum(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.Maximum;
         }
-        private void set_71_ProgressRing_Maximum(object instance, object Value)
+        private void set_74_ProgressRing_Maximum(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.Maximum = (global::System.Double)Value;
         }
-        private object get_72_ProgressRing_Minimum(object instance)
+        private object get_75_ProgressRing_Minimum(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.Minimum;
         }
-        private void set_72_ProgressRing_Minimum(object instance, object Value)
+        private void set_75_ProgressRing_Minimum(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.Minimum = (global::System.Double)Value;
         }
-        private object get_73_ProgressRing_TemplateSettings(object instance)
+        private object get_76_ProgressRing_TemplateSettings(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.TemplateSettings;
         }
-        private object get_74_ProgressRing_Value(object instance)
+        private object get_77_ProgressRing_Value(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             return that.Value;
         }
-        private void set_74_ProgressRing_Value(object instance, object Value)
+        private void set_77_ProgressRing_Value(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressRing)instance;
             that.Value = (global::System.Double)Value;
         }
-        private object get_75_NumberBox_Value(object instance)
+        private object get_78_NumberBox_Value(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.Value;
         }
-        private void set_75_NumberBox_Value(object instance, object Value)
+        private void set_78_NumberBox_Value(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.Value = (global::System.Double)Value;
         }
-        private object get_76_NumberBox_Minimum(object instance)
+        private object get_79_NumberBox_Minimum(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.Minimum;
         }
-        private void set_76_NumberBox_Minimum(object instance, object Value)
+        private void set_79_NumberBox_Minimum(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.Minimum = (global::System.Double)Value;
         }
-        private object get_77_NumberBox_Maximum(object instance)
+        private object get_80_NumberBox_Maximum(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.Maximum;
         }
-        private void set_77_NumberBox_Maximum(object instance, object Value)
+        private void set_80_NumberBox_Maximum(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.Maximum = (global::System.Double)Value;
         }
-        private object get_78_NumberBox_AcceptsExpression(object instance)
+        private object get_81_NumberBox_AcceptsExpression(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.AcceptsExpression;
         }
-        private void set_78_NumberBox_AcceptsExpression(object instance, object Value)
+        private void set_81_NumberBox_AcceptsExpression(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.AcceptsExpression = (global::System.Boolean)Value;
         }
-        private object get_79_NumberBox_Description(object instance)
+        private object get_82_NumberBox_Description(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.Description;
         }
-        private void set_79_NumberBox_Description(object instance, object Value)
+        private void set_82_NumberBox_Description(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.Description = (global::System.Object)Value;
         }
-        private object get_80_NumberBox_Header(object instance)
+        private object get_83_NumberBox_Header(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.Header;
         }
-        private void set_80_NumberBox_Header(object instance, object Value)
+        private void set_83_NumberBox_Header(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.Header = (global::System.Object)Value;
         }
-        private object get_81_NumberBox_HeaderTemplate(object instance)
+        private object get_84_NumberBox_HeaderTemplate(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.HeaderTemplate;
         }
-        private void set_81_NumberBox_HeaderTemplate(object instance, object Value)
+        private void set_84_NumberBox_HeaderTemplate(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.HeaderTemplate = (global::Microsoft.UI.Xaml.DataTemplate)Value;
         }
-        private object get_82_NumberBox_IsWrapEnabled(object instance)
+        private object get_85_NumberBox_IsWrapEnabled(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.IsWrapEnabled;
         }
-        private void set_82_NumberBox_IsWrapEnabled(object instance, object Value)
+        private void set_85_NumberBox_IsWrapEnabled(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.IsWrapEnabled = (global::System.Boolean)Value;
         }
-        private object get_83_NumberBox_LargeChange(object instance)
+        private object get_86_NumberBox_LargeChange(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.LargeChange;
         }
-        private void set_83_NumberBox_LargeChange(object instance, object Value)
+        private void set_86_NumberBox_LargeChange(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.LargeChange = (global::System.Double)Value;
         }
-        private object get_84_NumberBox_NumberFormatter(object instance)
+        private object get_87_NumberBox_NumberFormatter(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.NumberFormatter;
         }
-        private void set_84_NumberBox_NumberFormatter(object instance, object Value)
+        private void set_87_NumberBox_NumberFormatter(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.NumberFormatter = (global::Windows.Globalization.NumberFormatting.INumberFormatter2)Value;
         }
-        private object get_85_NumberBox_PlaceholderText(object instance)
+        private object get_88_NumberBox_PlaceholderText(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.PlaceholderText;
         }
-        private void set_85_NumberBox_PlaceholderText(object instance, object Value)
+        private void set_88_NumberBox_PlaceholderText(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.PlaceholderText = (global::System.String)Value;
         }
-        private object get_86_NumberBox_PreventKeyboardDisplayOnProgrammaticFocus(object instance)
+        private object get_89_NumberBox_PreventKeyboardDisplayOnProgrammaticFocus(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.PreventKeyboardDisplayOnProgrammaticFocus;
         }
-        private void set_86_NumberBox_PreventKeyboardDisplayOnProgrammaticFocus(object instance, object Value)
+        private void set_89_NumberBox_PreventKeyboardDisplayOnProgrammaticFocus(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.PreventKeyboardDisplayOnProgrammaticFocus = (global::System.Boolean)Value;
         }
-        private object get_87_NumberBox_SelectionFlyout(object instance)
+        private object get_90_NumberBox_SelectionFlyout(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.SelectionFlyout;
         }
-        private void set_87_NumberBox_SelectionFlyout(object instance, object Value)
+        private void set_90_NumberBox_SelectionFlyout(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.SelectionFlyout = (global::Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase)Value;
         }
-        private object get_88_NumberBox_SelectionHighlightColor(object instance)
+        private object get_91_NumberBox_SelectionHighlightColor(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.SelectionHighlightColor;
         }
-        private void set_88_NumberBox_SelectionHighlightColor(object instance, object Value)
+        private void set_91_NumberBox_SelectionHighlightColor(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.SelectionHighlightColor = (global::Microsoft.UI.Xaml.Media.SolidColorBrush)Value;
         }
-        private object get_89_NumberBox_SmallChange(object instance)
+        private object get_92_NumberBox_SmallChange(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.SmallChange;
         }
-        private void set_89_NumberBox_SmallChange(object instance, object Value)
+        private void set_92_NumberBox_SmallChange(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.SmallChange = (global::System.Double)Value;
         }
-        private object get_90_NumberBox_SpinButtonPlacementMode(object instance)
+        private object get_93_NumberBox_SpinButtonPlacementMode(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.SpinButtonPlacementMode;
         }
-        private void set_90_NumberBox_SpinButtonPlacementMode(object instance, object Value)
+        private void set_93_NumberBox_SpinButtonPlacementMode(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.SpinButtonPlacementMode = (global::Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode)Value;
         }
-        private object get_91_NumberBox_Text(object instance)
+        private object get_94_NumberBox_Text(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.Text;
         }
-        private void set_91_NumberBox_Text(object instance, object Value)
+        private void set_94_NumberBox_Text(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.Text = (global::System.String)Value;
         }
-        private object get_92_NumberBox_TextReadingOrder(object instance)
+        private object get_95_NumberBox_TextReadingOrder(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.TextReadingOrder;
         }
-        private void set_92_NumberBox_TextReadingOrder(object instance, object Value)
+        private void set_95_NumberBox_TextReadingOrder(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.TextReadingOrder = (global::Microsoft.UI.Xaml.TextReadingOrder)Value;
         }
-        private object get_93_NumberBox_ValidationMode(object instance)
+        private object get_96_NumberBox_ValidationMode(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             return that.ValidationMode;
         }
-        private void set_93_NumberBox_ValidationMode(object instance, object Value)
+        private void set_96_NumberBox_ValidationMode(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.NumberBox)instance;
             that.ValidationMode = (global::Microsoft.UI.Xaml.Controls.NumberBoxValidationMode)Value;
         }
-        private object get_94_InfoBar_Content(object instance)
+        private object get_97_InfoBar_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.Content;
         }
-        private void set_94_InfoBar_Content(object instance, object Value)
+        private void set_97_InfoBar_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_95_InfoBar_IsOpen(object instance)
+        private object get_98_InfoBar_IsOpen(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.IsOpen;
         }
-        private void set_95_InfoBar_IsOpen(object instance, object Value)
+        private void set_98_InfoBar_IsOpen(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.IsOpen = (global::System.Boolean)Value;
         }
-        private object get_96_InfoBar_Severity(object instance)
+        private object get_99_InfoBar_Severity(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.Severity;
         }
-        private void set_96_InfoBar_Severity(object instance, object Value)
+        private void set_99_InfoBar_Severity(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.Severity = (global::Microsoft.UI.Xaml.Controls.InfoBarSeverity)Value;
         }
-        private object get_97_InfoBar_Title(object instance)
+        private object get_100_InfoBar_Title(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.Title;
         }
-        private void set_97_InfoBar_Title(object instance, object Value)
+        private void set_100_InfoBar_Title(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.Title = (global::System.String)Value;
         }
-        private object get_98_InfoBar_Message(object instance)
+        private object get_101_InfoBar_Message(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.Message;
         }
-        private void set_98_InfoBar_Message(object instance, object Value)
+        private void set_101_InfoBar_Message(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.Message = (global::System.String)Value;
         }
-        private object get_99_InfoBar_ActionButton(object instance)
+        private object get_102_InfoBar_ActionButton(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.ActionButton;
         }
-        private void set_99_InfoBar_ActionButton(object instance, object Value)
+        private void set_102_InfoBar_ActionButton(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.ActionButton = (global::Microsoft.UI.Xaml.Controls.Primitives.ButtonBase)Value;
         }
-        private object get_100_InfoBar_CloseButtonCommand(object instance)
+        private object get_103_InfoBar_CloseButtonCommand(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.CloseButtonCommand;
         }
-        private void set_100_InfoBar_CloseButtonCommand(object instance, object Value)
+        private void set_103_InfoBar_CloseButtonCommand(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.CloseButtonCommand = (global::System.Windows.Input.ICommand)Value;
         }
-        private object get_101_InfoBar_CloseButtonCommandParameter(object instance)
+        private object get_104_InfoBar_CloseButtonCommandParameter(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.CloseButtonCommandParameter;
         }
-        private void set_101_InfoBar_CloseButtonCommandParameter(object instance, object Value)
+        private void set_104_InfoBar_CloseButtonCommandParameter(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.CloseButtonCommandParameter = (global::System.Object)Value;
         }
-        private object get_102_InfoBar_CloseButtonStyle(object instance)
+        private object get_105_InfoBar_CloseButtonStyle(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.CloseButtonStyle;
         }
-        private void set_102_InfoBar_CloseButtonStyle(object instance, object Value)
+        private void set_105_InfoBar_CloseButtonStyle(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.CloseButtonStyle = (global::Microsoft.UI.Xaml.Style)Value;
         }
-        private object get_103_InfoBar_ContentTemplate(object instance)
+        private object get_106_InfoBar_ContentTemplate(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.ContentTemplate;
         }
-        private void set_103_InfoBar_ContentTemplate(object instance, object Value)
+        private void set_106_InfoBar_ContentTemplate(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.ContentTemplate = (global::Microsoft.UI.Xaml.DataTemplate)Value;
         }
-        private object get_104_InfoBar_IconSource(object instance)
+        private object get_107_InfoBar_IconSource(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.IconSource;
         }
-        private void set_104_InfoBar_IconSource(object instance, object Value)
+        private void set_107_InfoBar_IconSource(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.IconSource = (global::Microsoft.UI.Xaml.Controls.IconSource)Value;
         }
-        private object get_105_InfoBar_IsClosable(object instance)
+        private object get_108_InfoBar_IsClosable(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.IsClosable;
         }
-        private void set_105_InfoBar_IsClosable(object instance, object Value)
+        private void set_108_InfoBar_IsClosable(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.IsClosable = (global::System.Boolean)Value;
         }
-        private object get_106_InfoBar_IsIconVisible(object instance)
+        private object get_109_InfoBar_IsIconVisible(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.IsIconVisible;
         }
-        private void set_106_InfoBar_IsIconVisible(object instance, object Value)
+        private void set_109_InfoBar_IsIconVisible(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             that.IsIconVisible = (global::System.Boolean)Value;
         }
-        private object get_107_InfoBar_TemplateSettings(object instance)
+        private object get_110_InfoBar_TemplateSettings(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.InfoBar)instance;
             return that.TemplateSettings;
         }
-        private object get_108_ProgressBar_IsIndeterminate(object instance)
+        private object get_111_ProgressBar_IsIndeterminate(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressBar)instance;
             return that.IsIndeterminate;
         }
-        private void set_108_ProgressBar_IsIndeterminate(object instance, object Value)
+        private void set_111_ProgressBar_IsIndeterminate(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressBar)instance;
             that.IsIndeterminate = (global::System.Boolean)Value;
         }
-        private object get_109_ProgressBar_ShowError(object instance)
+        private object get_112_ProgressBar_ShowError(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressBar)instance;
             return that.ShowError;
         }
-        private void set_109_ProgressBar_ShowError(object instance, object Value)
+        private void set_112_ProgressBar_ShowError(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressBar)instance;
             that.ShowError = (global::System.Boolean)Value;
         }
-        private object get_110_ProgressBar_ShowPaused(object instance)
+        private object get_113_ProgressBar_ShowPaused(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressBar)instance;
             return that.ShowPaused;
         }
-        private void set_110_ProgressBar_ShowPaused(object instance, object Value)
+        private void set_113_ProgressBar_ShowPaused(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressBar)instance;
             that.ShowPaused = (global::System.Boolean)Value;
         }
-        private object get_111_ProgressBar_TemplateSettings(object instance)
+        private object get_114_ProgressBar_TemplateSettings(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.ProgressBar)instance;
             return that.TemplateSettings;
         }
-        private object get_112_PluginManagerPage_ViewModel(object instance)
+        private object get_115_PluginManagerPage_ViewModel(object instance)
         {
             var that = (global::Arcana.App.Views.PluginManagerPage)instance;
             return that.ViewModel;
         }
-        private object get_113_TreeViewNode_Children(object instance)
+        private object get_116_TreeViewNode_Children(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Children;
         }
-        private object get_114_TreeViewNode_Content(object instance)
+        private object get_117_TreeViewNode_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Content;
         }
-        private void set_114_TreeViewNode_Content(object instance, object Value)
+        private void set_117_TreeViewNode_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_115_TreeViewNode_Depth(object instance)
+        private object get_118_TreeViewNode_Depth(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Depth;
         }
-        private object get_116_TreeViewNode_HasChildren(object instance)
+        private object get_119_TreeViewNode_HasChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasChildren;
         }
-        private object get_117_TreeViewNode_HasUnrealizedChildren(object instance)
+        private object get_120_TreeViewNode_HasUnrealizedChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasUnrealizedChildren;
         }
-        private void set_117_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
+        private void set_120_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.HasUnrealizedChildren = (global::System.Boolean)Value;
         }
-        private object get_118_TreeViewNode_IsExpanded(object instance)
+        private object get_121_TreeViewNode_IsExpanded(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.IsExpanded;
         }
-        private void set_118_TreeViewNode_IsExpanded(object instance, object Value)
+        private void set_121_TreeViewNode_IsExpanded(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.IsExpanded = (global::System.Boolean)Value;
         }
-        private object get_119_TreeViewNode_Parent(object instance)
+        private object get_122_TreeViewNode_Parent(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Parent;
@@ -2286,110 +2365,110 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlMember.Getter = get_3_NavigationView_PaneDisplayMode;
                 xamlMember.Setter = set_3_NavigationView_PaneDisplayMode;
                 break;
+            case "Microsoft.UI.Xaml.Controls.NavigationView.IsPaneOpen":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsPaneOpen", "Boolean");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_4_NavigationView_IsPaneOpen;
+                xamlMember.Setter = set_4_NavigationView_IsPaneOpen;
+                break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.OpenPaneLength":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "OpenPaneLength", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_4_NavigationView_OpenPaneLength;
-                xamlMember.Setter = set_4_NavigationView_OpenPaneLength;
+                xamlMember.Getter = get_5_NavigationView_OpenPaneLength;
+                xamlMember.Setter = set_5_NavigationView_OpenPaneLength;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.MenuItems":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "MenuItems", "System.Collections.Generic.IList`1<Object>");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_5_NavigationView_MenuItems;
+                xamlMember.Getter = get_6_NavigationView_MenuItems;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.FooterMenuItems":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "FooterMenuItems", "System.Collections.Generic.IList`1<Object>");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_6_NavigationView_FooterMenuItems;
+                xamlMember.Getter = get_7_NavigationView_FooterMenuItems;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.AlwaysShowHeader":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "AlwaysShowHeader", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_7_NavigationView_AlwaysShowHeader;
-                xamlMember.Setter = set_7_NavigationView_AlwaysShowHeader;
+                xamlMember.Getter = get_8_NavigationView_AlwaysShowHeader;
+                xamlMember.Setter = set_8_NavigationView_AlwaysShowHeader;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.AutoSuggestBox":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "AutoSuggestBox", "Microsoft.UI.Xaml.Controls.AutoSuggestBox");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_8_NavigationView_AutoSuggestBox;
-                xamlMember.Setter = set_8_NavigationView_AutoSuggestBox;
+                xamlMember.Getter = get_9_NavigationView_AutoSuggestBox;
+                xamlMember.Setter = set_9_NavigationView_AutoSuggestBox;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.CompactModeThresholdWidth":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "CompactModeThresholdWidth", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_9_NavigationView_CompactModeThresholdWidth;
-                xamlMember.Setter = set_9_NavigationView_CompactModeThresholdWidth;
+                xamlMember.Getter = get_10_NavigationView_CompactModeThresholdWidth;
+                xamlMember.Setter = set_10_NavigationView_CompactModeThresholdWidth;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.CompactPaneLength":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "CompactPaneLength", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_10_NavigationView_CompactPaneLength;
-                xamlMember.Setter = set_10_NavigationView_CompactPaneLength;
+                xamlMember.Getter = get_11_NavigationView_CompactPaneLength;
+                xamlMember.Setter = set_11_NavigationView_CompactPaneLength;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.ContentOverlay":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ContentOverlay", "Microsoft.UI.Xaml.UIElement");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_11_NavigationView_ContentOverlay;
-                xamlMember.Setter = set_11_NavigationView_ContentOverlay;
+                xamlMember.Getter = get_12_NavigationView_ContentOverlay;
+                xamlMember.Setter = set_12_NavigationView_ContentOverlay;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.DisplayMode":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "DisplayMode", "Microsoft.UI.Xaml.Controls.NavigationViewDisplayMode");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_12_NavigationView_DisplayMode;
+                xamlMember.Getter = get_13_NavigationView_DisplayMode;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.ExpandedModeThresholdWidth":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ExpandedModeThresholdWidth", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_13_NavigationView_ExpandedModeThresholdWidth;
-                xamlMember.Setter = set_13_NavigationView_ExpandedModeThresholdWidth;
+                xamlMember.Getter = get_14_NavigationView_ExpandedModeThresholdWidth;
+                xamlMember.Setter = set_14_NavigationView_ExpandedModeThresholdWidth;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.FooterMenuItemsSource":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "FooterMenuItemsSource", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_14_NavigationView_FooterMenuItemsSource;
-                xamlMember.Setter = set_14_NavigationView_FooterMenuItemsSource;
+                xamlMember.Getter = get_15_NavigationView_FooterMenuItemsSource;
+                xamlMember.Setter = set_15_NavigationView_FooterMenuItemsSource;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.Header":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Header", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_15_NavigationView_Header;
-                xamlMember.Setter = set_15_NavigationView_Header;
+                xamlMember.Getter = get_16_NavigationView_Header;
+                xamlMember.Setter = set_16_NavigationView_Header;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.HeaderTemplate":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "HeaderTemplate", "Microsoft.UI.Xaml.DataTemplate");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_16_NavigationView_HeaderTemplate;
-                xamlMember.Setter = set_16_NavigationView_HeaderTemplate;
+                xamlMember.Getter = get_17_NavigationView_HeaderTemplate;
+                xamlMember.Setter = set_17_NavigationView_HeaderTemplate;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.IsBackEnabled":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsBackEnabled", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_17_NavigationView_IsBackEnabled;
-                xamlMember.Setter = set_17_NavigationView_IsBackEnabled;
-                break;
-            case "Microsoft.UI.Xaml.Controls.NavigationView.IsPaneOpen":
-                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
-                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsPaneOpen", "Boolean");
-                xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_18_NavigationView_IsPaneOpen;
-                xamlMember.Setter = set_18_NavigationView_IsPaneOpen;
+                xamlMember.Getter = get_18_NavigationView_IsBackEnabled;
+                xamlMember.Setter = set_18_NavigationView_IsBackEnabled;
                 break;
             case "Microsoft.UI.Xaml.Controls.NavigationView.IsPaneToggleButtonVisible":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NavigationView");
@@ -2741,355 +2820,376 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlMember.Getter = get_68_TabView_TabStripHeaderTemplate;
                 xamlMember.Setter = set_68_TabView_TabStripHeaderTemplate;
                 break;
+            case "Microsoft.UI.Xaml.Controls.MenuBar.Items":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.MenuBar");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Items", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.MenuBarItem>");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_69_MenuBar_Items;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "Microsoft.UI.Xaml.Controls.MenuBarItem.Items":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.MenuBarItem");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Items", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase>");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_70_MenuBarItem_Items;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "Microsoft.UI.Xaml.Controls.MenuBarItem.Title":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.MenuBarItem");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Title", "String");
+                xamlMember.SetIsDependencyProperty();
+                xamlMember.Getter = get_71_MenuBarItem_Title;
+                xamlMember.Setter = set_71_MenuBarItem_Title;
+                break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.IsActive":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsActive", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_69_ProgressRing_IsActive;
-                xamlMember.Setter = set_69_ProgressRing_IsActive;
+                xamlMember.Getter = get_72_ProgressRing_IsActive;
+                xamlMember.Setter = set_72_ProgressRing_IsActive;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.IsIndeterminate":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsIndeterminate", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_70_ProgressRing_IsIndeterminate;
-                xamlMember.Setter = set_70_ProgressRing_IsIndeterminate;
+                xamlMember.Getter = get_73_ProgressRing_IsIndeterminate;
+                xamlMember.Setter = set_73_ProgressRing_IsIndeterminate;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.Maximum":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Maximum", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_71_ProgressRing_Maximum;
-                xamlMember.Setter = set_71_ProgressRing_Maximum;
+                xamlMember.Getter = get_74_ProgressRing_Maximum;
+                xamlMember.Setter = set_74_ProgressRing_Maximum;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.Minimum":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Minimum", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_72_ProgressRing_Minimum;
-                xamlMember.Setter = set_72_ProgressRing_Minimum;
+                xamlMember.Getter = get_75_ProgressRing_Minimum;
+                xamlMember.Setter = set_75_ProgressRing_Minimum;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.TemplateSettings":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "TemplateSettings", "Microsoft.UI.Xaml.Controls.ProgressRingTemplateSettings");
-                xamlMember.Getter = get_73_ProgressRing_TemplateSettings;
+                xamlMember.Getter = get_76_ProgressRing_TemplateSettings;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressRing.Value":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressRing");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Value", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_74_ProgressRing_Value;
-                xamlMember.Setter = set_74_ProgressRing_Value;
+                xamlMember.Getter = get_77_ProgressRing_Value;
+                xamlMember.Setter = set_77_ProgressRing_Value;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.Value":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Value", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_75_NumberBox_Value;
-                xamlMember.Setter = set_75_NumberBox_Value;
+                xamlMember.Getter = get_78_NumberBox_Value;
+                xamlMember.Setter = set_78_NumberBox_Value;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.Minimum":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Minimum", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_76_NumberBox_Minimum;
-                xamlMember.Setter = set_76_NumberBox_Minimum;
+                xamlMember.Getter = get_79_NumberBox_Minimum;
+                xamlMember.Setter = set_79_NumberBox_Minimum;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.Maximum":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Maximum", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_77_NumberBox_Maximum;
-                xamlMember.Setter = set_77_NumberBox_Maximum;
+                xamlMember.Getter = get_80_NumberBox_Maximum;
+                xamlMember.Setter = set_80_NumberBox_Maximum;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.AcceptsExpression":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "AcceptsExpression", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_78_NumberBox_AcceptsExpression;
-                xamlMember.Setter = set_78_NumberBox_AcceptsExpression;
+                xamlMember.Getter = get_81_NumberBox_AcceptsExpression;
+                xamlMember.Setter = set_81_NumberBox_AcceptsExpression;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.Description":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Description", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_79_NumberBox_Description;
-                xamlMember.Setter = set_79_NumberBox_Description;
+                xamlMember.Getter = get_82_NumberBox_Description;
+                xamlMember.Setter = set_82_NumberBox_Description;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.Header":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Header", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_80_NumberBox_Header;
-                xamlMember.Setter = set_80_NumberBox_Header;
+                xamlMember.Getter = get_83_NumberBox_Header;
+                xamlMember.Setter = set_83_NumberBox_Header;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.HeaderTemplate":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "HeaderTemplate", "Microsoft.UI.Xaml.DataTemplate");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_81_NumberBox_HeaderTemplate;
-                xamlMember.Setter = set_81_NumberBox_HeaderTemplate;
+                xamlMember.Getter = get_84_NumberBox_HeaderTemplate;
+                xamlMember.Setter = set_84_NumberBox_HeaderTemplate;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.IsWrapEnabled":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsWrapEnabled", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_82_NumberBox_IsWrapEnabled;
-                xamlMember.Setter = set_82_NumberBox_IsWrapEnabled;
+                xamlMember.Getter = get_85_NumberBox_IsWrapEnabled;
+                xamlMember.Setter = set_85_NumberBox_IsWrapEnabled;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.LargeChange":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "LargeChange", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_83_NumberBox_LargeChange;
-                xamlMember.Setter = set_83_NumberBox_LargeChange;
+                xamlMember.Getter = get_86_NumberBox_LargeChange;
+                xamlMember.Setter = set_86_NumberBox_LargeChange;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.NumberFormatter":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "NumberFormatter", "Windows.Globalization.NumberFormatting.INumberFormatter2");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_84_NumberBox_NumberFormatter;
-                xamlMember.Setter = set_84_NumberBox_NumberFormatter;
+                xamlMember.Getter = get_87_NumberBox_NumberFormatter;
+                xamlMember.Setter = set_87_NumberBox_NumberFormatter;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.PlaceholderText":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "PlaceholderText", "String");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_85_NumberBox_PlaceholderText;
-                xamlMember.Setter = set_85_NumberBox_PlaceholderText;
+                xamlMember.Getter = get_88_NumberBox_PlaceholderText;
+                xamlMember.Setter = set_88_NumberBox_PlaceholderText;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.PreventKeyboardDisplayOnProgrammaticFocus":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "PreventKeyboardDisplayOnProgrammaticFocus", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_86_NumberBox_PreventKeyboardDisplayOnProgrammaticFocus;
-                xamlMember.Setter = set_86_NumberBox_PreventKeyboardDisplayOnProgrammaticFocus;
+                xamlMember.Getter = get_89_NumberBox_PreventKeyboardDisplayOnProgrammaticFocus;
+                xamlMember.Setter = set_89_NumberBox_PreventKeyboardDisplayOnProgrammaticFocus;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.SelectionFlyout":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "SelectionFlyout", "Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_87_NumberBox_SelectionFlyout;
-                xamlMember.Setter = set_87_NumberBox_SelectionFlyout;
+                xamlMember.Getter = get_90_NumberBox_SelectionFlyout;
+                xamlMember.Setter = set_90_NumberBox_SelectionFlyout;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.SelectionHighlightColor":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "SelectionHighlightColor", "Microsoft.UI.Xaml.Media.SolidColorBrush");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_88_NumberBox_SelectionHighlightColor;
-                xamlMember.Setter = set_88_NumberBox_SelectionHighlightColor;
+                xamlMember.Getter = get_91_NumberBox_SelectionHighlightColor;
+                xamlMember.Setter = set_91_NumberBox_SelectionHighlightColor;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.SmallChange":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "SmallChange", "Double");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_89_NumberBox_SmallChange;
-                xamlMember.Setter = set_89_NumberBox_SmallChange;
+                xamlMember.Getter = get_92_NumberBox_SmallChange;
+                xamlMember.Setter = set_92_NumberBox_SmallChange;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.SpinButtonPlacementMode":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "SpinButtonPlacementMode", "Microsoft.UI.Xaml.Controls.NumberBoxSpinButtonPlacementMode");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_90_NumberBox_SpinButtonPlacementMode;
-                xamlMember.Setter = set_90_NumberBox_SpinButtonPlacementMode;
+                xamlMember.Getter = get_93_NumberBox_SpinButtonPlacementMode;
+                xamlMember.Setter = set_93_NumberBox_SpinButtonPlacementMode;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.Text":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Text", "String");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_91_NumberBox_Text;
-                xamlMember.Setter = set_91_NumberBox_Text;
+                xamlMember.Getter = get_94_NumberBox_Text;
+                xamlMember.Setter = set_94_NumberBox_Text;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.TextReadingOrder":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "TextReadingOrder", "Microsoft.UI.Xaml.TextReadingOrder");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_92_NumberBox_TextReadingOrder;
-                xamlMember.Setter = set_92_NumberBox_TextReadingOrder;
+                xamlMember.Getter = get_95_NumberBox_TextReadingOrder;
+                xamlMember.Setter = set_95_NumberBox_TextReadingOrder;
                 break;
             case "Microsoft.UI.Xaml.Controls.NumberBox.ValidationMode":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.NumberBox");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ValidationMode", "Microsoft.UI.Xaml.Controls.NumberBoxValidationMode");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_93_NumberBox_ValidationMode;
-                xamlMember.Setter = set_93_NumberBox_ValidationMode;
+                xamlMember.Getter = get_96_NumberBox_ValidationMode;
+                xamlMember.Setter = set_96_NumberBox_ValidationMode;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.Content":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_94_InfoBar_Content;
-                xamlMember.Setter = set_94_InfoBar_Content;
+                xamlMember.Getter = get_97_InfoBar_Content;
+                xamlMember.Setter = set_97_InfoBar_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.IsOpen":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsOpen", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_95_InfoBar_IsOpen;
-                xamlMember.Setter = set_95_InfoBar_IsOpen;
+                xamlMember.Getter = get_98_InfoBar_IsOpen;
+                xamlMember.Setter = set_98_InfoBar_IsOpen;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.Severity":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Severity", "Microsoft.UI.Xaml.Controls.InfoBarSeverity");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_96_InfoBar_Severity;
-                xamlMember.Setter = set_96_InfoBar_Severity;
+                xamlMember.Getter = get_99_InfoBar_Severity;
+                xamlMember.Setter = set_99_InfoBar_Severity;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.Title":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Title", "String");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_97_InfoBar_Title;
-                xamlMember.Setter = set_97_InfoBar_Title;
+                xamlMember.Getter = get_100_InfoBar_Title;
+                xamlMember.Setter = set_100_InfoBar_Title;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.Message":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Message", "String");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_98_InfoBar_Message;
-                xamlMember.Setter = set_98_InfoBar_Message;
+                xamlMember.Getter = get_101_InfoBar_Message;
+                xamlMember.Setter = set_101_InfoBar_Message;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.ActionButton":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ActionButton", "Microsoft.UI.Xaml.Controls.Primitives.ButtonBase");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_99_InfoBar_ActionButton;
-                xamlMember.Setter = set_99_InfoBar_ActionButton;
+                xamlMember.Getter = get_102_InfoBar_ActionButton;
+                xamlMember.Setter = set_102_InfoBar_ActionButton;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.CloseButtonCommand":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "CloseButtonCommand", "System.Windows.Input.ICommand");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_100_InfoBar_CloseButtonCommand;
-                xamlMember.Setter = set_100_InfoBar_CloseButtonCommand;
+                xamlMember.Getter = get_103_InfoBar_CloseButtonCommand;
+                xamlMember.Setter = set_103_InfoBar_CloseButtonCommand;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.CloseButtonCommandParameter":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "CloseButtonCommandParameter", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_101_InfoBar_CloseButtonCommandParameter;
-                xamlMember.Setter = set_101_InfoBar_CloseButtonCommandParameter;
+                xamlMember.Getter = get_104_InfoBar_CloseButtonCommandParameter;
+                xamlMember.Setter = set_104_InfoBar_CloseButtonCommandParameter;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.CloseButtonStyle":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "CloseButtonStyle", "Microsoft.UI.Xaml.Style");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_102_InfoBar_CloseButtonStyle;
-                xamlMember.Setter = set_102_InfoBar_CloseButtonStyle;
+                xamlMember.Getter = get_105_InfoBar_CloseButtonStyle;
+                xamlMember.Setter = set_105_InfoBar_CloseButtonStyle;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.ContentTemplate":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ContentTemplate", "Microsoft.UI.Xaml.DataTemplate");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_103_InfoBar_ContentTemplate;
-                xamlMember.Setter = set_103_InfoBar_ContentTemplate;
+                xamlMember.Getter = get_106_InfoBar_ContentTemplate;
+                xamlMember.Setter = set_106_InfoBar_ContentTemplate;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.IconSource":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IconSource", "Microsoft.UI.Xaml.Controls.IconSource");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_104_InfoBar_IconSource;
-                xamlMember.Setter = set_104_InfoBar_IconSource;
+                xamlMember.Getter = get_107_InfoBar_IconSource;
+                xamlMember.Setter = set_107_InfoBar_IconSource;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.IsClosable":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsClosable", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_105_InfoBar_IsClosable;
-                xamlMember.Setter = set_105_InfoBar_IsClosable;
+                xamlMember.Getter = get_108_InfoBar_IsClosable;
+                xamlMember.Setter = set_108_InfoBar_IsClosable;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.IsIconVisible":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsIconVisible", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_106_InfoBar_IsIconVisible;
-                xamlMember.Setter = set_106_InfoBar_IsIconVisible;
+                xamlMember.Getter = get_109_InfoBar_IsIconVisible;
+                xamlMember.Setter = set_109_InfoBar_IsIconVisible;
                 break;
             case "Microsoft.UI.Xaml.Controls.InfoBar.TemplateSettings":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.InfoBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "TemplateSettings", "Microsoft.UI.Xaml.Controls.InfoBarTemplateSettings");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_107_InfoBar_TemplateSettings;
+                xamlMember.Getter = get_110_InfoBar_TemplateSettings;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressBar.IsIndeterminate":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsIndeterminate", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_108_ProgressBar_IsIndeterminate;
-                xamlMember.Setter = set_108_ProgressBar_IsIndeterminate;
+                xamlMember.Getter = get_111_ProgressBar_IsIndeterminate;
+                xamlMember.Setter = set_111_ProgressBar_IsIndeterminate;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressBar.ShowError":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ShowError", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_109_ProgressBar_ShowError;
-                xamlMember.Setter = set_109_ProgressBar_ShowError;
+                xamlMember.Getter = get_112_ProgressBar_ShowError;
+                xamlMember.Setter = set_112_ProgressBar_ShowError;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressBar.ShowPaused":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ShowPaused", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_110_ProgressBar_ShowPaused;
-                xamlMember.Setter = set_110_ProgressBar_ShowPaused;
+                xamlMember.Getter = get_113_ProgressBar_ShowPaused;
+                xamlMember.Setter = set_113_ProgressBar_ShowPaused;
                 break;
             case "Microsoft.UI.Xaml.Controls.ProgressBar.TemplateSettings":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.ProgressBar");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "TemplateSettings", "Microsoft.UI.Xaml.Controls.ProgressBarTemplateSettings");
-                xamlMember.Getter = get_111_ProgressBar_TemplateSettings;
+                xamlMember.Getter = get_114_ProgressBar_TemplateSettings;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Arcana.App.Views.PluginManagerPage.ViewModel":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Arcana.App.Views.PluginManagerPage");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ViewModel", "Arcana.App.ViewModels.PluginManagerViewModel");
-                xamlMember.Getter = get_112_PluginManagerPage_ViewModel;
+                xamlMember.Getter = get_115_PluginManagerPage_ViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Children":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Children", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>");
-                xamlMember.Getter = get_113_TreeViewNode_Children;
+                xamlMember.Getter = get_116_TreeViewNode_Children;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Content":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_114_TreeViewNode_Content;
-                xamlMember.Setter = set_114_TreeViewNode_Content;
+                xamlMember.Getter = get_117_TreeViewNode_Content;
+                xamlMember.Setter = set_117_TreeViewNode_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Depth":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Depth", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_115_TreeViewNode_Depth;
+                xamlMember.Getter = get_118_TreeViewNode_Depth;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasChildren":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "HasChildren", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_116_TreeViewNode_HasChildren;
+                xamlMember.Getter = get_119_TreeViewNode_HasChildren;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasUnrealizedChildren":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "HasUnrealizedChildren", "Boolean");
-                xamlMember.Getter = get_117_TreeViewNode_HasUnrealizedChildren;
-                xamlMember.Setter = set_117_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Getter = get_120_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Setter = set_120_TreeViewNode_HasUnrealizedChildren;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.IsExpanded":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_118_TreeViewNode_IsExpanded;
-                xamlMember.Setter = set_118_TreeViewNode_IsExpanded;
+                xamlMember.Getter = get_121_TreeViewNode_IsExpanded;
+                xamlMember.Setter = set_121_TreeViewNode_IsExpanded;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Parent":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Parent", "Microsoft.UI.Xaml.Controls.TreeViewNode");
-                xamlMember.Getter = get_119_TreeViewNode_Parent;
+                xamlMember.Getter = get_122_TreeViewNode_Parent;
                 xamlMember.SetIsReadOnly();
                 break;
             }

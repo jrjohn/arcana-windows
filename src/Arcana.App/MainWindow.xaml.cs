@@ -244,4 +244,159 @@ public sealed partial class MainWindow : Window
     {
         CurrentTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
     }
+
+    #region Menu Handlers
+
+    // File Menu
+    private void Menu_NewOrder_Click(object sender, RoutedEventArgs e)
+    {
+        NavigateToPage("OrderListPage");
+        // Navigate to new order in the OrderListPage's frame
+        if (TabViewMain.SelectedItem is TabViewItem tab && tab.Content is Frame frame)
+        {
+            frame.Navigate(typeof(OrderDetailPage), null);
+        }
+    }
+
+    private void Menu_Open_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement open file dialog
+    }
+
+    private void Menu_Save_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement save - could trigger save on current page
+    }
+
+    private void Menu_SaveAs_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement save as
+    }
+
+    private void Menu_Export_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement export
+    }
+
+    private void Menu_Import_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement import
+    }
+
+    private void Menu_Exit_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Exit();
+    }
+
+    // Edit Menu
+    private void Menu_Undo_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement undo
+    }
+
+    private void Menu_Redo_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement redo
+    }
+
+    private void Menu_Cut_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement cut
+    }
+
+    private void Menu_Copy_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement copy
+    }
+
+    private void Menu_Paste_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement paste
+    }
+
+    private void Menu_SelectAll_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement select all
+    }
+
+    // View Menu
+    private void Menu_Refresh_Click(object sender, RoutedEventArgs e)
+    {
+        // Refresh current tab's content
+        if (TabViewMain.SelectedItem is TabViewItem tab && tab.Content is Frame frame)
+        {
+            var currentPage = frame.Content;
+            frame.Navigate(currentPage?.GetType(), null);
+        }
+    }
+
+    private void Menu_ToggleSidebar_Click(object sender, RoutedEventArgs e)
+    {
+        NavView.IsPaneOpen = !NavView.IsPaneOpen;
+        MenuToggleSidebar.IsChecked = NavView.IsPaneOpen;
+    }
+
+    private void Menu_ToggleStatusBar_Click(object sender, RoutedEventArgs e)
+    {
+        StatusBar.Visibility = StatusBar.Visibility == Visibility.Visible
+            ? Visibility.Collapsed
+            : Visibility.Visible;
+        MenuToggleStatusBar.IsChecked = StatusBar.Visibility == Visibility.Visible;
+    }
+
+    private void Menu_ZoomIn_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement zoom in
+    }
+
+    private void Menu_ZoomOut_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement zoom out
+    }
+
+    private void Menu_ZoomReset_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Implement zoom reset
+    }
+
+    // Tools Menu
+    private void Menu_PluginManager_Click(object sender, RoutedEventArgs e)
+    {
+        NavigateToPage("PluginManagerPage");
+    }
+
+    private void Menu_SyncStatus_Click(object sender, RoutedEventArgs e)
+    {
+        NavigateToPage("SyncPage");
+    }
+
+    private void Menu_Settings_Click(object sender, RoutedEventArgs e)
+    {
+        NavigateToPage("SettingsPage");
+    }
+
+    // Help Menu
+    private void Menu_Help_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Open help documentation
+    }
+
+    private void Menu_CheckUpdates_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Check for updates
+    }
+
+    private async void Menu_About_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "關於 Arcana",
+            Content = "Arcana 企業管理系統\n版本: 1.0.0\n\n© 2024 Arcana Team",
+            CloseButtonText = "確定",
+            XamlRoot = Content.XamlRoot
+        };
+        await dialog.ShowAsync();
+    }
+
+    #endregion
 }

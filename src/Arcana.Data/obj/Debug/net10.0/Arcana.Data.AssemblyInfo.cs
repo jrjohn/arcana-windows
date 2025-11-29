@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Arcana.Data")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+243f085c1ae92375ca6f3a9de1f9b283a3ff5a6a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+55f0c4dbc0cc7bacda2dec096f0b74f8605e4cad")]
 [assembly: System.Reflection.AssemblyProductAttribute("Arcana.Data")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Arcana.Data")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

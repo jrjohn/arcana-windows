@@ -14,26 +14,141 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Title Bar -->
-        <Grid x:ConnectionId='2' x:Name="AppTitleBar" Height="48" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+        <!-- Title Bar with Menu -->
+        <Grid x:ConnectionId='2' x:Name="AppTitleBar" Height="32" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal" Spacing="12" Margin="16,0">
-                <Image Source="Assets/app-icon.png" Width="20" Height="20" VerticalAlignment="Center"/>
-                <TextBlock Text="Arcana" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+            <!-- App Icon and Name -->
+            <StackPanel Orientation="Horizontal" Spacing="8" Margin="12,0">
+                <Image Source="Assets/app-icon.png" Width="16" Height="16" VerticalAlignment="Center"/>
+                <TextBlock Text="Arcana" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" FontWeight="SemiBold"/>
             </StackPanel>
 
+            <!-- VSCode-style Menu Bar -->
+            <MenuBar Grid.Column="1" VerticalAlignment="Center">
+                <MenuBarItem Title="檔案">
+                    <MenuFlyoutItem x:ConnectionId='31' Text="新增訂單"                            >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="N"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:ConnectionId='32' Text="開啟..."                        >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="O"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem x:ConnectionId='33' Text="儲存"                        >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:ConnectionId='34' Text="另存新檔..."                          >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control,Shift" Key="S"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem x:ConnectionId='35' Text="匯出..."                          />
+                    <MenuFlyoutItem x:ConnectionId='36' Text="匯入..."                          />
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem x:ConnectionId='37' Text="離開"                        >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Menu" Key="F4"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
+                <MenuBarItem Title="編輯">
+                    <MenuFlyoutItem x:ConnectionId='25' Text="復原"                        >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Z"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:ConnectionId='26' Text="重做"                        >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Y"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem x:ConnectionId='27' Text="剪下"                       >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="X"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:ConnectionId='28' Text="複製"                        >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="C"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:ConnectionId='29' Text="貼上"                         >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="V"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem x:ConnectionId='30' Text="全選"                             >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="A"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
+                <MenuBarItem Title="檢視">
+                    <MenuFlyoutItem x:ConnectionId='19' Text="重新整理"                           >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="F5"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutSeparator/>
+                    <ToggleMenuFlyoutItem x:ConnectionId='20' x:Name="MenuToggleSidebar" Text="側邊欄" IsChecked="True"                                 />
+                    <ToggleMenuFlyoutItem x:ConnectionId='21' x:Name="MenuToggleStatusBar" Text="狀態列" IsChecked="True"                                   />
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem x:ConnectionId='22' Text="放大"                          >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Add"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:ConnectionId='23' Text="縮小"                           >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Subtract"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:ConnectionId='24' Text="重設縮放"                             >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control" Key="Number0"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                </MenuBarItem>
+                <MenuBarItem Title="工具">
+                    <MenuFlyoutItem x:ConnectionId='16' Text="Plugin Manager"                                 />
+                    <MenuFlyoutItem x:ConnectionId='17' Text="同步狀態"                              />
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem x:ConnectionId='18' Text="設定"                            />
+                </MenuBarItem>
+                <MenuBarItem Title="說明">
+                    <MenuFlyoutItem x:ConnectionId='13' Text="說明文件"                        >
+                        <MenuFlyoutItem.KeyboardAccelerators>
+                            <KeyboardAccelerator Key="F1"/>
+                        </MenuFlyoutItem.KeyboardAccelerators>
+                    </MenuFlyoutItem>
+                    <MenuFlyoutItem x:ConnectionId='14' Text="檢查更新..."                                />
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem x:ConnectionId='15' Text="關於 Arcana"                         />
+                </MenuBarItem>
+            </MenuBar>
+
             <!-- Search Box -->
-            <AutoSuggestBox Grid.Column="1"
+            <AutoSuggestBox Grid.Column="2"
                            PlaceholderText="搜尋命令或功能... (Ctrl+K)"
                            QueryIcon="Find"
-                           Width="400"
+                           Width="300"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           Margin="0,4"/>
         </Grid>
 
         <!-- Main Content -->
@@ -41,8 +156,9 @@
                        Grid.Row="1"
                        IsBackButtonVisible="Auto"
                        IsSettingsVisible="True"
-                       PaneDisplayMode="LeftCompact"
-                       OpenPaneLength="280"
+                       PaneDisplayMode="Left"
+                       IsPaneOpen="True"
+                       OpenPaneLength="240"
                                                                   
                                                             >
 
@@ -66,14 +182,14 @@
                 </NavigationViewItem>
                 <NavigationViewItem Icon="Sync" Content="同步狀態" Tag="SyncPage">
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge x:ConnectionId='9' x:Name="SyncBadge" Value="0"/>
+                        <InfoBadge x:ConnectionId='10' x:Name="SyncBadge" Value="0"/>
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
 
             <!-- Tab View for MDI -->
             <Grid>
-                <TabView x:ConnectionId='10' x:Name="TabViewMain"
+                <TabView x:ConnectionId='11' x:Name="TabViewMain"
                         IsAddTabButtonVisible="False"
                                                                      
                         CanReorderTabs="True"
@@ -87,7 +203,7 @@
                     </TabView.Resources>
                     <TabView.TabStripHeader>
                         <Grid Padding="4,0">
-                            <Button x:ConnectionId='11' Content="+"
+                            <Button x:ConnectionId='12' Content="+"
                                    ToolTipService.ToolTip="新增分頁"
                                                        
                                    VerticalAlignment="Center"
@@ -100,7 +216,7 @@
         </NavigationView>
 
         <!-- Status Bar -->
-        <Grid Grid.Row="2" Height="24" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+        <Grid x:ConnectionId='4' x:Name="StatusBar" Grid.Row="2" Height="24" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -108,23 +224,23 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock x:ConnectionId='4' x:Name="StatusMessage"
+            <TextBlock x:ConnectionId='5' x:Name="StatusMessage"
                       Text="就緒"
                       VerticalAlignment="Center"
                       Margin="12,0"
                       Style="{StaticResource CaptionTextBlockStyle}"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="8,0">
-                <FontIcon x:ConnectionId='7' Glyph="&#xE701;" FontSize="12" x:Name="NetworkIcon"/>
-                <TextBlock x:ConnectionId='8' x:Name="NetworkStatus" Text="線上" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                <FontIcon x:ConnectionId='8' Glyph="&#xE701;" FontSize="12" x:Name="NetworkIcon"/>
+                <TextBlock x:ConnectionId='9' x:Name="NetworkStatus" Text="線上" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" Margin="8,0">
                 <FontIcon Glyph="&#xE895;" FontSize="12"/>
-                <TextBlock x:ConnectionId='6' x:Name="SyncStatus" Text="已同步" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                <TextBlock x:ConnectionId='7' x:Name="SyncStatus" Text="已同步" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <TextBlock x:ConnectionId='5' Grid.Column="3"
+            <TextBlock x:ConnectionId='6' Grid.Column="3"
                       x:Name="CurrentTime"
                       Style="{StaticResource CaptionTextBlockStyle}"
                       VerticalAlignment="Center"
