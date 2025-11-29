@@ -1,4 +1,5 @@
 using Arcana.App.Navigation;
+using Arcana.App.Plugins;
 using Arcana.App.ViewModels;
 using Arcana.Data.Local;
 using Arcana.Domain.Entities;
@@ -209,11 +210,17 @@ public partial class App : Application
     {
         var pluginManager = Services.GetRequiredService<PluginManager>();
 
-        // Register built-in plugins
-        // pluginManager.RegisterBuiltInPlugin(new CoreMenuPlugin());
-        // pluginManager.RegisterBuiltInPlugin(new OrderModulePlugin());
+        // Register all built-in plugins
+        pluginManager.RegisterBuiltInPlugin(new CoreMenuPlugin());
+        pluginManager.RegisterBuiltInPlugin(new SystemPlugin());
+        pluginManager.RegisterBuiltInPlugin(new OrderModulePlugin());
+        pluginManager.RegisterBuiltInPlugin(new CustomerModulePlugin());
+        pluginManager.RegisterBuiltInPlugin(new ProductModulePlugin());
 
+        // Discover external plugins from plugins directory
         await pluginManager.DiscoverPluginsAsync();
+
+        // Activate all plugins
         await pluginManager.ActivateAllAsync();
     }
 }

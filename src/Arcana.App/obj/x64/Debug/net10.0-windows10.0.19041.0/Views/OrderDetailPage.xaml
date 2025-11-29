@@ -19,19 +19,24 @@
         <!-- Header -->
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel>
-                <TextBlock x:ConnectionId='29' x:Name="PageTitle" Text="新增訂單" Style="{StaticResource TitleTextBlockStyle}"/>
-                <TextBlock x:ConnectionId='30' x:Name="OrderStatus" Text="草稿" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+            <Button x:ConnectionId='26' x:Name="BackButton"                    VerticalAlignment="Center" Margin="0,0,16,0">
+                <FontIcon Glyph="&#xE72B;" FontSize="16"/>
+            </Button>
+
+            <StackPanel Grid.Column="1">
+                <TextBlock x:ConnectionId='30' x:Name="PageTitle" Text="新增訂單" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock x:ConnectionId='31' x:Name="OrderStatus" Text="草稿" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
             </StackPanel>
 
-            <CommandBar Grid.Column="1" DefaultLabelPosition="Right" Background="Transparent">
-                <AppBarButton x:ConnectionId='26' x:Name="EditButton" Icon="Edit" Label="編輯"                    Visibility="Collapsed"/>
-                <AppBarButton x:ConnectionId='27' x:Name="SaveButton" Icon="Save" Label="儲存"                   />
-                <AppBarButton x:ConnectionId='28' Icon="Cancel" Label="取消"                     />
+            <CommandBar Grid.Column="2" DefaultLabelPosition="Right" Background="Transparent">
+                <AppBarButton x:ConnectionId='27' x:Name="EditButton" Icon="Edit" Label="編輯"                    Visibility="Collapsed"/>
+                <AppBarButton x:ConnectionId='28' x:Name="SaveButton" Icon="Save" Label="儲存"                   />
+                <AppBarButton x:ConnectionId='29' Icon="Cancel" Label="取消"                     />
                 <AppBarSeparator/>
                 <AppBarButton Icon="Print" Label="列印"/>
             </CommandBar>

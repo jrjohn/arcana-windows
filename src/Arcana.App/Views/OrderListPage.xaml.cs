@@ -41,9 +41,10 @@ public sealed partial class OrderListPage : Page
         PaginationInfo.Text = $"第 {start}-{end} 筆，共 {ViewModel.TotalCount} 筆";
     }
 
-    private async void NewOrder_Click(object sender, RoutedEventArgs e)
+    private void NewOrder_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.CreateOrderCommand.ExecuteAsync(null);
+        // Navigate within the same tab's Frame (null parameter = new order)
+        Frame.Navigate(typeof(OrderDetailPage), null);
     }
 
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -67,19 +68,21 @@ public sealed partial class OrderListPage : Page
         UpdateUI();
     }
 
-    private async void OrdersListView_ItemClick(object sender, ItemClickEventArgs e)
+    private void OrdersListView_ItemClick(object sender, ItemClickEventArgs e)
     {
         if (e.ClickedItem is Order order)
         {
-            await ViewModel.ViewOrderCommand.ExecuteAsync(order);
+            // Navigate within the same tab's Frame
+            Frame.Navigate(typeof(OrderDetailPage), order.Id);
         }
     }
 
-    private async void EditOrder_Click(object sender, RoutedEventArgs e)
+    private void EditOrder_Click(object sender, RoutedEventArgs e)
     {
         if (sender is FrameworkElement element && element.DataContext is Order order)
         {
-            await ViewModel.EditOrderCommand.ExecuteAsync(order);
+            // Navigate within the same tab's Frame
+            Frame.Navigate(typeof(OrderDetailPage), order.Id);
         }
     }
 

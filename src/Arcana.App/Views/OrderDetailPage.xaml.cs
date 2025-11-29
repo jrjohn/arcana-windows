@@ -26,7 +26,14 @@ public sealed partial class OrderDetailPage : Page
     {
         base.OnNavigatedTo(e);
 
-        int? orderId = e.Parameter as int?;
+        // Handle int parameter properly - boxing means we can't use "as int?"
+        int? orderId = e.Parameter switch
+        {
+            int id => id,
+            string s when int.TryParse(s, out var parsed) => parsed,
+            _ => null
+        };
+
         await ViewModel.LoadAsync(orderId);
         UpdateUI();
     }
@@ -50,6 +57,7 @@ public sealed partial class OrderDetailPage : Page
 
         EditButton.Visibility = ViewModel.IsNew ? Visibility.Collapsed : Visibility.Visible;
         SaveButton.IsEnabled = ViewModel.IsEditing;
+        BackButton.Visibility = Frame.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void UpdateTotals()
@@ -88,8 +96,21 @@ public sealed partial class OrderDetailPage : Page
 
     private async void Cancel_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.CancelCommand.ExecuteAsync(null);
-        UpdateUI();
+        // If dirty, ask for confirmation
+        if (ViewModel.IsDirty)
+        {
+            var windowService = App.Services.GetRequiredService<Arcana.Plugins.Contracts.IWindowService>();
+            var confirmed = await windowService.ShowConfirmAsync(
+                "放棄變更",
+                "您有未儲存的變更，確定要放棄嗎？");
+            if (!confirmed) return;
+        }
+
+        // Go back to previous page
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
     }
 
     private async void ProductSearch_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -156,5 +177,14 @@ public sealed partial class OrderDetailPage : Page
         ViewModel.Order.Items = ViewModel.Items.ToList();
         ViewModel.Order.CalculateTotals();
         UpdateTotals();
+    }
+
+    private void Back_Click(object sender, RoutedEventArgs e)
+    {
+        // Navigate back within the same tab's Frame
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
     }
 }
