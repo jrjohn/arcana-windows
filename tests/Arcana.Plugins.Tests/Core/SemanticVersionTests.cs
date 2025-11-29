@@ -35,7 +35,6 @@ public class SemanticVersionTests
 
     [Theory]
     [InlineData("1.0", 1, 0, 0)] // Simple version without patch
-    [InlineData("1", 1, 0, 0)]   // Major only
     public void Parse_SimpleVersion_ShouldParseAsSemVer(string input, int major, int minor, int patch)
     {
         // Act
@@ -46,6 +45,17 @@ public class SemanticVersionTests
         version.Major.Should().Be(major);
         version.Minor.Should().Be(minor);
         version.Patch.Should().Be(patch);
+    }
+
+    [Theory]
+    [InlineData("1")] // Major only - not valid without minor
+    public void Parse_MajorOnly_ShouldReturnFalse(string input)
+    {
+        // Act
+        var result = SemanticVersion.TryParse(input, out _);
+
+        // Assert
+        result.Should().BeFalse();
     }
 
     [Theory]

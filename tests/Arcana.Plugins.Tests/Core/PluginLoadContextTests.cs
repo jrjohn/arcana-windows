@@ -1,34 +1,37 @@
 using Arcana.Plugins.Core;
 using FluentAssertions;
+using System.Reflection;
 using Xunit;
 
 namespace Arcana.Plugins.Tests.Core;
 
 public class PluginLoadContextTests
 {
+    private readonly string _testAssemblyPath;
+
+    public PluginLoadContextTests()
+    {
+        // Use the test assembly itself as a valid DLL path
+        _testAssemblyPath = Assembly.GetExecutingAssembly().Location;
+    }
+
     #region Constructor Tests
 
     [Fact]
     public void Constructor_ShouldSetPluginPath()
     {
-        // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "test-plugin.dll");
-
         // Act
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
 
         // Assert
-        context.PluginPath.Should().Be(pluginPath);
+        context.PluginPath.Should().Be(_testAssemblyPath);
     }
 
     [Fact]
     public void Constructor_ShouldBeCollectible()
     {
-        // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "test-plugin.dll");
-
         // Act
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
 
         // Assert
         context.IsCollectible.Should().BeTrue();
@@ -37,14 +40,11 @@ public class PluginLoadContextTests
     [Fact]
     public void Constructor_ShouldSetName()
     {
-        // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "my-plugin.dll");
-
         // Act
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
 
         // Assert
-        context.Name.Should().Be("my-plugin.dll");
+        context.Name.Should().Be(Path.GetFileName(_testAssemblyPath));
     }
 
     #endregion
@@ -55,8 +55,7 @@ public class PluginLoadContextTests
     public void InitiateUnload_ShouldRaiseUnloadingEvent()
     {
         // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "test-plugin.dll");
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
         var eventRaised = false;
         context.Unloading += (sender, args) => eventRaised = true;
 
@@ -71,8 +70,7 @@ public class PluginLoadContextTests
     public void InitiateUnload_Twice_ShouldNotThrow()
     {
         // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "test-plugin.dll");
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
 
         // Act - First unload
         context.InitiateUnload();
@@ -87,12 +85,18 @@ public class PluginLoadContextTests
 
 public class PluginLoadContextReferenceTests
 {
+    private readonly string _testAssemblyPath;
+
+    public PluginLoadContextReferenceTests()
+    {
+        _testAssemblyPath = Assembly.GetExecutingAssembly().Location;
+    }
+
     [Fact]
     public void Constructor_ShouldSetPluginId()
     {
         // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "test-plugin.dll");
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
 
         // Act
         var reference = new PluginLoadContextReference("test-plugin", context);
@@ -105,8 +109,7 @@ public class PluginLoadContextReferenceTests
     public void IsAlive_WithActiveContext_ShouldBeTrue()
     {
         // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "test-plugin.dll");
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
         var reference = new PluginLoadContextReference("test-plugin", context);
 
         // Act & Assert
@@ -117,8 +120,7 @@ public class PluginLoadContextReferenceTests
     public void GetContext_WithActiveContext_ShouldReturnContext()
     {
         // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "test-plugin.dll");
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
         var reference = new PluginLoadContextReference("test-plugin", context);
 
         // Act
@@ -132,11 +134,10 @@ public class PluginLoadContextReferenceTests
     public void GetContext_AfterContextUnloaded_ShouldReturnNull()
     {
         // Arrange
-        var pluginPath = Path.Combine(Path.GetTempPath(), "test-plugin.dll");
         PluginLoadContextReference reference;
 
         // Create context in a scope so it can be collected
-        CreateAndUnloadContext(pluginPath, out reference);
+        CreateAndUnloadContext(out reference);
 
         // Force GC multiple times
         for (int i = 0; i < 10; i++)
@@ -153,9 +154,9 @@ public class PluginLoadContextReferenceTests
         // (Context may still be alive if GC hasn't run)
     }
 
-    private void CreateAndUnloadContext(string pluginPath, out PluginLoadContextReference reference)
+    private void CreateAndUnloadContext(out PluginLoadContextReference reference)
     {
-        var context = new PluginLoadContext(pluginPath);
+        var context = new PluginLoadContext(_testAssemblyPath);
         reference = new PluginLoadContextReference("test-plugin", context);
         context.InitiateUnload();
     }
@@ -164,22 +165,17 @@ public class PluginLoadContextReferenceTests
 public class PluginLoadContextManagerTests : IDisposable
 {
     private readonly PluginLoadContextManager _manager;
-    private readonly string _testPluginDir;
+    private readonly string _testAssemblyPath;
 
     public PluginLoadContextManagerTests()
     {
         _manager = new PluginLoadContextManager();
-        _testPluginDir = Path.Combine(Path.GetTempPath(), $"plugin_tests_{Guid.NewGuid()}");
-        Directory.CreateDirectory(_testPluginDir);
+        _testAssemblyPath = Assembly.GetExecutingAssembly().Location;
     }
 
     public void Dispose()
     {
         _manager.Dispose();
-        if (Directory.Exists(_testPluginDir))
-        {
-            Directory.Delete(_testPluginDir, recursive: true);
-        }
     }
 
     #region CreateContext Tests
@@ -187,26 +183,22 @@ public class PluginLoadContextManagerTests : IDisposable
     [Fact]
     public void CreateContext_ShouldReturnNewContext()
     {
-        // Arrange
-        var pluginPath = Path.Combine(_testPluginDir, "plugin1.dll");
-
         // Act
-        var context = _manager.CreateContext("plugin1", pluginPath);
+        var context = _manager.CreateContext("plugin1", _testAssemblyPath);
 
         // Assert
         context.Should().NotBeNull();
-        context.PluginPath.Should().Be(pluginPath);
+        context.PluginPath.Should().Be(_testAssemblyPath);
     }
 
     [Fact]
     public void CreateContext_SamePluginTwice_ShouldReturnNewContext()
     {
         // Arrange
-        var pluginPath = Path.Combine(_testPluginDir, "plugin1.dll");
-        var context1 = _manager.CreateContext("plugin1", pluginPath);
+        var context1 = _manager.CreateContext("plugin1", _testAssemblyPath);
 
         // Act
-        var context2 = _manager.CreateContext("plugin1", pluginPath);
+        var context2 = _manager.CreateContext("plugin1", _testAssemblyPath);
 
         // Assert
         context2.Should().NotBeSameAs(context1);
@@ -215,13 +207,9 @@ public class PluginLoadContextManagerTests : IDisposable
     [Fact]
     public void CreateContext_DifferentPlugins_ShouldReturnDifferentContexts()
     {
-        // Arrange
-        var path1 = Path.Combine(_testPluginDir, "plugin1.dll");
-        var path2 = Path.Combine(_testPluginDir, "plugin2.dll");
-
         // Act
-        var context1 = _manager.CreateContext("plugin1", path1);
-        var context2 = _manager.CreateContext("plugin2", path2);
+        var context1 = _manager.CreateContext("plugin1", _testAssemblyPath);
+        var context2 = _manager.CreateContext("plugin2", _testAssemblyPath);
 
         // Assert
         context1.Should().NotBeSameAs(context2);
@@ -235,8 +223,7 @@ public class PluginLoadContextManagerTests : IDisposable
     public void GetContext_ExistingPlugin_ShouldReturnContext()
     {
         // Arrange
-        var pluginPath = Path.Combine(_testPluginDir, "plugin1.dll");
-        var createdContext = _manager.CreateContext("plugin1", pluginPath);
+        var createdContext = _manager.CreateContext("plugin1", _testAssemblyPath);
 
         // Act
         var retrieved = _manager.GetContext("plugin1");
@@ -263,10 +250,9 @@ public class PluginLoadContextManagerTests : IDisposable
     public void UnloadContext_ExistingPlugin_ShouldInitiateUnload()
     {
         // Arrange
-        var pluginPath = Path.Combine(_testPluginDir, "plugin1.dll");
         var unloadingEventRaised = false;
 
-        var context = _manager.CreateContext("plugin1", pluginPath);
+        var context = _manager.CreateContext("plugin1", _testAssemblyPath);
         context.Unloading += (s, e) => unloadingEventRaised = true;
 
         // Act
@@ -288,8 +274,7 @@ public class PluginLoadContextManagerTests : IDisposable
     public async Task UnloadContextAsync_ShouldReturnTrue_WhenNoReferencesHeld()
     {
         // Arrange
-        var pluginPath = Path.Combine(_testPluginDir, "plugin1.dll");
-        _manager.CreateContext("plugin1", pluginPath);
+        _manager.CreateContext("plugin1", _testAssemblyPath);
 
         // Act - Note: We don't hold the context reference, so it should be collectible
         // But the manager still holds a reference, so this is a simplified test
@@ -317,10 +302,8 @@ public class PluginLoadContextManagerTests : IDisposable
     public void GetUnloadStatus_WithPlugins_ShouldReturnStatus()
     {
         // Arrange
-        var path1 = Path.Combine(_testPluginDir, "plugin1.dll");
-        var path2 = Path.Combine(_testPluginDir, "plugin2.dll");
-        _manager.CreateContext("plugin1", path1);
-        _manager.CreateContext("plugin2", path2);
+        _manager.CreateContext("plugin1", _testAssemblyPath);
+        _manager.CreateContext("plugin2", _testAssemblyPath);
 
         // Act
         var status = _manager.GetUnloadStatus();
@@ -340,13 +323,11 @@ public class PluginLoadContextManagerTests : IDisposable
     {
         // Arrange
         var unloadedPlugins = new List<string>();
-        var path1 = Path.Combine(_testPluginDir, "plugin1.dll");
-        var path2 = Path.Combine(_testPluginDir, "plugin2.dll");
 
-        var context1 = _manager.CreateContext("plugin1", path1);
+        var context1 = _manager.CreateContext("plugin1", _testAssemblyPath);
         context1.Unloading += (s, e) => unloadedPlugins.Add("plugin1");
 
-        var context2 = _manager.CreateContext("plugin2", path2);
+        var context2 = _manager.CreateContext("plugin2", _testAssemblyPath);
         context2.Unloading += (s, e) => unloadedPlugins.Add("plugin2");
 
         // Act

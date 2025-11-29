@@ -1,0 +1,16 @@
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/bin/Debug/net8.0/Arcana.Domain.deps.json
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/bin/Debug/net8.0/Arcana.Domain.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/bin/Debug/net8.0/Arcana.Domain.pdb
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/bin/Debug/net8.0/Arcana.Core.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/bin/Debug/net8.0/Arcana.Core.pdb
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.Domain.csproj.AssemblyReference.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.Domain.AssemblyInfoInputs.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.Domain.AssemblyInfo.cs
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.Domain.csproj.CoreCompileInputs.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.Domain.sourcelink.json
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.D.C6668285.Up2Date
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.Domain.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/refint/Arcana.Domain.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/Arcana.Domain.pdb
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/Debug/net8.0/ref/Arcana.Domain.dll

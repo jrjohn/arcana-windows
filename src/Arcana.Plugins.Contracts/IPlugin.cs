@@ -34,12 +34,14 @@ public enum PluginType
 /// </summary>
 public enum PluginState
 {
+    Unknown,
     NotLoaded,
     Loaded,
     Activating,
     Active,
     Deactivating,
     Deactivated,
+    Uninstalled,
     Error
 }
 

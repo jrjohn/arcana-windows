@@ -3,10 +3,12 @@ using Arcana.Plugins.Core;
 using Arcana.Plugins.Data;
 using Arcana.Plugins.Services;
 using FluentAssertions;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Reflection;
 using Xunit;
 
 namespace Arcana.Plugins.Tests.Integration;
@@ -18,19 +20,27 @@ namespace Arcana.Plugins.Tests.Integration;
 public class PluginSystemIntegrationTests : IDisposable
 {
     private readonly string _testDataPath;
+    private readonly string _testAssemblyPath;
     private readonly ServiceProvider _serviceProvider;
     private readonly PluginDbContext _dbContext;
+    private readonly SqliteConnection _connection;
 
     public PluginSystemIntegrationTests()
     {
         _testDataPath = Path.Combine(Path.GetTempPath(), $"plugin_integration_tests_{Guid.NewGuid()}");
         Directory.CreateDirectory(_testDataPath);
 
+        _testAssemblyPath = Assembly.GetExecutingAssembly().Location;
+
+        // Use SQLite in-memory with shared connection to support transactions
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+
         var services = new ServiceCollection();
 
-        // Register DbContext
+        // Register DbContext with SQLite
         services.AddDbContext<PluginDbContext>(options =>
-            options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()));
+            options.UseSqlite(_connection));
 
         // Register logging
         services.AddLogging(builder => builder.AddDebug());
@@ -52,6 +62,7 @@ public class PluginSystemIntegrationTests : IDisposable
     public void Dispose()
     {
         _serviceProvider.Dispose();
+        _connection.Dispose();
         if (Directory.Exists(_testDataPath))
         {
             Directory.Delete(_testDataPath, recursive: true);
@@ -275,15 +286,10 @@ public class PluginSystemIntegrationTests : IDisposable
     {
         // Arrange
         var manager = _serviceProvider.GetRequiredService<PluginLoadContextManager>();
-        var plugin1Path = Path.Combine(_testDataPath, "plugins", "plugin1", "plugin1.dll");
-        var plugin2Path = Path.Combine(_testDataPath, "plugins", "plugin2", "plugin2.dll");
 
-        Directory.CreateDirectory(Path.GetDirectoryName(plugin1Path)!);
-        Directory.CreateDirectory(Path.GetDirectoryName(plugin2Path)!);
-
-        // Act
-        var context1 = manager.CreateContext("plugin1", plugin1Path);
-        var context2 = manager.CreateContext("plugin2", plugin2Path);
+        // Act - Use real assembly path
+        var context1 = manager.CreateContext("plugin1", _testAssemblyPath);
+        var context2 = manager.CreateContext("plugin2", _testAssemblyPath);
 
         // Assert
         context1.Should().NotBeSameAs(context2);
@@ -299,15 +305,13 @@ public class PluginSystemIntegrationTests : IDisposable
     {
         // Arrange
         var manager = _serviceProvider.GetRequiredService<PluginLoadContextManager>();
-        var pluginPath = Path.Combine(_testDataPath, "plugins", "plugin1", "plugin1.dll");
-        Directory.CreateDirectory(Path.GetDirectoryName(pluginPath)!);
 
-        var context1 = manager.CreateContext("plugin1", pluginPath);
+        var context1 = manager.CreateContext("plugin1", _testAssemblyPath);
         var context1Unloading = false;
         context1.Unloading += (s, e) => context1Unloading = true;
 
         // Act - Create another context for the same plugin
-        var context2 = manager.CreateContext("plugin1", pluginPath);
+        var context2 = manager.CreateContext("plugin1", _testAssemblyPath);
 
         // Assert
         context2.Should().NotBeSameAs(context1);
@@ -342,7 +346,7 @@ public class PluginSystemIntegrationTests : IDisposable
     }
 
     [Fact]
-    public async Task PluginPermission_ShouldTrackDeniedAccess()
+    public void PluginPermission_ShouldTrackDeniedAccess()
     {
         // Arrange
         var permissionManager = _serviceProvider.GetRequiredService<IPluginPermissionManager>();
@@ -447,10 +451,8 @@ public class PluginSystemIntegrationTests : IDisposable
         currentVersion.Should().NotBeNull();
         permissionManager.GetPermissions(pluginId).Should().Be(PluginPermission.BasicPlugin);
 
-        // Step 2: Activate (create load context)
-        var pluginPath = Path.Combine(_testDataPath, "plugins", pluginId, "plugin.dll");
-        Directory.CreateDirectory(Path.GetDirectoryName(pluginPath)!);
-        var context = loadContextManager.CreateContext(pluginId, pluginPath);
+        // Step 2: Activate (create load context) - Use real assembly path
+        var context = loadContextManager.CreateContext(pluginId, _testAssemblyPath);
         context.Should().NotBeNull();
 
         // Record healthy state

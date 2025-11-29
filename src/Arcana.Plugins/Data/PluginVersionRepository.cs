@@ -78,9 +78,14 @@ public class PluginVersionRepository : IPluginVersionRepository
         // Mark all existing versions as not current
         if (versionInfo.IsCurrent)
         {
-            await _context.PluginVersions
-                .Where(v => v.PluginId == versionInfo.PluginId)
-                .ExecuteUpdateAsync(s => s.SetProperty(v => v.IsCurrent, false), cancellationToken);
+            var existingVersions = await _context.PluginVersions
+                .Where(v => v.PluginId == versionInfo.PluginId && v.IsCurrent)
+                .ToListAsync(cancellationToken);
+
+            foreach (var v in existingVersions)
+            {
+                v.IsCurrent = false;
+            }
         }
 
         var entity = new PluginVersionEntity
@@ -108,9 +113,14 @@ public class PluginVersionRepository : IPluginVersionRepository
             // If setting as current, unset others
             if (versionInfo.IsCurrent && !entity.IsCurrent)
             {
-                await _context.PluginVersions
-                    .Where(v => v.PluginId == versionInfo.PluginId && v.Id != entity.Id)
-                    .ExecuteUpdateAsync(s => s.SetProperty(v => v.IsCurrent, false), cancellationToken);
+                var otherVersions = await _context.PluginVersions
+                    .Where(v => v.PluginId == versionInfo.PluginId && v.Id != entity.Id && v.IsCurrent)
+                    .ToListAsync(cancellationToken);
+
+                foreach (var v in otherVersions)
+                {
+                    v.IsCurrent = false;
+                }
             }
 
             entity.IsCurrent = versionInfo.IsCurrent;
@@ -123,16 +133,27 @@ public class PluginVersionRepository : IPluginVersionRepository
 
     public async Task DeleteVersionAsync(string pluginId, string version, CancellationToken cancellationToken = default)
     {
-        await _context.PluginVersions
-            .Where(v => v.PluginId == pluginId && v.Version == version)
-            .ExecuteDeleteAsync(cancellationToken);
+        var entity = await _context.PluginVersions
+            .FirstOrDefaultAsync(v => v.PluginId == pluginId && v.Version == version, cancellationToken);
+
+        if (entity != null)
+        {
+            _context.PluginVersions.Remove(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 
     public async Task DeleteAllVersionsAsync(string pluginId, CancellationToken cancellationToken = default)
     {
-        await _context.PluginVersions
+        var entities = await _context.PluginVersions
             .Where(v => v.PluginId == pluginId)
-            .ExecuteDeleteAsync(cancellationToken);
+            .ToListAsync(cancellationToken);
+
+        if (entities.Any())
+        {
+            _context.PluginVersions.RemoveRange(entities);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 
     public async Task SetCurrentVersionAsync(string pluginId, string version, CancellationToken cancellationToken = default)
@@ -142,15 +163,16 @@ public class PluginVersionRepository : IPluginVersionRepository
         try
         {
             // Unset all current
-            await _context.PluginVersions
+            var allVersions = await _context.PluginVersions
                 .Where(v => v.PluginId == pluginId)
-                .ExecuteUpdateAsync(s => s.SetProperty(v => v.IsCurrent, false), cancellationToken);
+                .ToListAsync(cancellationToken);
 
-            // Set new current
-            await _context.PluginVersions
-                .Where(v => v.PluginId == pluginId && v.Version == version)
-                .ExecuteUpdateAsync(s => s.SetProperty(v => v.IsCurrent, true), cancellationToken);
+            foreach (var v in allVersions)
+            {
+                v.IsCurrent = v.Version == version;
+            }
 
+            await _context.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
         }
         catch

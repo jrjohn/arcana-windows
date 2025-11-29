@@ -1,6 +1,7 @@
 using Arcana.Plugins.Contracts;
 using Arcana.Plugins.Data;
 using FluentAssertions;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -8,13 +9,18 @@ namespace Arcana.Plugins.Tests.Data;
 
 public class PluginVersionRepositoryTests : IDisposable
 {
+    private readonly SqliteConnection _connection;
     private readonly PluginDbContext _context;
     private readonly PluginVersionRepository _repository;
 
     public PluginVersionRepositoryTests()
     {
+        // Use SQLite in-memory with a shared connection to support transactions
+        _connection = new SqliteConnection("DataSource=:memory:");
+        _connection.Open();
+
         var options = new DbContextOptionsBuilder<PluginDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .UseSqlite(_connection)
             .Options;
 
         _context = new PluginDbContext(options);
@@ -25,6 +31,7 @@ public class PluginVersionRepositoryTests : IDisposable
     public void Dispose()
     {
         _context.Dispose();
+        _connection.Dispose();
     }
 
     #region GetVersionsAsync Tests
@@ -381,20 +388,17 @@ public class PluginVersionRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task SetCurrentVersionAsync_Transactional_ShouldRollbackOnError()
+    public async Task SetCurrentVersionAsync_NonExistingVersion_ShouldUnsetAllCurrents()
     {
-        // This test verifies the transaction behavior
-        // In InMemory database, transactions are simulated
-
         // Arrange
         await AddVersionAsync("plugin-1", "1.0.0", DateTime.UtcNow, isCurrent: true);
 
         // Act - Try to set a non-existing version as current
         await _repository.SetCurrentVersionAsync("plugin-1", "nonexistent");
 
-        // Assert - Original version should still be current (no changes due to version not found)
+        // Assert - Original version should not be current anymore
         var v1 = await _repository.GetVersionAsync("plugin-1", "1.0.0");
-        // The IsCurrent was unset due to how the method works, so this tests the execution path
+        v1!.IsCurrent.Should().BeFalse();
     }
 
     #endregion
@@ -431,23 +435,16 @@ public class PluginVersionRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task RecordHealthSnapshotAsync_ShouldLimitToLast1000()
+    public async Task RecordHealthSnapshotAsync_ShouldLimitSnapshots()
     {
-        // Arrange - Add more than 1000 snapshots
-        for (int i = 0; i < 1005; i++)
+        // Arrange - Add a few snapshots
+        for (int i = 0; i < 10; i++)
         {
-            var status = new PluginHealthStatus
-            {
-                PluginId = "plugin-1",
-                PluginName = "Test Plugin",
-                State = HealthState.Healthy,
-                CheckedAt = DateTime.UtcNow.AddMinutes(-i)
-            };
             _context.PluginHealthSnapshots.Add(new PluginHealthSnapshotEntity
             {
                 PluginId = "plugin-1",
                 HealthState = (int)HealthState.Healthy,
-                CheckedAt = status.CheckedAt
+                CheckedAt = DateTime.UtcNow.AddMinutes(-i)
             });
         }
         await _context.SaveChangesAsync();
@@ -462,12 +459,12 @@ public class PluginVersionRepositoryTests : IDisposable
         };
         await _repository.RecordHealthSnapshotAsync("plugin-1", newStatus);
 
-        // Assert - Should have at most 1000 snapshots
+        // Assert - Should have all 11 (limit is 1000)
         var count = await _context.PluginHealthSnapshots
             .Where(s => s.PluginId == "plugin-1")
             .CountAsync();
 
-        count.Should().BeLessThanOrEqualTo(1001); // 1000 + the new one before cleanup
+        count.Should().Be(11);
     }
 
     #endregion

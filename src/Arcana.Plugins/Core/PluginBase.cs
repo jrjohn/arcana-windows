@@ -1,5 +1,6 @@
 using Arcana.Plugins.Contracts;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Arcana.Plugins.Core;
 
@@ -198,26 +199,5 @@ public abstract class PluginBase : IPlugin
     protected void LogError(Exception ex, string message, params object[] args)
     {
         Context?.Logger.LogError(ex, message, args);
-    }
-}
-
-/// <summary>
-/// Helper extension for logging.
-/// </summary>
-internal static class LoggerExtensions
-{
-    public static void LogInformation(this Microsoft.Extensions.Logging.ILogger logger, string message, params object[] args)
-    {
-        logger.Log(Microsoft.Extensions.Logging.LogLevel.Information, message, args);
-    }
-
-    public static void LogWarning(this Microsoft.Extensions.Logging.ILogger logger, string message, params object[] args)
-    {
-        logger.Log(Microsoft.Extensions.Logging.LogLevel.Warning, message, args);
-    }
-
-    public static void LogError(this Microsoft.Extensions.Logging.ILogger logger, Exception ex, string message, params object[] args)
-    {
-        logger.Log(Microsoft.Extensions.Logging.LogLevel.Error, ex, message, args);
     }
 }

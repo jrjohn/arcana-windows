@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Arcana.Core.Common;
 using Arcana.Data.Local;
 using Microsoft.EntityFrameworkCore;
+using CoreCommon = Arcana.Core.Common;
 
 namespace Arcana.Data.Repository;
 
@@ -9,8 +10,8 @@ namespace Arcana.Data.Repository;
 /// Generic repository implementation using Entity Framework Core.
 /// 使用 EF Core 的通用資料存取實作
 /// </summary>
-public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
-    where TEntity : class, IEntity<TKey>
+public class Repository<TEntity, TKey> : CoreCommon.IRepository<TEntity, TKey>
+    where TEntity : class
     where TKey : notnull
 {
     protected readonly AppDbContext Context;
@@ -159,8 +160,8 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
 /// <summary>
 /// Repository with int primary key.
 /// </summary>
-public class Repository<TEntity> : Repository<TEntity, int>, IRepository<TEntity>
-    where TEntity : class, IEntity<int>
+public class Repository<TEntity> : Repository<TEntity, int>, CoreCommon.IRepository<TEntity>
+    where TEntity : class
 {
     public Repository(AppDbContext context) : base(context)
     {

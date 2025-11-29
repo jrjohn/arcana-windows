@@ -21,7 +21,7 @@ public class PluginLoadContext : AssemblyLoadContext
     /// <summary>
     /// Event raised when the context is being unloaded.
     /// </summary>
-    public event EventHandler? Unloading;
+    public new event EventHandler? Unloading;
 
     public PluginLoadContext(string pluginPath) : base(name: Path.GetFileName(pluginPath), isCollectible: true)
     {

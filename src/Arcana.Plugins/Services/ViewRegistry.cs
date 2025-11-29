@@ -58,9 +58,9 @@ public class ViewRegistry : IViewRegistry
             return factory();
         }
 
-        if (_views.TryGetValue(viewId, out var view) && view.ViewType != null)
+        if (_views.TryGetValue(viewId, out var view) && view.ViewClass != null)
         {
-            return Activator.CreateInstance(view.ViewType);
+            return Activator.CreateInstance(view.ViewClass);
         }
 
         return null;

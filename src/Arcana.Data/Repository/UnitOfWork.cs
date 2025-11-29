@@ -3,6 +3,7 @@ using Arcana.Data.Local;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
+using CoreCommon = Arcana.Core.Common;
 
 namespace Arcana.Data.Repository;
 
@@ -10,7 +11,7 @@ namespace Arcana.Data.Repository;
 /// Unit of Work implementation using Entity Framework Core.
 /// 使用 Entity Framework Core 實現的工作單元
 /// </summary>
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork : CoreCommon.IUnitOfWork
 {
     private readonly AppDbContext _context;
     private readonly IServiceProvider _serviceProvider;
@@ -28,13 +29,13 @@ public class UnitOfWork : IUnitOfWork
         _serviceProvider = serviceProvider;
     }
 
-    public IRepository<T> GetRepository<T>() where T : class
+    public CoreCommon.IRepository<T> GetRepository<T>() where T : class
     {
         var type = typeof(T);
         if (!_repositories.TryGetValue(type, out var repo))
         {
             // Try to get specialized repository from DI
-            var specializedRepo = _serviceProvider.GetService<IRepository<T>>();
+            var specializedRepo = _serviceProvider.GetService<CoreCommon.IRepository<T>>();
             if (specializedRepo != null)
             {
                 _repositories[type] = specializedRepo;
@@ -45,10 +46,10 @@ public class UnitOfWork : IUnitOfWork
             repo = new Repository<T>(_context);
             _repositories[type] = repo;
         }
-        return (IRepository<T>)repo;
+        return (CoreCommon.IRepository<T>)repo;
     }
 
-    public IRepository<T, TKey> GetRepository<T, TKey>() where T : class where TKey : notnull
+    public CoreCommon.IRepository<T, TKey> GetRepository<T, TKey>() where T : class where TKey : notnull
     {
         var type = typeof(T);
         var keyType = typeof(TKey);
@@ -57,7 +58,7 @@ public class UnitOfWork : IUnitOfWork
         if (!_repositories.TryGetValue(type, out var repo))
         {
             // Try to get specialized repository from DI
-            var specializedRepo = _serviceProvider.GetService<IRepository<T, TKey>>();
+            var specializedRepo = _serviceProvider.GetService<CoreCommon.IRepository<T, TKey>>();
             if (specializedRepo != null)
             {
                 _repositories[type] = specializedRepo;
@@ -68,10 +69,10 @@ public class UnitOfWork : IUnitOfWork
             repo = new Repository<T, TKey>(_context);
             _repositories[type] = repo;
         }
-        return (IRepository<T, TKey>)repo;
+        return (CoreCommon.IRepository<T, TKey>)repo;
     }
 
-    public async Task<ITransactionScope> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    public async Task<CoreCommon.ITransactionScope> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
         if (_transaction != null)
         {
@@ -203,7 +204,7 @@ public class UnitOfWork : IUnitOfWork
 /// <summary>
 /// Transaction scope implementation.
 /// </summary>
-public class TransactionScope : ITransactionScope
+public class TransactionScope : CoreCommon.ITransactionScope
 {
     private readonly IDbContextTransaction _transaction;
     private readonly UnitOfWork _unitOfWork;
@@ -273,7 +274,7 @@ public class TransactionScope : ITransactionScope
 /// <summary>
 /// Factory for creating unit of work instances.
 /// </summary>
-public class UnitOfWorkFactory : IUnitOfWorkFactory
+public class UnitOfWorkFactory : CoreCommon.IUnitOfWorkFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
@@ -284,13 +285,13 @@ public class UnitOfWorkFactory : IUnitOfWorkFactory
         _contextFactory = contextFactory;
     }
 
-    public IUnitOfWork Create()
+    public CoreCommon.IUnitOfWork Create()
     {
         var context = _contextFactory.CreateDbContext();
         return new UnitOfWork(context, _serviceProvider);
     }
 
-    public async Task<IUnitOfWork> CreateWithTransactionAsync(CancellationToken cancellationToken = default)
+    public async Task<CoreCommon.IUnitOfWork> CreateWithTransactionAsync(CancellationToken cancellationToken = default)
     {
         var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
         var uow = new UnitOfWork(context, _serviceProvider);

@@ -1,0 +1,275 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Plugins.Tests/Arcana.Plugins.Tests.csproj": {}
+  },
+  "projects": {
+    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj",
+        "projectName": "Arcana.Plugins.Contracts",
+        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj",
+        "packagesPath": "/Users/jrjohn/.nuget/packages/",
+        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj",
+        "projectName": "Arcana.Plugins",
+        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj",
+        "packagesPath": "/Users/jrjohn/.nuget/packages/",
+        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj": {
+                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Plugins.Tests/Arcana.Plugins.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Plugins.Tests/Arcana.Plugins.Tests.csproj",
+        "projectName": "Arcana.Plugins.Tests",
+        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Plugins.Tests/Arcana.Plugins.Tests.csproj",
+        "packagesPath": "/Users/jrjohn/.nuget/packages/",
+        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Plugins.Tests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj": {
+                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj"
+              },
+              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj": {
+                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[6.12.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Debug": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.9.0, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.70, )"
+            },
+            "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.7.0, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.5.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
