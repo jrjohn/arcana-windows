@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Arcana.Plugins.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f31d1047b6a8f2994377456388f26404678ee956")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9e7cf24f7d33a0ad390ed83f53e5c5ca9dd4c448")]
 [assembly: System.Reflection.AssemblyProductAttribute("Arcana.Plugins.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Arcana.Plugins.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

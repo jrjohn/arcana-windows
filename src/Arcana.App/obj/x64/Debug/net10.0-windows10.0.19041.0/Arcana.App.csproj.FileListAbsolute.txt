@@ -58,6 +58,9 @@ Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-window
 Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\BuildHost-netcore\tr\System.CommandLine.resources.dll
 Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\BuildHost-netcore\zh-Hans\System.CommandLine.resources.dll
 Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\BuildHost-netcore\zh-Hant\System.CommandLine.resources.dll
+Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\Resources\Strings\en-US.json
+Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\Resources\Strings\ja-JP.json
+Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\Resources\Strings\zh-TW.json
 Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\appsettings.json
 Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\CoreMessagingXP.dll
 Z:\Documents\projects\arcana-windows\src\Arcana.App\bin\x64\Debug\net10.0-windows10.0.19041.0\dcompi.dll

@@ -24,6 +24,7 @@ public class PluginContext : IPluginContext
     public IMenuRegistry Menus { get; }
     public IViewRegistry Views { get; }
     public INavigationService Navigation { get; }
+    public ILocalizationService Localization { get; }
     public IList<IDisposable> Subscriptions { get; } = new List<IDisposable>();
 
     public PluginContext(
@@ -48,6 +49,7 @@ public class PluginContext : IPluginContext
         Menus = serviceProvider.GetRequiredService<IMenuRegistry>();
         Views = serviceProvider.GetRequiredService<IViewRegistry>();
         Navigation = serviceProvider.GetRequiredService<INavigationService>();
+        Localization = serviceProvider.GetRequiredService<ILocalizationService>();
     }
 
     public T? GetService<T>() where T : class

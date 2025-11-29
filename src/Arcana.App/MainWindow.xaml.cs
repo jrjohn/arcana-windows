@@ -20,6 +20,7 @@ public sealed partial class MainWindow : Window
     private readonly ISyncService _syncService;
     private readonly IMenuRegistry _menuRegistry;
     private readonly ICommandService _commandService;
+    private readonly ILocalizationService _localization;
     private readonly DispatcherTimer _timer;
 
     public MainWindow()
@@ -29,7 +30,6 @@ public sealed partial class MainWindow : Window
         // Set window size
         var appWindow = this.AppWindow;
         appWindow.Resize(new Windows.Graphics.SizeInt32(1400, 900));
-        appWindow.Title = "Arcana - 企業管理系統";
 
         // Get services
         _navigationService = App.Services.GetRequiredService<INavigationService>();
@@ -37,11 +37,13 @@ public sealed partial class MainWindow : Window
         _syncService = App.Services.GetRequiredService<ISyncService>();
         _menuRegistry = App.Services.GetRequiredService<IMenuRegistry>();
         _commandService = App.Services.GetRequiredService<ICommandService>();
+        _localization = App.Services.GetRequiredService<ILocalizationService>();
 
         // Setup event handlers
         _networkMonitor.StatusChanged += OnNetworkStatusChanged;
         _syncService.StateChanged += OnSyncStateChanged;
         _menuRegistry.MenusChanged += OnMenusChanged;
+        _localization.CultureChanged += OnCultureChanged;
 
         // Setup timer for clock
         _timer = new DispatcherTimer();
@@ -50,13 +52,102 @@ public sealed partial class MainWindow : Window
         _timer.Start();
 
         // Initialize
+        UpdateWindowTitle();
         UpdateNetworkStatus();
         UpdateSyncStatus();
         UpdateClock();
         BuildMenuBar();
+        UpdateNavigationItems();
 
         // Navigate to home page
         NavigateToPage("HomePage");
+    }
+
+    private void OnCultureChanged(object? sender, CultureChangedEventArgs e)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            UpdateWindowTitle();
+            UpdateNetworkStatus();
+            UpdateSyncStatus();
+            BuildMenuBar();
+            UpdateNavigationItems();
+            UpdateTabHeaders();
+        });
+    }
+
+    private void UpdateTabHeaders()
+    {
+        foreach (var item in TabViewMain.TabItems)
+        {
+            if (item is TabViewItem tab && tab.Tag is string tag)
+            {
+                // Handle OrderDetailPage with orderId suffix
+                if (tag.StartsWith("OrderDetailPage_"))
+                {
+                    var orderIdStr = tag.Replace("OrderDetailPage_", "");
+                    if (int.TryParse(orderIdStr, out var orderId))
+                    {
+                        tab.Header = $"{_localization.Get("order.title")} #{orderId}";
+                    }
+                }
+                else
+                {
+                    tab.Header = GetPageTitle(tag);
+                }
+            }
+        }
+    }
+
+    private void UpdateWindowTitle()
+    {
+        AppWindow.Title = _localization.Get("app.title");
+    }
+
+    private void UpdateNavigationItems()
+    {
+        // Update navigation view items
+        foreach (var item in NavView.MenuItems)
+        {
+            if (item is NavigationViewItem navItem && navItem.Tag is string tag)
+            {
+                navItem.Content = tag switch
+                {
+                    "HomePage" => _localization.Get("nav.home"),
+                    "CustomerListPage" => _localization.Get("nav.customers"),
+                    "ProductListPage" => _localization.Get("nav.products"),
+                    "OrderListPage" => _localization.Get("nav.orders"),
+                    "SalesReportPage" => _localization.Get("nav.reports"),
+                    _ => navItem.Content
+                };
+            }
+            else if (item is NavigationViewItemHeader header)
+            {
+                // Update headers based on content
+                if (header.Content?.ToString() == "業務" || header.Content?.ToString() == "Business")
+                {
+                    header.Content = _localization.Get("menu.business");
+                }
+                else if (header.Content?.ToString() == "報表" || header.Content?.ToString() == "Reports")
+                {
+                    header.Content = _localization.Get("nav.reports");
+                }
+            }
+        }
+
+        // Update footer items
+        foreach (var item in NavView.FooterMenuItems)
+        {
+            if (item is NavigationViewItem navItem && navItem.Tag is string tag)
+            {
+                navItem.Content = tag switch
+                {
+                    "PluginManagerPage" => _localization.Get("nav.plugins"),
+                    "SyncPage" => _localization.Get("nav.sync"),
+                    _ => navItem.Content
+                };
+            }
+        }
     }
 
     private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -95,7 +186,7 @@ public sealed partial class MainWindow : Window
 
     private void AddTab_Click(object sender, RoutedEventArgs e)
     {
-        AddNewTab("HomePage", "首頁");
+        AddNewTab("HomePage", _localization.Get("nav.home"));
     }
 
     private void NavigateToPage(string pageTag, object? parameter = null)
@@ -137,7 +228,7 @@ public sealed partial class MainWindow : Window
         var tabTag = pageTag;
         if (pageTag == "OrderDetailPage" && parameter is int orderId)
         {
-            tabTitle = $"訂單 #{orderId}";
+            tabTitle = $"{_localization.Get("order.title")} #{orderId}";
             tabTag = $"{pageTag}_{orderId}";
         }
 
@@ -178,19 +269,19 @@ public sealed partial class MainWindow : Window
         };
     }
 
-    private static string GetPageTitle(string pageTag)
+    private string GetPageTitle(string pageTag)
     {
         return pageTag switch
         {
-            "HomePage" => "首頁",
-            "OrderListPage" => "訂單管理",
-            "OrderDetailPage" => "訂單明細",
-            "CustomerListPage" => "客戶管理",
-            "ProductListPage" => "產品管理",
-            "SalesReportPage" => "銷售報表",
-            "SyncPage" => "同步狀態",
-            "PluginManagerPage" => "Plugin Manager",
-            "SettingsPage" => "設定",
+            "HomePage" => _localization.Get("nav.home"),
+            "OrderListPage" => _localization.Get("order.list"),
+            "OrderDetailPage" => _localization.Get("order.detail"),
+            "CustomerListPage" => _localization.Get("customer.list"),
+            "ProductListPage" => _localization.Get("product.list"),
+            "SalesReportPage" => _localization.Get("nav.reports"),
+            "SyncPage" => _localization.Get("nav.sync"),
+            "PluginManagerPage" => _localization.Get("nav.plugins"),
+            "SettingsPage" => _localization.Get("settings.title"),
             _ => pageTag
         };
     }
@@ -226,7 +317,7 @@ public sealed partial class MainWindow : Window
     private void UpdateNetworkStatus()
     {
         var isOnline = _networkMonitor.IsOnline;
-        NetworkStatus.Text = isOnline ? "線上" : "離線";
+        NetworkStatus.Text = isOnline ? _localization.Get("status.online") : _localization.Get("status.offline");
         NetworkIcon.Glyph = isOnline ? "\uE701" : "\uEB5E";
     }
 
@@ -235,11 +326,11 @@ public sealed partial class MainWindow : Window
         var state = _syncService.State;
         SyncStatus.Text = state switch
         {
-            SyncState.Idle => "已同步",
-            SyncState.Syncing => "同步中...",
-            SyncState.Error => "同步錯誤",
-            SyncState.Offline => "離線",
-            _ => "未知"
+            SyncState.Idle => _localization.Get("status.synced"),
+            SyncState.Syncing => _localization.Get("status.syncing"),
+            SyncState.Error => _localization.Get("status.syncError"),
+            SyncState.Offline => _localization.Get("status.offline"),
+            _ => "Unknown"
         };
 
         SyncBadge.Value = _syncService.PendingCount;
@@ -273,7 +364,9 @@ public sealed partial class MainWindow : Window
 
         foreach (var menuDef in mainMenuItems)
         {
-            var menuBarItem = new MenuBarItem { Title = menuDef.Title };
+            // Dynamically resolve title using localization
+            var title = GetLocalizedMenuTitle(menuDef);
+            var menuBarItem = new MenuBarItem { Title = title };
 
             // Build child items recursively
             BuildMenuChildren(menuBarItem.Items, menuDef.Id, allMenuItems);
@@ -283,6 +376,14 @@ public sealed partial class MainWindow : Window
 
         // Add built-in View menu items (sidebar/statusbar toggles)
         AddBuiltInViewMenuItems();
+    }
+
+    private string GetLocalizedMenuTitle(MenuItemDefinition menuDef)
+    {
+        // Try to get localized string from all sources (core + plugins)
+        var localized = _localization.GetFromAnyPlugin(menuDef.Id);
+        // If the key returns itself (not found), use the original title
+        return localized != menuDef.Id ? localized : menuDef.Title;
     }
 
     private void BuildMenuChildren(IList<MenuFlyoutItemBase> parentItems, string parentId, List<MenuItemDefinition> allMenuItems)
@@ -302,13 +403,14 @@ public sealed partial class MainWindow : Window
             {
                 // Check if this item has children (submenu)
                 var hasChildren = allMenuItems.Any(m => m.ParentId == childDef.Id);
+                var title = GetLocalizedMenuTitle(childDef);
 
                 if (hasChildren)
                 {
                     // Create submenu
                     var subItem = new MenuFlyoutSubItem
                     {
-                        Text = childDef.Title
+                        Text = title
                     };
 
                     // Add icon if specified
@@ -327,7 +429,7 @@ public sealed partial class MainWindow : Window
                     // Create menu item
                     var menuItem = new MenuFlyoutItem
                     {
-                        Text = childDef.Title,
+                        Text = title,
                         Tag = childDef.Command
                     };
 
@@ -348,11 +450,12 @@ public sealed partial class MainWindow : Window
 
     private void AddBuiltInViewMenuItems()
     {
-        // Find or create View menu
+        // Find View menu by looking for menu.view localization key
         MenuBarItem? viewMenu = null;
+        var viewMenuTitle = _localization.Get("menu.view");
         foreach (var item in MainMenuBar.Items)
         {
-            if (item is MenuBarItem mbi && mbi.Title == "檢視")
+            if (item is MenuBarItem mbi && mbi.Title == viewMenuTitle)
             {
                 viewMenu = mbi;
                 break;
@@ -365,7 +468,7 @@ public sealed partial class MainWindow : Window
 
             var sidebarToggle = new ToggleMenuFlyoutItem
             {
-                Text = "側邊欄",
+                Text = _localization.Get("menu.view.sidebar"),
                 IsChecked = NavView.IsPaneOpen
             };
             sidebarToggle.Click += (s, e) => NavView.IsPaneOpen = !NavView.IsPaneOpen;
@@ -373,7 +476,7 @@ public sealed partial class MainWindow : Window
 
             var statusBarToggle = new ToggleMenuFlyoutItem
             {
-                Text = "狀態列",
+                Text = _localization.Get("menu.view.statusbar"),
                 IsChecked = StatusBar.Visibility == Visibility.Visible
             };
             statusBarToggle.Click += (s, e) =>

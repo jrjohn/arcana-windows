@@ -69,6 +69,11 @@ public interface IPluginContext
     INavigationService Navigation { get; }
 
     /// <summary>
+    /// Access to the localization service.
+    /// </summary>
+    ILocalizationService Localization { get; }
+
+    /// <summary>
     /// Disposables that will be cleaned up when the plugin is deactivated.
     /// </summary>
     IList<IDisposable> Subscriptions { get; }

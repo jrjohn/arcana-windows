@@ -7,6 +7,7 @@ using Arcana.Domain.Validation;
 using Arcana.Infrastructure.Platform;
 using Arcana.Infrastructure.Security;
 using Arcana.Infrastructure.Services;
+using Arcana.Infrastructure.Localization;
 using Arcana.Infrastructure.Settings;
 using Arcana.Plugins.Contracts;
 using Arcana.Plugins.Core;
@@ -78,6 +79,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<INetworkMonitor, NetworkMonitor>();
         services.AddSingleton<ISettingsService, SettingsService>();
+        services.AddSingleton<ILocalizationService, LocalizationService>();
 
         return services;
     }

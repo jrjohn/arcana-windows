@@ -19,17 +19,74 @@ public class ProductModulePlugin : PluginBase
         Type = PluginType.Module
     };
 
+    protected override Task OnActivateAsync(IPluginContext context)
+    {
+        RegisterPluginResources();
+        return Task.CompletedTask;
+    }
+
+    private void RegisterPluginResources()
+    {
+        // Traditional Chinese (zh-TW)
+        RegisterResources("zh-TW", new Dictionary<string, string>
+        {
+            ["product.title"] = "產品",
+            ["product.list"] = "產品管理",
+            ["product.new"] = "新增產品",
+            ["product.detail"] = "產品明細",
+            ["product.categories"] = "產品分類",
+            ["product.name"] = "產品名稱",
+            ["product.code"] = "產品代碼",
+            ["product.price"] = "單價",
+            ["product.stock"] = "庫存",
+            ["product.unit"] = "單位",
+            ["menu.business"] = "業務"
+        });
+
+        // English (en-US)
+        RegisterResources("en-US", new Dictionary<string, string>
+        {
+            ["product.title"] = "Product",
+            ["product.list"] = "Product Management",
+            ["product.new"] = "New Product",
+            ["product.detail"] = "Product Detail",
+            ["product.categories"] = "Product Categories",
+            ["product.name"] = "Product Name",
+            ["product.code"] = "Product Code",
+            ["product.price"] = "Unit Price",
+            ["product.stock"] = "Stock",
+            ["product.unit"] = "Unit",
+            ["menu.business"] = "Business"
+        });
+
+        // Japanese (ja-JP)
+        RegisterResources("ja-JP", new Dictionary<string, string>
+        {
+            ["product.title"] = "製品",
+            ["product.list"] = "製品管理",
+            ["product.new"] = "新規製品",
+            ["product.detail"] = "製品詳細",
+            ["product.categories"] = "製品カテゴリ",
+            ["product.name"] = "製品名",
+            ["product.code"] = "製品コード",
+            ["product.price"] = "単価",
+            ["product.stock"] = "在庫",
+            ["product.unit"] = "単位",
+            ["menu.business"] = "業務"
+        });
+    }
+
     protected override void RegisterContributions(IPluginContext context)
     {
         // Register views
         RegisterView(new ViewDefinition
         {
             Id = "ProductListPage",
-            Title = "產品管理",
+            Title = L("product.list"),
             Icon = "\uE719",
             Type = ViewType.Page,
             ViewClass = typeof(ProductListPage),
-            Category = "業務"
+            Category = L("menu.business")
         });
 
         // Register menu items under Business menu
@@ -37,7 +94,7 @@ public class ProductModulePlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.business.product",
-                Title = "產品",
+                Title = L("product.title"),
                 Location = MenuLocation.MainMenu,
                 ParentId = "menu.business",
                 Icon = "\uE719",
@@ -46,7 +103,7 @@ public class ProductModulePlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.business.product.list",
-                Title = "產品管理",
+                Title = L("product.list"),
                 Location = MenuLocation.MainMenu,
                 ParentId = "menu.business.product",
                 Icon = "\uE719",
@@ -56,7 +113,7 @@ public class ProductModulePlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.business.product.new",
-                Title = "新增產品",
+                Title = L("product.new"),
                 Location = MenuLocation.MainMenu,
                 ParentId = "menu.business.product",
                 Icon = "\uE7BF",
@@ -66,7 +123,7 @@ public class ProductModulePlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.business.product.categories",
-                Title = "產品分類",
+                Title = L("product.categories"),
                 Location = MenuLocation.MainMenu,
                 ParentId = "menu.business.product",
                 Icon = "\uE8FD",
@@ -80,7 +137,7 @@ public class ProductModulePlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "tree.product",
-                Title = "產品管理",
+                Title = L("product.list"),
                 Location = MenuLocation.FunctionTree,
                 Icon = "\uE719",
                 Order = 12,

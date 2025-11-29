@@ -200,4 +200,28 @@ public abstract class PluginBase : IPlugin
     {
         Context?.Logger.LogError(ex, message, args);
     }
+
+    /// <summary>
+    /// Gets a localized string for this plugin.
+    /// </summary>
+    protected string L(string key)
+    {
+        return Context?.Localization.GetForPlugin(Metadata.Id, key) ?? key;
+    }
+
+    /// <summary>
+    /// Gets a localized string for this plugin with format arguments.
+    /// </summary>
+    protected string L(string key, params object[] args)
+    {
+        return Context?.Localization.GetForPlugin(Metadata.Id, key, args) ?? key;
+    }
+
+    /// <summary>
+    /// Registers plugin resources for a specific culture.
+    /// </summary>
+    protected void RegisterResources(string cultureName, IDictionary<string, string> resources)
+    {
+        Context?.Localization.RegisterPluginResources(Metadata.Id, cultureName, resources);
+    }
 }

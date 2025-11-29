@@ -19,6 +19,102 @@ public class CoreMenuPlugin : PluginBase
         Type = PluginType.Menu
     };
 
+    protected override Task OnActivateAsync(IPluginContext context)
+    {
+        RegisterPluginResources();
+        return Task.CompletedTask;
+    }
+
+    private void RegisterPluginResources()
+    {
+        // Traditional Chinese (zh-TW)
+        RegisterResources("zh-TW", new Dictionary<string, string>
+        {
+            ["menu.file"] = "檔案",
+            ["menu.file.new"] = "新增",
+            ["menu.file.open"] = "開啟",
+            ["menu.file.save"] = "儲存",
+            ["menu.file.exit"] = "結束",
+            ["menu.edit"] = "編輯",
+            ["menu.edit.undo"] = "復原",
+            ["menu.edit.redo"] = "重做",
+            ["menu.edit.cut"] = "剪下",
+            ["menu.edit.copy"] = "複製",
+            ["menu.edit.paste"] = "貼上",
+            ["menu.business"] = "業務",
+            ["menu.view"] = "檢視",
+            ["menu.view.refresh"] = "重新整理",
+            ["menu.view.fullscreen"] = "全螢幕",
+            ["menu.tools"] = "工具",
+            ["menu.tools.settings"] = "設定",
+            ["menu.help"] = "說明",
+            ["menu.help.docs"] = "文件",
+            ["menu.help.about"] = "關於",
+            ["common.all.files"] = "所有檔案",
+            ["common.ok"] = "確定",
+            ["app.version"] = "1.0.0",
+            ["app.about.content"] = "Arcana 企業管理系統\n版本: {0}\n\n© 2024 Arcana Software"
+        });
+
+        // English (en-US)
+        RegisterResources("en-US", new Dictionary<string, string>
+        {
+            ["menu.file"] = "File",
+            ["menu.file.new"] = "New",
+            ["menu.file.open"] = "Open",
+            ["menu.file.save"] = "Save",
+            ["menu.file.exit"] = "Exit",
+            ["menu.edit"] = "Edit",
+            ["menu.edit.undo"] = "Undo",
+            ["menu.edit.redo"] = "Redo",
+            ["menu.edit.cut"] = "Cut",
+            ["menu.edit.copy"] = "Copy",
+            ["menu.edit.paste"] = "Paste",
+            ["menu.business"] = "Business",
+            ["menu.view"] = "View",
+            ["menu.view.refresh"] = "Refresh",
+            ["menu.view.fullscreen"] = "Fullscreen",
+            ["menu.tools"] = "Tools",
+            ["menu.tools.settings"] = "Settings",
+            ["menu.help"] = "Help",
+            ["menu.help.docs"] = "Documentation",
+            ["menu.help.about"] = "About",
+            ["common.all.files"] = "All Files",
+            ["common.ok"] = "OK",
+            ["app.version"] = "1.0.0",
+            ["app.about.content"] = "Arcana Enterprise Management System\nVersion: {0}\n\n© 2024 Arcana Software"
+        });
+
+        // Japanese (ja-JP)
+        RegisterResources("ja-JP", new Dictionary<string, string>
+        {
+            ["menu.file"] = "ファイル",
+            ["menu.file.new"] = "新規",
+            ["menu.file.open"] = "開く",
+            ["menu.file.save"] = "保存",
+            ["menu.file.exit"] = "終了",
+            ["menu.edit"] = "編集",
+            ["menu.edit.undo"] = "元に戻す",
+            ["menu.edit.redo"] = "やり直し",
+            ["menu.edit.cut"] = "切り取り",
+            ["menu.edit.copy"] = "コピー",
+            ["menu.edit.paste"] = "貼り付け",
+            ["menu.business"] = "業務",
+            ["menu.view"] = "表示",
+            ["menu.view.refresh"] = "更新",
+            ["menu.view.fullscreen"] = "全画面",
+            ["menu.tools"] = "ツール",
+            ["menu.tools.settings"] = "設定",
+            ["menu.help"] = "ヘルプ",
+            ["menu.help.docs"] = "ドキュメント",
+            ["menu.help.about"] = "Arcanaについて",
+            ["common.all.files"] = "すべてのファイル",
+            ["common.ok"] = "OK",
+            ["app.version"] = "1.0.0",
+            ["app.about.content"] = "Arcana 企業管理システム\nバージョン: {0}\n\n© 2024 Arcana Software"
+        });
+    }
+
     protected override void RegisterContributions(IPluginContext context)
     {
         // File Menu
@@ -26,14 +122,14 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.file",
-                Title = "檔案",
+                Title = L("menu.file"),
                 Location = MenuLocation.MainMenu,
                 Order = 1
             },
             new MenuItemDefinition
             {
                 Id = "menu.file.new",
-                Title = "新增",
+                Title = L("menu.file.new"),
                 Location = MenuLocation.FileMenu,
                 ParentId = "menu.file",
                 Icon = "\uE710",
@@ -44,7 +140,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.file.open",
-                Title = "開啟",
+                Title = L("menu.file.open"),
                 Location = MenuLocation.FileMenu,
                 ParentId = "menu.file",
                 Icon = "\uE8E5",
@@ -55,7 +151,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.file.save",
-                Title = "儲存",
+                Title = L("menu.file.save"),
                 Location = MenuLocation.FileMenu,
                 ParentId = "menu.file",
                 Icon = "\uE74E",
@@ -75,7 +171,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.file.exit",
-                Title = "結束",
+                Title = L("menu.file.exit"),
                 Location = MenuLocation.FileMenu,
                 ParentId = "menu.file",
                 Shortcut = "Alt+F4",
@@ -89,14 +185,14 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.edit",
-                Title = "編輯",
+                Title = L("menu.edit"),
                 Location = MenuLocation.MainMenu,
                 Order = 2
             },
             new MenuItemDefinition
             {
                 Id = "menu.edit.undo",
-                Title = "復原",
+                Title = L("menu.edit.undo"),
                 Location = MenuLocation.EditMenu,
                 ParentId = "menu.edit",
                 Icon = "\uE7A7",
@@ -107,7 +203,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.edit.redo",
-                Title = "重做",
+                Title = L("menu.edit.redo"),
                 Location = MenuLocation.EditMenu,
                 ParentId = "menu.edit",
                 Icon = "\uE7A6",
@@ -127,7 +223,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.edit.cut",
-                Title = "剪下",
+                Title = L("menu.edit.cut"),
                 Location = MenuLocation.EditMenu,
                 ParentId = "menu.edit",
                 Icon = "\uE8C6",
@@ -138,7 +234,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.edit.copy",
-                Title = "複製",
+                Title = L("menu.edit.copy"),
                 Location = MenuLocation.EditMenu,
                 ParentId = "menu.edit",
                 Icon = "\uE8C8",
@@ -149,7 +245,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.edit.paste",
-                Title = "貼上",
+                Title = L("menu.edit.paste"),
                 Location = MenuLocation.EditMenu,
                 ParentId = "menu.edit",
                 Icon = "\uE77F",
@@ -164,7 +260,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.business",
-                Title = "業務",
+                Title = L("menu.business"),
                 Location = MenuLocation.MainMenu,
                 Order = 3
             }
@@ -175,14 +271,14 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.view",
-                Title = "檢視",
+                Title = L("menu.view"),
                 Location = MenuLocation.MainMenu,
                 Order = 4
             },
             new MenuItemDefinition
             {
                 Id = "menu.view.refresh",
-                Title = "重新整理",
+                Title = L("menu.view.refresh"),
                 Location = MenuLocation.ViewMenu,
                 ParentId = "menu.view",
                 Icon = "\uE72C",
@@ -193,7 +289,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.view.fullscreen",
-                Title = "全螢幕",
+                Title = L("menu.view.fullscreen"),
                 Location = MenuLocation.ViewMenu,
                 ParentId = "menu.view",
                 Shortcut = "F11",
@@ -207,14 +303,14 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.tools",
-                Title = "工具",
+                Title = L("menu.tools"),
                 Location = MenuLocation.MainMenu,
                 Order = 5
             },
             new MenuItemDefinition
             {
                 Id = "menu.tools.settings",
-                Title = "設定",
+                Title = L("menu.tools.settings"),
                 Location = MenuLocation.ToolsMenu,
                 ParentId = "menu.tools",
                 Icon = "\uE713",
@@ -229,14 +325,14 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.help",
-                Title = "說明",
+                Title = L("menu.help"),
                 Location = MenuLocation.MainMenu,
                 Order = 99
             },
             new MenuItemDefinition
             {
                 Id = "menu.help.docs",
-                Title = "文件",
+                Title = L("menu.help.docs"),
                 Location = MenuLocation.HelpMenu,
                 ParentId = "menu.help",
                 Icon = "\uE7BC",
@@ -246,7 +342,7 @@ public class CoreMenuPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.help.about",
-                Title = "關於",
+                Title = L("menu.help.about"),
                 Location = MenuLocation.HelpMenu,
                 ParentId = "menu.help",
                 Order = 99,
@@ -257,7 +353,6 @@ public class CoreMenuPlugin : PluginBase
         // Register commands
         RegisterCommand("file.new", () =>
         {
-            // Navigate to home page or create new document
             Context!.Navigation.NavigateToAsync("HomePage");
             return Task.CompletedTask;
         });
@@ -266,8 +361,8 @@ public class CoreMenuPlugin : PluginBase
         {
             var files = await Context!.Window.ShowOpenFileDialogAsync(new FileDialogOptions
             {
-                Title = "開啟檔案",
-                Filters = [new FileFilter("所有檔案", "*")]
+                Title = L("menu.file.open"),
+                Filters = [new FileFilter(L("common.all.files"), "*")]
             });
             // TODO: Handle file open
         });
@@ -292,36 +387,61 @@ public class CoreMenuPlugin : PluginBase
 
         RegisterCommand("app.about", async () =>
         {
-            await Context!.Window.ShowInfoAsync(
-                "關於 Arcana\n\nArcana 企業管理系統\n版本: 1.0.0\n\n© 2024 Arcana Software",
-                "確定");
+            var version = L("app.version");
+            var content = L("app.about.content", version);
+            await Context!.Window.ShowInfoAsync(content, L("common.ok"));
         });
 
         RegisterCommand("help.docs", async () =>
         {
-            // Open documentation URL
             await Windows.System.Launcher.LaunchUriAsync(new Uri("https://docs.arcana.app"));
         });
 
         RegisterCommand("view.refresh", () =>
         {
-            // Publish refresh event
             return Task.CompletedTask;
         });
 
         RegisterCommand("view.fullscreen", () =>
         {
-            // Toggle fullscreen - requires window handle access
             return Task.CompletedTask;
         });
 
-        // Edit commands (placeholder - typically handled by focused control)
+        // Edit commands (placeholder)
         RegisterCommand("edit.undo", () => Task.CompletedTask);
         RegisterCommand("edit.redo", () => Task.CompletedTask);
         RegisterCommand("edit.cut", () => Task.CompletedTask);
         RegisterCommand("edit.copy", () => Task.CompletedTask);
         RegisterCommand("edit.paste", () => Task.CompletedTask);
 
+        // Subscribe to culture change to rebuild menus
+        Context!.Localization.CultureChanged += OnCultureChanged;
+        Context.Subscriptions.Add(new CultureChangeSubscription(Context.Localization, OnCultureChanged));
+
         LogInfo("Core menu plugin activated");
+    }
+
+    private void OnCultureChanged(object? sender, CultureChangedEventArgs e)
+    {
+        // Rebuild menus when language changes
+        // This will be handled by the MainWindow subscribing to MenusChanged event
+        LogInfo("Culture changed from {0} to {1}", e.OldCulture.Name, e.NewCulture.Name);
+    }
+}
+
+internal class CultureChangeSubscription : IDisposable
+{
+    private readonly ILocalizationService _localization;
+    private readonly EventHandler<CultureChangedEventArgs> _handler;
+
+    public CultureChangeSubscription(ILocalizationService localization, EventHandler<CultureChangedEventArgs> handler)
+    {
+        _localization = localization;
+        _handler = handler;
+    }
+
+    public void Dispose()
+    {
+        _localization.CultureChanged -= _handler;
     }
 }
