@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Core;
 
 /// <summary>
 /// Assembly load context for plugin isolation with proper unloading support.
-/// 插件隔離的組件載入上下文，支援正確的卸載機制
 /// </summary>
 public class PluginLoadContext : AssemblyLoadContext
 {

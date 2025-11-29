@@ -10,7 +10,6 @@ namespace Arcana.Infrastructure.Services;
 
 /// <summary>
 /// Order service implementation.
-/// 訂單服務實作
 /// </summary>
 public class OrderService : IOrderService
 {

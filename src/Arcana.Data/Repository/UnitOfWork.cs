@@ -9,7 +9,6 @@ namespace Arcana.Data.Repository;
 
 /// <summary>
 /// Unit of Work implementation using Entity Framework Core.
-/// 使用 Entity Framework Core 實現的工作單元
 /// </summary>
 public class UnitOfWork : CoreCommon.IUnitOfWork
 {

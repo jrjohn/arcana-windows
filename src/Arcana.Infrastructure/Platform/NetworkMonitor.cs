@@ -5,7 +5,6 @@ namespace Arcana.Infrastructure.Platform;
 
 /// <summary>
 /// Network monitor implementation.
-/// 網路監控實作
 /// </summary>
 public class NetworkMonitor : INetworkMonitor, IDisposable
 {

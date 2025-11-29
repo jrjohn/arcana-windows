@@ -7,7 +7,6 @@ namespace Arcana.Data.Local;
 
 /// <summary>
 /// Application database context.
-/// 應用程式資料庫上下文
 /// </summary>
 public class AppDbContext : DbContext
 {
@@ -299,7 +298,6 @@ public class AppDbContext : DbContext
 
 /// <summary>
 /// Sync queue item for tracking pending changes.
-/// 同步佇列項目
 /// </summary>
 public class SyncQueueItem
 {

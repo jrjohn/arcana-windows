@@ -5,7 +5,6 @@ namespace Arcana.Infrastructure.Security;
 
 /// <summary>
 /// PBKDF2-based password hasher.
-/// 基於 PBKDF2 的密碼雜湊器
 /// </summary>
 public class PasswordHasher : IPasswordHasher
 {

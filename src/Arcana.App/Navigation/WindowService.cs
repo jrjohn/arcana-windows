@@ -5,7 +5,6 @@ namespace Arcana.App.Navigation;
 
 /// <summary>
 /// Window service implementation for WinUI dialogs.
-/// WinUI 視窗服務實作
 /// </summary>
 public class WindowService : IWindowService
 {
@@ -13,9 +12,9 @@ public class WindowService : IWindowService
     {
         var dialog = new ContentDialog
         {
-            Title = "資訊",
+            Title = "Information",
             Content = message,
-            CloseButtonText = "確定",
+            CloseButtonText = "OK",
             XamlRoot = GetXamlRoot()
         };
 
@@ -41,9 +40,9 @@ public class WindowService : IWindowService
     {
         var dialog = new ContentDialog
         {
-            Title = "警告",
+            Title = "Warning",
             Content = message,
-            CloseButtonText = "取消",
+            CloseButtonText = "Cancel",
             XamlRoot = GetXamlRoot()
         };
 
@@ -60,9 +59,9 @@ public class WindowService : IWindowService
     {
         var dialog = new ContentDialog
         {
-            Title = "錯誤",
+            Title = "Error",
             Content = message,
-            CloseButtonText = "確定",
+            CloseButtonText = "OK",
             XamlRoot = GetXamlRoot()
         };
 
@@ -85,7 +84,7 @@ public class WindowService : IWindowService
 
         var dialog = new ContentDialog
         {
-            Title = options.Title ?? "輸入",
+            Title = options.Title ?? "Input",
             Content = new StackPanel
             {
                 Spacing = 8,
@@ -95,8 +94,8 @@ public class WindowService : IWindowService
                     textBox
                 }
             },
-            PrimaryButtonText = "確定",
-            CloseButtonText = "取消",
+            PrimaryButtonText = "OK",
+            CloseButtonText = "Cancel",
             XamlRoot = GetXamlRoot()
         };
 
@@ -110,8 +109,8 @@ public class WindowService : IWindowService
         {
             Title = title,
             Content = message,
-            PrimaryButtonText = "確定",
-            CloseButtonText = "取消",
+            PrimaryButtonText = "OK",
+            CloseButtonText = "Cancel",
             XamlRoot = GetXamlRoot()
         };
 

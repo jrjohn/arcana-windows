@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// Menu registry implementation.
-/// 菜單註冊表實作
 /// </summary>
 public class MenuRegistry : IMenuRegistry
 {

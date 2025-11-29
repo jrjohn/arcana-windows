@@ -10,7 +10,6 @@ namespace Arcana.Infrastructure.Services;
 
 /// <summary>
 /// Product service implementation.
-/// 產品服務實作
 /// </summary>
 public class ProductService : IProductService
 {

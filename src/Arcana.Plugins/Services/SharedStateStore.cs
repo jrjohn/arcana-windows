@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// Shared state store implementation for cross-plugin state.
-/// 跨插件共享狀態存儲實作
 /// </summary>
 public class SharedStateStore : ISharedStateStore
 {

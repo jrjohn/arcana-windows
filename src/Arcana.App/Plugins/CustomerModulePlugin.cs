@@ -6,7 +6,6 @@ namespace Arcana.App.Plugins;
 
 /// <summary>
 /// Customer module plugin - provides customer management functionality.
-/// 客戶模組插件 - 提供客戶管理功能
 /// </summary>
 public class CustomerModulePlugin : PluginBase
 {

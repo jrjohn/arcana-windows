@@ -8,7 +8,6 @@ namespace Arcana.App.Navigation;
 
 /// <summary>
 /// Dynamic navigation service that uses IViewRegistry for page resolution.
-/// 使用 IViewRegistry 進行頁面解析的動態導航服務
 /// </summary>
 public class DynamicNavigationService : INavigationService
 {

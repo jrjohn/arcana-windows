@@ -4,7 +4,6 @@ namespace Arcana.Sync;
 
 /// <summary>
 /// Sync service interface for background synchronization.
-/// 背景同步服務介面
 /// </summary>
 public interface ISyncService
 {

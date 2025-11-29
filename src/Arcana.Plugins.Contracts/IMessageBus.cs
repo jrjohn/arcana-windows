@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Message bus for plugin-to-plugin communication.
-/// 插件間通訊的訊息匯流排
 /// </summary>
 public interface IMessageBus
 {
@@ -38,7 +37,6 @@ public interface IMessageBus
 
 /// <summary>
 /// Event aggregator for application-wide events.
-/// 應用程式層級的事件聚合器
 /// </summary>
 public interface IEventAggregator
 {
@@ -73,7 +71,6 @@ public abstract record ApplicationEventBase : IApplicationEvent
 
 /// <summary>
 /// Shared state store for cross-plugin state.
-/// 跨插件共享狀態存儲
 /// </summary>
 public interface ISharedStateStore
 {

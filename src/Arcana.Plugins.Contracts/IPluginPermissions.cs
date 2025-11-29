@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Plugin permission definitions.
-/// 插件權限定義
 /// </summary>
 [Flags]
 public enum PluginPermission

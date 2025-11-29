@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Plugin manager interface for plugin lifecycle management.
-/// 插件管理器介面，用於插件生命週期管理
 /// </summary>
 public interface IPluginManager
 {
@@ -84,7 +83,6 @@ public interface IPluginManager
 
 /// <summary>
 /// Plugin information interface.
-/// 插件資訊介面
 /// </summary>
 public interface IPluginInfo
 {
@@ -108,7 +106,6 @@ public interface IPluginInfo
 
 /// <summary>
 /// Plugin version information for rollback.
-/// 插件版本資訊
 /// </summary>
 public record PluginVersionInfo
 {
@@ -123,7 +120,6 @@ public record PluginVersionInfo
 
 /// <summary>
 /// Plugin health status.
-/// 插件健康狀態
 /// </summary>
 public record PluginHealthStatus
 {
@@ -164,7 +160,6 @@ public record HealthCheckResult
 
 /// <summary>
 /// Plugin operation result.
-/// 插件操作結果
 /// </summary>
 public record PluginOperationResult
 {

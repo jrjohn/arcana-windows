@@ -5,7 +5,6 @@ namespace Arcana.Sync.Crdt;
 
 /// <summary>
 /// Vector clock for tracking causality in distributed systems.
-/// 用於追蹤分散式系統因果關係的向量時鐘
 /// </summary>
 public class VectorClock : IEquatable<VectorClock>, IComparable<VectorClock>
 {

@@ -2,7 +2,6 @@ namespace Arcana.Core.Common;
 
 /// <summary>
 /// Unit of Work pattern interface for managing transactions.
-/// 工作單元模式介面，用於管理交易
 /// </summary>
 public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {

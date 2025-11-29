@@ -3,7 +3,6 @@ namespace Arcana.Sync.Crdt;
 /// <summary>
 /// Last-Writer-Wins Register CRDT.
 /// Uses timestamps to resolve conflicts - the latest write wins.
-/// 最後寫入者獲勝暫存器 CRDT
 /// </summary>
 /// <typeparam name="T">The type of value stored in the register.</typeparam>
 public class LWWRegister<T>
@@ -51,7 +50,6 @@ public class LWWRegister<T>
 /// <summary>
 /// Last-Writer-Wins Map for field-level conflict resolution.
 /// Each field has its own timestamp, allowing partial merges.
-/// 欄位級別衝突解決的 LWW Map
 /// </summary>
 public class LWWMap
 {

@@ -4,7 +4,6 @@ namespace Arcana.Sync.Crdt;
 /// Multi-Value Register CRDT.
 /// Preserves all concurrent values instead of picking one.
 /// Users must resolve conflicts manually.
-/// 多值暫存器 CRDT - 保留所有並發值
 /// </summary>
 /// <typeparam name="T">The type of value stored.</typeparam>
 public class MVRegister<T>

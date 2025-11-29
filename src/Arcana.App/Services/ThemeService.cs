@@ -7,7 +7,6 @@ namespace Arcana.App.Services;
 
 /// <summary>
 /// Theme definition.
-/// 主題定義
 /// </summary>
 public class ThemeDefinition
 {
@@ -26,7 +25,6 @@ public class ThemeDefinition
 
 /// <summary>
 /// Theme service for managing application themes.
-/// 主題服務，用於管理應用程式主題
 /// </summary>
 public class ThemeService
 {

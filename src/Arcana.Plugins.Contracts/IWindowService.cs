@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Window service for UI interactions.
-/// 視窗服務，用於 UI 互動
 /// </summary>
 public interface IWindowService
 {

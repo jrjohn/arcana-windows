@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// Event aggregator implementation for application-wide events.
-/// 應用程式層級事件聚合器實作
 /// </summary>
 public class EventAggregator : IEventAggregator
 {

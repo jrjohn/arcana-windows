@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Data;
 
 /// <summary>
 /// Repository for plugin version history using SQLite.
-/// 使用 SQLite 儲存插件版本歷史的儲存庫
 /// </summary>
 public class PluginVersionRepository : IPluginVersionRepository
 {

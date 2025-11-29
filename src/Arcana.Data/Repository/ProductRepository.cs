@@ -6,7 +6,6 @@ namespace Arcana.Data.Repository;
 
 /// <summary>
 /// Product repository interface with product-specific operations.
-/// 產品資料存取介面
 /// </summary>
 public interface IProductRepository : IRepository<Product>
 {
@@ -20,7 +19,6 @@ public interface IProductRepository : IRepository<Product>
 
 /// <summary>
 /// Product repository implementation.
-/// 產品資料存取實作
 /// </summary>
 public class ProductRepository : Repository<Product>, IProductRepository
 {

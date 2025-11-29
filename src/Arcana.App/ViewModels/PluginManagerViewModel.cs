@@ -9,7 +9,6 @@ namespace Arcana.App.ViewModels;
 
 /// <summary>
 /// ViewModel for Plugin Manager page.
-/// 插件管理頁面的 ViewModel
 /// </summary>
 public partial class PluginManagerViewModel : ViewModelBase
 {

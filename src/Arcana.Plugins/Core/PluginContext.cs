@@ -6,7 +6,6 @@ namespace Arcana.Plugins.Core;
 
 /// <summary>
 /// Plugin context implementation.
-/// 插件上下文實作
 /// </summary>
 public class PluginContext : IPluginContext
 {

@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// View registry for registering view contributions.
-/// 視圖註冊表，用於註冊視圖貢獻
 /// </summary>
 public interface IViewRegistry
 {
@@ -39,7 +38,6 @@ public interface IViewRegistry
 
 /// <summary>
 /// View definition.
-/// 視圖定義
 /// </summary>
 public record ViewDefinition
 {
@@ -59,16 +57,15 @@ public record ViewDefinition
 /// </summary>
 public enum ViewType
 {
-    Page,       // 頁面視圖
-    Dialog,     // 對話框
-    Panel,      // 面板
-    Widget,     // 小工具
-    Flyout      // 飛出視窗
+    Page,       // Page view
+    Dialog,     // Dialog
+    Panel,      // Panel
+    Widget,     // Widget
+    Flyout      // Flyout window
 }
 
 /// <summary>
 /// Navigation service interface.
-/// 導航服務介面
 /// </summary>
 public interface INavigationService
 {

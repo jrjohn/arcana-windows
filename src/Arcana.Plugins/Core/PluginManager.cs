@@ -8,7 +8,6 @@ namespace Arcana.Plugins.Core;
 
 /// <summary>
 /// Plugin manager for loading, activating, and managing plugins.
-/// 插件管理器，用於載入、啟用和管理插件
 /// </summary>
 public class PluginManager : IAsyncDisposable
 {

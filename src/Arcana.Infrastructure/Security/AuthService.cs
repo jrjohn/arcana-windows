@@ -10,7 +10,6 @@ namespace Arcana.Infrastructure.Security;
 
 /// <summary>
 /// Authentication service implementation.
-/// 身份驗證服務實作
 /// </summary>
 public class AuthService : IAuthService
 {

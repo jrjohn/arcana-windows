@@ -17,7 +17,6 @@ namespace Arcana.App;
 
 /// <summary>
 /// Application entry point.
-/// 應用程式進入點
 /// </summary>
 public partial class App : Application
 {
@@ -197,7 +196,7 @@ public partial class App : Application
                 ShippingAddress = customer.Address,
                 ShippingCity = customer.City,
                 ExpectedDeliveryDate = orderDate.AddDays(random.Next(3, 14)),
-                Notes = i % 3 == 0 ? "急件，請優先處理" : null
+                Notes = i % 3 == 0 ? "Urgent, please prioritize" : null
             };
 
             // Add 1-5 random order items

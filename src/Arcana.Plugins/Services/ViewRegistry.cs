@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// View registry implementation.
-/// 視圖註冊表實作
 /// </summary>
 public class ViewRegistry : IViewRegistry
 {

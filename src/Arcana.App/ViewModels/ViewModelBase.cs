@@ -5,7 +5,6 @@ namespace Arcana.App.ViewModels;
 
 /// <summary>
 /// Base class for all ViewModels.
-/// 所有 ViewModel 的基類
 /// </summary>
 public abstract partial class ViewModelBase : ObservableObject
 {

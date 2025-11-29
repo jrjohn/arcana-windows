@@ -4,7 +4,6 @@ namespace Arcana.Infrastructure.Security;
 
 /// <summary>
 /// Thread-safe current user service for desktop application.
-/// 桌面應用程式的執行緒安全當前使用者服務
 /// </summary>
 public class CurrentUserService : ICurrentUserService
 {

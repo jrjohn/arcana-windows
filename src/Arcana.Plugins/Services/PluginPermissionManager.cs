@@ -8,7 +8,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// Plugin permission manager implementation.
-/// 插件權限管理器實作
 /// </summary>
 public class PluginPermissionManager : IPluginPermissionManager
 {

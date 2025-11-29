@@ -6,7 +6,6 @@ namespace Arcana.App.Plugins;
 
 /// <summary>
 /// Core menu plugin - provides the main application menus.
-/// 核心菜單插件 - 提供主要應用程式菜單
 /// </summary>
 public class CoreMenuPlugin : PluginBase
 {
@@ -255,7 +254,7 @@ public class CoreMenuPlugin : PluginBase
             }
         );
 
-        // Business Menu (業務) - parent for module plugins
+        // Business Menu - parent for module plugins
         RegisterMenuItems(
             new MenuItemDefinition
             {

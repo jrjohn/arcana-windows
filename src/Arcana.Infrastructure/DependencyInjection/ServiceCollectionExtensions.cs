@@ -24,7 +24,6 @@ namespace Arcana.Infrastructure.DependencyInjection;
 
 /// <summary>
 /// Service collection extensions for dependency injection.
-/// 服務集合擴展用於依賴注入
 /// </summary>
 public static class ServiceCollectionExtensions
 {
@@ -86,7 +85,6 @@ public static class ServiceCollectionExtensions
 
     /// <summary>
     /// Adds security and authentication services.
-    /// 添加安全和身份驗證服務
     /// </summary>
     public static IServiceCollection AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
     {

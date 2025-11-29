@@ -5,7 +5,6 @@ namespace Arcana.App.Views;
 
 /// <summary>
 /// Home page.
-/// 首頁
 /// </summary>
 public sealed partial class HomePage : Page
 {

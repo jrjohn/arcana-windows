@@ -4,7 +4,6 @@ namespace Arcana.Core.Security;
 
 /// <summary>
 /// Authentication service interface.
-/// 身份驗證服務介面
 /// </summary>
 public interface IAuthService
 {

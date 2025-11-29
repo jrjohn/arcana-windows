@@ -2,7 +2,6 @@ namespace Arcana.Domain.Entities.Identity;
 
 /// <summary>
 /// Role entity for role-based access control.
-/// 角色實體用於角色型存取控制
 /// </summary>
 public class Role : BaseEntity
 {

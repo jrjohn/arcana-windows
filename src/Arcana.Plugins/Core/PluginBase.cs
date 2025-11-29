@@ -6,7 +6,6 @@ namespace Arcana.Plugins.Core;
 
 /// <summary>
 /// Base class for all plugins.
-/// 所有插件的基類
 /// </summary>
 public abstract class PluginBase : IPlugin
 {

@@ -8,7 +8,6 @@ namespace Arcana.App.Plugins;
 
 /// <summary>
 /// Order module plugin - provides order management functionality.
-/// 訂單模組插件 - 提供訂單管理功能
 /// </summary>
 public class OrderModulePlugin : PluginBase
 {

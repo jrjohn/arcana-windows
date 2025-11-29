@@ -8,7 +8,6 @@ namespace Arcana.Sync;
 
 /// <summary>
 /// Background sync service implementation.
-/// 背景同步服務實作
 /// </summary>
 public class SyncService : ISyncService
 {

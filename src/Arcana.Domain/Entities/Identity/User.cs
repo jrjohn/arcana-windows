@@ -2,7 +2,6 @@ namespace Arcana.Domain.Entities.Identity;
 
 /// <summary>
 /// User entity for authentication and authorization.
-/// 使用者實體用於身份驗證和授權
 /// </summary>
 public class User : BaseEntity
 {

@@ -8,7 +8,6 @@ namespace Arcana.App.Plugins;
 
 /// <summary>
 /// System plugin - provides system management functionality.
-/// 系統插件 - 提供系統管理功能
 /// </summary>
 public class SystemPlugin : PluginBase
 {

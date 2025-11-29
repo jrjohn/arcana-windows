@@ -2,7 +2,6 @@ namespace Arcana.Core.Extensions;
 
 /// <summary>
 /// Collection extension methods.
-/// 集合擴展方法
 /// </summary>
 public static class CollectionExtensions
 {

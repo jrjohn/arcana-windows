@@ -4,7 +4,6 @@ namespace Arcana.Domain.Entities;
 
 /// <summary>
 /// Base entity with common properties for all domain entities.
-/// 所有領域實體的基類
 /// </summary>
 public abstract class BaseEntity<TKey> : IEntity<TKey>, IAuditableEntity, ISoftDeletable, ISyncable
     where TKey : notnull

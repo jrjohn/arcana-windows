@@ -7,7 +7,6 @@ namespace Arcana.Data.Repository;
 
 /// <summary>
 /// Order repository interface with order-specific operations.
-/// 訂單資料存取介面
 /// </summary>
 public interface IOrderRepository : IRepository<Order>
 {
@@ -22,7 +21,6 @@ public interface IOrderRepository : IRepository<Order>
 
 /// <summary>
 /// Order repository implementation.
-/// 訂單資料存取實作
 /// </summary>
 public class OrderRepository : Repository<Order>, IOrderRepository
 {

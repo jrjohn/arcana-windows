@@ -2,7 +2,6 @@ namespace Arcana.Core.Common;
 
 /// <summary>
 /// Base interface for all entities with a unique identifier.
-/// 所有實體的基礎介面
 /// </summary>
 /// <typeparam name="TKey">The type of the entity's identifier</typeparam>
 public interface IEntity<TKey> where TKey : notnull
@@ -15,7 +14,6 @@ public interface IEntity<TKey> where TKey : notnull
 
 /// <summary>
 /// Base interface for entities with auditing information.
-/// 帶有審計資訊的實體介面
 /// </summary>
 public interface IAuditableEntity
 {
@@ -42,7 +40,6 @@ public interface IAuditableEntity
 
 /// <summary>
 /// Base interface for soft-deletable entities.
-/// 可軟刪除實體介面
 /// </summary>
 public interface ISoftDeletable
 {
@@ -64,7 +61,6 @@ public interface ISoftDeletable
 
 /// <summary>
 /// Base interface for entities that support optimistic concurrency.
-/// 支援樂觀鎖的實體介面
 /// </summary>
 public interface IConcurrencyAware
 {
@@ -76,7 +72,6 @@ public interface IConcurrencyAware
 
 /// <summary>
 /// Base interface for syncable entities.
-/// 可同步實體介面
 /// </summary>
 public interface ISyncable
 {
@@ -98,7 +93,6 @@ public interface ISyncable
 
 /// <summary>
 /// Combined base entity interface with all common features.
-/// 組合所有通用功能的實體介面
 /// </summary>
 public interface IFullEntity<TKey> : IEntity<TKey>, IAuditableEntity, ISoftDeletable, IConcurrencyAware, ISyncable
     where TKey : notnull

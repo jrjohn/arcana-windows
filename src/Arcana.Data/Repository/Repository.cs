@@ -8,7 +8,6 @@ namespace Arcana.Data.Repository;
 
 /// <summary>
 /// Generic repository implementation using Entity Framework Core.
-/// 使用 EF Core 的通用資料存取實作
 /// </summary>
 public class Repository<TEntity, TKey> : CoreCommon.IRepository<TEntity, TKey>
     where TEntity : class

@@ -2,7 +2,6 @@ namespace Arcana.Core.Common;
 
 /// <summary>
 /// Represents the result of an operation that can either succeed with a value or fail with an error.
-/// 代表操作結果，可能成功並帶有值，或失敗並帶有錯誤
 /// </summary>
 /// <typeparam name="T">The type of the value on success</typeparam>
 public readonly struct Result<T>

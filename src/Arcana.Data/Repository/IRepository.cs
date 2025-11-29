@@ -5,7 +5,6 @@ namespace Arcana.Data.Repository;
 
 /// <summary>
 /// Generic repository interface for data access.
-/// 通用資料存取介面
 /// </summary>
 /// <typeparam name="TEntity">Entity type</typeparam>
 /// <typeparam name="TKey">Primary key type</typeparam>

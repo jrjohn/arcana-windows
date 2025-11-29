@@ -2,7 +2,6 @@ namespace Arcana.Domain.Entities.Identity;
 
 /// <summary>
 /// Application-level permission for fine-grained access control.
-/// 應用程式層級權限用於精細的存取控制
 /// </summary>
 public class AppPermission : BaseEntity
 {
@@ -44,7 +43,6 @@ public class AppPermission : BaseEntity
 
 /// <summary>
 /// Predefined system permissions.
-/// 預定義的系統權限
 /// </summary>
 public static class SystemPermissions
 {

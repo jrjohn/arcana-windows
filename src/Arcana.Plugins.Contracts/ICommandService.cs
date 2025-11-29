@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Command service for registering and executing commands.
-/// 命令服務，用於註冊和執行命令
 /// </summary>
 public interface ICommandService
 {
@@ -34,7 +33,6 @@ public interface ICommandService
 
 /// <summary>
 /// Command definition.
-/// 命令定義
 /// </summary>
 public record CommandDefinition
 {

@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Menu registry for registering menu contributions.
-/// 菜單註冊表，用於註冊菜單貢獻
 /// </summary>
 public interface IMenuRegistry
 {
@@ -37,22 +36,21 @@ public interface IMenuRegistry
 /// </summary>
 public enum MenuLocation
 {
-    MainMenu,           // 主菜單
-    FileMenu,           // 檔案菜單
-    EditMenu,           // 編輯菜單
-    ViewMenu,           // 檢視菜單
-    ToolsMenu,          // 工具菜單
-    HelpMenu,           // 說明菜單
-    ContextMenu,        // 右鍵菜單
-    Toolbar,            // 工具列
-    StatusBar,          // 狀態列
-    FunctionTree,       // 功能樹
-    QuickAccess         // 快速存取
+    MainMenu,           // Main menu
+    FileMenu,           // File menu
+    EditMenu,           // Edit menu
+    ViewMenu,           // View menu
+    ToolsMenu,          // Tools menu
+    HelpMenu,           // Help menu
+    ContextMenu,        // Context menu
+    Toolbar,            // Toolbar
+    StatusBar,          // Status bar
+    FunctionTree,       // Function tree
+    QuickAccess         // Quick access
 }
 
 /// <summary>
 /// Menu item definition.
-/// 菜單項目定義
 /// </summary>
 public record MenuItemDefinition
 {

@@ -2,7 +2,6 @@ namespace Arcana.Domain.Entities.Identity;
 
 /// <summary>
 /// Direct user permission assignment (in addition to role-based permissions).
-/// 直接使用者權限指派（除了角色權限之外）
 /// </summary>
 public class UserPermission : BaseEntity
 {

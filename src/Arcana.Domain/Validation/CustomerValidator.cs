@@ -5,33 +5,32 @@ namespace Arcana.Domain.Validation;
 
 /// <summary>
 /// Customer entity validator.
-/// 客戶實體驗證器
 /// </summary>
 public class CustomerValidator : AbstractValidator<Customer>
 {
     public CustomerValidator()
     {
         RuleFor(x => x.Code)
-            .NotEmpty().WithMessage("客戶代碼不可為空")
-            .MaximumLength(20).WithMessage("客戶代碼不可超過20個字元");
+            .NotEmpty().WithMessage("Customer code cannot be empty")
+            .MaximumLength(20).WithMessage("Customer code cannot exceed 20 characters");
 
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("客戶名稱不可為空")
-            .MaximumLength(100).WithMessage("客戶名稱不可超過100個字元");
+            .NotEmpty().WithMessage("Customer name cannot be empty")
+            .MaximumLength(100).WithMessage("Customer name cannot exceed 100 characters");
 
         RuleFor(x => x.Email)
-            .EmailAddress().WithMessage("電子郵件格式不正確")
+            .EmailAddress().WithMessage("Email format is invalid")
             .When(x => !string.IsNullOrEmpty(x.Email));
 
         RuleFor(x => x.Phone)
-            .MaximumLength(20).WithMessage("電話號碼不可超過20個字元")
+            .MaximumLength(20).WithMessage("Phone number cannot exceed 20 characters")
             .When(x => !string.IsNullOrEmpty(x.Phone));
 
         RuleFor(x => x.CreditLimit)
-            .GreaterThanOrEqualTo(0).WithMessage("信用額度不可為負數");
+            .GreaterThanOrEqualTo(0).WithMessage("Credit limit cannot be negative");
 
         RuleFor(x => x.TaxId)
-            .MaximumLength(20).WithMessage("統一編號不可超過20個字元")
+            .MaximumLength(20).WithMessage("Tax ID cannot exceed 20 characters")
             .When(x => !string.IsNullOrEmpty(x.TaxId));
     }
 }

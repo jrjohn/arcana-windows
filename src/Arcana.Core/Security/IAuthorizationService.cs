@@ -4,7 +4,6 @@ namespace Arcana.Core.Security;
 
 /// <summary>
 /// Authorization service for checking permissions.
-/// 授權服務用於檢查權限
 /// </summary>
 public interface IAuthorizationService
 {

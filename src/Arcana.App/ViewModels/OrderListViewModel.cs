@@ -10,7 +10,6 @@ namespace Arcana.App.ViewModels;
 
 /// <summary>
 /// ViewModel for order list page.
-/// 訂單列表頁面 ViewModel
 /// </summary>
 public partial class OrderListViewModel : ViewModelBase
 {
@@ -166,8 +165,8 @@ public partial class OrderListViewModel : ViewModelBase
         if (order == null) return;
 
         var confirmed = await _windowService.ShowConfirmAsync(
-            "確認刪除",
-            $"確定要刪除訂單 {order.OrderNumber} 嗎？此操作無法復原。");
+            "Confirm Delete",
+            $"Are you sure you want to delete order {order.OrderNumber}? This action cannot be undone.");
 
         if (confirmed)
         {
@@ -225,7 +224,7 @@ public partial class OrderListViewModel : ViewModelBase
     private async Task ExportAsync()
     {
         // Implement export functionality
-        await _windowService.ShowInfoAsync("匯出功能開發中...");
+        await _windowService.ShowInfoAsync("Export functionality is under development...");
     }
 
     [RelayCommand]
@@ -233,11 +232,11 @@ public partial class OrderListViewModel : ViewModelBase
     {
         if (SelectedOrder == null)
         {
-            await _windowService.ShowWarningAsync("請先選擇要列印的訂單");
+            await _windowService.ShowWarningAsync("Please select an order to print");
             return;
         }
 
         // Implement print functionality
-        await _windowService.ShowInfoAsync("列印功能開發中...");
+        await _windowService.ShowInfoAsync("Print functionality is under development...");
     }
 }

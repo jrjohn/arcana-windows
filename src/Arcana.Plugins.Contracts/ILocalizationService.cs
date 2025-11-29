@@ -4,7 +4,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Localization service interface for i18n support.
-/// 本地化服務介面，提供國際化支援
 /// </summary>
 public interface ILocalizationService
 {

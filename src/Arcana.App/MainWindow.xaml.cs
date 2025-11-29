@@ -12,7 +12,6 @@ namespace Arcana.App;
 
 /// <summary>
 /// Main application window.
-/// 主應用程式視窗
 /// </summary>
 public sealed partial class MainWindow : Window
 {

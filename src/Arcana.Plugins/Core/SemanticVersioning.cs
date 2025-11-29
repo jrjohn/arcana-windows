@@ -4,7 +4,6 @@ namespace Arcana.Plugins.Core;
 
 /// <summary>
 /// Semantic version with comparison support.
-/// 語義化版本，支援比較
 /// </summary>
 public partial class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
 {
@@ -149,7 +148,6 @@ public partial class SemanticVersion : IComparable<SemanticVersion>, IEquatable<
 
 /// <summary>
 /// Version range for dependency constraints.
-/// 依賴約束的版本範圍
 /// </summary>
 public class VersionRange
 {

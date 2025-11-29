@@ -2,7 +2,6 @@ namespace Arcana.Core.Common;
 
 /// <summary>
 /// Monitors network connectivity status.
-/// 監控網路連線狀態
 /// </summary>
 public interface INetworkMonitor
 {

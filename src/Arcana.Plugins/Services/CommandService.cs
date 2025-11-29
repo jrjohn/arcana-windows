@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// Command service implementation.
-/// 命令服務實作
 /// </summary>
 public class CommandService : ICommandService
 {

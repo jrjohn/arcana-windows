@@ -2,7 +2,6 @@ namespace Arcana.Core.Common;
 
 /// <summary>
 /// Represents a paged result set.
-/// 分頁結果集
 /// </summary>
 /// <typeparam name="T">The type of items</typeparam>
 public class PagedResult<T>
@@ -65,7 +64,6 @@ public class PagedResult<T>
 
 /// <summary>
 /// Represents paging parameters.
-/// 分頁參數
 /// </summary>
 public record PageRequest(int Page = 1, int PageSize = 10, string? SortBy = null, bool Descending = false)
 {

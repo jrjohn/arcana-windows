@@ -2,7 +2,6 @@ namespace Arcana.Domain.Entities.Identity;
 
 /// <summary>
 /// Junction entity for Role-Permission many-to-many relationship.
-/// 角色權限關聯實體
 /// </summary>
 public class RolePermission : BaseEntity
 {

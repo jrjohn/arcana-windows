@@ -5,7 +5,6 @@ namespace Arcana.Domain.Services;
 
 /// <summary>
 /// Order service interface.
-/// 訂單服務介面
 /// </summary>
 public interface IOrderService
 {

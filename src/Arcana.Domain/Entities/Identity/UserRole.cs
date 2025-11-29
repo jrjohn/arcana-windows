@@ -2,7 +2,6 @@ namespace Arcana.Domain.Entities.Identity;
 
 /// <summary>
 /// Junction entity for User-Role many-to-many relationship.
-/// 使用者角色關聯實體
 /// </summary>
 public class UserRole : BaseEntity
 {

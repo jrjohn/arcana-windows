@@ -2,7 +2,6 @@ namespace Arcana.Infrastructure.Settings;
 
 /// <summary>
 /// Settings service interface.
-/// 設定服務介面
 /// </summary>
 public interface ISettingsService
 {
@@ -56,7 +55,6 @@ public class SettingChangedEventArgs : EventArgs
 
 /// <summary>
 /// Application settings keys.
-/// 應用程式設定鍵
 /// </summary>
 public static class SettingKeys
 {

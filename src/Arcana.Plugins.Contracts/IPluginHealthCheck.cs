@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Interface for plugins that support health checks.
-/// 支援健康檢查的插件介面
 /// </summary>
 public interface IPluginHealthCheck
 {
@@ -34,7 +33,6 @@ public record PluginHealthCheckResult
 
 /// <summary>
 /// Interface for plugins that support hot reload.
-/// 支援熱重載的插件介面
 /// </summary>
 public interface IPluginHotReload
 {
@@ -61,7 +59,6 @@ public interface IPluginHotReload
 
 /// <summary>
 /// Interface for plugins that support upgrade/rollback.
-/// 支援升級/回滾的插件介面
 /// </summary>
 public interface IPluginUpgradeable
 {

@@ -2,7 +2,6 @@ namespace Arcana.Core.Common;
 
 /// <summary>
 /// Error codes for the application.
-/// 應用程式錯誤代碼
 /// </summary>
 public enum ErrorCode
 {
@@ -61,7 +60,6 @@ public enum ErrorCode
 
 /// <summary>
 /// Base class for all application errors.
-/// 應用程式錯誤基類
 /// </summary>
 public abstract record AppError(ErrorCode Code, string Message, Exception? InnerException = null)
 {

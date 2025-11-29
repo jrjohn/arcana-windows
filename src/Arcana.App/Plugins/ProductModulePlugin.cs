@@ -6,7 +6,6 @@ namespace Arcana.App.Plugins;
 
 /// <summary>
 /// Product module plugin - provides product management functionality.
-/// 產品模組插件 - 提供產品管理功能
 /// </summary>
 public class ProductModulePlugin : PluginBase
 {

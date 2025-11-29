@@ -7,7 +7,6 @@ namespace Arcana.Infrastructure.Security;
 
 /// <summary>
 /// Simple token service using HMAC-SHA256 for local desktop app.
-/// 使用 HMAC-SHA256 的簡單 Token 服務（適用於本地桌面應用程式）
 /// </summary>
 public class TokenService : ITokenService
 {

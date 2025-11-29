@@ -4,7 +4,6 @@ namespace Arcana.Plugins.Core;
 
 /// <summary>
 /// Plugin information implementation.
-/// 插件資訊實作
 /// </summary>
 public class PluginInfo : IPluginInfo
 {

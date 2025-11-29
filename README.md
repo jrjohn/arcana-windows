@@ -145,6 +145,16 @@ mindmap
       Soft Delete
       Audit Trails
       Query Filters
+    Localization
+      Multi-language i18n
+      Plugin Resources
+      System Detection
+      English Fallback
+    Themes
+      9 Built-in Themes
+      Light/Dark Modes
+      Custom Colors
+      Settings Persistence
     Testing
       352 Unit Tests
       xUnit Framework
@@ -743,8 +753,78 @@ var result = resolver.Resolve(
 | **Customer Management** | Customer master data, credit limits |
 | **Product Management** | Product catalog with categories |
 | **Plugin Manager** | Install, activate, configure plugins |
-| **Settings** | Application configuration |
+| **Settings** | Theme selection, language settings, sync configuration |
 | **User Management** | Users, roles, permissions |
+
+---
+
+## Internationalization (i18n)
+
+The application supports multiple languages with a plugin-based localization system.
+
+### Supported Languages
+
+| Language | Code | Status |
+|----------|------|--------|
+| English | `en-US` | Default fallback |
+| Traditional Chinese | `zh-TW` | Full support |
+| Japanese | `ja-JP` | Full support |
+
+### Language Detection
+
+1. On first launch, detects system UI language
+2. Falls back to English if system language is not supported
+3. User preference is persisted across sessions
+
+### Plugin Localization
+
+Each plugin can register its own language resources:
+
+```csharp
+protected override Task OnActivateAsync(IPluginContext context)
+{
+    RegisterPluginResources();
+    return Task.CompletedTask;
+}
+
+private void RegisterPluginResources()
+{
+    RegisterResources("en-US", new Dictionary<string, string>
+    {
+        ["my.key"] = "English text"
+    });
+    RegisterResources("zh-TW", new Dictionary<string, string>
+    {
+        ["my.key"] = "中文文字"
+    });
+}
+```
+
+---
+
+## Theme System
+
+The application includes 9 built-in themes with support for custom color schemes.
+
+### Available Themes
+
+| Theme | Base | Description |
+|-------|------|-------------|
+| **System** | Auto | Follows Windows system theme |
+| **Light** | Light | Clean white interface |
+| **Dark** | Dark | Dark mode for low-light environments |
+| **Ocean Blue** | Light | Blue accent with gradient |
+| **Forest Green** | Light | Nature-inspired green palette |
+| **Purple Night** | Dark | Deep purple with vibrant accents |
+| **Sunset Orange** | Light | Warm orange and yellow tones |
+| **Rose Pink** | Light | Soft pink feminine theme |
+| **Midnight Blue** | Dark | Professional dark blue |
+
+### Theme Persistence
+
+- Theme selection is saved to `%LocalAppData%\Arcana\settings.json`
+- Applied automatically on application startup
+- Changes apply immediately to all open tabs
 
 ---
 
@@ -781,6 +861,7 @@ var result = resolver.Resolve(
 | Type | Path |
 |------|------|
 | **Database** | `%LocalAppData%/Arcana/data/arcana.db` |
+| **Settings** | `%LocalAppData%/Arcana/settings.json` |
 | **Logs** | `%LocalAppData%/Arcana/logs/app-*.log` |
 | **Plugins** | `{AppDir}/plugins/` |
 
@@ -791,8 +872,8 @@ var result = resolver.Resolve(
 - [ ] Sync server implementation (REST/gRPC)
 - [ ] Plugin marketplace
 - [ ] Report designer plugin
-- [ ] Multi-language support (i18n)
-- [ ] Dark theme
+- [x] Multi-language support (i18n) - **Completed**
+- [x] Theme system with 9 themes - **Completed**
 - [ ] Backup/restore functionality
 - [ ] Mobile companion app (MAUI)
 - [ ] Cloud sync option

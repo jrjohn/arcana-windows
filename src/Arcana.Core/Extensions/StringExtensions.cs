@@ -2,7 +2,6 @@ namespace Arcana.Core.Extensions;
 
 /// <summary>
 /// String extension methods.
-/// 字串擴展方法
 /// </summary>
 public static class StringExtensions
 {

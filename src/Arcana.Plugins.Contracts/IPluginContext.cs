@@ -4,7 +4,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Plugin context interface providing access to host services.
-/// 插件上下文介面，提供對宿主服務的存取
 /// </summary>
 public interface IPluginContext
 {

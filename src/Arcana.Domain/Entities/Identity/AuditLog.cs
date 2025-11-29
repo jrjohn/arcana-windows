@@ -2,7 +2,6 @@ namespace Arcana.Domain.Entities.Identity;
 
 /// <summary>
 /// Audit log for security-related events.
-/// 安全相關事件的審計日誌
 /// </summary>
 public class AuditLog : BaseEntity
 {

@@ -8,7 +8,6 @@ namespace Arcana.App.Views;
 
 /// <summary>
 /// Order list page.
-/// 訂單列表頁面
 /// </summary>
 public sealed partial class OrderListPage : Page
 {
@@ -31,14 +30,14 @@ public sealed partial class OrderListPage : Page
     private void UpdateUI()
     {
         OrdersListView.ItemsSource = ViewModel.Orders;
-        OrderCountText.Text = $"共 {ViewModel.TotalCount} 筆訂單";
-        PageInfo.Text = $"第 {ViewModel.CurrentPage} 頁 / 共 {ViewModel.TotalPages} 頁";
+        OrderCountText.Text = $"Total {ViewModel.TotalCount} orders";
+        PageInfo.Text = $"Page {ViewModel.CurrentPage} / {ViewModel.TotalPages}";
         PrevButton.IsEnabled = ViewModel.CurrentPage > 1;
         NextButton.IsEnabled = ViewModel.CurrentPage < ViewModel.TotalPages;
 
         var start = (ViewModel.CurrentPage - 1) * ViewModel.PageSize + 1;
         var end = Math.Min(ViewModel.CurrentPage * ViewModel.PageSize, ViewModel.TotalCount);
-        PaginationInfo.Text = $"第 {start}-{end} 筆，共 {ViewModel.TotalCount} 筆";
+        PaginationInfo.Text = $"Showing {start}-{end} of {ViewModel.TotalCount}";
     }
 
     private void NewOrder_Click(object sender, RoutedEventArgs e)

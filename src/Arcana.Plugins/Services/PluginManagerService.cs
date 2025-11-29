@@ -8,7 +8,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// Full-featured plugin manager service implementing IPluginManager.
-/// 完整功能的插件管理服務
 /// </summary>
 public class PluginManagerService : IPluginManager, IAsyncDisposable
 {

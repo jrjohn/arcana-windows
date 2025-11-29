@@ -8,7 +8,6 @@ namespace Arcana.App.Views;
 
 /// <summary>
 /// Plugin manager page for viewing and managing plugins.
-/// 插件管理頁面
 /// </summary>
 public sealed partial class PluginManagerPage : Page
 {

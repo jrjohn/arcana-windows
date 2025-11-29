@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Data;
 
 /// <summary>
 /// Entity for storing plugin version history in SQLite.
-/// 儲存插件版本歷史的實體
 /// </summary>
 public class PluginVersionEntity
 {

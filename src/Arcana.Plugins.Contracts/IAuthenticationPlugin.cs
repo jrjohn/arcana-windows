@@ -2,7 +2,6 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Interface for authentication provider plugins.
-/// 身份驗證提供者插件介面
 /// </summary>
 /// <remarks>
 /// Allows plugins to provide custom authentication mechanisms such as:
@@ -238,7 +237,6 @@ public record ExternalTokenValidationResult
 
 /// <summary>
 /// Interface for MFA (Multi-Factor Authentication) plugins.
-/// 多因素驗證插件介面
 /// </summary>
 public interface IMfaPlugin : IPlugin
 {

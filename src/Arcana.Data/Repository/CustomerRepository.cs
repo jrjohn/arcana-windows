@@ -6,7 +6,6 @@ namespace Arcana.Data.Repository;
 
 /// <summary>
 /// Customer repository interface with customer-specific operations.
-/// 客戶資料存取介面
 /// </summary>
 public interface ICustomerRepository : IRepository<Customer>
 {
@@ -17,7 +16,6 @@ public interface ICustomerRepository : IRepository<Customer>
 
 /// <summary>
 /// Customer repository implementation.
-/// 客戶資料存取實作
 /// </summary>
 public class CustomerRepository : Repository<Customer>, ICustomerRepository
 {

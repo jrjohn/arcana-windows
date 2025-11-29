@@ -5,7 +5,6 @@ namespace Arcana.Infrastructure.Settings;
 
 /// <summary>
 /// Settings service implementation using JSON file storage.
-/// 使用 JSON 檔案儲存的設定服務實作
 /// </summary>
 public class SettingsService : ISettingsService
 {

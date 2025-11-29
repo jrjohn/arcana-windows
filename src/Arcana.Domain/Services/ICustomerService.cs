@@ -5,7 +5,6 @@ namespace Arcana.Domain.Services;
 
 /// <summary>
 /// Customer service interface.
-/// 客戶服務介面
 /// </summary>
 public interface ICustomerService
 {

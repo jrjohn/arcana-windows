@@ -8,7 +8,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// Plugin health monitoring service.
-/// 插件健康監控服務
 /// </summary>
 public class PluginHealthMonitor : IDisposable
 {

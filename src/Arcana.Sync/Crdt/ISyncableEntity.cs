@@ -2,7 +2,6 @@ namespace Arcana.Sync.Crdt;
 
 /// <summary>
 /// Interface for entities that support CRDT-based synchronization.
-/// 支援 CRDT 同步的實體介面
 /// </summary>
 public interface ISyncableEntity
 {

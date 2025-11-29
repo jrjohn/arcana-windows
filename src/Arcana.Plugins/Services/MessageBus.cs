@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Services;
 
 /// <summary>
 /// Message bus implementation for plugin-to-plugin communication.
-/// 插件間通訊的訊息匯流排實作
 /// </summary>
 public class MessageBus : IMessageBus
 {

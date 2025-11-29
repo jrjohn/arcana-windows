@@ -9,7 +9,6 @@ namespace Arcana.App.Views;
 
 /// <summary>
 /// Order detail page.
-/// 訂單明細頁面
 /// </summary>
 public sealed partial class OrderDetailPage : Page
 {
@@ -101,8 +100,8 @@ public sealed partial class OrderDetailPage : Page
         {
             var windowService = App.Services.GetRequiredService<Arcana.Plugins.Contracts.IWindowService>();
             var confirmed = await windowService.ShowConfirmAsync(
-                "放棄變更",
-                "您有未儲存的變更，確定要放棄嗎？");
+                "Discard Changes",
+                "You have unsaved changes. Are you sure you want to discard them?");
             if (!confirmed) return;
         }
 

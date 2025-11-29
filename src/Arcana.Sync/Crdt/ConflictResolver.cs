@@ -44,7 +44,6 @@ public class SyncConflict<T> where T : class
 
 /// <summary>
 /// Conflict resolution service for sync operations.
-/// 同步操作的衝突解決服務
 /// </summary>
 public class ConflictResolver
 {

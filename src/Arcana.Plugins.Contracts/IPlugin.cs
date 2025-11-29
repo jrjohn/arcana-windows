@@ -4,33 +4,31 @@ namespace Arcana.Plugins.Contracts;
 
 /// <summary>
 /// Plugin type enumeration.
-/// 插件類型
 /// </summary>
 public enum PluginType
 {
-    Menu,           // 菜單插件
-    FunctionTree,   // 功能樹插件
-    View,           // 視圖插件
-    Widget,         // 小工具插件
-    Theme,          // 主題插件
-    Module,         // 業務模組插件
-    Service,        // 服務插件
-    DataSource,     // 資料來源插件
-    Export,         // 匯出插件
-    Import,         // 匯入插件
-    Print,          // 列印插件
-    Auth,           // 認證插件
-    Sync,           // 同步插件
-    Analytics,      // 分析插件
-    Notification,   // 通知插件
-    EntityExtension,// 實體擴展插件
-    ViewExtension,  // 視圖擴展插件
-    Workflow        // 工作流插件
+    Menu,           // Menu plugin
+    FunctionTree,   // Function tree plugin
+    View,           // View plugin
+    Widget,         // Widget plugin
+    Theme,          // Theme plugin
+    Module,         // Business module plugin
+    Service,        // Service plugin
+    DataSource,     // Data source plugin
+    Export,         // Export plugin
+    Import,         // Import plugin
+    Print,          // Print plugin
+    Auth,           // Authentication plugin
+    Sync,           // Synchronization plugin
+    Analytics,      // Analytics plugin
+    Notification,   // Notification plugin
+    EntityExtension,// Entity extension plugin
+    ViewExtension,  // View extension plugin
+    Workflow        // Workflow plugin
 }
 
 /// <summary>
 /// Plugin state enumeration.
-/// 插件狀態
 /// </summary>
 public enum PluginState
 {
@@ -47,7 +45,6 @@ public enum PluginState
 
 /// <summary>
 /// Base plugin interface.
-/// 插件基礎介面
 /// </summary>
 public interface IPlugin : IAsyncDisposable
 {
@@ -79,7 +76,6 @@ public interface IPlugin : IAsyncDisposable
 
 /// <summary>
 /// Plugin metadata.
-/// 插件元資料
 /// </summary>
 public record PluginMetadata
 {

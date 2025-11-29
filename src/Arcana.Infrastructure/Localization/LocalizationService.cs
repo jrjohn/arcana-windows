@@ -8,7 +8,6 @@ namespace Arcana.Infrastructure.Localization;
 
 /// <summary>
 /// Localization service implementation.
-/// 本地化服務實作
 /// </summary>
 public class LocalizationService : ILocalizationService
 {
@@ -29,19 +28,19 @@ public class LocalizationService : ILocalizationService
         _logger = logger;
         _resourcesPath = resourcesPath ?? Path.Combine(AppContext.BaseDirectory, "Resources", "Strings");
 
-        // Default available cultures
+        // Default available cultures (en-US first as fallback default)
         _availableCultures =
         [
-            new CultureInfo("zh-TW"),
             new CultureInfo("en-US"),
+            new CultureInfo("zh-TW"),
             new CultureInfo("ja-JP")
         ];
 
-        // Set default culture based on system
+        // Set default culture based on system, fallback to English
         var systemCulture = CultureInfo.CurrentUICulture;
         _currentCulture = _availableCultures.FirstOrDefault(c =>
             c.TwoLetterISOLanguageName == systemCulture.TwoLetterISOLanguageName)
-            ?? _availableCultures[0];
+            ?? _availableCultures[0]; // en-US as default
 
         LoadCoreResources();
     }
@@ -169,6 +168,8 @@ public class LocalizationService : ILocalizationService
         }
     }
 
+    private const string FallbackCulture = "en-US";
+
     private string? GetString(string cultureName, string key)
     {
         // Try exact culture
@@ -178,9 +179,9 @@ public class LocalizationService : ILocalizationService
             return value;
         }
 
-        // Try fallback to default culture (zh-TW)
-        if (cultureName != "zh-TW" &&
-            _coreResources.TryGetValue("zh-TW", out var fallbackResources) &&
+        // Try fallback to English
+        if (cultureName != FallbackCulture &&
+            _coreResources.TryGetValue(FallbackCulture, out var fallbackResources) &&
             fallbackResources.TryGetValue(key, out var fallbackValue))
         {
             return fallbackValue;
@@ -200,9 +201,9 @@ public class LocalizationService : ILocalizationService
                 return value;
             }
 
-            // Try fallback to default culture
-            if (cultureName != "zh-TW" &&
-                pluginDict.TryGetValue("zh-TW", out var fallbackResources) &&
+            // Try fallback to English
+            if (cultureName != FallbackCulture &&
+                pluginDict.TryGetValue(FallbackCulture, out var fallbackResources) &&
                 fallbackResources.TryGetValue(key, out var fallbackValue))
             {
                 return fallbackValue;

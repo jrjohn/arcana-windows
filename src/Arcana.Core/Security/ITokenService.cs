@@ -2,7 +2,6 @@ namespace Arcana.Core.Security;
 
 /// <summary>
 /// Token generation and validation service.
-/// Token 生成和驗證服務
 /// </summary>
 public interface ITokenService
 {

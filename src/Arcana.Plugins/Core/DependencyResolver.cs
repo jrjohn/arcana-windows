@@ -5,7 +5,6 @@ namespace Arcana.Plugins.Core;
 
 /// <summary>
 /// Resolves plugin dependencies with version constraints.
-/// 解析帶版本約束的插件依賴
 /// </summary>
 public class DependencyResolver
 {

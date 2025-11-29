@@ -10,7 +10,6 @@ namespace Arcana.Infrastructure.Services;
 
 /// <summary>
 /// Customer service implementation.
-/// 客戶服務實作
 /// </summary>
 public class CustomerService : ICustomerService
 {

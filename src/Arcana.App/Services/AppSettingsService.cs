@@ -1,23 +1,42 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Text.Json;
 
 namespace Arcana.App.Services;
 
 /// <summary>
 /// Application settings model.
-/// 應用程式設定模型
 /// </summary>
 public class AppSettings
 {
+    private static readonly string[] SupportedLanguages = ["zh-TW", "en-US", "ja-JP"];
+
     public string ThemeId { get; set; } = "System";
-    public string LanguageCode { get; set; } = "zh-TW";
+    public string LanguageCode { get; set; } = GetDefaultLanguage();
     public bool AutoSyncEnabled { get; set; } = true;
     public int SyncFrequencyMinutes { get; set; } = 5;
+
+    private static string GetDefaultLanguage()
+    {
+        var systemCulture = CultureInfo.CurrentUICulture;
+
+        // Try exact match first
+        var exactMatch = SupportedLanguages.FirstOrDefault(l =>
+            l.Equals(systemCulture.Name, StringComparison.OrdinalIgnoreCase));
+        if (exactMatch != null) return exactMatch;
+
+        // Try matching by two-letter language code
+        var languageMatch = SupportedLanguages.FirstOrDefault(l =>
+            l.StartsWith(systemCulture.TwoLetterISOLanguageName, StringComparison.OrdinalIgnoreCase));
+        if (languageMatch != null) return languageMatch;
+
+        // Default to English
+        return "en-US";
+    }
 }
 
 /// <summary>
 /// Application settings service for persisting user preferences.
-/// 應用程式設定服務，用於保存使用者偏好設定
 /// </summary>
 public class AppSettingsService
 {

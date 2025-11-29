@@ -5,42 +5,41 @@ namespace Arcana.Domain.Validation;
 
 /// <summary>
 /// Product entity validator.
-/// 產品實體驗證器
 /// </summary>
 public class ProductValidator : AbstractValidator<Product>
 {
     public ProductValidator()
     {
         RuleFor(x => x.Code)
-            .NotEmpty().WithMessage("產品代碼不可為空")
-            .MaximumLength(50).WithMessage("產品代碼不可超過50個字元");
+            .NotEmpty().WithMessage("Product code cannot be empty")
+            .MaximumLength(50).WithMessage("Product code cannot exceed 50 characters");
 
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("產品名稱不可為空")
-            .MaximumLength(200).WithMessage("產品名稱不可超過200個字元");
+            .NotEmpty().WithMessage("Product name cannot be empty")
+            .MaximumLength(200).WithMessage("Product name cannot exceed 200 characters");
 
         RuleFor(x => x.Unit)
-            .NotEmpty().WithMessage("單位不可為空")
-            .MaximumLength(10).WithMessage("單位不可超過10個字元");
+            .NotEmpty().WithMessage("Unit cannot be empty")
+            .MaximumLength(10).WithMessage("Unit cannot exceed 10 characters");
 
         RuleFor(x => x.Price)
-            .GreaterThanOrEqualTo(0).WithMessage("售價不可為負數");
+            .GreaterThanOrEqualTo(0).WithMessage("Price cannot be negative");
 
         RuleFor(x => x.Cost)
-            .GreaterThanOrEqualTo(0).WithMessage("成本不可為負數");
+            .GreaterThanOrEqualTo(0).WithMessage("Cost cannot be negative");
 
         RuleFor(x => x.StockQuantity)
-            .GreaterThanOrEqualTo(0).WithMessage("庫存數量不可為負數");
+            .GreaterThanOrEqualTo(0).WithMessage("Stock quantity cannot be negative");
 
         RuleFor(x => x.MinStockLevel)
-            .GreaterThanOrEqualTo(0).WithMessage("最低庫存不可為負數");
+            .GreaterThanOrEqualTo(0).WithMessage("Minimum stock level cannot be negative");
 
         RuleFor(x => x.MaxStockLevel)
-            .GreaterThanOrEqualTo(x => x.MinStockLevel).WithMessage("最高庫存不可小於最低庫存")
+            .GreaterThanOrEqualTo(x => x.MinStockLevel).WithMessage("Maximum stock level cannot be less than minimum stock level")
             .When(x => x.MaxStockLevel > 0);
 
         RuleFor(x => x.Barcode)
-            .MaximumLength(50).WithMessage("條碼不可超過50個字元")
+            .MaximumLength(50).WithMessage("Barcode cannot exceed 50 characters")
             .When(x => !string.IsNullOrEmpty(x.Barcode));
     }
 }

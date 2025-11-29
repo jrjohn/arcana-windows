@@ -5,7 +5,6 @@ namespace Arcana.App.Navigation;
 
 /// <summary>
 /// Navigation service implementation for WinUI.
-/// WinUI 導航服務實作
 /// </summary>
 public class NavigationService : INavigationService
 {

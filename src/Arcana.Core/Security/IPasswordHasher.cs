@@ -2,7 +2,6 @@ namespace Arcana.Core.Security;
 
 /// <summary>
 /// Password hashing service interface.
-/// 密碼雜湊服務介面
 /// </summary>
 public interface IPasswordHasher
 {

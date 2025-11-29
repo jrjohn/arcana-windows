@@ -10,7 +10,6 @@ namespace Arcana.App.ViewModels;
 
 /// <summary>
 /// ViewModel for order detail page.
-/// 訂單明細頁面 ViewModel
 /// </summary>
 public partial class OrderDetailViewModel : ViewModelBase
 {
@@ -51,7 +50,7 @@ public partial class OrderDetailViewModel : ViewModelBase
     private bool _isEditing;
 
     public bool IsNew => _isNew;
-    public string Title => _isNew ? "新增訂單" : $"訂單 {Order.OrderNumber}";
+    public string Title => _isNew ? "New Order" : $"Order {Order.OrderNumber}";
 
     public OrderDetailViewModel(
         IOrderService orderService,
@@ -127,13 +126,13 @@ public partial class OrderDetailViewModel : ViewModelBase
             // Validate
             if (SelectedCustomer == null)
             {
-                await _windowService.ShowWarningAsync("請選擇客戶");
+                await _windowService.ShowWarningAsync("Please select a customer");
                 return;
             }
 
             if (Items.Count == 0)
             {
-                await _windowService.ShowWarningAsync("請至少新增一個訂單項目");
+                await _windowService.ShowWarningAsync("Please add at least one order item");
                 return;
             }
 
@@ -162,7 +161,7 @@ public partial class OrderDetailViewModel : ViewModelBase
                 IsDirty = false;
                 OnPropertyChanged(nameof(Title));
 
-                await _windowService.ShowInfoAsync("訂單已儲存");
+                await _windowService.ShowInfoAsync("Order saved successfully");
             }
             else
             {
@@ -177,8 +176,8 @@ public partial class OrderDetailViewModel : ViewModelBase
         if (IsDirty)
         {
             var confirmed = await _windowService.ShowConfirmAsync(
-                "放棄變更",
-                "您有未儲存的變更，確定要放棄嗎？");
+                "Discard Changes",
+                "You have unsaved changes. Are you sure you want to discard them?");
 
             if (!confirmed) return;
         }

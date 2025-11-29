@@ -4,7 +4,6 @@ namespace Arcana.Plugins.Data;
 
 /// <summary>
 /// Database context for plugin data storage.
-/// 插件資料儲存的資料庫上下文
 /// </summary>
 public class PluginDbContext : DbContext
 {
