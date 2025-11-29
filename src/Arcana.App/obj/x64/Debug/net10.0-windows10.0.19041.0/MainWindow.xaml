@@ -7,7 +7,15 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     Title="Arcana">
 
-    <Grid>
+    <Grid x:ConnectionId='2' x:Name="RootGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.Resources>
+            <!-- Default theme brushes (will be overridden by ThemeService) -->
+            <SolidColorBrush x:Key="ThemeAccentBrush" Color="#0078D4"/>
+            <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="#F9F9F9"/>
+            <SolidColorBrush x:Key="ThemePaneBackgroundBrush" Color="#F3F3F3"/>
+            <SolidColorBrush x:Key="ThemeTextPrimaryBrush" Color="#000000"/>
+            <SolidColorBrush x:Key="ThemeTextSecondaryBrush" Color="#606060"/>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -15,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title Bar with Menu -->
-        <Grid x:ConnectionId='2' x:Name="AppTitleBar" Height="32" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+        <Grid x:ConnectionId='3' x:Name="AppTitleBar" Height="32" Background="{ThemeResource NavigationViewDefaultPaneBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -30,7 +38,7 @@
             </StackPanel>
 
             <!-- Dynamic Plugin Menu Bar -->
-            <MenuBar x:ConnectionId='13' x:Name="MainMenuBar" Grid.Column="1" VerticalAlignment="Center">
+            <MenuBar x:ConnectionId='14' x:Name="MainMenuBar" Grid.Column="1" VerticalAlignment="Center">
                 <!-- Menu items are populated dynamically from IMenuRegistry -->
             </MenuBar>
 
@@ -45,7 +53,7 @@
         </Grid>
 
         <!-- Main Content -->
-        <NavigationView x:ConnectionId='3' x:Name="NavView"
+        <NavigationView x:ConnectionId='4' x:Name="NavView"
                        Grid.Row="1"
                        IsBackButtonVisible="Auto"
                        IsSettingsVisible="True"
@@ -53,7 +61,8 @@
                        IsPaneOpen="True"
                        OpenPaneLength="240"
                                                                   
-                                                            >
+                                                            
+                       Background="{ThemeResource NavigationViewDefaultPaneBackground}">
 
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Home" Content="首頁" Tag="HomePage"/>
@@ -75,14 +84,14 @@
                 </NavigationViewItem>
                 <NavigationViewItem Icon="Sync" Content="同步狀態" Tag="SyncPage">
                     <NavigationViewItem.InfoBadge>
-                        <InfoBadge x:ConnectionId='10' x:Name="SyncBadge" Value="0"/>
+                        <InfoBadge x:ConnectionId='11' x:Name="SyncBadge" Value="0"/>
                     </NavigationViewItem.InfoBadge>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
 
             <!-- Tab View for MDI -->
             <Grid>
-                <TabView x:ConnectionId='11' x:Name="TabViewMain"
+                <TabView x:ConnectionId='12' x:Name="TabViewMain"
                         IsAddTabButtonVisible="False"
                                                                      
                         CanReorderTabs="True"
@@ -96,7 +105,7 @@
                     </TabView.Resources>
                     <TabView.TabStripHeader>
                         <Grid Padding="4,0">
-                            <Button x:ConnectionId='12' Content="+"
+                            <Button x:ConnectionId='13' Content="+"
                                    ToolTipService.ToolTip="新增分頁"
                                                        
                                    VerticalAlignment="Center"
@@ -109,7 +118,7 @@
         </NavigationView>
 
         <!-- Status Bar -->
-        <Grid x:ConnectionId='4' x:Name="StatusBar" Grid.Row="2" Height="24" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+        <Grid x:ConnectionId='5' x:Name="StatusBar" Grid.Row="2" Height="24" Background="{ThemeResource NavigationViewDefaultPaneBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -117,23 +126,23 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock x:ConnectionId='5' x:Name="StatusMessage"
+            <TextBlock x:ConnectionId='6' x:Name="StatusMessage"
                       Text="就緒"
                       VerticalAlignment="Center"
                       Margin="12,0"
                       Style="{StaticResource CaptionTextBlockStyle}"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="8,0">
-                <FontIcon x:ConnectionId='8' Glyph="&#xE701;" FontSize="12" x:Name="NetworkIcon"/>
-                <TextBlock x:ConnectionId='9' x:Name="NetworkStatus" Text="線上" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                <FontIcon x:ConnectionId='9' Glyph="&#xE701;" FontSize="12" x:Name="NetworkIcon"/>
+                <TextBlock x:ConnectionId='10' x:Name="NetworkStatus" Text="線上" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" Margin="8,0">
                 <FontIcon Glyph="&#xE895;" FontSize="12"/>
-                <TextBlock x:ConnectionId='7' x:Name="SyncStatus" Text="已同步" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                <TextBlock x:ConnectionId='8' x:Name="SyncStatus" Text="已同步" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <TextBlock x:ConnectionId='6' Grid.Column="3"
+            <TextBlock x:ConnectionId='7' Grid.Column="3"
                       x:Name="CurrentTime"
                       Style="{StaticResource CaptionTextBlockStyle}"
                       VerticalAlignment="Center"

@@ -224,7 +224,7 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
 
         private void InitTypeTables()
         {
-            _typeNameTable = new string[84];
+            _typeNameTable = new string[87];
             _typeNameTable[0] = "Microsoft.UI.Xaml.Controls.XamlControlsResources";
             _typeNameTable[1] = "Microsoft.UI.Xaml.ResourceDictionary";
             _typeNameTable[2] = "Object";
@@ -307,10 +307,13 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             _typeNameTable[79] = "CommunityToolkit.Mvvm.ComponentModel.ObservableObject";
             _typeNameTable[80] = "Arcana.App.Views.ProductListPage";
             _typeNameTable[81] = "Arcana.App.Views.SettingsPage";
-            _typeNameTable[82] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
-            _typeNameTable[83] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
+            _typeNameTable[82] = "System.Collections.Generic.List`1<Arcana.App.Views.ThemeItem>";
+            _typeNameTable[83] = "Arcana.App.Views.ThemeItem";
+            _typeNameTable[84] = "Windows.UI.Color";
+            _typeNameTable[85] = "Microsoft.UI.Xaml.Controls.TreeViewNode";
+            _typeNameTable[86] = "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>";
 
-            _typeTable = new global::System.Type[84];
+            _typeTable = new global::System.Type[87];
             _typeTable[0] = typeof(global::Microsoft.UI.Xaml.Controls.XamlControlsResources);
             _typeTable[1] = typeof(global::Microsoft.UI.Xaml.ResourceDictionary);
             _typeTable[2] = typeof(global::System.Object);
@@ -393,8 +396,11 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             _typeTable[79] = typeof(global::CommunityToolkit.Mvvm.ComponentModel.ObservableObject);
             _typeTable[80] = typeof(global::Arcana.App.Views.ProductListPage);
             _typeTable[81] = typeof(global::Arcana.App.Views.SettingsPage);
-            _typeTable[82] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
-            _typeTable[83] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
+            _typeTable[82] = typeof(global::System.Collections.Generic.List<global::Arcana.App.Views.ThemeItem>);
+            _typeTable[83] = typeof(global::Arcana.App.Views.ThemeItem);
+            _typeTable[84] = typeof(global::Windows.UI.Color);
+            _typeTable[85] = typeof(global::Microsoft.UI.Xaml.Controls.TreeViewNode);
+            _typeTable[86] = typeof(global::System.Collections.Generic.IList<global::Microsoft.UI.Xaml.Controls.TreeViewNode>);
         }
 
         private int LookupTypeIndexByName(string typeName)
@@ -461,7 +467,9 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
         private object Activate_76_PluginManagerPage() { return new global::Arcana.App.Views.PluginManagerPage(); }
         private object Activate_80_ProductListPage() { return new global::Arcana.App.Views.ProductListPage(); }
         private object Activate_81_SettingsPage() { return new global::Arcana.App.Views.SettingsPage(); }
-        private object Activate_82_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
+        private object Activate_82_List() { return new global::System.Collections.Generic.List<global::Arcana.App.Views.ThemeItem>(); }
+        private object Activate_83_ThemeItem() { return new global::Arcana.App.Views.ThemeItem(); }
+        private object Activate_85_TreeViewNode() { return new global::Microsoft.UI.Xaml.Controls.TreeViewNode(); }
         private void MapAdd_0_XamlControlsResources(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.Object, global::System.Object>)instance;
@@ -487,7 +495,13 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             var newItem = (global::Microsoft.UI.Xaml.Controls.MenuFlyoutItemBase)item;
             collection.Add(newItem);
         }
-        private void VectorAdd_83_IList(object instance, object item)
+        private void VectorAdd_82_List(object instance, object item)
+        {
+            var collection = (global::System.Collections.Generic.ICollection<global::Arcana.App.Views.ThemeItem>)instance;
+            var newItem = (global::Arcana.App.Views.ThemeItem)item;
+            collection.Add(newItem);
+        }
+        private void VectorAdd_86_IList(object instance, object item)
         {
             var collection = (global::System.Collections.Generic.ICollection<global::Microsoft.UI.Xaml.Controls.TreeViewNode>)instance;
             var newItem = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)item;
@@ -1099,13 +1113,40 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             case 81:   //  Arcana.App.Views.SettingsPage
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_81_SettingsPage;
+                userType.AddMemberName("ThemeItems");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 82:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
+            case 82:   //  System.Collections.Generic.List`1<Arcana.App.Views.ThemeItem>
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.CollectionAdd = VectorAdd_82_List;
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 83:   //  Arcana.App.Views.ThemeItem
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
+                userType.Activator = Activate_83_ThemeItem;
+                userType.AddMemberName("Id");
+                userType.AddMemberName("DisplayName");
+                userType.AddMemberName("AccentColor");
+                userType.AddMemberName("BackgroundColor");
+                userType.AddMemberName("PaneColor");
+                userType.AddMemberName("TextColor");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 84:   //  Windows.UI.Color
+                userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("System.ValueType"));
+                userType.SetIsReturnTypeStub();
+                xamlType = userType;
+                break;
+
+            case 85:   //  Microsoft.UI.Xaml.Controls.TreeViewNode
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Microsoft.UI.Xaml.DependencyObject"));
-                userType.Activator = Activate_82_TreeViewNode;
+                userType.Activator = Activate_85_TreeViewNode;
                 userType.AddMemberName("Children");
                 userType.AddMemberName("Content");
                 userType.AddMemberName("Depth");
@@ -1117,9 +1158,9 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlType = userType;
                 break;
 
-            case 83:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
+            case 86:   //  System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>
                 userType = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType(this, typeName, type, null);
-                userType.CollectionAdd = VectorAdd_83_IList;
+                userType.CollectionAdd = VectorAdd_86_IList;
                 userType.SetIsReturnTypeStub();
                 xamlType = userType;
                 break;
@@ -2279,52 +2320,117 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
             var that = (global::Arcana.App.Views.PluginManagerPage)instance;
             return that.ViewModel;
         }
-        private object get_116_TreeViewNode_Children(object instance)
+        private object get_116_SettingsPage_ThemeItems(object instance)
+        {
+            var that = (global::Arcana.App.Views.SettingsPage)instance;
+            return that.ThemeItems;
+        }
+        private object get_117_ThemeItem_Id(object instance)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            return that.Id;
+        }
+        private void set_117_ThemeItem_Id(object instance, object Value)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            that.Id = (global::System.String)Value;
+        }
+        private object get_118_ThemeItem_DisplayName(object instance)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            return that.DisplayName;
+        }
+        private void set_118_ThemeItem_DisplayName(object instance, object Value)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            that.DisplayName = (global::System.String)Value;
+        }
+        private object get_119_ThemeItem_AccentColor(object instance)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            return that.AccentColor;
+        }
+        private void set_119_ThemeItem_AccentColor(object instance, object Value)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            that.AccentColor = (global::Windows.UI.Color)Value;
+        }
+        private object get_120_ThemeItem_BackgroundColor(object instance)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            return that.BackgroundColor;
+        }
+        private void set_120_ThemeItem_BackgroundColor(object instance, object Value)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            that.BackgroundColor = (global::Windows.UI.Color)Value;
+        }
+        private object get_121_ThemeItem_PaneColor(object instance)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            return that.PaneColor;
+        }
+        private void set_121_ThemeItem_PaneColor(object instance, object Value)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            that.PaneColor = (global::Windows.UI.Color)Value;
+        }
+        private object get_122_ThemeItem_TextColor(object instance)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            return that.TextColor;
+        }
+        private void set_122_ThemeItem_TextColor(object instance, object Value)
+        {
+            var that = (global::Arcana.App.Views.ThemeItem)instance;
+            that.TextColor = (global::Windows.UI.Color)Value;
+        }
+        private object get_123_TreeViewNode_Children(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Children;
         }
-        private object get_117_TreeViewNode_Content(object instance)
+        private object get_124_TreeViewNode_Content(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Content;
         }
-        private void set_117_TreeViewNode_Content(object instance, object Value)
+        private void set_124_TreeViewNode_Content(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.Content = (global::System.Object)Value;
         }
-        private object get_118_TreeViewNode_Depth(object instance)
+        private object get_125_TreeViewNode_Depth(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Depth;
         }
-        private object get_119_TreeViewNode_HasChildren(object instance)
+        private object get_126_TreeViewNode_HasChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasChildren;
         }
-        private object get_120_TreeViewNode_HasUnrealizedChildren(object instance)
+        private object get_127_TreeViewNode_HasUnrealizedChildren(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.HasUnrealizedChildren;
         }
-        private void set_120_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
+        private void set_127_TreeViewNode_HasUnrealizedChildren(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.HasUnrealizedChildren = (global::System.Boolean)Value;
         }
-        private object get_121_TreeViewNode_IsExpanded(object instance)
+        private object get_128_TreeViewNode_IsExpanded(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.IsExpanded;
         }
-        private void set_121_TreeViewNode_IsExpanded(object instance, object Value)
+        private void set_128_TreeViewNode_IsExpanded(object instance, object Value)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             that.IsExpanded = (global::System.Boolean)Value;
         }
-        private object get_122_TreeViewNode_Parent(object instance)
+        private object get_129_TreeViewNode_Parent(object instance)
         {
             var that = (global::Microsoft.UI.Xaml.Controls.TreeViewNode)instance;
             return that.Parent;
@@ -3146,50 +3252,92 @@ namespace Arcana.App.Arcana_App_XamlTypeInfo
                 xamlMember.Getter = get_115_PluginManagerPage_ViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
+            case "Arcana.App.Views.SettingsPage.ThemeItems":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Arcana.App.Views.SettingsPage");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "ThemeItems", "System.Collections.Generic.List`1<Arcana.App.Views.ThemeItem>");
+                xamlMember.Getter = get_116_SettingsPage_ThemeItems;
+                xamlMember.SetIsReadOnly();
+                break;
+            case "Arcana.App.Views.ThemeItem.Id":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Arcana.App.Views.ThemeItem");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Id", "String");
+                xamlMember.Getter = get_117_ThemeItem_Id;
+                xamlMember.Setter = set_117_ThemeItem_Id;
+                break;
+            case "Arcana.App.Views.ThemeItem.DisplayName":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Arcana.App.Views.ThemeItem");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "DisplayName", "String");
+                xamlMember.Getter = get_118_ThemeItem_DisplayName;
+                xamlMember.Setter = set_118_ThemeItem_DisplayName;
+                break;
+            case "Arcana.App.Views.ThemeItem.AccentColor":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Arcana.App.Views.ThemeItem");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "AccentColor", "Windows.UI.Color");
+                xamlMember.Getter = get_119_ThemeItem_AccentColor;
+                xamlMember.Setter = set_119_ThemeItem_AccentColor;
+                break;
+            case "Arcana.App.Views.ThemeItem.BackgroundColor":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Arcana.App.Views.ThemeItem");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "BackgroundColor", "Windows.UI.Color");
+                xamlMember.Getter = get_120_ThemeItem_BackgroundColor;
+                xamlMember.Setter = set_120_ThemeItem_BackgroundColor;
+                break;
+            case "Arcana.App.Views.ThemeItem.PaneColor":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Arcana.App.Views.ThemeItem");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "PaneColor", "Windows.UI.Color");
+                xamlMember.Getter = get_121_ThemeItem_PaneColor;
+                xamlMember.Setter = set_121_ThemeItem_PaneColor;
+                break;
+            case "Arcana.App.Views.ThemeItem.TextColor":
+                userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Arcana.App.Views.ThemeItem");
+                xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "TextColor", "Windows.UI.Color");
+                xamlMember.Getter = get_122_ThemeItem_TextColor;
+                xamlMember.Setter = set_122_ThemeItem_TextColor;
+                break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Children":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Children", "System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Controls.TreeViewNode>");
-                xamlMember.Getter = get_116_TreeViewNode_Children;
+                xamlMember.Getter = get_123_TreeViewNode_Children;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Content":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Content", "Object");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_117_TreeViewNode_Content;
-                xamlMember.Setter = set_117_TreeViewNode_Content;
+                xamlMember.Getter = get_124_TreeViewNode_Content;
+                xamlMember.Setter = set_124_TreeViewNode_Content;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Depth":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Depth", "Int32");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_118_TreeViewNode_Depth;
+                xamlMember.Getter = get_125_TreeViewNode_Depth;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasChildren":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "HasChildren", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_119_TreeViewNode_HasChildren;
+                xamlMember.Getter = get_126_TreeViewNode_HasChildren;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.HasUnrealizedChildren":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "HasUnrealizedChildren", "Boolean");
-                xamlMember.Getter = get_120_TreeViewNode_HasUnrealizedChildren;
-                xamlMember.Setter = set_120_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Getter = get_127_TreeViewNode_HasUnrealizedChildren;
+                xamlMember.Setter = set_127_TreeViewNode_HasUnrealizedChildren;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.IsExpanded":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "IsExpanded", "Boolean");
                 xamlMember.SetIsDependencyProperty();
-                xamlMember.Getter = get_121_TreeViewNode_IsExpanded;
-                xamlMember.Setter = set_121_TreeViewNode_IsExpanded;
+                xamlMember.Getter = get_128_TreeViewNode_IsExpanded;
+                xamlMember.Setter = set_128_TreeViewNode_IsExpanded;
                 break;
             case "Microsoft.UI.Xaml.Controls.TreeViewNode.Parent":
                 userType = (global::Arcana.App.Arcana_App_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Microsoft.UI.Xaml.Controls.TreeViewNode");
                 xamlMember = new global::Arcana.App.Arcana_App_XamlTypeInfo.XamlMember(this, "Parent", "Microsoft.UI.Xaml.Controls.TreeViewNode");
-                xamlMember.Getter = get_122_TreeViewNode_Parent;
+                xamlMember.Getter = get_129_TreeViewNode_Parent;
                 xamlMember.SetIsReadOnly();
                 break;
             }

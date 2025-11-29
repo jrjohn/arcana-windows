@@ -14,11 +14,67 @@
                 <StackPanel Spacing="16">
                     <TextBlock x:Name="AppearanceTitle" Text="外觀" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                    <ComboBox x:Name="ThemeComboBox" Header="主題" Width="200" SelectionChanged="ThemeComboBox_SelectionChanged">
-                        <ComboBoxItem x:Name="ThemeSystem" Content="跟隨系統" Tag="System"/>
-                        <ComboBoxItem x:Name="ThemeLight" Content="淺色" Tag="Light"/>
-                        <ComboBoxItem x:Name="ThemeDark" Content="深色" Tag="Dark"/>
-                    </ComboBox>
+                    <!-- Theme Selection -->
+                    <TextBlock x:Name="ThemeLabel" Text="主題" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                    <GridView x:Name="ThemeGridView"
+                              SelectionMode="Single"
+                              SelectionChanged="ThemeGridView_SelectionChanged"
+                              ItemsSource="{x:Bind ThemeItems}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="120" Height="80" CornerRadius="8"
+                                        BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                                        BorderThickness="2"
+                                        Margin="4">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <!-- Theme Preview -->
+                                        <Grid Grid.Row="0" CornerRadius="6,6,0,0">
+                                            <Grid.Background>
+                                                <SolidColorBrush Color="{Binding BackgroundColor}"/>
+                                            </Grid.Background>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!-- Sidebar Preview -->
+                                            <Border Grid.Column="0" CornerRadius="6,0,0,0">
+                                                <Border.Background>
+                                                    <SolidColorBrush Color="{Binding PaneColor}"/>
+                                                </Border.Background>
+                                            </Border>
+                                            <!-- Content Area -->
+                                            <StackPanel Grid.Column="1" Padding="4" Spacing="2">
+                                                <Border Height="4" Width="40" CornerRadius="2" HorizontalAlignment="Left">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Color="{Binding AccentColor}"/>
+                                                    </Border.Background>
+                                                </Border>
+                                                <Border Height="3" Width="30" CornerRadius="1" HorizontalAlignment="Left" Opacity="0.5">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Color="{Binding TextColor}"/>
+                                                    </Border.Background>
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
+                                        <!-- Theme Name -->
+                                        <Border Grid.Row="1"
+                                                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                                CornerRadius="0,0,6,6"
+                                                Padding="4,2">
+                                            <TextBlock Text="{Binding DisplayName}"
+                                                       FontSize="11"
+                                                       HorizontalAlignment="Center"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
 
                     <ComboBox x:Name="LanguageComboBox" Header="語言" Width="200" SelectionChanged="LanguageComboBox_SelectionChanged">
                         <ComboBoxItem Content="繁體中文" Tag="zh-TW"/>

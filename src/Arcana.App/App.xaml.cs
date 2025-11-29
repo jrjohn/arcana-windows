@@ -1,5 +1,6 @@
 using Arcana.App.Navigation;
 using Arcana.App.Plugins;
+using Arcana.App.Services;
 using Arcana.App.ViewModels;
 using Arcana.Data.Local;
 using Arcana.Domain.Entities;
@@ -53,6 +54,10 @@ public partial class App : Application
                 // Register Window Service
                 services.AddSingleton<IWindowService, WindowService>();
 
+                // Register App Services
+                services.AddSingleton<ThemeService>();
+                services.AddSingleton<AppSettingsService>();
+
                 // Register ViewModels
                 services.AddTransient<PluginManagerViewModel>();
                 services.AddTransient<OrderListViewModel>();
@@ -71,7 +76,43 @@ public partial class App : Application
         // Show main window
         _window = Services.GetRequiredService<MainWindow>();
         MainWindow = _window;
+
+        // Apply saved language before UI is shown
+        ApplyLanguageSettings();
+
+        // Apply saved theme after content is loaded
+        if (_window.Content is FrameworkElement rootElement)
+        {
+            rootElement.Loaded += OnRootElementLoaded;
+        }
+
         _window.Activate();
+    }
+
+    private void ApplyLanguageSettings()
+    {
+        var settingsService = Services.GetRequiredService<AppSettingsService>();
+        var localizationService = Services.GetRequiredService<ILocalizationService>();
+
+        var savedLanguage = settingsService.LanguageCode;
+        if (!string.IsNullOrEmpty(savedLanguage))
+        {
+            localizationService.SetCulture(savedLanguage);
+        }
+    }
+
+    private void OnRootElementLoaded(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement rootElement)
+        {
+            rootElement.Loaded -= OnRootElementLoaded;
+
+            var settingsService = Services.GetRequiredService<AppSettingsService>();
+            var themeService = Services.GetRequiredService<ThemeService>();
+            var savedThemeId = settingsService.ThemeId;
+
+            themeService.ApplyTheme(savedThemeId, rootElement);
+        }
     }
 
     private async Task InitializeDatabaseAsync()
