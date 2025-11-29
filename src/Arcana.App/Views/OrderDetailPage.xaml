@@ -163,9 +163,9 @@
                                                 <Button Content="+" Width="32" Click="IncreaseQty_Click"/>
                                             </StackPanel>
 
-                                            <TextBlock Grid.Column="4" Text="{Binding UnitPrice, StringFormat='{}{0:N0}'}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="4" Text="{Binding UnitPrice, Converter={StaticResource NumberFormatConverter}}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                             <NumberBox Grid.Column="5" Value="{Binding DiscountPercent, Mode=TwoWay}" Minimum="0" Maximum="100" HorizontalAlignment="Center"/>
-                                            <TextBlock Grid.Column="6" Text="{Binding LineTotal, StringFormat='{}{0:N0}'}" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                            <TextBlock Grid.Column="6" Text="{Binding LineTotal, Converter={StaticResource NumberFormatConverter}}" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="SemiBold"/>
 
                                             <Button Grid.Column="7" Click="RemoveItem_Click" HorizontalAlignment="Center">
                                                 <FontIcon Glyph="&#xE74D;" FontSize="14"/>

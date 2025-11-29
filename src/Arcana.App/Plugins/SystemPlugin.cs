@@ -36,7 +36,7 @@ public class SystemPlugin : PluginBase
             Title = "Plugin Manager",
             Icon = "\uEA86",
             Type = ViewType.Page,
-            ViewType = typeof(PluginManagerPage),
+            ViewClass = typeof(PluginManagerPage),
             ViewModelType = typeof(PluginManagerViewModel),
             Category = "System"
         });
@@ -47,7 +47,7 @@ public class SystemPlugin : PluginBase
             Title = "Settings",
             Icon = "\uE713",
             Type = ViewType.Page,
-            ViewType = typeof(SettingsPage),
+            ViewClass = typeof(SettingsPage),
             Category = "System"
         });
 

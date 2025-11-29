@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "NstFn5s/n/s=",
+  "dgSpecHash": "TbYMZ8BULMI=",
   "success": true,
-  "projectFilePath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/Arcana.Domain.csproj",
+  "projectFilePath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\Arcana.Domain.csproj",
   "expectedPackageFiles": [
-    "/Users/jrjohn/.nuget/packages/fluentvalidation/11.9.0/fluentvalidation.11.9.0.nupkg.sha512",
-    "/Users/jrjohn/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.0/microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
-    "/Users/jrjohn/.nuget/packages/microsoft.extensions.logging.abstractions/10.0.0/microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512"
+    "C:\\Users\\jrjohn\\.nuget\\packages\\fluentvalidation\\11.9.0\\fluentvalidation.11.9.0.nupkg.sha512",
+    "C:\\Users\\jrjohn\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\jrjohn\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.0\\microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512"
   ],
   "logs": []
 }

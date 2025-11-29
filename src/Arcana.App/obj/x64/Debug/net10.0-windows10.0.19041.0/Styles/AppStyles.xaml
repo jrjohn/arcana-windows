@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Page Header Style -->
+    <Style x:Key="PageHeaderTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Margin" Value="0,0,0,16"/>
+    </Style>
+
+    <!-- Section Header Style -->
+    <Style x:Key="SectionHeaderTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Margin" Value="0,16,0,8"/>
+    </Style>
+
+    <!-- Card Style -->
+    <Style x:Key="CardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="16"/>
+    </Style>
+
+    <!-- Primary Button Style -->
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+        <Setter Property="MinWidth" Value="120"/>
+    </Style>
+
+    <!-- Form Field Style -->
+    <Style x:Key="FormFieldStyle" TargetType="TextBox">
+        <Setter Property="Margin" Value="0,0,0,12"/>
+    </Style>
+
+    <!-- DataGrid Header Style -->
+    <Style x:Key="DataGridHeaderStyle" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="8,4"/>
+    </Style>
+
+    <!-- Status Badge Styles -->
+    <Style x:Key="StatusBadgeStyle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Padding" Value="8,4"/>
+    </Style>
+
+    <SolidColorBrush x:Key="StatusPendingBrush" Color="#FFF4B400"/>
+    <SolidColorBrush x:Key="StatusConfirmedBrush" Color="#FF4285F4"/>
+    <SolidColorBrush x:Key="StatusCompletedBrush" Color="#FF34A853"/>
+    <SolidColorBrush x:Key="StatusCancelledBrush" Color="#FFEA4335"/>
+
+    <!-- Toolbar Style -->
+    <Style x:Key="ToolbarStyle" TargetType="CommandBar">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="IsOpen" Value="False"/>
+        <Setter Property="DefaultLabelPosition" Value="Right"/>
+    </Style>
+
+</ResourceDictionary>
+

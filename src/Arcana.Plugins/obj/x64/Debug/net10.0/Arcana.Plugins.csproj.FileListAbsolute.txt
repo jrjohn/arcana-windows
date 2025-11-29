@@ -1,0 +1,16 @@
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/bin/x64/Debug/net10.0/Arcana.Plugins.deps.json
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/bin/x64/Debug/net10.0/Arcana.Plugins.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/bin/x64/Debug/net10.0/Arcana.Plugins.pdb
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/bin/x64/Debug/net10.0/Arcana.Plugins.Contracts.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/bin/x64/Debug/net10.0/Arcana.Plugins.Contracts.pdb
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.Plugins.csproj.AssemblyReference.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.Plugins.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.Plugins.AssemblyInfoInputs.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.Plugins.AssemblyInfo.cs
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.Plugins.csproj.CoreCompileInputs.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.Plugins.sourcelink.json
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.P.9F70F8B1.Up2Date
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.Plugins.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/refint/Arcana.Plugins.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/Arcana.Plugins.pdb
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/x64/Debug/net10.0/ref/Arcana.Plugins.dll

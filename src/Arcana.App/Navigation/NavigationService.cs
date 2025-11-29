@@ -1,4 +1,5 @@
 using Arcana.Plugins.Contracts;
+using NavEventArgs = Arcana.Plugins.Contracts.NavigationEventArgs;
 
 namespace Arcana.App.Navigation;
 
@@ -9,11 +10,15 @@ namespace Arcana.App.Navigation;
 public class NavigationService : INavigationService
 {
     private readonly IViewRegistry _viewRegistry;
+    private readonly Stack<string> _backStack = new();
+    private readonly Stack<string> _forwardStack = new();
 
-    public bool CanGoBack => false; // Implement with Frame navigation stack
+    public bool CanGoBack => _backStack.Count > 0;
+    public bool CanGoForward => _forwardStack.Count > 0;
     public string? CurrentViewId { get; private set; }
 
-    public event EventHandler<NavigationEventArgs>? Navigated;
+    public event EventHandler<NavEventArgs>? Navigated;
+    public event EventHandler<NavigatingCancelEventArgs>? Navigating;
 
     public NavigationService(IViewRegistry viewRegistry)
     {
@@ -22,10 +27,32 @@ public class NavigationService : INavigationService
 
     public Task<bool> NavigateToAsync(string viewId, object? parameter = null)
     {
-        // Implementation will be connected to MainWindow
-        CurrentViewId = viewId;
-        Navigated?.Invoke(this, new NavigationEventArgs
+        var previousViewId = CurrentViewId;
+
+        // Raise navigating event
+        var navigatingArgs = new NavigatingCancelEventArgs
         {
+            FromViewId = previousViewId,
+            ToViewId = viewId,
+            Parameter = parameter
+        };
+        Navigating?.Invoke(this, navigatingArgs);
+        if (navigatingArgs.Cancel)
+        {
+            return Task.FromResult(false);
+        }
+
+        // Save to back stack
+        if (!string.IsNullOrEmpty(CurrentViewId))
+        {
+            _backStack.Push(CurrentViewId);
+            _forwardStack.Clear();
+        }
+
+        CurrentViewId = viewId;
+        Navigated?.Invoke(this, new NavEventArgs
+        {
+            FromViewId = previousViewId,
             ToViewId = viewId,
             Parameter = parameter,
             NavigationType = NavigationType.Forward
@@ -35,9 +62,11 @@ public class NavigationService : INavigationService
 
     public Task<bool> NavigateToNewTabAsync(string viewId, object? parameter = null)
     {
+        var previousViewId = CurrentViewId;
         CurrentViewId = viewId;
-        Navigated?.Invoke(this, new NavigationEventArgs
+        Navigated?.Invoke(this, new NavEventArgs
         {
+            FromViewId = previousViewId,
             ToViewId = viewId,
             Parameter = parameter,
             NavigationType = NavigationType.NewTab
@@ -47,8 +76,55 @@ public class NavigationService : INavigationService
 
     public Task<bool> GoBackAsync()
     {
-        // Implement with Frame navigation
-        return Task.FromResult(false);
+        if (!CanGoBack) return Task.FromResult(false);
+
+        var previousViewId = CurrentViewId;
+        if (!string.IsNullOrEmpty(previousViewId))
+        {
+            _forwardStack.Push(previousViewId);
+        }
+
+        CurrentViewId = _backStack.Pop();
+        Navigated?.Invoke(this, new NavEventArgs
+        {
+            FromViewId = previousViewId,
+            ToViewId = CurrentViewId,
+            NavigationType = NavigationType.Back
+        });
+        return Task.FromResult(true);
+    }
+
+    public Task<bool> GoForwardAsync()
+    {
+        if (!CanGoForward) return Task.FromResult(false);
+
+        var previousViewId = CurrentViewId;
+        if (!string.IsNullOrEmpty(previousViewId))
+        {
+            _backStack.Push(previousViewId);
+        }
+
+        CurrentViewId = _forwardStack.Pop();
+        Navigated?.Invoke(this, new NavEventArgs
+        {
+            FromViewId = previousViewId,
+            ToViewId = CurrentViewId,
+            NavigationType = NavigationType.Forward
+        });
+        return Task.FromResult(true);
+    }
+
+    public IReadOnlyList<ViewDefinition> GetAvailableViews()
+    {
+        return _viewRegistry.GetAllViews();
+    }
+
+    public IReadOnlyList<ViewDefinition> GetViewsByCategory(string category)
+    {
+        return _viewRegistry.GetAllViews()
+            .Where(v => v.Category == category)
+            .OrderBy(v => v.Order)
+            .ToList();
     }
 
     public Task<TResult?> ShowDialogAsync<TResult>(string viewId, object? parameter = null)

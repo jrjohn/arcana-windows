@@ -37,62 +37,67 @@
         </Grid>
 
         <!-- Main Content -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <NavigationView x:Name="NavView"
+                       Grid.Row="1"
+                       IsBackButtonVisible="Auto"
+                       IsSettingsVisible="True"
+                       PaneDisplayMode="LeftCompact"
+                       OpenPaneLength="280"
+                       SelectionChanged="NavView_SelectionChanged"
+                       BackRequested="NavView_BackRequested">
 
-            <!-- Navigation View -->
-            <NavigationView x:Name="NavView"
-                           IsBackButtonVisible="Auto"
-                           IsSettingsVisible="True"
-                           PaneDisplayMode="Left"
-                           OpenPaneLength="280"
-                           SelectionChanged="NavView_SelectionChanged"
-                           BackRequested="NavView_BackRequested">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Icon="Home" Content="首頁" Tag="HomePage"/>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="業務"/>
+                <NavigationViewItem Icon="People" Content="客戶管理" Tag="CustomerListPage"/>
+                <NavigationViewItem Icon="Shop" Content="產品管理" Tag="ProductListPage"/>
+                <NavigationViewItem Icon="Document" Content="訂單管理" Tag="OrderListPage"/>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="報表"/>
+                <NavigationViewItem Icon="Library" Content="銷售報表" Tag="SalesReportPage"/>
+            </NavigationView.MenuItems>
 
-                <NavigationView.MenuItems>
-                    <NavigationViewItem Icon="Home" Content="首頁" Tag="HomePage"/>
-                    <NavigationViewItemSeparator/>
-                    <NavigationViewItemHeader Content="業務"/>
-                    <NavigationViewItem Icon="People" Content="客戶管理" Tag="CustomerListPage"/>
-                    <NavigationViewItem Icon="Shop" Content="產品管理" Tag="ProductListPage"/>
-                    <NavigationViewItem Icon="Document" Content="訂單管理" Tag="OrderListPage"/>
-                    <NavigationViewItemSeparator/>
-                    <NavigationViewItemHeader Content="報表"/>
-                    <NavigationViewItem Icon="Library" Content="銷售報表" Tag="SalesReportPage"/>
-                </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem Content="Plugin Manager" Tag="PluginManagerPage">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xEA86;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Icon="Sync" Content="同步狀態" Tag="SyncPage">
+                    <NavigationViewItem.InfoBadge>
+                        <InfoBadge x:Name="SyncBadge" Value="0"/>
+                    </NavigationViewItem.InfoBadge>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
 
-                <NavigationView.FooterMenuItems>
-                    <NavigationViewItem Content="Plugin Manager" Tag="PluginManagerPage">
-                        <NavigationViewItem.Icon>
-                            <FontIcon Glyph="&#xEA86;"/>
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem Icon="Sync" Content="同步狀態" Tag="SyncPage">
-                        <NavigationViewItem.InfoBadge>
-                            <InfoBadge x:Name="SyncBadge" Value="0"/>
-                        </NavigationViewItem.InfoBadge>
-                    </NavigationViewItem>
-                </NavigationView.FooterMenuItems>
-
-                <!-- Tab View for MDI -->
+            <!-- Tab View for MDI -->
+            <Grid>
                 <TabView x:Name="TabViewMain"
                         IsAddTabButtonVisible="False"
                         TabCloseRequested="TabView_TabCloseRequested"
                         CanReorderTabs="True"
                         CanDragTabs="True"
-                        Margin="0">
+                        TabWidthMode="Equal"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
+                    <TabView.Resources>
+                        <x:Double x:Key="TabViewItemHeaderMinWidth">100</x:Double>
+                        <x:Double x:Key="TabViewItemMaxWidth">180</x:Double>
+                    </TabView.Resources>
                     <TabView.TabStripHeader>
-                        <Grid Padding="8,4">
-                            <Button Content="+" ToolTipService.ToolTip="新增分頁" Click="AddTab_Click"/>
+                        <Grid Padding="4,0">
+                            <Button Content="+"
+                                   ToolTipService.ToolTip="新增分頁"
+                                   Click="AddTab_Click"
+                                   VerticalAlignment="Center"
+                                   Padding="8,4"/>
                         </Grid>
                     </TabView.TabStripHeader>
                 </TabView>
+            </Grid>
 
-            </NavigationView>
-        </Grid>
+        </NavigationView>
 
         <!-- Status Bar -->
         <Grid Grid.Row="2" Height="24" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">

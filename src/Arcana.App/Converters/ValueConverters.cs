@@ -106,3 +106,82 @@ public class StringToVisibilityConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+
+/// <summary>
+/// Formats numbers with thousand separators (N0 format).
+/// </summary>
+public class NumberFormatConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value == null) return string.Empty;
+
+        var format = parameter as string ?? "N0";
+
+        return value switch
+        {
+            decimal d => d.ToString(format),
+            double dbl => dbl.ToString(format),
+            float f => f.ToString(format),
+            int i => i.ToString(format),
+            long l => l.ToString(format),
+            _ => value.ToString() ?? string.Empty
+        };
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
+/// Formats DateTime values.
+/// </summary>
+public class DateFormatConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value == null) return string.Empty;
+
+        var format = parameter as string ?? "yyyy/MM/dd";
+
+        return value switch
+        {
+            DateTime dt => dt.ToString(format),
+            DateTimeOffset dto => dto.ToString(format),
+            _ => value.ToString() ?? string.Empty
+        };
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
+/// Formats bytes with suffix.
+/// </summary>
+public class BytesFormatConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value == null) return string.Empty;
+
+        long bytes = value switch
+        {
+            long l => l,
+            int i => i,
+            double d => (long)d,
+            _ => 0
+        };
+
+        return $"{bytes:N0} bytes";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}

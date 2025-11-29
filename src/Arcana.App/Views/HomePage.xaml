@@ -128,7 +128,7 @@
 
                                     <TextBlock Text="{Binding OrderNumber}" FontWeight="SemiBold"/>
                                     <TextBlock Grid.Column="1" Text="{Binding CustomerName}"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding TotalAmount, StringFormat='{}{0:N0}'}" HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding TotalAmount, Converter={StaticResource NumberFormatConverter}}" HorizontalAlignment="Right"/>
                                     <Border Grid.Column="3" CornerRadius="4" Padding="8,4" HorizontalAlignment="Right">
                                         <TextBlock Text="{Binding Status}"/>
                                     </Border>

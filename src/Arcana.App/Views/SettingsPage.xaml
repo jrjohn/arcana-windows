@@ -6,7 +6,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <ScrollViewer Padding="24">
-        <StackPanel Spacing="24" MaxWidth="800">
+        <StackPanel Spacing="24" MaxWidth="800" HorizontalAlignment="Left">
             <TextBlock Text="設定" Style="{StaticResource TitleTextBlockStyle}"/>
 
             <!-- Appearance -->

@@ -28,7 +28,7 @@ public class CustomerModulePlugin : PluginBase
             Title = "客戶管理",
             Icon = "\uE716",
             Type = ViewType.Page,
-            ViewType = typeof(CustomerListPage),
+            ViewClass = typeof(CustomerListPage),
             Category = "業務"
         });
 

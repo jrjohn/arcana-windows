@@ -52,8 +52,6 @@ public class UnitOfWork : CoreCommon.IUnitOfWork
     public CoreCommon.IRepository<T, TKey> GetRepository<T, TKey>() where T : class where TKey : notnull
     {
         var type = typeof(T);
-        var keyType = typeof(TKey);
-        var compositeKey = (type, keyType);
 
         if (!_repositories.TryGetValue(type, out var repo))
         {

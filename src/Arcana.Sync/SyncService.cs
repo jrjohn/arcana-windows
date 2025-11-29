@@ -24,7 +24,7 @@ public class SyncService : ISyncService
 
     public SyncState State => _state;
     public DateTime? LastSyncTime => _lastSyncTime;
-    public int PendingCount => GetPendingCountAsync().GetAwaiter().GetResult();
+    public int PendingCount => GetPendingCountSafe();
 
     public event EventHandler<SyncStateChangedEventArgs>? StateChanged;
     public event EventHandler<SyncCompletedEventArgs>? SyncCompleted;
@@ -186,9 +186,30 @@ public class SyncService : ISyncService
         }
     }
 
+    private int GetPendingCountSafe()
+    {
+        try
+        {
+            return _context.SyncQueue.Count(q => q.Status == SyncStatus.Pending);
+        }
+        catch
+        {
+            // Table may not exist yet during startup
+            return 0;
+        }
+    }
+
     private async Task<int> GetPendingCountAsync()
     {
-        return await _context.SyncQueue.CountAsync(q => q.Status == SyncStatus.Pending);
+        try
+        {
+            return await _context.SyncQueue.CountAsync(q => q.Status == SyncStatus.Pending);
+        }
+        catch
+        {
+            // Table may not exist yet during startup
+            return 0;
+        }
     }
 
     private void SetState(SyncState newState, string? message = null)

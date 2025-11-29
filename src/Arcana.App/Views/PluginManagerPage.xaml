@@ -41,7 +41,11 @@
                 <CommandBar Grid.Column="1" DefaultLabelPosition="Right" Background="Transparent">
                     <AppBarButton Icon="Add" Label="Install" Command="{x:Bind ViewModel.InstallPluginCommand}"/>
                     <AppBarButton Icon="Refresh" Label="Refresh" Command="{x:Bind ViewModel.LoadPluginsCommand}"/>
-                    <AppBarButton Icon="Health" Label="Check Health" Command="{x:Bind ViewModel.CheckAllHealthCommand}"/>
+                    <AppBarButton Label="Check Health" Command="{x:Bind ViewModel.CheckAllHealthCommand}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE95E;"/>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
                 </CommandBar>
             </Grid>
 
@@ -310,7 +314,7 @@
                                             <TextBlock Text="{Binding InstalledAt}" FontSize="11" Opacity="0.6"/>
                                         </StackPanel>
 
-                                        <TextBlock Grid.Column="1" Text="{Binding SizeBytes, StringFormat='{}{0:N0} bytes'}"
+                                        <TextBlock Grid.Column="1" Text="{Binding SizeBytes, Converter={StaticResource BytesFormatConverter}}"
                                                   FontSize="11" Opacity="0.6" VerticalAlignment="Center" Margin="8,0"/>
 
                                         <Button Grid.Column="2" Content="Rollback" Padding="8,4"

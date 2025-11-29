@@ -1,0 +1,13 @@
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/bin/x64/Debug/net10.0/Arcana.Core.deps.json
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/bin/x64/Debug/net10.0/Arcana.Core.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/bin/x64/Debug/net10.0/Arcana.Core.pdb
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/Arcana.Core.csproj.AssemblyReference.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/Arcana.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/Arcana.Core.AssemblyInfoInputs.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/Arcana.Core.AssemblyInfo.cs
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/Arcana.Core.csproj.CoreCompileInputs.cache
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/Arcana.Core.sourcelink.json
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/Arcana.Core.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/refint/Arcana.Core.dll
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/Arcana.Core.pdb
+/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/x64/Debug/net10.0/ref/Arcana.Core.dll

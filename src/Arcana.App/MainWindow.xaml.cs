@@ -92,43 +92,67 @@ public sealed partial class MainWindow : Window
         AddNewTab("HomePage", "首頁");
     }
 
-    private void NavigateToPage(string pageTag)
+    private void NavigateToPage(string pageTag, object? parameter = null)
     {
-        // Check if tab already exists
-        foreach (var item in TabViewMain.TabItems)
+        // For pages that can have multiple instances (like OrderDetailPage with different IDs), always create new tab
+        var canHaveMultiple = pageTag == "OrderDetailPage";
+
+        if (!canHaveMultiple)
         {
-            if (item is TabViewItem existingTab && existingTab.Tag?.ToString() == pageTag)
+            // Check if tab already exists
+            foreach (var item in TabViewMain.TabItems)
             {
-                TabViewMain.SelectedItem = existingTab;
-                return;
+                if (item is TabViewItem existingTab && existingTab.Tag?.ToString() == pageTag)
+                {
+                    TabViewMain.SelectedItem = existingTab;
+                    return;
+                }
             }
         }
 
         // Create new tab
         var pageName = GetPageTitle(pageTag);
-        AddNewTab(pageTag, pageName);
+        AddNewTab(pageTag, pageName, parameter);
     }
 
-    private void AddNewTab(string pageTag, string title)
+    private void AddNewTab(string pageTag, string title, object? parameter = null)
     {
-        var frame = new Frame();
         var pageType = GetPageType(pageTag);
-
-        if (pageType != null)
+        if (pageType == null)
         {
-            frame.Navigate(pageType);
+            return; // Unknown page, don't create tab
+        }
+
+        var frame = new Frame();
+        frame.Navigate(pageType, parameter);
+
+        // For OrderDetailPage with parameter, update title
+        var tabTitle = title;
+        var tabTag = pageTag;
+        if (pageTag == "OrderDetailPage" && parameter is int orderId)
+        {
+            tabTitle = $"訂單 #{orderId}";
+            tabTag = $"{pageTag}_{orderId}";
         }
 
         var tab = new TabViewItem
         {
-            Header = title,
-            Tag = pageTag,
+            Header = tabTitle,
+            Tag = tabTag,
             Content = frame,
             IconSource = GetPageIcon(pageTag)
         };
 
         TabViewMain.TabItems.Add(tab);
         TabViewMain.SelectedItem = tab;
+    }
+
+    /// <summary>
+    /// Public method for navigation service to use
+    /// </summary>
+    public void NavigateToPageWithParameter(string pageTag, object? parameter = null)
+    {
+        DispatcherQueue.TryEnqueue(() => NavigateToPage(pageTag, parameter));
     }
 
     private static Type? GetPageType(string pageTag)
@@ -140,9 +164,11 @@ public sealed partial class MainWindow : Window
             "OrderDetailPage" => typeof(OrderDetailPage),
             "CustomerListPage" => typeof(CustomerListPage),
             "ProductListPage" => typeof(ProductListPage),
+            "SalesReportPage" => typeof(HomePage), // TODO: Create SalesReportPage
+            "SyncPage" => typeof(HomePage), // TODO: Create SyncPage
             "PluginManagerPage" => typeof(PluginManagerPage),
             "SettingsPage" => typeof(SettingsPage),
-            _ => typeof(HomePage)
+            _ => null
         };
     }
 
@@ -155,9 +181,11 @@ public sealed partial class MainWindow : Window
             "OrderDetailPage" => "訂單明細",
             "CustomerListPage" => "客戶管理",
             "ProductListPage" => "產品管理",
+            "SalesReportPage" => "銷售報表",
+            "SyncPage" => "同步狀態",
             "PluginManagerPage" => "Plugin Manager",
             "SettingsPage" => "設定",
-            _ => "頁面"
+            _ => pageTag
         };
     }
 
@@ -169,6 +197,8 @@ public sealed partial class MainWindow : Window
             "OrderListPage" => "\uE7C3",
             "CustomerListPage" => "\uE716",
             "ProductListPage" => "\uE719",
+            "SalesReportPage" => "\uE9F9",
+            "SyncPage" => "\uE895",
             "PluginManagerPage" => "\uEA86",
             "SettingsPage" => "\uE713",
             _ => "\uE7C3"

@@ -16,17 +16,9 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <!-- Suppress RID warning for Windows App SDK packages that use version-specific RIDs -->
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Arcana.Core\Arcana.Core.csproj" />

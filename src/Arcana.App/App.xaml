@@ -18,6 +18,9 @@
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <converters:NumberFormatConverter x:Key="NumberFormatConverter"/>
+            <converters:DateFormatConverter x:Key="DateFormatConverter"/>
+            <converters:BytesFormatConverter x:Key="BytesFormatConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

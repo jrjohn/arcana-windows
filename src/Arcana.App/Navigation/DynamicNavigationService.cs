@@ -1,6 +1,8 @@
 using Arcana.Plugins.Contracts;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using NavEventArgs = Arcana.Plugins.Contracts.NavigationEventArgs;
 
 namespace Arcana.App.Navigation;
 
@@ -21,8 +23,8 @@ public class DynamicNavigationService : INavigationService
     public bool CanGoForward => _forwardStack.Count > 0;
     public string? CurrentViewId { get; private set; }
 
-    public event EventHandler<NavigationEventArgs>? Navigated;
-    public event EventHandler<NavigatingEventArgs>? Navigating;
+    public event EventHandler<NavEventArgs>? Navigated;
+    public event EventHandler<NavigatingCancelEventArgs>? Navigating;
 
     public DynamicNavigationService(IViewRegistry viewRegistry, IServiceProvider serviceProvider)
     {
@@ -42,59 +44,58 @@ public class DynamicNavigationService : INavigationService
         _tabView = tabView;
     }
 
-    public Task NavigateToAsync(string viewId, object? parameter = null)
+    public Task<bool> NavigateToAsync(string viewId, object? parameter = null)
     {
         return NavigateInternalAsync(viewId, parameter, false);
     }
 
-    public Task NavigateToNewTabAsync(string viewId, object? parameter = null)
+    public Task<bool> NavigateToNewTabAsync(string viewId, object? parameter = null)
     {
         return NavigateInternalAsync(viewId, parameter, true);
     }
 
-    private async Task NavigateInternalAsync(string viewId, object? parameter, bool newTab)
+    private Task<bool> NavigateInternalAsync(string viewId, object? parameter, bool newTab)
     {
-        var view = _viewRegistry.GetView(viewId);
-        if (view == null)
-        {
-            throw new InvalidOperationException($"View not found: {viewId}");
-        }
+        var previousViewId = CurrentViewId;
 
         // Raise navigating event
-        var navigatingArgs = new NavigatingEventArgs(viewId, parameter);
+        var navigatingArgs = new NavigatingCancelEventArgs
+        {
+            FromViewId = previousViewId,
+            ToViewId = viewId,
+            Parameter = parameter
+        };
         Navigating?.Invoke(this, navigatingArgs);
         if (navigatingArgs.Cancel)
         {
-            return;
+            return Task.FromResult(false);
         }
 
-        // Save current to back stack
-        if (!string.IsNullOrEmpty(CurrentViewId))
+        // Use MainWindow for navigation
+        if (App.MainWindow is MainWindow mainWindow)
         {
-            _backStack.Push(new NavigationEntry(CurrentViewId, null));
-            _forwardStack.Clear();
-        }
-
-        if (newTab && _tabView != null)
-        {
-            await NavigateToTabAsync(view, parameter);
-        }
-        else if (_frame != null)
-        {
-            NavigateToFrame(view, parameter);
+            mainWindow.NavigateToPageWithParameter(viewId, parameter);
         }
 
         CurrentViewId = viewId;
 
         // Raise navigated event
-        Navigated?.Invoke(this, new NavigationEventArgs(viewId, parameter));
+        Navigated?.Invoke(this, new NavEventArgs
+        {
+            FromViewId = previousViewId,
+            ToViewId = viewId,
+            Parameter = parameter,
+            NavigationType = newTab ? NavigationType.NewTab : NavigationType.Forward
+        });
+
+        return Task.FromResult(true);
     }
 
     private void NavigateToFrame(ViewDefinition view, object? parameter)
     {
         if (_frame == null) return;
 
-        var pageType = view.ViewType;
+        var pageType = view.ViewClass;
         if (pageType != null)
         {
             _frame.Navigate(pageType, parameter);
@@ -130,7 +131,7 @@ public class DynamicNavigationService : INavigationService
 
         // Create new tab
         var frame = new Frame();
-        var pageType = view.ViewType;
+        var pageType = view.ViewClass;
 
         if (pageType != null)
         {
@@ -176,9 +177,9 @@ public class DynamicNavigationService : INavigationService
         return new FontIconSource { Glyph = icon };
     }
 
-    public Task GoBackAsync()
+    public async Task<bool> GoBackAsync()
     {
-        if (!CanGoBack) return Task.CompletedTask;
+        if (!CanGoBack) return false;
 
         var entry = _backStack.Pop();
         if (!string.IsNullOrEmpty(CurrentViewId))
@@ -186,12 +187,12 @@ public class DynamicNavigationService : INavigationService
             _forwardStack.Push(new NavigationEntry(CurrentViewId, null));
         }
 
-        return NavigateToAsync(entry.ViewId, entry.Parameter);
+        return await NavigateToAsync(entry.ViewId, entry.Parameter);
     }
 
-    public Task GoForwardAsync()
+    public async Task<bool> GoForwardAsync()
     {
-        if (!CanGoForward) return Task.CompletedTask;
+        if (!CanGoForward) return false;
 
         var entry = _forwardStack.Pop();
         if (!string.IsNullOrEmpty(CurrentViewId))
@@ -199,7 +200,23 @@ public class DynamicNavigationService : INavigationService
             _backStack.Push(new NavigationEntry(CurrentViewId, null));
         }
 
-        return NavigateToAsync(entry.ViewId, entry.Parameter);
+        return await NavigateToAsync(entry.ViewId, entry.Parameter);
+    }
+
+    public Task<TResult?> ShowDialogAsync<TResult>(string viewId, object? parameter = null)
+    {
+        // Dialog implementation - return default for now
+        return Task.FromResult<TResult?>(default);
+    }
+
+    public Task CloseAsync()
+    {
+        // Close current tab/dialog
+        if (_tabView != null && _tabView.SelectedItem is TabViewItem selectedTab)
+        {
+            _tabView.TabItems.Remove(selectedTab);
+        }
+        return Task.CompletedTask;
     }
 
     public IReadOnlyList<ViewDefinition> GetAvailableViews()
@@ -221,35 +238,4 @@ public class DynamicNavigationService : INavigationService
     }
 
     private record NavigationEntry(string ViewId, object? Parameter);
-}
-
-/// <summary>
-/// Navigation event args.
-/// </summary>
-public class NavigationEventArgs : EventArgs
-{
-    public string ViewId { get; }
-    public object? Parameter { get; }
-
-    public NavigationEventArgs(string viewId, object? parameter)
-    {
-        ViewId = viewId;
-        Parameter = parameter;
-    }
-}
-
-/// <summary>
-/// Navigating event args with cancel support.
-/// </summary>
-public class NavigatingEventArgs : EventArgs
-{
-    public string ViewId { get; }
-    public object? Parameter { get; }
-    public bool Cancel { get; set; }
-
-    public NavigatingEventArgs(string viewId, object? parameter)
-    {
-        ViewId = viewId;
-        Parameter = parameter;
-    }
 }

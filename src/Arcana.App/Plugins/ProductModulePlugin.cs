@@ -28,7 +28,7 @@ public class ProductModulePlugin : PluginBase
             Title = "產品管理",
             Icon = "\uE719",
             Type = ViewType.Page,
-            ViewType = typeof(ProductListPage),
+            ViewClass = typeof(ProductListPage),
             Category = "業務"
         });
 

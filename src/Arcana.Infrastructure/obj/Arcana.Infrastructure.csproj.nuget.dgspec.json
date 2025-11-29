@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Infrastructure/Arcana.Infrastructure.csproj": {}
+    "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Infrastructure\\Arcana.Infrastructure.csproj": {}
   },
   "projects": {
-    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj": {
+    "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj",
+        "projectUniqueName": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj",
         "projectName": "Arcana.Core",
-        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj",
-        "packagesPath": "/Users/jrjohn/.nuget/packages/",
-        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/obj/",
+        "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj",
+        "packagesPath": "C:\\Users\\jrjohn\\.nuget\\packages\\",
+        "outputPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\jrjohn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -343,33 +349,39 @@
         }
       }
     },
-    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj": {
+    "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj",
+        "projectUniqueName": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj",
         "projectName": "Arcana.Data",
-        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj",
-        "packagesPath": "/Users/jrjohn/.nuget/packages/",
-        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/obj/",
+        "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj",
+        "packagesPath": "C:\\Users\\jrjohn\\.nuget\\packages\\",
+        "outputPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\jrjohn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj"
               },
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/Arcana.Domain.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/Arcana.Domain.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\Arcana.Domain.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\Arcana.Domain.csproj"
               }
             }
           }
@@ -421,7 +433,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -699,30 +711,36 @@
         }
       }
     },
-    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/Arcana.Domain.csproj": {
+    "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\Arcana.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/Arcana.Domain.csproj",
+        "projectUniqueName": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\Arcana.Domain.csproj",
         "projectName": "Arcana.Domain",
-        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/Arcana.Domain.csproj",
-        "packagesPath": "/Users/jrjohn/.nuget/packages/",
-        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/obj/",
+        "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\Arcana.Domain.csproj",
+        "packagesPath": "C:\\Users\\jrjohn\\.nuget\\packages\\",
+        "outputPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\jrjohn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj"
               }
             }
           }
@@ -764,7 +782,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -1042,45 +1060,51 @@
         }
       }
     },
-    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Infrastructure/Arcana.Infrastructure.csproj": {
+    "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Infrastructure\\Arcana.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Infrastructure/Arcana.Infrastructure.csproj",
+        "projectUniqueName": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Infrastructure\\Arcana.Infrastructure.csproj",
         "projectName": "Arcana.Infrastructure",
-        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Infrastructure/Arcana.Infrastructure.csproj",
-        "packagesPath": "/Users/jrjohn/.nuget/packages/",
-        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Infrastructure/obj/",
+        "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Infrastructure\\Arcana.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\jrjohn\\.nuget\\packages\\",
+        "outputPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\jrjohn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj"
               },
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj"
               },
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/Arcana.Domain.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Domain/Arcana.Domain.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\Arcana.Domain.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Domain\\Arcana.Domain.csproj"
               },
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins.Contracts\\Arcana.Plugins.Contracts.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins.Contracts\\Arcana.Plugins.Contracts.csproj"
               },
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins\\Arcana.Plugins.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins\\Arcana.Plugins.csproj"
               },
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Sync/Arcana.Sync.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Sync/Arcana.Sync.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Sync\\Arcana.Sync.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Sync\\Arcana.Sync.csproj"
               }
             }
           }
@@ -1158,7 +1182,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -1436,22 +1460,28 @@
         }
       }
     },
-    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj": {
+    "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins.Contracts\\Arcana.Plugins.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj",
+        "projectUniqueName": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins.Contracts\\Arcana.Plugins.Contracts.csproj",
         "projectName": "Arcana.Plugins.Contracts",
-        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj",
-        "packagesPath": "/Users/jrjohn/.nuget/packages/",
-        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/obj/",
+        "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins.Contracts\\Arcana.Plugins.Contracts.csproj",
+        "packagesPath": "C:\\Users\\jrjohn\\.nuget\\packages\\",
+        "outputPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins.Contracts\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\jrjohn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -1501,7 +1531,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -1779,30 +1809,36 @@
         }
       }
     },
-    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj": {
+    "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins\\Arcana.Plugins.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj",
+        "projectUniqueName": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins\\Arcana.Plugins.csproj",
         "projectName": "Arcana.Plugins",
-        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/Arcana.Plugins.csproj",
-        "packagesPath": "/Users/jrjohn/.nuget/packages/",
-        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins/obj/",
+        "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins\\Arcana.Plugins.csproj",
+        "packagesPath": "C:\\Users\\jrjohn\\.nuget\\packages\\",
+        "outputPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\jrjohn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/Arcana.Plugins.Contracts.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins.Contracts\\Arcana.Plugins.Contracts.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Plugins.Contracts\\Arcana.Plugins.Contracts.csproj"
               }
             }
           }
@@ -1838,10 +1874,6 @@
             "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
               "version": "[10.0.0, )"
-            },
-            "System.Text.Json": {
-              "target": "Package",
-              "version": "[10.0.0, )"
             }
           },
           "imports": [
@@ -1860,7 +1892,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -2138,33 +2170,39 @@
         }
       }
     },
-    "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Sync/Arcana.Sync.csproj": {
+    "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Sync\\Arcana.Sync.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Sync/Arcana.Sync.csproj",
+        "projectUniqueName": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Sync\\Arcana.Sync.csproj",
         "projectName": "Arcana.Sync",
-        "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Sync/Arcana.Sync.csproj",
-        "packagesPath": "/Users/jrjohn/.nuget/packages/",
-        "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Sync/obj/",
+        "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Sync\\Arcana.Sync.csproj",
+        "packagesPath": "C:\\Users\\jrjohn\\.nuget\\packages\\",
+        "outputPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Sync\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\jrjohn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Core\\Arcana.Core.csproj"
               },
-              "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj": {
-                "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj"
+              "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj": {
+                "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj"
               }
             }
           }
@@ -2206,7 +2244,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

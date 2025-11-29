@@ -36,7 +36,7 @@ public class OrderModulePlugin : PluginBase
             Title = "訂單管理",
             Icon = "\uE7C3",
             Type = ViewType.Page,
-            ViewType = typeof(OrderListPage),
+            ViewClass = typeof(OrderListPage),
             ViewModelType = typeof(OrderListViewModel),
             Category = "業務"
         });
@@ -47,7 +47,7 @@ public class OrderModulePlugin : PluginBase
             Title = "訂單明細",
             Icon = "\uE7C3",
             Type = ViewType.Page,
-            ViewType = typeof(OrderDetailPage),
+            ViewClass = typeof(OrderDetailPage),
             ViewModelType = typeof(OrderDetailViewModel),
             CanHaveMultipleInstances = true,
             Category = "業務"
