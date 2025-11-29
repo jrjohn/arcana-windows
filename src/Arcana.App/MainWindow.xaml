@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Arcana.App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Arcana.App"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    Title="Arcana">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Bar -->
+        <Grid x:Name="AppTitleBar" Height="48" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Spacing="12" Margin="16,0">
+                <Image Source="Assets/app-icon.png" Width="20" Height="20" VerticalAlignment="Center"/>
+                <TextBlock Text="Arcana" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Search Box -->
+            <AutoSuggestBox Grid.Column="1"
+                           PlaceholderText="搜尋命令或功能... (Ctrl+K)"
+                           QueryIcon="Find"
+                           Width="400"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Navigation View -->
+            <NavigationView x:Name="NavView"
+                           IsBackButtonVisible="Auto"
+                           IsSettingsVisible="True"
+                           PaneDisplayMode="Left"
+                           OpenPaneLength="280"
+                           SelectionChanged="NavView_SelectionChanged"
+                           BackRequested="NavView_BackRequested">
+
+                <NavigationView.MenuItems>
+                    <NavigationViewItem Icon="Home" Content="首頁" Tag="HomePage"/>
+                    <NavigationViewItemSeparator/>
+                    <NavigationViewItemHeader Content="業務"/>
+                    <NavigationViewItem Icon="People" Content="客戶管理" Tag="CustomerListPage"/>
+                    <NavigationViewItem Icon="Shop" Content="產品管理" Tag="ProductListPage"/>
+                    <NavigationViewItem Icon="Document" Content="訂單管理" Tag="OrderListPage"/>
+                    <NavigationViewItemSeparator/>
+                    <NavigationViewItemHeader Content="報表"/>
+                    <NavigationViewItem Icon="Library" Content="銷售報表" Tag="SalesReportPage"/>
+                </NavigationView.MenuItems>
+
+                <NavigationView.FooterMenuItems>
+                    <NavigationViewItem Content="Plugin Manager" Tag="PluginManagerPage">
+                        <NavigationViewItem.Icon>
+                            <FontIcon Glyph="&#xEA86;"/>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                    <NavigationViewItem Icon="Sync" Content="同步狀態" Tag="SyncPage">
+                        <NavigationViewItem.InfoBadge>
+                            <InfoBadge x:Name="SyncBadge" Value="0"/>
+                        </NavigationViewItem.InfoBadge>
+                    </NavigationViewItem>
+                </NavigationView.FooterMenuItems>
+
+                <!-- Tab View for MDI -->
+                <TabView x:Name="TabViewMain"
+                        IsAddTabButtonVisible="False"
+                        TabCloseRequested="TabView_TabCloseRequested"
+                        CanReorderTabs="True"
+                        CanDragTabs="True"
+                        Margin="0">
+                    <TabView.TabStripHeader>
+                        <Grid Padding="8,4">
+                            <Button Content="+" ToolTipService.ToolTip="新增分頁" Click="AddTab_Click"/>
+                        </Grid>
+                    </TabView.TabStripHeader>
+                </TabView>
+
+            </NavigationView>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Grid Grid.Row="2" Height="24" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="StatusMessage"
+                      Text="就緒"
+                      VerticalAlignment="Center"
+                      Margin="12,0"
+                      Style="{StaticResource CaptionTextBlockStyle}"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="8,0">
+                <FontIcon Glyph="&#xE701;" FontSize="12" x:Name="NetworkIcon"/>
+                <TextBlock x:Name="NetworkStatus" Text="線上" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" Margin="8,0">
+                <FontIcon Glyph="&#xE895;" FontSize="12"/>
+                <TextBlock x:Name="SyncStatus" Text="已同步" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <TextBlock Grid.Column="3"
+                      x:Name="CurrentTime"
+                      Style="{StaticResource CaptionTextBlockStyle}"
+                      VerticalAlignment="Center"
+                      Margin="12,0"/>
+        </Grid>
+    </Grid>
+</Window>

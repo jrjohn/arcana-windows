@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Arcana.App.Views.PluginManagerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Arcana.App.Views"
+    xmlns:vm="using:Arcana.App.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="400"/>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel: Plugin List -->
+        <Grid Padding="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Plugin Manager" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <TextBlock Text="Manage installed plugins, versions, and health status"
+                               Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+                </StackPanel>
+
+                <CommandBar Grid.Column="1" DefaultLabelPosition="Right" Background="Transparent">
+                    <AppBarButton Icon="Add" Label="Install" Command="{x:Bind ViewModel.InstallPluginCommand}"/>
+                    <AppBarButton Icon="Refresh" Label="Refresh" Command="{x:Bind ViewModel.LoadPluginsCommand}"/>
+                    <AppBarButton Icon="Health" Label="Check Health" Command="{x:Bind ViewModel.CheckAllHealthCommand}"/>
+                </CommandBar>
+            </Grid>
+
+            <!-- Search Bar -->
+            <AutoSuggestBox Grid.Row="1"
+                           PlaceholderText="Search plugins..."
+                           QueryIcon="Find"
+                           Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}"
+                           Margin="0,16,0,16"/>
+
+            <!-- Plugin List -->
+            <ListView Grid.Row="2"
+                     x:Name="PluginsListView"
+                     ItemsSource="{x:Bind ViewModel.Plugins}"
+                     SelectedItem="{x:Bind ViewModel.SelectedPlugin, Mode=TwoWay}"
+                     SelectionMode="Single">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:PluginItemViewModel">
+                        <Grid Padding="12" Margin="0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Plugin Icon -->
+                            <Border Width="40" Height="40" CornerRadius="8"
+                                   Background="{ThemeResource SystemAccentColorLight2}">
+                                <FontIcon Glyph="&#xEA86;" FontSize="20"/>
+                            </Border>
+
+                            <!-- Plugin Info -->
+                            <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{x:Bind VersionString}" Opacity="0.6"/>
+                                    <Border CornerRadius="4" Padding="6,2"
+                                           Visibility="{x:Bind IsBuiltIn}"
+                                           Background="{ThemeResource SystemAccentColor}">
+                                        <TextBlock Text="Built-in" FontSize="10" Foreground="White"/>
+                                    </Border>
+                                </StackPanel>
+                                <TextBlock Text="{x:Bind Description}"
+                                          Style="{StaticResource CaptionTextBlockStyle}"
+                                          Opacity="0.7"
+                                          TextTrimming="CharacterEllipsis"/>
+                                <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,4,0,0">
+                                    <TextBlock Text="{x:Bind TypeString}" FontSize="11" Opacity="0.6"/>
+                                    <TextBlock Text="{x:Bind Author}" FontSize="11" Opacity="0.6"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Status Indicators -->
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="4">
+                                <!-- State Badge -->
+                                <Border CornerRadius="4" Padding="8,4" HorizontalAlignment="Right">
+                                    <Border.Background>
+                                        <SolidColorBrush x:Name="StateBrush" Color="Green"/>
+                                    </Border.Background>
+                                    <TextBlock Text="{x:Bind StateString}" FontSize="11" Foreground="White"/>
+                                </Border>
+
+                                <!-- Health Badge -->
+                                <Border CornerRadius="4" Padding="8,4" HorizontalAlignment="Right">
+                                    <Border.Background>
+                                        <SolidColorBrush x:Name="HealthBrush" Color="Green"/>
+                                    </Border.Background>
+                                    <TextBlock Text="{x:Bind HealthStateString}" FontSize="11" Foreground="White"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Status Bar -->
+            <Grid Grid.Row="3" Padding="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}"
+                          VerticalAlignment="Center" Opacity="0.7"/>
+
+                <!-- Install Progress -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8"
+                           Visibility="{x:Bind ViewModel.IsInstalling, Mode=OneWay}">
+                    <ProgressRing IsActive="True" Width="20" Height="20"/>
+                    <TextBlock Text="{x:Bind ViewModel.InstallPhase, Mode=OneWay}" VerticalAlignment="Center"/>
+                    <ProgressBar Value="{x:Bind ViewModel.InstallProgress, Mode=OneWay}"
+                                Width="100" Maximum="1"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <!-- Right Panel: Plugin Details -->
+        <Border Grid.Column="1" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+            <ScrollViewer>
+                <StackPanel Padding="24" Spacing="16"
+                           Visibility="{x:Bind ViewModel.SelectedPlugin, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}">
+
+                    <!-- Plugin Header -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="{x:Bind ViewModel.SelectedPlugin.Name, Mode=OneWay}"
+                                  Style="{StaticResource SubtitleTextBlockStyle}"/>
+                        <TextBlock Text="{x:Bind ViewModel.SelectedPlugin.Description, Mode=OneWay}"
+                                  TextWrapping="Wrap" Opacity="0.7"/>
+                    </StackPanel>
+
+                    <!-- Action Buttons -->
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Activate"
+                               Command="{x:Bind ViewModel.ActivatePluginCommand}"
+                               CommandParameter="{x:Bind ViewModel.SelectedPlugin, Mode=OneWay}"
+                               Style="{StaticResource AccentButtonStyle}"/>
+                        <Button Content="Deactivate"
+                               Command="{x:Bind ViewModel.DeactivatePluginCommand}"
+                               CommandParameter="{x:Bind ViewModel.SelectedPlugin, Mode=OneWay}"/>
+                        <Button Content="Reload"
+                               Command="{x:Bind ViewModel.ReloadPluginCommand}"
+                               CommandParameter="{x:Bind ViewModel.SelectedPlugin, Mode=OneWay}"/>
+                    </StackPanel>
+
+                    <MenuFlyoutSeparator/>
+
+                    <!-- Plugin Information -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Information" FontWeight="SemiBold"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="ID:" Opacity="0.7"/>
+                            <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.Id, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Row="1" Text="Version:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.VersionString, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Row="2" Text="Author:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.Author, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Row="3" Text="Type:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.TypeString, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Row="4" Text="State:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.StateString, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Row="5" Text="Installed:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.InstalledAt, Mode=OneWay}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <MenuFlyoutSeparator/>
+
+                    <!-- Health Status -->
+                    <StackPanel Spacing="8">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="Health Status" FontWeight="SemiBold"/>
+                            <Button Content="Check" Padding="8,2"
+                                   Command="{x:Bind ViewModel.CheckHealthCommand}"
+                                   CommandParameter="{x:Bind ViewModel.SelectedPlugin, Mode=OneWay}"/>
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Status:" Opacity="0.7"/>
+                            <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.HealthStateString, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Row="1" Text="Message:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.HealthMessage, Mode=OneWay}" TextWrapping="Wrap"/>
+
+                            <TextBlock Grid.Row="2" Text="Memory:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.MemoryUsageFormatted, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Row="3" Text="Error Count:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.ErrorCount, Mode=OneWay}"/>
+
+                            <TextBlock Grid.Row="4" Text="Last Error:" Opacity="0.7"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{x:Bind ViewModel.SelectedPlugin.LastError, Mode=OneWay}"
+                                      TextWrapping="Wrap" Foreground="Red"/>
+                        </Grid>
+
+                        <!-- Health Check Details -->
+                        <ListView ItemsSource="{x:Bind ViewModel.SelectedPlugin.HealthDetails, Mode=OneWay}"
+                                 MaxHeight="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="8,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding CheckName}" FontWeight="SemiBold"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding State}" Margin="8,0"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Message}" Opacity="0.7"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+
+                    <MenuFlyoutSeparator/>
+
+                    <!-- Version Management -->
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Version Management" FontWeight="SemiBold"/>
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="Upgrade"
+                                   Command="{x:Bind ViewModel.UpgradePluginCommand}"
+                                   CommandParameter="{x:Bind ViewModel.SelectedPlugin, Mode=OneWay}"
+                                   IsEnabled="{x:Bind ViewModel.SelectedPlugin.CanUpgrade, Mode=OneWay}"/>
+                            <Button Content="Uninstall"
+                                   Command="{x:Bind ViewModel.UninstallPluginCommand}"
+                                   CommandParameter="{x:Bind ViewModel.SelectedPlugin, Mode=OneWay}"
+                                   IsEnabled="{x:Bind ViewModel.SelectedPlugin.CanUninstall, Mode=OneWay}"/>
+                        </StackPanel>
+
+                        <!-- Version History -->
+                        <TextBlock Text="Available Versions for Rollback:" Margin="0,8,0,0" Opacity="0.7"/>
+                        <ListView ItemsSource="{x:Bind ViewModel.AvailableVersions, Mode=OneWay}"
+                                 MaxHeight="200"
+                                 SelectionMode="None">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="8,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <TextBlock Text="{Binding Version}" FontWeight="SemiBold"/>
+                                                <Border CornerRadius="4" Padding="6,2"
+                                                       Visibility="{Binding IsCurrent}"
+                                                       Background="{ThemeResource SystemAccentColor}">
+                                                    <TextBlock Text="Current" FontSize="10" Foreground="White"/>
+                                                </Border>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding InstalledAt}" FontSize="11" Opacity="0.6"/>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="1" Text="{Binding SizeBytes, StringFormat='{}{0:N0} bytes'}"
+                                                  FontSize="11" Opacity="0.6" VerticalAlignment="Center" Margin="8,0"/>
+
+                                        <Button Grid.Column="2" Content="Rollback" Padding="8,4"
+                                               Tag="{Binding}"
+                                               Click="RollbackVersion_Click"
+                                               IsEnabled="{Binding IsCurrent, Converter={StaticResource InverseBoolConverter}}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.ColumnSpan="2" Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+              Background="#80000000">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressRing IsActive="True" Width="60" Height="60"/>
+                <TextBlock Text="Loading..." Margin="0,16,0,0" Foreground="White"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Error Banner -->
+        <InfoBar Grid.ColumnSpan="2"
+                IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}"
+                Severity="Error"
+                Title="Error"
+                Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                VerticalAlignment="Top"
+                Margin="24,80,24,0"/>
+    </Grid>
+</Page>
