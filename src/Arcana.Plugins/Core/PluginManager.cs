@@ -79,7 +79,9 @@ public class PluginManager : IAsyncDisposable
 
         foreach (var loadedPlugin in sortedPlugins)
         {
-            if (loadedPlugin.Plugin.State == PluginState.Loaded)
+            // Activate plugins that are NotLoaded or Loaded (not yet activated)
+            if (loadedPlugin.Plugin.State == PluginState.NotLoaded ||
+                loadedPlugin.Plugin.State == PluginState.Loaded)
             {
                 try
                 {
@@ -105,7 +107,8 @@ public class PluginManager : IAsyncDisposable
             throw new InvalidOperationException($"Plugin not found: {pluginId}");
         }
 
-        if (loadedPlugin.Plugin.State != PluginState.Loaded)
+        if (loadedPlugin.Plugin.State != PluginState.NotLoaded &&
+            loadedPlugin.Plugin.State != PluginState.Loaded)
         {
             return;
         }

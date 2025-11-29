@@ -18,6 +18,8 @@ public sealed partial class MainWindow : Window
     private readonly INavigationService _navigationService;
     private readonly INetworkMonitor _networkMonitor;
     private readonly ISyncService _syncService;
+    private readonly IMenuRegistry _menuRegistry;
+    private readonly ICommandService _commandService;
     private readonly DispatcherTimer _timer;
 
     public MainWindow()
@@ -33,10 +35,13 @@ public sealed partial class MainWindow : Window
         _navigationService = App.Services.GetRequiredService<INavigationService>();
         _networkMonitor = App.Services.GetRequiredService<INetworkMonitor>();
         _syncService = App.Services.GetRequiredService<ISyncService>();
+        _menuRegistry = App.Services.GetRequiredService<IMenuRegistry>();
+        _commandService = App.Services.GetRequiredService<ICommandService>();
 
         // Setup event handlers
         _networkMonitor.StatusChanged += OnNetworkStatusChanged;
         _syncService.StateChanged += OnSyncStateChanged;
+        _menuRegistry.MenusChanged += OnMenusChanged;
 
         // Setup timer for clock
         _timer = new DispatcherTimer();
@@ -48,6 +53,7 @@ public sealed partial class MainWindow : Window
         UpdateNetworkStatus();
         UpdateSyncStatus();
         UpdateClock();
+        BuildMenuBar();
 
         // Navigate to home page
         NavigateToPage("HomePage");
@@ -245,157 +251,156 @@ public sealed partial class MainWindow : Window
         CurrentTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
     }
 
-    #region Menu Handlers
+    #region Dynamic Menu Building
 
-    // File Menu
-    private void Menu_NewOrder_Click(object sender, RoutedEventArgs e)
+    private void OnMenusChanged(object? sender, EventArgs e)
     {
-        NavigateToPage("OrderListPage");
-        // Navigate to new order in the OrderListPage's frame
-        if (TabViewMain.SelectedItem is TabViewItem tab && tab.Content is Frame frame)
+        DispatcherQueue.TryEnqueue(BuildMenuBar);
+    }
+
+    private void BuildMenuBar()
+    {
+        MainMenuBar.Items.Clear();
+
+        // Get all menu items for lookup
+        var allMenuItems = _menuRegistry.GetAllMenuItems().ToList();
+
+        // Get top-level menu items (no parent)
+        var mainMenuItems = allMenuItems
+            .Where(m => m.Location == MenuLocation.MainMenu && string.IsNullOrEmpty(m.ParentId))
+            .OrderBy(m => m.Order)
+            .ToList();
+
+        foreach (var menuDef in mainMenuItems)
         {
-            frame.Navigate(typeof(OrderDetailPage), null);
+            var menuBarItem = new MenuBarItem { Title = menuDef.Title };
+
+            // Build child items recursively
+            BuildMenuChildren(menuBarItem.Items, menuDef.Id, allMenuItems);
+
+            MainMenuBar.Items.Add(menuBarItem);
+        }
+
+        // Add built-in View menu items (sidebar/statusbar toggles)
+        AddBuiltInViewMenuItems();
+    }
+
+    private void BuildMenuChildren(IList<MenuFlyoutItemBase> parentItems, string parentId, List<MenuItemDefinition> allMenuItems)
+    {
+        var childItems = allMenuItems
+            .Where(m => m.ParentId == parentId)
+            .OrderBy(m => m.Order)
+            .ToList();
+
+        foreach (var childDef in childItems)
+        {
+            if (childDef.IsSeparator)
+            {
+                parentItems.Add(new MenuFlyoutSeparator());
+            }
+            else
+            {
+                // Check if this item has children (submenu)
+                var hasChildren = allMenuItems.Any(m => m.ParentId == childDef.Id);
+
+                if (hasChildren)
+                {
+                    // Create submenu
+                    var subItem = new MenuFlyoutSubItem
+                    {
+                        Text = childDef.Title
+                    };
+
+                    // Add icon if specified
+                    if (!string.IsNullOrEmpty(childDef.Icon))
+                    {
+                        subItem.Icon = new FontIcon { Glyph = childDef.Icon };
+                    }
+
+                    // Recursively build children
+                    BuildMenuChildren(subItem.Items, childDef.Id, allMenuItems);
+
+                    parentItems.Add(subItem);
+                }
+                else
+                {
+                    // Create menu item
+                    var menuItem = new MenuFlyoutItem
+                    {
+                        Text = childDef.Title,
+                        Tag = childDef.Command
+                    };
+
+                    // Add icon if specified
+                    if (!string.IsNullOrEmpty(childDef.Icon))
+                    {
+                        menuItem.Icon = new FontIcon { Glyph = childDef.Icon };
+                    }
+
+                    // Handle click - execute command
+                    menuItem.Click += OnMenuItemClick;
+
+                    parentItems.Add(menuItem);
+                }
+            }
         }
     }
 
-    private void Menu_Open_Click(object sender, RoutedEventArgs e)
+    private void AddBuiltInViewMenuItems()
     {
-        // TODO: Implement open file dialog
-    }
-
-    private void Menu_Save_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement save - could trigger save on current page
-    }
-
-    private void Menu_SaveAs_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement save as
-    }
-
-    private void Menu_Export_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement export
-    }
-
-    private void Menu_Import_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement import
-    }
-
-    private void Menu_Exit_Click(object sender, RoutedEventArgs e)
-    {
-        Application.Current.Exit();
-    }
-
-    // Edit Menu
-    private void Menu_Undo_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement undo
-    }
-
-    private void Menu_Redo_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement redo
-    }
-
-    private void Menu_Cut_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement cut
-    }
-
-    private void Menu_Copy_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement copy
-    }
-
-    private void Menu_Paste_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement paste
-    }
-
-    private void Menu_SelectAll_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement select all
-    }
-
-    // View Menu
-    private void Menu_Refresh_Click(object sender, RoutedEventArgs e)
-    {
-        // Refresh current tab's content
-        if (TabViewMain.SelectedItem is TabViewItem tab && tab.Content is Frame frame)
+        // Find or create View menu
+        MenuBarItem? viewMenu = null;
+        foreach (var item in MainMenuBar.Items)
         {
-            var currentPage = frame.Content;
-            frame.Navigate(currentPage?.GetType(), null);
+            if (item is MenuBarItem mbi && mbi.Title == "檢視")
+            {
+                viewMenu = mbi;
+                break;
+            }
+        }
+
+        if (viewMenu != null)
+        {
+            viewMenu.Items.Add(new MenuFlyoutSeparator());
+
+            var sidebarToggle = new ToggleMenuFlyoutItem
+            {
+                Text = "側邊欄",
+                IsChecked = NavView.IsPaneOpen
+            };
+            sidebarToggle.Click += (s, e) => NavView.IsPaneOpen = !NavView.IsPaneOpen;
+            viewMenu.Items.Add(sidebarToggle);
+
+            var statusBarToggle = new ToggleMenuFlyoutItem
+            {
+                Text = "狀態列",
+                IsChecked = StatusBar.Visibility == Visibility.Visible
+            };
+            statusBarToggle.Click += (s, e) =>
+            {
+                StatusBar.Visibility = StatusBar.Visibility == Visibility.Visible
+                    ? Visibility.Collapsed
+                    : Visibility.Visible;
+            };
+            viewMenu.Items.Add(statusBarToggle);
         }
     }
 
-    private void Menu_ToggleSidebar_Click(object sender, RoutedEventArgs e)
+    private async void OnMenuItemClick(object sender, RoutedEventArgs e)
     {
-        NavView.IsPaneOpen = !NavView.IsPaneOpen;
-        MenuToggleSidebar.IsChecked = NavView.IsPaneOpen;
-    }
-
-    private void Menu_ToggleStatusBar_Click(object sender, RoutedEventArgs e)
-    {
-        StatusBar.Visibility = StatusBar.Visibility == Visibility.Visible
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-        MenuToggleStatusBar.IsChecked = StatusBar.Visibility == Visibility.Visible;
-    }
-
-    private void Menu_ZoomIn_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement zoom in
-    }
-
-    private void Menu_ZoomOut_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement zoom out
-    }
-
-    private void Menu_ZoomReset_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Implement zoom reset
-    }
-
-    // Tools Menu
-    private void Menu_PluginManager_Click(object sender, RoutedEventArgs e)
-    {
-        NavigateToPage("PluginManagerPage");
-    }
-
-    private void Menu_SyncStatus_Click(object sender, RoutedEventArgs e)
-    {
-        NavigateToPage("SyncPage");
-    }
-
-    private void Menu_Settings_Click(object sender, RoutedEventArgs e)
-    {
-        NavigateToPage("SettingsPage");
-    }
-
-    // Help Menu
-    private void Menu_Help_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Open help documentation
-    }
-
-    private void Menu_CheckUpdates_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Check for updates
-    }
-
-    private async void Menu_About_Click(object sender, RoutedEventArgs e)
-    {
-        var dialog = new ContentDialog
+        if (sender is MenuFlyoutItem menuItem && menuItem.Tag is string commandId && !string.IsNullOrEmpty(commandId))
         {
-            Title = "關於 Arcana",
-            Content = "Arcana 企業管理系統\n版本: 1.0.0\n\n© 2024 Arcana Team",
-            CloseButtonText = "確定",
-            XamlRoot = Content.XamlRoot
-        };
-        await dialog.ShowAsync();
+            try
+            {
+                // Execute the command through ICommandService
+                await _commandService.ExecuteAsync(commandId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Command not found - log or show error
+                System.Diagnostics.Debug.WriteLine($"Command not found: {commandId} - {ex.Message}");
+            }
+        }
     }
 
     #endregion

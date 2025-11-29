@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Arcana.Domain.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+55f0c4dbc0cc7bacda2dec096f0b74f8605e4cad")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f31d1047b6a8f2994377456388f26404678ee956")]
 [assembly: System.Reflection.AssemblyProductAttribute("Arcana.Domain.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Arcana.Domain.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

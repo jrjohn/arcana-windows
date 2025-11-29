@@ -38,7 +38,8 @@ public class CoreMenuPlugin : PluginBase
                 ParentId = "menu.file",
                 Icon = "\uE710",
                 Shortcut = "Ctrl+N",
-                Order = 1
+                Order = 1,
+                Command = "file.new"
             },
             new MenuItemDefinition
             {
@@ -48,7 +49,8 @@ public class CoreMenuPlugin : PluginBase
                 ParentId = "menu.file",
                 Icon = "\uE8E5",
                 Shortcut = "Ctrl+O",
-                Order = 2
+                Order = 2,
+                Command = "file.open"
             },
             new MenuItemDefinition
             {
@@ -58,7 +60,8 @@ public class CoreMenuPlugin : PluginBase
                 ParentId = "menu.file",
                 Icon = "\uE74E",
                 Shortcut = "Ctrl+S",
-                Order = 3
+                Order = 3,
+                Command = "file.save"
             },
             new MenuItemDefinition
             {
@@ -156,6 +159,17 @@ public class CoreMenuPlugin : PluginBase
             }
         );
 
+        // Business Menu (業務) - parent for module plugins
+        RegisterMenuItems(
+            new MenuItemDefinition
+            {
+                Id = "menu.business",
+                Title = "業務",
+                Location = MenuLocation.MainMenu,
+                Order = 3
+            }
+        );
+
         // View Menu
         RegisterMenuItems(
             new MenuItemDefinition
@@ -163,7 +177,7 @@ public class CoreMenuPlugin : PluginBase
                 Id = "menu.view",
                 Title = "檢視",
                 Location = MenuLocation.MainMenu,
-                Order = 3
+                Order = 4
             },
             new MenuItemDefinition
             {
@@ -195,7 +209,7 @@ public class CoreMenuPlugin : PluginBase
                 Id = "menu.tools",
                 Title = "工具",
                 Location = MenuLocation.MainMenu,
-                Order = 4
+                Order = 5
             },
             new MenuItemDefinition
             {
@@ -241,6 +255,29 @@ public class CoreMenuPlugin : PluginBase
         );
 
         // Register commands
+        RegisterCommand("file.new", () =>
+        {
+            // Navigate to home page or create new document
+            Context!.Navigation.NavigateToAsync("HomePage");
+            return Task.CompletedTask;
+        });
+
+        RegisterCommand("file.open", async () =>
+        {
+            var files = await Context!.Window.ShowOpenFileDialogAsync(new FileDialogOptions
+            {
+                Title = "開啟檔案",
+                Filters = [new FileFilter("所有檔案", "*")]
+            });
+            // TODO: Handle file open
+        });
+
+        RegisterCommand("file.save", () =>
+        {
+            // TODO: Save current document
+            return Task.CompletedTask;
+        });
+
         RegisterCommand("app.exit", () =>
         {
             Microsoft.UI.Xaml.Application.Current.Exit();
@@ -253,11 +290,37 @@ public class CoreMenuPlugin : PluginBase
             return Task.CompletedTask;
         });
 
+        RegisterCommand("app.about", async () =>
+        {
+            await Context!.Window.ShowInfoAsync(
+                "關於 Arcana\n\nArcana 企業管理系統\n版本: 1.0.0\n\n© 2024 Arcana Software",
+                "確定");
+        });
+
+        RegisterCommand("help.docs", async () =>
+        {
+            // Open documentation URL
+            await Windows.System.Launcher.LaunchUriAsync(new Uri("https://docs.arcana.app"));
+        });
+
         RegisterCommand("view.refresh", () =>
         {
             // Publish refresh event
             return Task.CompletedTask;
         });
+
+        RegisterCommand("view.fullscreen", () =>
+        {
+            // Toggle fullscreen - requires window handle access
+            return Task.CompletedTask;
+        });
+
+        // Edit commands (placeholder - typically handled by focused control)
+        RegisterCommand("edit.undo", () => Task.CompletedTask);
+        RegisterCommand("edit.redo", () => Task.CompletedTask);
+        RegisterCommand("edit.cut", () => Task.CompletedTask);
+        RegisterCommand("edit.copy", () => Task.CompletedTask);
+        RegisterCommand("edit.paste", () => Task.CompletedTask);
 
         LogInfo("Core menu plugin activated");
     }

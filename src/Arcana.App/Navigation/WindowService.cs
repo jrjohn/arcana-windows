@@ -150,7 +150,11 @@ public class WindowService : IWindowService
 
     private static Microsoft.UI.Xaml.XamlRoot? GetXamlRoot()
     {
-        // Get XamlRoot from main window
+        // Get XamlRoot from main window's content
+        if (App.MainWindow?.Content is Microsoft.UI.Xaml.FrameworkElement element)
+        {
+            return element.XamlRoot;
+        }
         return null;
     }
 }

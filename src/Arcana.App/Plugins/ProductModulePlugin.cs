@@ -32,41 +32,43 @@ public class ProductModulePlugin : PluginBase
             Category = "業務"
         });
 
-        // Register menu items
+        // Register menu items under Business menu
         RegisterMenuItems(
             new MenuItemDefinition
             {
-                Id = "menu.product",
+                Id = "menu.business.product",
                 Title = "產品",
                 Location = MenuLocation.MainMenu,
-                Order = 12
+                ParentId = "menu.business",
+                Icon = "\uE719",
+                Order = 3
             },
             new MenuItemDefinition
             {
-                Id = "menu.product.list",
+                Id = "menu.business.product.list",
                 Title = "產品管理",
                 Location = MenuLocation.MainMenu,
-                ParentId = "menu.product",
+                ParentId = "menu.business.product",
                 Icon = "\uE719",
                 Order = 1,
                 Command = "product.list"
             },
             new MenuItemDefinition
             {
-                Id = "menu.product.new",
+                Id = "menu.business.product.new",
                 Title = "新增產品",
                 Location = MenuLocation.MainMenu,
-                ParentId = "menu.product",
+                ParentId = "menu.business.product",
                 Icon = "\uE7BF",
                 Order = 2,
                 Command = "product.new"
             },
             new MenuItemDefinition
             {
-                Id = "menu.product.categories",
+                Id = "menu.business.product.categories",
                 Title = "產品分類",
                 Location = MenuLocation.MainMenu,
-                ParentId = "menu.product",
+                ParentId = "menu.business.product",
                 Icon = "\uE8FD",
                 Order = 3,
                 Command = "product.categories"

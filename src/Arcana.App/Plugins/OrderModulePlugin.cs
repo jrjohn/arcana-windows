@@ -53,31 +53,33 @@ public class OrderModulePlugin : PluginBase
             Category = "業務"
         });
 
-        // Register menu items
+        // Register menu items under Business menu
         RegisterMenuItems(
             new MenuItemDefinition
             {
-                Id = "menu.order",
+                Id = "menu.business.order",
                 Title = "訂單",
                 Location = MenuLocation.MainMenu,
-                Order = 10
+                ParentId = "menu.business",
+                Icon = "\uE7C3",
+                Order = 1
             },
             new MenuItemDefinition
             {
-                Id = "menu.order.list",
+                Id = "menu.business.order.list",
                 Title = "訂單管理",
                 Location = MenuLocation.MainMenu,
-                ParentId = "menu.order",
+                ParentId = "menu.business.order",
                 Icon = "\uE7C3",
                 Order = 1,
                 Command = "order.list"
             },
             new MenuItemDefinition
             {
-                Id = "menu.order.new",
+                Id = "menu.business.order.new",
                 Title = "新增訂單",
                 Location = MenuLocation.MainMenu,
-                ParentId = "menu.order",
+                ParentId = "menu.business.order",
                 Icon = "\uE710",
                 Shortcut = "Ctrl+Shift+O",
                 Order = 2,

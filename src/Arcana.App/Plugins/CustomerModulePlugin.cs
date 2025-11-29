@@ -32,31 +32,33 @@ public class CustomerModulePlugin : PluginBase
             Category = "業務"
         });
 
-        // Register menu items
+        // Register menu items under Business menu
         RegisterMenuItems(
             new MenuItemDefinition
             {
-                Id = "menu.customer",
+                Id = "menu.business.customer",
                 Title = "客戶",
                 Location = MenuLocation.MainMenu,
-                Order = 11
+                ParentId = "menu.business",
+                Icon = "\uE716",
+                Order = 2
             },
             new MenuItemDefinition
             {
-                Id = "menu.customer.list",
+                Id = "menu.business.customer.list",
                 Title = "客戶管理",
                 Location = MenuLocation.MainMenu,
-                ParentId = "menu.customer",
+                ParentId = "menu.business.customer",
                 Icon = "\uE716",
                 Order = 1,
                 Command = "customer.list"
             },
             new MenuItemDefinition
             {
-                Id = "menu.customer.new",
+                Id = "menu.business.customer.new",
                 Title = "新增客戶",
                 Location = MenuLocation.MainMenu,
-                ParentId = "menu.customer",
+                ParentId = "menu.business.customer",
                 Icon = "\uE77B",
                 Order = 2,
                 Command = "customer.new"
