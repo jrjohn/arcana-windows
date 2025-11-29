@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "MglkxA7jgww=",
+  "dgSpecHash": "hQEXvJ1j73g=",
   "success": true,
   "projectFilePath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Core/Arcana.Core.csproj",
   "expectedPackageFiles": [
-    "/Users/jrjohn/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
-    "/Users/jrjohn/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512"
+    "/Users/jrjohn/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.0/microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/microsoft.extensions.logging.abstractions/10.0.0/microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512"
   ],
   "logs": []
 }

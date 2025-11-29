@@ -98,8 +98,8 @@ public static class ServiceCollectionExtensions
         });
 
         // Repositories
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        services.AddScoped(typeof(Arcana.Data.Repository.IRepository<>), typeof(Repository<>));
+        services.AddScoped(typeof(Arcana.Data.Repository.IRepository<,>), typeof(Repository<,>));
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
