@@ -1,5 +1,6 @@
 using Arcana.Core.Common;
 using Arcana.Domain.Entities;
+using Arcana.Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Arcana.Data.Local;
@@ -20,6 +21,15 @@ public class AppDbContext : DbContext
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
     public DbSet<SyncQueueItem> SyncQueue => Set<SyncQueueItem>();
+
+    // Identity entities
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<AppPermission> Permissions => Set<AppPermission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    public DbSet<UserPermission> UserPermissions => Set<UserPermission>();
+    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -145,6 +155,117 @@ public class AppDbContext : DbContext
             entity.HasIndex(e => e.EntityType);
             entity.HasIndex(e => e.CreatedAt);
             entity.HasIndex(e => e.Status);
+        });
+
+        // User
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Username).IsUnique();
+            entity.HasIndex(e => e.Email);
+            entity.HasIndex(e => e.SyncId);
+            entity.HasQueryFilter(e => !e.IsDeleted);
+
+            entity.Property(e => e.Username).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.DisplayName).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.PasswordHash).HasMaxLength(500).IsRequired();
+            entity.Property(e => e.PasswordSalt).HasMaxLength(100);
+            entity.Property(e => e.RefreshToken).HasMaxLength(500);
+        });
+
+        // Role
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Name).IsUnique();
+            entity.HasQueryFilter(e => !e.IsDeleted);
+
+            entity.Property(e => e.Name).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.DisplayName).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Description).HasMaxLength(500);
+        });
+
+        // UserRole
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.UserId, e.RoleId }).IsUnique();
+            entity.HasQueryFilter(e => !e.IsDeleted);
+
+            entity.HasOne(e => e.User)
+                .WithMany(e => e.UserRoles)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Role)
+                .WithMany(e => e.UserRoles)
+                .HasForeignKey(e => e.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // AppPermission
+        modelBuilder.Entity<AppPermission>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Code).IsUnique();
+            entity.HasQueryFilter(e => !e.IsDeleted);
+
+            entity.Property(e => e.Code).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.DisplayName).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.Category).HasMaxLength(50).IsRequired();
+        });
+
+        // RolePermission
+        modelBuilder.Entity<RolePermission>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.RoleId, e.PermissionId }).IsUnique();
+            entity.HasQueryFilter(e => !e.IsDeleted);
+
+            entity.HasOne(e => e.Role)
+                .WithMany(e => e.RolePermissions)
+                .HasForeignKey(e => e.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Permission)
+                .WithMany(e => e.RolePermissions)
+                .HasForeignKey(e => e.PermissionId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // UserPermission
+        modelBuilder.Entity<UserPermission>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.UserId, e.PermissionId }).IsUnique();
+            entity.HasQueryFilter(e => !e.IsDeleted);
+
+            entity.HasOne(e => e.User)
+                .WithMany(e => e.UserPermissions)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Permission)
+                .WithMany(e => e.UserPermissions)
+                .HasForeignKey(e => e.PermissionId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // AuditLog
+        modelBuilder.Entity<AuditLog>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Timestamp);
+            entity.HasIndex(e => e.UserId);
+            entity.HasIndex(e => e.EventType);
+
+            entity.Property(e => e.Username).HasMaxLength(50);
+            entity.Property(e => e.ClientInfo).HasMaxLength(200);
+            entity.Property(e => e.Resource).HasMaxLength(200);
+            entity.Property(e => e.Action).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.ErrorMessage).HasMaxLength(1000);
         });
     }
 

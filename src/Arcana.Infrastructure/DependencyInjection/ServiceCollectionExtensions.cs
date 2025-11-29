@@ -1,9 +1,11 @@
 using Arcana.Core.Common;
+using Arcana.Core.Security;
 using Arcana.Data.Local;
 using Arcana.Data.Repository;
 using Arcana.Domain.Services;
 using Arcana.Domain.Validation;
 using Arcana.Infrastructure.Platform;
+using Arcana.Infrastructure.Security;
 using Arcana.Infrastructure.Services;
 using Arcana.Infrastructure.Settings;
 using Arcana.Plugins.Contracts;
@@ -51,6 +53,9 @@ public static class ServiceCollectionExtensions
         // Core services
         services.AddCoreServices();
 
+        // Security services
+        services.AddSecurityServices(configuration);
+
         // Data services
         services.AddDataServices(configuration);
 
@@ -73,6 +78,35 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<INetworkMonitor, NetworkMonitor>();
         services.AddSingleton<ISettingsService, SettingsService>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// Adds security and authentication services.
+    /// 添加安全和身份驗證服務
+    /// </summary>
+    public static IServiceCollection AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        // Password hasher
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+        // Token service with configuration
+        services.AddSingleton<ITokenService>(sp =>
+        {
+            var options = new TokenServiceOptions();
+            configuration.GetSection("Security:Token").Bind(options);
+            return new TokenService(options);
+        });
+
+        // Current user service (singleton for desktop app)
+        services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
+        // Auth service (scoped to use DbContext)
+        services.AddScoped<IAuthService, AuthService>();
+
+        // Authorization service
+        services.AddScoped<IAuthorizationService, AuthorizationService>();
 
         return services;
     }
