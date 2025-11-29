@@ -188,37 +188,46 @@ public class ThemeService
         ThemeChanged?.Invoke(this, new ThemeChangedEventArgs(oldTheme, theme));
     }
 
+    private static readonly string[] ThemeResourceKeys =
+    [
+        "ApplicationPageBackgroundThemeBrush",
+        "NavigationViewDefaultPaneBackground",
+        "NavigationViewExpandedPaneBackground",
+        "SystemAccentColor",
+        "SystemAccentColorLight1",
+        "SystemAccentColorDark1",
+        "TextFillColorPrimaryBrush",
+        "TextFillColorSecondaryBrush",
+        "CardBackgroundFillColorDefaultBrush",
+        "ControlFillColorDefaultBrush",
+        "SubtleFillColorSecondaryBrush",
+        "ThemeAccentBrush",
+        "ThemeBackgroundBrush",
+        "ThemePaneBackgroundBrush",
+        "ThemeTextPrimaryBrush",
+        "ThemeTextSecondaryBrush",
+        "ThemeHeaderGradientBrush"
+    ];
+
     private static void ClearCustomThemeResources(FrameworkElement rootElement)
     {
+        // Clear from root element resources
         var resources = rootElement.Resources;
-
-        // Remove custom overrides so system defaults are used
-        string[] keysToRemove =
-        [
-            "ApplicationPageBackgroundThemeBrush",
-            "NavigationViewDefaultPaneBackground",
-            "NavigationViewExpandedPaneBackground",
-            "SystemAccentColor",
-            "SystemAccentColorLight1",
-            "SystemAccentColorDark1",
-            "TextFillColorPrimaryBrush",
-            "TextFillColorSecondaryBrush",
-            "CardBackgroundFillColorDefaultBrush",
-            "ControlFillColorDefaultBrush",
-            "SubtleFillColorSecondaryBrush",
-            "ThemeAccentBrush",
-            "ThemeBackgroundBrush",
-            "ThemePaneBackgroundBrush",
-            "ThemeTextPrimaryBrush",
-            "ThemeTextSecondaryBrush",
-            "ThemeHeaderGradientBrush"
-        ];
-
-        foreach (var key in keysToRemove)
+        foreach (var key in ThemeResourceKeys)
         {
             if (resources.ContainsKey(key))
             {
                 resources.Remove(key);
+            }
+        }
+
+        // Also clear from Application resources
+        var appResources = Application.Current.Resources;
+        foreach (var key in ThemeResourceKeys)
+        {
+            if (appResources.ContainsKey(key))
+            {
+                appResources.Remove(key);
             }
         }
 
@@ -232,6 +241,7 @@ public class ThemeService
     private static void ApplyCustomColors(FrameworkElement rootElement, ThemeDefinition theme)
     {
         var resources = rootElement.Resources;
+        var appResources = Application.Current.Resources;
 
         // Override system theme resources with custom colors
         var backgroundBrush = new SolidColorBrush(theme.BackgroundColor);
@@ -240,7 +250,7 @@ public class ThemeService
         var textPrimaryBrush = new SolidColorBrush(theme.TextPrimaryColor);
         var textSecondaryBrush = new SolidColorBrush(theme.TextSecondaryColor);
 
-        // Override WinUI system brushes
+        // Override WinUI system brushes - apply to both root element and Application resources
         resources["ApplicationPageBackgroundThemeBrush"] = backgroundBrush;
         resources["NavigationViewDefaultPaneBackground"] = paneBrush;
         resources["NavigationViewExpandedPaneBackground"] = paneBrush;
@@ -248,14 +258,26 @@ public class ThemeService
         resources["SystemAccentColorLight1"] = theme.AccentColor;
         resources["SystemAccentColorDark1"] = theme.AccentColor;
 
+        appResources["ApplicationPageBackgroundThemeBrush"] = backgroundBrush;
+        appResources["NavigationViewDefaultPaneBackground"] = paneBrush;
+        appResources["NavigationViewExpandedPaneBackground"] = paneBrush;
+        appResources["SystemAccentColor"] = theme.AccentColor;
+        appResources["SystemAccentColorLight1"] = theme.AccentColor;
+        appResources["SystemAccentColorDark1"] = theme.AccentColor;
+
         // Text colors
         resources["TextFillColorPrimaryBrush"] = textPrimaryBrush;
         resources["TextFillColorSecondaryBrush"] = textSecondaryBrush;
+        appResources["TextFillColorPrimaryBrush"] = textPrimaryBrush;
+        appResources["TextFillColorSecondaryBrush"] = textSecondaryBrush;
 
         // Card and control backgrounds
         resources["CardBackgroundFillColorDefaultBrush"] = new SolidColorBrush(theme.BackgroundColor);
         resources["ControlFillColorDefaultBrush"] = paneBrush;
         resources["SubtleFillColorSecondaryBrush"] = paneBrush;
+        appResources["CardBackgroundFillColorDefaultBrush"] = new SolidColorBrush(theme.BackgroundColor);
+        appResources["ControlFillColorDefaultBrush"] = paneBrush;
+        appResources["SubtleFillColorSecondaryBrush"] = paneBrush;
 
         // Custom theme brushes
         resources["ThemeAccentBrush"] = accentBrush;
@@ -263,6 +285,11 @@ public class ThemeService
         resources["ThemePaneBackgroundBrush"] = paneBrush;
         resources["ThemeTextPrimaryBrush"] = textPrimaryBrush;
         resources["ThemeTextSecondaryBrush"] = textSecondaryBrush;
+        appResources["ThemeAccentBrush"] = accentBrush;
+        appResources["ThemeBackgroundBrush"] = backgroundBrush;
+        appResources["ThemePaneBackgroundBrush"] = paneBrush;
+        appResources["ThemeTextPrimaryBrush"] = textPrimaryBrush;
+        appResources["ThemeTextSecondaryBrush"] = textSecondaryBrush;
 
         // Apply to root element directly if it's a Panel (Grid, StackPanel, etc.)
         if (rootElement is Panel panel)
@@ -281,6 +308,7 @@ public class ThemeService
             gradientBrush.GradientStops.Add(new GradientStop { Color = theme.GradientStartColor.Value, Offset = 0 });
             gradientBrush.GradientStops.Add(new GradientStop { Color = theme.GradientEndColor.Value, Offset = 1 });
             resources["ThemeHeaderGradientBrush"] = gradientBrush;
+            appResources["ThemeHeaderGradientBrush"] = gradientBrush;
         }
     }
 }

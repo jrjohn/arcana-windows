@@ -27,28 +27,61 @@ public class SystemPlugin : PluginBase
         services.AddTransient<PluginManagerViewModel>();
     }
 
+    protected override Task OnActivateAsync(IPluginContext context)
+    {
+        RegisterPluginResources();
+        return Task.CompletedTask;
+    }
+
+    private void RegisterPluginResources()
+    {
+        // Traditional Chinese (zh-TW)
+        RegisterResources("zh-TW", new Dictionary<string, string>
+        {
+            ["menu.system"] = "系統",
+            ["menu.system.plugins"] = "外掛管理",
+            ["menu.system.settings"] = "設定"
+        });
+
+        // English (en-US)
+        RegisterResources("en-US", new Dictionary<string, string>
+        {
+            ["menu.system"] = "System",
+            ["menu.system.plugins"] = "Plugin Manager",
+            ["menu.system.settings"] = "Settings"
+        });
+
+        // Japanese (ja-JP)
+        RegisterResources("ja-JP", new Dictionary<string, string>
+        {
+            ["menu.system"] = "システム",
+            ["menu.system.plugins"] = "プラグイン管理",
+            ["menu.system.settings"] = "設定"
+        });
+    }
+
     protected override void RegisterContributions(IPluginContext context)
     {
         // Register views
         RegisterView(new ViewDefinition
         {
             Id = "PluginManagerPage",
-            Title = "Plugin Manager",
+            Title = L("menu.system.plugins"),
             Icon = "\uEA86",
             Type = ViewType.Page,
             ViewClass = typeof(PluginManagerPage),
             ViewModelType = typeof(PluginManagerViewModel),
-            Category = "System"
+            Category = L("menu.system")
         });
 
         RegisterView(new ViewDefinition
         {
             Id = "SettingsPage",
-            Title = "Settings",
+            Title = L("menu.system.settings"),
             Icon = "\uE713",
             Type = ViewType.Page,
             ViewClass = typeof(SettingsPage),
-            Category = "System"
+            Category = L("menu.system")
         });
 
         // Register menu items
@@ -56,14 +89,14 @@ public class SystemPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.system",
-                Title = "System",
+                Title = L("menu.system"),
                 Location = MenuLocation.MainMenu,
                 Order = 100
             },
             new MenuItemDefinition
             {
                 Id = "menu.system.plugins",
-                Title = "Plugin Manager",
+                Title = L("menu.system.plugins"),
                 Location = MenuLocation.MainMenu,
                 ParentId = "menu.system",
                 Icon = "\uEA86",
@@ -73,7 +106,7 @@ public class SystemPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "menu.system.settings",
-                Title = "Settings",
+                Title = L("menu.system.settings"),
                 Location = MenuLocation.MainMenu,
                 ParentId = "menu.system",
                 Icon = "\uE713",
@@ -88,7 +121,7 @@ public class SystemPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "tree.system",
-                Title = "System",
+                Title = L("menu.system"),
                 Location = MenuLocation.FunctionTree,
                 Icon = "\uE770",
                 Order = 100
@@ -96,7 +129,7 @@ public class SystemPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "tree.system.plugins",
-                Title = "Plugin Manager",
+                Title = L("menu.system.plugins"),
                 Location = MenuLocation.FunctionTree,
                 ParentId = "tree.system",
                 Icon = "\uEA86",
@@ -106,7 +139,7 @@ public class SystemPlugin : PluginBase
             new MenuItemDefinition
             {
                 Id = "tree.system.settings",
-                Title = "Settings",
+                Title = L("menu.system.settings"),
                 Location = MenuLocation.FunctionTree,
                 ParentId = "tree.system",
                 Icon = "\uE713",

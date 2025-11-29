@@ -28,6 +28,10 @@
   "settings.sync": "同期設定",
   "settings.about": "Arcanaについて",
 
+  "menu.business": "業務",
+  "menu.system": "システム",
+  "menu.system.plugins": "プラグイン管理",
+  "menu.system.settings": "設定",
   "menu.view": "表示",
   "menu.view.sidebar": "サイドバー",
   "menu.view.statusbar": "ステータスバー",

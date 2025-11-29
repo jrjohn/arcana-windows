@@ -28,6 +28,10 @@
   "settings.sync": "Sync Settings",
   "settings.about": "About",
 
+  "menu.business": "Business",
+  "menu.system": "System",
+  "menu.system.plugins": "Plugin Manager",
+  "menu.system.settings": "Settings",
   "menu.view": "View",
   "menu.view.sidebar": "Sidebar",
   "menu.view.statusbar": "Status Bar",

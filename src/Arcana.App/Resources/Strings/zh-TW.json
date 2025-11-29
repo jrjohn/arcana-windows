@@ -28,6 +28,10 @@
   "settings.sync": "同步設定",
   "settings.about": "關於",
 
+  "menu.business": "業務",
+  "menu.system": "系統",
+  "menu.system.plugins": "外掛管理",
+  "menu.system.settings": "設定",
   "menu.view": "檢視",
   "menu.view.sidebar": "側邊欄",
   "menu.view.statusbar": "狀態列",

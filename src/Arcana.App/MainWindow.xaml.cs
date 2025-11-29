@@ -1,4 +1,5 @@
 using Arcana.App.Navigation;
+using Arcana.App.Services;
 using Arcana.App.Views;
 using Arcana.Core.Common;
 using Arcana.Plugins.Contracts;
@@ -21,6 +22,7 @@ public sealed partial class MainWindow : Window
     private readonly IMenuRegistry _menuRegistry;
     private readonly ICommandService _commandService;
     private readonly ILocalizationService _localization;
+    private readonly ThemeService _themeService;
     private readonly DispatcherTimer _timer;
 
     public MainWindow()
@@ -38,12 +40,15 @@ public sealed partial class MainWindow : Window
         _menuRegistry = App.Services.GetRequiredService<IMenuRegistry>();
         _commandService = App.Services.GetRequiredService<ICommandService>();
         _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _themeService = App.Services.GetRequiredService<ThemeService>();
 
         // Setup event handlers
         _networkMonitor.StatusChanged += OnNetworkStatusChanged;
         _syncService.StateChanged += OnSyncStateChanged;
         _menuRegistry.MenusChanged += OnMenusChanged;
         _localization.CultureChanged += OnCultureChanged;
+        _themeService.ThemeChanged += OnThemeChanged;
+        NavView.Loaded += OnNavViewLoaded;
 
         // Setup timer for clock
         _timer = new DispatcherTimer();
@@ -63,6 +68,78 @@ public sealed partial class MainWindow : Window
         NavigateToPage("HomePage");
     }
 
+    private void OnNavViewLoaded(object sender, RoutedEventArgs e)
+    {
+        // Update Settings item after NavigationView is fully loaded
+        UpdateSettingsItem();
+    }
+
+    private void OnThemeChanged(object? sender, ThemeChangedEventArgs e)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            var backgroundBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(e.NewTheme.BackgroundColor);
+            var isCustomTheme = e.NewTheme.Id != "System" && e.NewTheme.Id != "Light" && e.NewTheme.Id != "Dark";
+
+            // Apply theme to all tab contents
+            foreach (var item in TabViewMain.TabItems)
+            {
+                if (item is TabViewItem tab && tab.Content is Frame frame && frame.Content is FrameworkElement page)
+                {
+                    // Set RequestedTheme for Light/Dark base theme
+                    page.RequestedTheme = e.NewTheme.BaseTheme;
+
+                    // Apply or clear background
+                    ApplyThemeToElement(page, backgroundBrush, isCustomTheme);
+                }
+            }
+        });
+    }
+
+    private static void ApplyThemeToElement(FrameworkElement element, Microsoft.UI.Xaml.Media.Brush backgroundBrush, bool isCustomTheme)
+    {
+        if (isCustomTheme)
+        {
+            // For custom themes, apply background directly
+            if (element is Page page)
+            {
+                page.Background = backgroundBrush;
+                if (page.Content is Panel contentPanel)
+                {
+                    contentPanel.Background = backgroundBrush;
+                }
+            }
+            else if (element is Panel panel)
+            {
+                panel.Background = backgroundBrush;
+            }
+            else if (element is Control control)
+            {
+                control.Background = backgroundBrush;
+            }
+        }
+        else
+        {
+            // For standard themes, clear custom background to use theme resource
+            if (element is Page page)
+            {
+                page.ClearValue(Page.BackgroundProperty);
+                if (page.Content is Panel contentPanel)
+                {
+                    contentPanel.ClearValue(Panel.BackgroundProperty);
+                }
+            }
+            else if (element is Panel panel)
+            {
+                panel.ClearValue(Panel.BackgroundProperty);
+            }
+            else if (element is Control control)
+            {
+                control.ClearValue(Control.BackgroundProperty);
+            }
+        }
+    }
+
     private void OnCultureChanged(object? sender, CultureChangedEventArgs e)
     {
         DispatcherQueue.TryEnqueue(() =>
@@ -72,6 +149,7 @@ public sealed partial class MainWindow : Window
             UpdateSyncStatus();
             BuildMenuBar();
             UpdateNavigationItems();
+            UpdateSettingsItem();
             UpdateTabHeaders();
         });
     }
@@ -150,6 +228,15 @@ public sealed partial class MainWindow : Window
         }
     }
 
+    private void UpdateSettingsItem()
+    {
+        // Update built-in Settings item - must be called after NavView is loaded
+        if (NavView.SettingsItem is NavigationViewItem settingsItem)
+        {
+            settingsItem.Content = _localization.Get("nav.settings");
+        }
+    }
+
     private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         if (args.IsSettingsSelected)
@@ -223,6 +310,9 @@ public sealed partial class MainWindow : Window
         var frame = new Frame();
         frame.Navigate(pageType, parameter);
 
+        // Apply current theme to the new page
+        ApplyCurrentThemeToPage(frame);
+
         // For OrderDetailPage with parameter, update title
         var tabTitle = title;
         var tabTag = pageTag;
@@ -242,6 +332,19 @@ public sealed partial class MainWindow : Window
 
         TabViewMain.TabItems.Add(tab);
         TabViewMain.SelectedItem = tab;
+    }
+
+    private void ApplyCurrentThemeToPage(Frame frame)
+    {
+        if (frame.Content is FrameworkElement page)
+        {
+            var currentTheme = _themeService.CurrentTheme;
+            page.RequestedTheme = currentTheme.BaseTheme;
+
+            var isCustomTheme = currentTheme.Id != "System" && currentTheme.Id != "Light" && currentTheme.Id != "Dark";
+            var backgroundBrush = new Microsoft.UI.Xaml.Media.SolidColorBrush(currentTheme.BackgroundColor);
+            ApplyThemeToElement(page, backgroundBrush, isCustomTheme);
+        }
     }
 
     /// <summary>
