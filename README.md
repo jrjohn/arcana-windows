@@ -332,6 +332,10 @@ mindmap
       Dependency Resolution
       MessageBus & Events
       Shared State Store
+      Declarative Manifest
+      Lazy Loading
+      Activation Events
+      Contribution Validation
     Security
       PBKDF2-SHA256 Hashing
       Token Authentication
@@ -353,9 +357,10 @@ mindmap
       Query Filters
     Localization
       Multi-language i18n
+      External JSON Files
       Plugin Resources
+      Dynamic TitleKey
       System Detection
-      English Fallback
     Themes
       9 Built-in Themes
       Light/Dark Modes
@@ -496,25 +501,36 @@ flowchart LR
 sequenceDiagram
     participant App as Application
     participant PM as PluginManager
-    participant PLC as PluginLoadContext
+    participant MS as ManifestService
+    participant AE as ActivationEventService
     participant Plugin as IPlugin
 
-    App->>PM: LoadPluginsAsync()
-    PM->>PM: DiscoverPlugins(pluginsPath)
-    PM->>PM: ResolveDependencies()
+    App->>PM: DiscoverPluginsAsync()
+    PM->>MS: DiscoverManifestsAsync()
+    MS-->>PM: Manifests (without loading assemblies)
+    PM->>PM: RegisterLazyContributions()
 
-    loop For each plugin
-        PM->>PLC: LoadFromAssemblyPath()
-        PLC->>Plugin: Create Instance
-        PM->>Plugin: InitializeAsync(context)
-        Plugin-->>PM: Ready
-        PM->>Plugin: ActivateAsync()
-        Plugin->>Plugin: RegisterContributions()
-        Plugin-->>PM: Active
-    end
+    Note over PM,Plugin: Plugins remain unloaded until triggered
 
-    PM-->>App: All Plugins Loaded
+    App->>AE: FireAsync("onCommand:order.new")
+    AE->>PM: LoadAndActivatePendingPluginAsync()
+    PM->>Plugin: Load Assembly & Activate
+    Plugin->>Plugin: RegisterContributions()
+    Plugin-->>PM: Active
 ```
+
+### Activation Events
+
+Plugins are loaded on-demand based on activation events:
+
+| Event | Trigger | Example |
+|-------|---------|---------|
+| `onStartup` | Application start | `"onStartup"` |
+| `onCommand:*` | Command execution | `"onCommand:order.new"` |
+| `onView:*` | View navigation | `"onView:OrderListPage"` |
+| `onLanguage:*` | Language activation | `"onLanguage:zh-TW"` |
+| `onFileType:*` | File type opened | `"onFileType:.csv"` |
+| `*` | Always load immediately | `"*"` |
 
 ---
 
@@ -755,11 +771,13 @@ arcana-windows/
 │   │   └── Services/                   # SyncService
 │   │
 │   ├── Arcana.Plugins.Contracts/       # Plugin interfaces
-│   │   └── *.cs                        # 18 plugin type contracts
+│   │   ├── *.cs                        # 18 plugin type contracts
+│   │   ├── Manifest/                   # Declarative manifest schemas
+│   │   └── Validation/                 # Contribution validators
 │   │
 │   ├── Arcana.Plugins/                 # Plugin runtime
 │   │   ├── Core/                       # PluginManager, PluginBase
-│   │   └── Services/                   # MessageBus, Events, etc.
+│   │   └── Services/                   # MessageBus, Events, LazyLoading
 │   │
 │   ├── Arcana.Infrastructure/          # Cross-cutting concerns
 │   │   ├── DependencyInjection/        # Service registration
@@ -770,6 +788,16 @@ arcana-windows/
 │       ├── Views/                      # XAML views
 │       ├── ViewModels/                 # MVVM view models
 │       ├── Plugins/                    # Built-in plugins
+│       │   ├── OrderModule/
+│       │   │   └── locales/            # External i18n JSON files
+│       │   ├── CustomerModule/
+│       │   │   └── locales/
+│       │   ├── ProductModule/
+│       │   │   └── locales/
+│       │   ├── CoreMenu/
+│       │   │   └── locales/
+│       │   └── System/
+│       │       └── locales/
 │       └── Services/                   # Platform services
 │
 └── tests/
@@ -966,7 +994,7 @@ var result = resolver.Resolve(
 
 ## Internationalization (i18n)
 
-The application supports multiple languages with a plugin-based localization system.
+The application supports multiple languages with a plugin-based localization system using **external JSON files**.
 
 ### Supported Languages
 
@@ -982,28 +1010,55 @@ The application supports multiple languages with a plugin-based localization sys
 2. Falls back to English if system language is not supported
 3. User preference is persisted across sessions
 
-### Plugin Localization
+### Plugin Localization (External JSON Files)
 
-Each plugin can register its own language resources:
+Plugins use external JSON files for localization, making translation easier:
+
+```
+Plugins/
+├── OrderModule/
+│   └── locales/
+│       ├── en-US.json
+│       ├── zh-TW.json
+│       └── ja-JP.json
+├── CustomerModule/
+│   └── locales/
+│       └── ...
+```
+
+**Example: `locales/zh-TW.json`**
+```json
+{
+  "order.title": "訂單",
+  "order.list": "訂單管理",
+  "order.new": "新增訂單",
+  "order.detail": "訂單明細",
+  "menu.business": "業務"
+}
+```
+
+**Loading in Plugin:**
+```csharp
+protected override async Task OnActivateAsync(IPluginContext context)
+{
+    // Load localization from external JSON files
+    var localesPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "MyModule", "locales");
+    await LoadExternalLocalizationAsync(localesPath);
+}
+```
+
+### Dynamic Title Localization
+
+Views support dynamic title updates when language changes via `TitleKey`:
 
 ```csharp
-protected override Task OnActivateAsync(IPluginContext context)
+RegisterView(new ViewDefinition
 {
-    RegisterPluginResources();
-    return Task.CompletedTask;
-}
-
-private void RegisterPluginResources()
-{
-    RegisterResources("en-US", new Dictionary<string, string>
-    {
-        ["my.key"] = "English text"
-    });
-    RegisterResources("zh-TW", new Dictionary<string, string>
-    {
-        ["my.key"] = "中文文字"
-    });
-}
+    Id = "OrderListPage",
+    Title = L("order.list"),           // Initial title
+    TitleKey = "order.list",           // Key for dynamic updates
+    // ...
+});
 ```
 
 ---
@@ -1079,7 +1134,11 @@ The application includes 9 built-in themes with support for custom color schemes
 - [ ] Plugin marketplace
 - [ ] Report designer plugin
 - [x] Multi-language support (i18n) - **Completed**
+- [x] External localization files (JSON) - **Completed**
 - [x] Theme system with 9 themes - **Completed**
+- [x] Declarative plugin manifest - **Completed**
+- [x] Lazy plugin loading (Activation Events) - **Completed**
+- [x] Contribution validation - **Completed**
 - [ ] Backup/restore functionality
 - [ ] Mobile companion app (MAUI)
 - [ ] Cloud sync option
@@ -1104,7 +1163,61 @@ The application includes 9 built-in themes with support for custom color schemes
 2. Reference `Arcana.Plugins.Contracts`
 3. Inherit from `PluginBase`
 4. Override `Metadata` and `OnActivateAsync`
-5. Build and copy to `plugins/` directory
+5. Create `plugin.manifest.json` for declarative contributions
+6. Add `locales/*.json` for localization
+7. Build and copy to `plugins/` directory
+
+### Plugin Manifest (Declarative)
+
+Plugins can declare contributions in `plugin.manifest.json` for lazy loading:
+
+```json
+{
+  "id": "com.example.reports",
+  "name": "Report Generator",
+  "version": "1.0.0",
+  "main": "ReportPlugin.dll",
+  "activationEvents": [
+    "onCommand:reports.generate",
+    "onView:ReportPage"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "id": "reports.generate",
+        "title": "%reports.generate.title%"
+      }
+    ],
+    "menus": [
+      {
+        "id": "menu.reports",
+        "title": "%menu.reports%",
+        "location": "MainMenu",
+        "order": 50
+      }
+    ],
+    "views": [
+      {
+        "id": "ReportPage",
+        "title": "%reports.page.title%",
+        "type": "Page"
+      }
+    ]
+  }
+}
+```
+
+### Contribution Validation
+
+All contributions are validated at registration time:
+
+| Contribution | Validation Rules |
+|--------------|------------------|
+| **Menu Item** | Valid ID format, Title required (unless separator), Command format |
+| **View** | Valid ID format, Title required, TitleKey recommended |
+| **Command** | Valid ID format (alphanumeric with dots/underscores) |
+
+Validation errors throw `ContributionValidationException`, warnings are logged.
 
 ---
 
