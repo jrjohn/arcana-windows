@@ -134,6 +134,20 @@ public class CustomerModulePlugin : PluginBase
             }
         );
 
+        // Quick Access - New Customer
+        RegisterMenuItems(
+            new MenuItemDefinition
+            {
+                Id = "quick.newCustomer",
+                Title = L("customer.new"),
+                Location = MenuLocation.QuickAccess,
+                Icon = "\uE716",
+                Order = 2,
+                Group = "business",
+                Command = "customer.new"
+            }
+        );
+
         // Register commands
         RegisterCommand("customer.list", () =>
         {

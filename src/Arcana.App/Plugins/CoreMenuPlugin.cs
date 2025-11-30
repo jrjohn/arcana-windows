@@ -49,6 +49,7 @@ public class CoreMenuPlugin : PluginBase
             ["menu.help"] = "說明",
             ["menu.help.docs"] = "文件",
             ["menu.help.about"] = "關於",
+            ["quick.home"] = "首頁",
             ["common.all.files"] = "所有檔案",
             ["common.ok"] = "確定",
             ["app.version"] = "1.0.0",
@@ -78,6 +79,7 @@ public class CoreMenuPlugin : PluginBase
             ["menu.help"] = "Help",
             ["menu.help.docs"] = "Documentation",
             ["menu.help.about"] = "About",
+            ["quick.home"] = "Home",
             ["common.all.files"] = "All Files",
             ["common.ok"] = "OK",
             ["app.version"] = "1.0.0",
@@ -107,6 +109,7 @@ public class CoreMenuPlugin : PluginBase
             ["menu.help"] = "ヘルプ",
             ["menu.help.docs"] = "ドキュメント",
             ["menu.help.about"] = "Arcanaについて",
+            ["quick.home"] = "ホーム",
             ["common.all.files"] = "すべてのファイル",
             ["common.ok"] = "OK",
             ["app.version"] = "1.0.0",
@@ -412,6 +415,26 @@ public class CoreMenuPlugin : PluginBase
         RegisterCommand("edit.cut", () => Task.CompletedTask);
         RegisterCommand("edit.copy", () => Task.CompletedTask);
         RegisterCommand("edit.paste", () => Task.CompletedTask);
+
+        // Quick Access - Home
+        RegisterMenuItems(
+            new MenuItemDefinition
+            {
+                Id = "quick.home",
+                Title = L("quick.home"),
+                Location = MenuLocation.QuickAccess,
+                Icon = "\uE80F",
+                Order = 99,
+                Group = "navigation",
+                Command = "quick.home"
+            }
+        );
+
+        RegisterCommand("quick.home", () =>
+        {
+            Context!.Navigation.NavigateToAsync("HomePage");
+            return Task.CompletedTask;
+        });
 
         // Subscribe to culture change to rebuild menus
         Context!.Localization.CultureChanged += OnCultureChanged;

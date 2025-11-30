@@ -24,15 +24,19 @@
             </TabView.Resources>
             <TabView.TabStripHeader>
                 <StackPanel Orientation="Horizontal" Spacing="4" Padding="4,0">
-                    <!-- Add new document button -->
-                    <Button x:Name="NewDocumentButton"
-                            Click="NewDocumentButton_Click"
-                            Padding="6,4"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            VerticalAlignment="Center">
+                    <!-- Module quick actions dropdown -->
+                    <DropDownButton x:Name="ModuleQuickActionsButton"
+                                    Padding="6,4"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    VerticalAlignment="Center">
                         <FontIcon Glyph="&#xE710;" FontSize="12"/>
-                    </Button>
+                        <DropDownButton.Flyout>
+                            <MenuFlyout x:Name="ModuleQuickActionsFlyout" Placement="BottomEdgeAlignedLeft">
+                                <!-- Quick actions are populated dynamically from IMenuRegistry -->
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                     <!-- Pop-out button -->
                     <Button x:Name="PopOutButton"
                             Click="PopOutButton_Click"

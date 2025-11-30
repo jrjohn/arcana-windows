@@ -21,6 +21,8 @@ public sealed partial class OrderModulePage : Page
 
     private readonly ILocalizationService _localization;
     private readonly IDocumentManager _documentManager;
+    private readonly IMenuRegistry _menuRegistry;
+    private readonly ICommandService _commandService;
     private readonly ThemeService _themeService;
     private readonly List<FloatingDocumentWindow> _floatingWindows = [];
 
@@ -29,21 +31,22 @@ public sealed partial class OrderModulePage : Page
         this.InitializeComponent();
         _localization = App.Services.GetRequiredService<ILocalizationService>();
         _documentManager = App.Services.GetRequiredService<IDocumentManager>();
+        _menuRegistry = App.Services.GetRequiredService<IMenuRegistry>();
+        _commandService = App.Services.GetRequiredService<ICommandService>();
         _themeService = App.Services.GetRequiredService<ThemeService>();
 
         _localization.CultureChanged += OnCultureChanged;
+        _menuRegistry.MenusChanged += OnMenusChanged;
         Loaded += OnLoaded;
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         ApplyLocalization();
+        BuildModuleQuickActionsMenu();
 
-        // Add the Order List as the first (permanent) tab if not already present
-        if (DocumentTabs.TabItems.Count == 0)
-        {
-            AddListTab();
-        }
+        // Ensure the Order List tab exists as the first (permanent) tab
+        EnsureListTabExists();
         UpdateUI();
     }
 
@@ -52,13 +55,105 @@ public sealed partial class OrderModulePage : Page
         DispatcherQueue.TryEnqueue(() =>
         {
             ApplyLocalization();
+            BuildModuleQuickActionsMenu();
             UpdateTabHeaders();
         });
     }
 
+    private void OnMenusChanged(object? sender, EventArgs e)
+    {
+        DispatcherQueue.TryEnqueue(BuildModuleQuickActionsMenu);
+    }
+
+    private void BuildModuleQuickActionsMenu()
+    {
+        ModuleQuickActionsFlyout.Items.Clear();
+
+        // Get module-level quick access items for this module
+        var quickAccessItems = _menuRegistry.GetMenuItems(MenuLocation.ModuleQuickAccess, ModuleId)
+            .OrderBy(m => m.Order)
+            .ToList();
+
+        string? lastGroup = null;
+        foreach (var item in quickAccessItems)
+        {
+            // Add separator between groups
+            if (!string.IsNullOrEmpty(item.Group) && item.Group != lastGroup && lastGroup != null)
+            {
+                ModuleQuickActionsFlyout.Items.Add(new MenuFlyoutSeparator());
+            }
+            lastGroup = item.Group;
+
+            var menuItem = new MenuFlyoutItem
+            {
+                Text = GetLocalizedTitle(item),
+                Tag = item.Command
+            };
+
+            if (!string.IsNullOrEmpty(item.Icon))
+            {
+                menuItem.Icon = new FontIcon { Glyph = item.Icon };
+            }
+
+            menuItem.Click += OnModuleQuickActionClick;
+            ModuleQuickActionsFlyout.Items.Add(menuItem);
+        }
+    }
+
+    private string GetLocalizedTitle(MenuItemDefinition item)
+    {
+        // Try to get localized string
+        var localized = _localization.GetFromAnyPlugin(item.Id);
+        return localized != item.Id ? localized : item.Title;
+    }
+
+    private async void OnModuleQuickActionClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuFlyoutItem menuItem && menuItem.Tag is string commandId && !string.IsNullOrEmpty(commandId))
+        {
+            // Handle module-specific commands locally
+            switch (commandId)
+            {
+                case "module.order.list":
+                    SelectListTab();
+                    break;
+                case "module.order.new":
+                case "order.new":
+                    OpenNewOrder();
+                    break;
+                default:
+                    // For other commands, use the command service
+                    try
+                    {
+                        await _commandService.ExecuteAsync(commandId);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Module quick action command not found: {commandId} - {ex.Message}");
+                    }
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Selects the Order List tab
+    /// </summary>
+    public void SelectListTab()
+    {
+        foreach (var item in DocumentTabs.TabItems)
+        {
+            if (item is TabViewItem tab && tab.Tag is DocumentInfo doc && doc.Id == ListTabId)
+            {
+                DocumentTabs.SelectedItem = tab;
+                return;
+            }
+        }
+    }
+
     private void ApplyLocalization()
     {
-        ToolTipService.SetToolTip(NewDocumentButton, _localization.Get("order.new"));
+        ToolTipService.SetToolTip(ModuleQuickActionsButton, _localization.Get("tooltip.newTab"));
         ToolTipService.SetToolTip(PopOutButton, _localization.Get("common.popOut"));
         UpdateDocumentCount();
     }
@@ -124,10 +219,31 @@ public sealed partial class OrderModulePage : Page
     }
 
     /// <summary>
+    /// Ensures the Order List tab exists
+    /// </summary>
+    private void EnsureListTabExists()
+    {
+        // Check if list tab already exists
+        foreach (var item in DocumentTabs.TabItems)
+        {
+            if (item is TabViewItem tab && tab.Tag is DocumentInfo doc && doc.Id == ListTabId)
+            {
+                return; // Already exists
+            }
+        }
+
+        // Add the list tab
+        AddListTab();
+    }
+
+    /// <summary>
     /// Opens an order in a new document tab
     /// </summary>
     public void OpenOrder(int orderId)
     {
+        // Ensure the list tab exists first
+        EnsureListTabExists();
+
         var docId = $"Order_{orderId}";
 
         // Check if already open
@@ -179,6 +295,9 @@ public sealed partial class OrderModulePage : Page
     /// </summary>
     public void OpenNewOrder(object? parameter = null)
     {
+        // Ensure the list tab exists first
+        EnsureListTabExists();
+
         // Generate unique ID for new order tab
         var docId = parameter is OrderCopyParameter ? $"NewOrder_{Guid.NewGuid():N}" : "NewOrder";
 
@@ -395,11 +514,6 @@ public sealed partial class OrderModulePage : Page
     private void DocumentTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         UpdateUI();
-    }
-
-    private void NewDocumentButton_Click(object sender, RoutedEventArgs e)
-    {
-        OpenNewOrder();
     }
 
     private void PopOutButton_Click(object sender, RoutedEventArgs e)

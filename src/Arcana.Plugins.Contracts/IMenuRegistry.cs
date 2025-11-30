@@ -21,6 +21,11 @@ public interface IMenuRegistry
     IReadOnlyList<MenuItemDefinition> GetMenuItems(MenuLocation location);
 
     /// <summary>
+    /// Gets menu items for a location filtered by module ID.
+    /// </summary>
+    IReadOnlyList<MenuItemDefinition> GetMenuItems(MenuLocation location, string moduleId);
+
+    /// <summary>
     /// Gets all menu items.
     /// </summary>
     IReadOnlyList<MenuItemDefinition> GetAllMenuItems();
@@ -46,7 +51,8 @@ public enum MenuLocation
     Toolbar,            // Toolbar
     StatusBar,          // Status bar
     FunctionTree,       // Function tree
-    QuickAccess         // Quick access
+    QuickAccess,        // Quick access (main tab strip)
+    ModuleQuickAccess   // Module-level quick access (nested tab strip)
 }
 
 /// <summary>
@@ -67,4 +73,9 @@ public record MenuItemDefinition
     public string? When { get; init; }
     public bool IsSeparator { get; init; }
     public IReadOnlyList<MenuItemDefinition>? Children { get; init; }
+    /// <summary>
+    /// Module ID for module-level items (e.g., ModuleQuickAccess).
+    /// Used to filter items by module.
+    /// </summary>
+    public string? ModuleId { get; init; }
 }

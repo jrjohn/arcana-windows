@@ -56,6 +56,14 @@ public class MenuRegistry : IMenuRegistry
             .ToList();
     }
 
+    public IReadOnlyList<MenuItemDefinition> GetMenuItems(MenuLocation location, string moduleId)
+    {
+        return _menuItems.Values
+            .Where(m => m.Location == location && m.ModuleId == moduleId)
+            .OrderBy(m => m.Order)
+            .ToList();
+    }
+
     public IReadOnlyList<MenuItemDefinition> GetAllMenuItems()
     {
         return _menuItems.Values.OrderBy(m => m.Order).ToList();

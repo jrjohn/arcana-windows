@@ -61,6 +61,7 @@ public sealed partial class MainWindow : Window
         UpdateSyncStatus();
         UpdateClock();
         BuildMenuBar();
+        BuildQuickActionsMenu();
         UpdateNavigationItems();
 
         // Navigate to home page
@@ -183,6 +184,7 @@ public sealed partial class MainWindow : Window
             UpdateNetworkStatus();
             UpdateSyncStatus();
             BuildMenuBar();
+            BuildQuickActionsMenu();
             UpdateNavigationItems();
             UpdateSettingsItem();
             UpdateTabHeaders();
@@ -237,12 +239,6 @@ public sealed partial class MainWindow : Window
         SearchBox.PlaceholderText = _localization.Get("search.placeholder");
         ToolTipService.SetToolTip(AddTabButton, _localization.Get("tooltip.newTab"));
 
-        // Update quick action menu items
-        QuickNewOrder.Text = _localization.Get("quick.newOrder");
-        QuickNewCustomer.Text = _localization.Get("quick.newCustomer");
-        QuickNewProduct.Text = _localization.Get("quick.newProduct");
-        QuickHome.Text = _localization.Get("quick.home");
-
         // Update status bar
         StatusMessage.Text = _localization.Get("status.ready");
     }
@@ -288,29 +284,6 @@ public sealed partial class MainWindow : Window
         {
             sender.TabItems.Remove(args.Tab);
         }
-    }
-
-    private void QuickNewOrder_Click(object sender, RoutedEventArgs e)
-    {
-        // Navigate within OrderListPage tab to OrderDetailPage (new order)
-        NavigateWithinTab("OrderListPage", "OrderDetailPage");
-    }
-
-    private void QuickNewCustomer_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Change to NavigateWithinTab when CustomerDetailPage is implemented
-        NavigateToPage("CustomerListPage");
-    }
-
-    private void QuickNewProduct_Click(object sender, RoutedEventArgs e)
-    {
-        // TODO: Change to NavigateWithinTab when ProductDetailPage is implemented
-        NavigateToPage("ProductListPage");
-    }
-
-    private void QuickHome_Click(object sender, RoutedEventArgs e)
-    {
-        NavigateToPage("HomePage");
     }
 
     private void NavigateToPage(string pageTag, object? parameter = null)
@@ -601,7 +574,61 @@ public sealed partial class MainWindow : Window
 
     private void OnMenusChanged(object? sender, EventArgs e)
     {
-        DispatcherQueue.TryEnqueue(BuildMenuBar);
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            BuildMenuBar();
+            BuildQuickActionsMenu();
+        });
+    }
+
+    private void BuildQuickActionsMenu()
+    {
+        QuickActionsFlyout.Items.Clear();
+
+        // Get quick access items from menu registry
+        var quickAccessItems = _menuRegistry.GetMenuItems(MenuLocation.QuickAccess)
+            .OrderBy(m => m.Order)
+            .ToList();
+
+        string? lastGroup = null;
+        foreach (var item in quickAccessItems)
+        {
+            // Add separator between groups
+            if (!string.IsNullOrEmpty(item.Group) && item.Group != lastGroup && lastGroup != null)
+            {
+                QuickActionsFlyout.Items.Add(new MenuFlyoutSeparator());
+            }
+            lastGroup = item.Group;
+
+            var menuItem = new MenuFlyoutItem
+            {
+                Text = GetLocalizedMenuTitle(item),
+                Tag = item.Command
+            };
+
+            if (!string.IsNullOrEmpty(item.Icon))
+            {
+                menuItem.Icon = new FontIcon { Glyph = item.Icon };
+            }
+
+            menuItem.Click += OnQuickActionClick;
+            QuickActionsFlyout.Items.Add(menuItem);
+        }
+    }
+
+    private async void OnQuickActionClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuFlyoutItem menuItem && menuItem.Tag is string commandId && !string.IsNullOrEmpty(commandId))
+        {
+            try
+            {
+                await _commandService.ExecuteAsync(commandId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Quick action command not found: {commandId} - {ex.Message}");
+            }
+        }
     }
 
     private void BuildMenuBar()

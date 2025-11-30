@@ -41,7 +41,9 @@ public class OrderModulePlugin : PluginBase
             ["order.status"] = "狀態",
             ["order.total"] = "總金額",
             ["order.items"] = "訂單項目",
-            ["menu.business"] = "業務"
+            ["menu.business"] = "業務",
+            ["module.order.new"] = "新增訂單",
+            ["module.order.list"] = "訂單列表"
         });
 
         // English (en-US)
@@ -57,7 +59,9 @@ public class OrderModulePlugin : PluginBase
             ["order.status"] = "Status",
             ["order.total"] = "Total Amount",
             ["order.items"] = "Order Items",
-            ["menu.business"] = "Business"
+            ["menu.business"] = "Business",
+            ["module.order.new"] = "New Order",
+            ["module.order.list"] = "Order List"
         });
 
         // Japanese (ja-JP)
@@ -73,7 +77,9 @@ public class OrderModulePlugin : PluginBase
             ["order.status"] = "ステータス",
             ["order.total"] = "合計金額",
             ["order.items"] = "注文項目",
-            ["menu.business"] = "業務"
+            ["menu.business"] = "業務",
+            ["module.order.new"] = "新規注文",
+            ["module.order.list"] = "注文一覧"
         });
     }
 
@@ -153,6 +159,46 @@ public class OrderModulePlugin : PluginBase
                 Icon = "\uE7C3",
                 Order = 10,
                 Command = "order.list"
+            }
+        );
+
+        // Quick Access - New Order (main tab strip)
+        RegisterMenuItems(
+            new MenuItemDefinition
+            {
+                Id = "quick.newOrder",
+                Title = L("order.new"),
+                Location = MenuLocation.QuickAccess,
+                Icon = "\uE7C3",
+                Order = 1,
+                Group = "business",
+                Command = "order.new"
+            }
+        );
+
+        // Module Quick Access - Order module nested tab strip
+        RegisterMenuItems(
+            new MenuItemDefinition
+            {
+                Id = "module.order.new",
+                Title = L("order.new"),
+                Location = MenuLocation.ModuleQuickAccess,
+                ModuleId = "OrderModule",
+                Icon = "\uE710",
+                Order = 1,
+                Group = "actions",
+                Command = "module.order.new"
+            },
+            new MenuItemDefinition
+            {
+                Id = "module.order.list",
+                Title = L("module.order.list"),
+                Location = MenuLocation.ModuleQuickAccess,
+                ModuleId = "OrderModule",
+                Icon = "\uE8A5",
+                Order = 10,
+                Group = "navigation",
+                Command = "module.order.list"
             }
         );
 

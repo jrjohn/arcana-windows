@@ -144,6 +144,20 @@ public class ProductModulePlugin : PluginBase
             }
         );
 
+        // Quick Access - New Product
+        RegisterMenuItems(
+            new MenuItemDefinition
+            {
+                Id = "quick.newProduct",
+                Title = L("product.new"),
+                Location = MenuLocation.QuickAccess,
+                Icon = "\uE719",
+                Order = 3,
+                Group = "business",
+                Command = "product.new"
+            }
+        );
+
         // Register commands
         RegisterCommand("product.list", () =>
         {
