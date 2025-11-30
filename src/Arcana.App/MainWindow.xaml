@@ -43,8 +43,8 @@
             </MenuBar>
 
             <!-- Search Box -->
-            <AutoSuggestBox Grid.Column="2"
-                           PlaceholderText="搜尋命令或功能... (Ctrl+K)"
+            <AutoSuggestBox x:Name="SearchBox"
+                           Grid.Column="2"
                            QueryIcon="Find"
                            Width="300"
                            HorizontalAlignment="Center"
@@ -65,24 +65,24 @@
                        Background="{ThemeResource NavigationViewDefaultPaneBackground}">
 
             <NavigationView.MenuItems>
-                <NavigationViewItem Icon="Home" Content="首頁" Tag="HomePage"/>
+                <NavigationViewItem x:Name="NavHome" Icon="Home" Tag="HomePage"/>
                 <NavigationViewItemSeparator/>
-                <NavigationViewItemHeader Content="業務"/>
-                <NavigationViewItem Icon="People" Content="客戶管理" Tag="CustomerListPage"/>
-                <NavigationViewItem Icon="Shop" Content="產品管理" Tag="ProductListPage"/>
-                <NavigationViewItem Icon="Document" Content="訂單管理" Tag="OrderListPage"/>
+                <NavigationViewItemHeader x:Name="NavHeaderBusiness"/>
+                <NavigationViewItem x:Name="NavCustomers" Icon="People" Tag="CustomerListPage"/>
+                <NavigationViewItem x:Name="NavProducts" Icon="Shop" Tag="ProductListPage"/>
+                <NavigationViewItem x:Name="NavOrders" Icon="Document" Tag="OrderListPage"/>
                 <NavigationViewItemSeparator/>
-                <NavigationViewItemHeader Content="報表"/>
-                <NavigationViewItem Icon="Library" Content="銷售報表" Tag="SalesReportPage"/>
+                <NavigationViewItemHeader x:Name="NavHeaderReports"/>
+                <NavigationViewItem x:Name="NavReports" Icon="Library" Tag="SalesReportPage"/>
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem Content="Plugin Manager" Tag="PluginManagerPage">
+                <NavigationViewItem x:Name="NavPlugins" Tag="PluginManagerPage">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xEA86;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Icon="Sync" Content="同步狀態" Tag="SyncPage">
+                <NavigationViewItem x:Name="NavSync" Icon="Sync" Tag="SyncPage">
                     <NavigationViewItem.InfoBadge>
                         <InfoBadge x:Name="SyncBadge" Value="0"/>
                     </NavigationViewItem.InfoBadge>
@@ -105,8 +105,8 @@
                     </TabView.Resources>
                     <TabView.TabStripHeader>
                         <Grid Padding="4,0">
-                            <Button Content="+"
-                                   ToolTipService.ToolTip="新增分頁"
+                            <Button x:Name="AddTabButton"
+                                   Content="+"
                                    Click="AddTab_Click"
                                    VerticalAlignment="Center"
                                    Padding="8,4"/>
@@ -127,19 +127,18 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock x:Name="StatusMessage"
-                      Text="就緒"
                       VerticalAlignment="Center"
                       Margin="12,0"
                       Style="{StaticResource CaptionTextBlockStyle}"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="8,0">
                 <FontIcon Glyph="&#xE701;" FontSize="12" x:Name="NetworkIcon"/>
-                <TextBlock x:Name="NetworkStatus" Text="線上" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="NetworkStatus" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" Margin="8,0">
                 <FontIcon Glyph="&#xE895;" FontSize="12"/>
-                <TextBlock x:Name="SyncStatus" Text="已同步" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="SyncStatus" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center"/>
             </StackPanel>
 
             <TextBlock Grid.Column="3"

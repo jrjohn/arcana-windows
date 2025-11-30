@@ -1,5 +1,6 @@
 using Arcana.App.ViewModels;
 using Arcana.Domain.Entities;
+using Arcana.Plugins.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -13,15 +14,81 @@ namespace Arcana.App.Views;
 public sealed partial class OrderDetailPage : Page
 {
     private OrderDetailViewModel ViewModel { get; }
+    private readonly ILocalizationService _localization;
 
     public OrderDetailPage()
     {
         this.InitializeComponent();
         ViewModel = App.Services.GetRequiredService<OrderDetailViewModel>();
+        _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _localization.CultureChanged += OnCultureChanged;
         DataContext = ViewModel;
     }
 
-    protected override async void OnNavigatedTo(NavigationEventArgs e)
+    private void OnCultureChanged(object? sender, CultureChangedEventArgs e)
+    {
+        DispatcherQueue.TryEnqueue(ApplyLocalization);
+    }
+
+    private void ApplyLocalization()
+    {
+        // Set language for calendar date pickers
+        var currentCulture = _localization.CurrentCulture.Name;
+        OrderDatePicker.Language = currentCulture;
+        ExpectedDeliveryDatePicker.Language = currentCulture;
+
+        // Command bar buttons
+        EditButton.Label = _localization.Get("common.edit");
+        SaveButton.Label = _localization.Get("common.save");
+        CancelButton.Label = _localization.Get("common.cancel");
+        PrintButton.Label = _localization.Get("common.print");
+
+        // Order info section
+        OrderInfoTitle.Text = _localization.Get("order.info");
+        OrderNumberLabel.Text = _localization.Get("order.number");
+        OrderDateLabel.Text = _localization.Get("order.date");
+        CustomerLabel.Text = _localization.Get("order.customer");
+        PaymentMethodLabel.Text = _localization.Get("order.paymentMethod");
+
+        // Payment method options
+        PaymentCash.Content = _localization.Get("payment.cash");
+        PaymentCreditCard.Content = _localization.Get("payment.creditCard");
+        PaymentBankTransfer.Content = _localization.Get("payment.bankTransfer");
+        PaymentCheck.Content = _localization.Get("payment.check");
+        PaymentCredit.Content = _localization.Get("payment.credit");
+
+        // Order items section
+        OrderItemsTitle.Text = _localization.Get("order.items");
+        ProductSearchBox.PlaceholderText = _localization.Get("order.searchProduct");
+        ClearItemsButton.Content = _localization.Get("order.clearItems");
+
+        // Shipping section
+        ShippingInfoTitle.Text = _localization.Get("order.shippingInfo");
+        ShippingAddressText.Header = _localization.Get("order.shippingAddress");
+        ShippingCityText.Header = _localization.Get("order.shippingCity");
+        ShippingPostalCodeText.Header = _localization.Get("order.shippingPostalCode");
+        ExpectedDeliveryDatePicker.Header = _localization.Get("order.expectedDelivery");
+
+        // Notes section
+        NotesTitle.Text = _localization.Get("order.notes");
+
+        // Order summary section
+        OrderSummaryTitle.Text = _localization.Get("order.summary");
+        SubtotalLabel.Text = _localization.Get("order.subtotal");
+        TaxLabel.Text = _localization.Get("order.tax");
+        ShippingLabel.Text = _localization.Get("order.shipping");
+        DiscountLabel.Text = _localization.Get("order.discount");
+        TotalLabel.Text = _localization.Get("order.total");
+        CalculateButton.Content = _localization.Get("order.calculate");
+
+        // Update status text
+        if (ViewModel?.Order != null)
+        {
+            OrderStatusText.Text = _localization.Get($"order.status.{ViewModel.Order.Status.ToString().ToLowerInvariant()}");
+        }
+    }
+
+    protected override async void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
@@ -35,12 +102,13 @@ public sealed partial class OrderDetailPage : Page
 
         await ViewModel.LoadAsync(orderId);
         UpdateUI();
+        ApplyLocalization();
     }
 
     private void UpdateUI()
     {
         PageTitle.Text = ViewModel.Title;
-        OrderStatus.Text = ViewModel.Order.Status.ToString();
+        OrderStatusText.Text = ViewModel.Order.Status.ToString();
         OrderNumberText.Text = ViewModel.Order.OrderNumber;
         OrderDatePicker.Date = ViewModel.Order.OrderDate;
         CustomerComboBox.ItemsSource = ViewModel.Customers;
@@ -98,10 +166,10 @@ public sealed partial class OrderDetailPage : Page
         // If dirty, ask for confirmation
         if (ViewModel.IsDirty)
         {
-            var windowService = App.Services.GetRequiredService<Arcana.Plugins.Contracts.IWindowService>();
+            var windowService = App.Services.GetRequiredService<IWindowService>();
             var confirmed = await windowService.ShowConfirmAsync(
-                "Discard Changes",
-                "You have unsaved changes. Are you sure you want to discard them?");
+                _localization.Get("common.discardChanges"),
+                _localization.Get("common.discardChangesMessage"));
             if (!confirmed) return;
         }
 

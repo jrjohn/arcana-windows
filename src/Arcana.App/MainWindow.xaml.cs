@@ -183,48 +183,25 @@ public sealed partial class MainWindow : Window
 
     private void UpdateNavigationItems()
     {
-        // Update navigation view items
-        foreach (var item in NavView.MenuItems)
-        {
-            if (item is NavigationViewItem navItem && navItem.Tag is string tag)
-            {
-                navItem.Content = tag switch
-                {
-                    "HomePage" => _localization.Get("nav.home"),
-                    "CustomerListPage" => _localization.Get("nav.customers"),
-                    "ProductListPage" => _localization.Get("nav.products"),
-                    "OrderListPage" => _localization.Get("nav.orders"),
-                    "SalesReportPage" => _localization.Get("nav.reports"),
-                    _ => navItem.Content
-                };
-            }
-            else if (item is NavigationViewItemHeader header)
-            {
-                // Update headers based on content
-                if (header.Content?.ToString() == "業務" || header.Content?.ToString() == "Business")
-                {
-                    header.Content = _localization.Get("menu.business");
-                }
-                else if (header.Content?.ToString() == "報表" || header.Content?.ToString() == "Reports")
-                {
-                    header.Content = _localization.Get("nav.reports");
-                }
-            }
-        }
+        // Update navigation menu items by name
+        NavHome.Content = _localization.Get("nav.home");
+        NavHeaderBusiness.Content = _localization.Get("nav.header.business");
+        NavCustomers.Content = _localization.Get("nav.customers");
+        NavProducts.Content = _localization.Get("nav.products");
+        NavOrders.Content = _localization.Get("nav.orders");
+        NavHeaderReports.Content = _localization.Get("nav.header.reports");
+        NavReports.Content = _localization.Get("nav.reports");
 
         // Update footer items
-        foreach (var item in NavView.FooterMenuItems)
-        {
-            if (item is NavigationViewItem navItem && navItem.Tag is string tag)
-            {
-                navItem.Content = tag switch
-                {
-                    "PluginManagerPage" => _localization.Get("nav.plugins"),
-                    "SyncPage" => _localization.Get("nav.sync"),
-                    _ => navItem.Content
-                };
-            }
-        }
+        NavPlugins.Content = _localization.Get("nav.plugins");
+        NavSync.Content = _localization.Get("nav.sync");
+
+        // Update search box and add tab button
+        SearchBox.PlaceholderText = _localization.Get("search.placeholder");
+        ToolTipService.SetToolTip(AddTabButton, _localization.Get("tooltip.newTab"));
+
+        // Update status bar
+        StatusMessage.Text = _localization.Get("status.ready");
     }
 
     private void UpdateSettingsItem()

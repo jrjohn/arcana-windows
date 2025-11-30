@@ -29,16 +29,16 @@
             </Button>
 
             <StackPanel Grid.Column="1">
-                <TextBlock x:Name="PageTitle" Text="新增訂單" Style="{StaticResource TitleTextBlockStyle}"/>
-                <TextBlock x:Name="OrderStatus" Text="草稿" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+                <TextBlock x:Name="PageTitle" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock x:Name="OrderStatusText" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
             </StackPanel>
 
             <CommandBar Grid.Column="2" DefaultLabelPosition="Right" Background="Transparent">
-                <AppBarButton x:Name="EditButton" Icon="Edit" Label="編輯" Click="Edit_Click" Visibility="Collapsed"/>
-                <AppBarButton x:Name="SaveButton" Icon="Save" Label="儲存" Click="Save_Click"/>
-                <AppBarButton Icon="Cancel" Label="取消" Click="Cancel_Click"/>
+                <AppBarButton x:Name="EditButton" Icon="Edit" Click="Edit_Click" Visibility="Collapsed"/>
+                <AppBarButton x:Name="SaveButton" Icon="Save" Click="Save_Click"/>
+                <AppBarButton x:Name="CancelButton" Icon="Cancel" Click="Cancel_Click"/>
                 <AppBarSeparator/>
-                <AppBarButton Icon="Print" Label="列印"/>
+                <AppBarButton x:Name="PrintButton" Icon="Print"/>
             </CommandBar>
         </Grid>
 
@@ -54,7 +54,7 @@
                     <!-- Order Info -->
                     <Border Style="{StaticResource CardStyle}">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="訂單資訊" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                            <TextBlock x:Name="OrderInfoTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -67,31 +67,30 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Margin="0,0,8,12">
-                                    <TextBlock Text="訂單編號" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                    <TextBlock x:Name="OrderNumberLabel" Style="{StaticResource CaptionTextBlockStyle}"/>
                                     <TextBox x:Name="OrderNumberText" IsReadOnly="True"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1" Margin="8,0,0,12">
-                                    <TextBlock Text="訂單日期" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                    <TextBlock x:Name="OrderDateLabel" Style="{StaticResource CaptionTextBlockStyle}"/>
                                     <CalendarDatePicker x:Name="OrderDatePicker" HorizontalAlignment="Stretch"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1" Margin="0,0,8,0">
-                                    <TextBlock Text="客戶" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                    <TextBlock x:Name="CustomerLabel" Style="{StaticResource CaptionTextBlockStyle}"/>
                                     <ComboBox x:Name="CustomerComboBox"
                                              HorizontalAlignment="Stretch"
-                                             PlaceholderText="選擇客戶"
                                              DisplayMemberPath="Name"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,0">
-                                    <TextBlock Text="付款方式" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                    <TextBlock x:Name="PaymentMethodLabel" Style="{StaticResource CaptionTextBlockStyle}"/>
                                     <ComboBox x:Name="PaymentMethodComboBox" HorizontalAlignment="Stretch">
-                                        <ComboBoxItem Content="現金"/>
-                                        <ComboBoxItem Content="信用卡"/>
-                                        <ComboBoxItem Content="銀行轉帳"/>
-                                        <ComboBoxItem Content="支票"/>
-                                        <ComboBoxItem Content="賒帳"/>
+                                        <ComboBoxItem x:Name="PaymentCash"/>
+                                        <ComboBoxItem x:Name="PaymentCreditCard"/>
+                                        <ComboBoxItem x:Name="PaymentBankTransfer"/>
+                                        <ComboBoxItem x:Name="PaymentCheck"/>
+                                        <ComboBoxItem x:Name="PaymentCredit"/>
                                     </ComboBox>
                                 </StackPanel>
                             </Grid>
@@ -106,14 +105,13 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="訂單明細" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                                <TextBlock x:Name="OrderItemsTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
                                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
                                     <AutoSuggestBox x:Name="ProductSearchBox"
-                                                   PlaceholderText="搜尋產品..."
                                                    Width="200"
                                                    QueryIcon="Find"
                                                    QuerySubmitted="ProductSearch_QuerySubmitted"/>
-                                    <Button Content="清空明細" Click="ClearItems_Click"/>
+                                    <Button x:Name="ClearItemsButton" Click="ClearItems_Click"/>
                                 </StackPanel>
                             </Grid>
 
@@ -133,12 +131,12 @@
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock Text="#" FontWeight="SemiBold"/>
-                                            <TextBlock Grid.Column="1" Text="產品代碼" FontWeight="SemiBold"/>
-                                            <TextBlock Grid.Column="2" Text="產品名稱" FontWeight="SemiBold"/>
-                                            <TextBlock Grid.Column="3" Text="數量" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                                            <TextBlock Grid.Column="4" Text="單價" FontWeight="SemiBold" HorizontalAlignment="Right"/>
-                                            <TextBlock Grid.Column="5" Text="折扣%" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                                            <TextBlock Grid.Column="6" Text="小計" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="ColProductCode" Grid.Column="1" FontWeight="SemiBold"/>
+                                            <TextBlock x:Name="ColProductName" Grid.Column="2" FontWeight="SemiBold"/>
+                                            <TextBlock x:Name="ColQuantity" Grid.Column="3" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                            <TextBlock x:Name="ColUnitPrice" Grid.Column="4" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="ColDiscount" Grid.Column="5" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                            <TextBlock x:Name="ColSubtotal" Grid.Column="6" FontWeight="SemiBold" HorizontalAlignment="Right"/>
                                             <TextBlock Grid.Column="7" Text="" FontWeight="SemiBold"/>
                                         </Grid>
                                     </DataTemplate>
@@ -185,9 +183,9 @@
                     <!-- Shipping Info -->
                     <Border Style="{StaticResource CardStyle}">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="送貨資訊" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                            <TextBlock x:Name="ShippingInfoTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                            <TextBox x:Name="ShippingAddressText" Header="送貨地址" PlaceholderText="輸入送貨地址"/>
+                            <TextBox x:Name="ShippingAddressText"/>
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -195,18 +193,18 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBox x:Name="ShippingCityText" Header="城市" Margin="0,0,8,0"/>
-                                <TextBox Grid.Column="1" x:Name="ShippingPostalCodeText" Header="郵遞區號" Margin="8,0,0,0"/>
+                                <TextBox x:Name="ShippingCityText" Margin="0,0,8,0"/>
+                                <TextBox Grid.Column="1" x:Name="ShippingPostalCodeText" Margin="8,0,0,0"/>
                             </Grid>
 
-                            <CalendarDatePicker x:Name="ExpectedDeliveryDatePicker" Header="預計送達日期" HorizontalAlignment="Left"/>
+                            <CalendarDatePicker x:Name="ExpectedDeliveryDatePicker" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </Border>
 
                     <!-- Notes -->
                     <Border Style="{StaticResource CardStyle}">
                         <StackPanel Spacing="12">
-                            <TextBlock Text="備註" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                            <TextBlock x:Name="NotesTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
                             <TextBox x:Name="NotesText" AcceptsReturn="True" TextWrapping="Wrap" Height="100"/>
                         </StackPanel>
                     </Border>
@@ -215,7 +213,7 @@
                 <!-- Order Summary -->
                 <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="16,0,0,0" VerticalAlignment="Top">
                     <StackPanel Spacing="16">
-                        <TextBlock Text="訂單摘要" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                        <TextBlock x:Name="OrderSummaryTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -232,25 +230,25 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="小計"/>
+                            <TextBlock x:Name="SubtotalLabel"/>
                             <TextBlock Grid.Column="1" x:Name="SubtotalText" Text="$0" HorizontalAlignment="Right"/>
 
-                            <TextBlock Grid.Row="1" Text="稅額 (5%)"/>
+                            <TextBlock x:Name="TaxLabel" Grid.Row="1"/>
                             <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TaxAmountText" Text="$0" HorizontalAlignment="Right"/>
 
-                            <TextBlock Grid.Row="2" Text="運費"/>
+                            <TextBlock x:Name="ShippingLabel" Grid.Row="2"/>
                             <NumberBox Grid.Row="2" Grid.Column="1" x:Name="ShippingCostBox" Value="0" Minimum="0" HorizontalAlignment="Right" Width="100"/>
 
-                            <TextBlock Grid.Row="3" Text="折扣"/>
+                            <TextBlock x:Name="DiscountLabel" Grid.Row="3"/>
                             <NumberBox Grid.Row="3" Grid.Column="1" x:Name="DiscountAmountBox" Value="0" Minimum="0" HorizontalAlignment="Right" Width="100"/>
 
                             <Border Grid.Row="5" Grid.ColumnSpan="2" Height="1" Background="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,8"/>
 
-                            <TextBlock Grid.Row="6" Text="總計" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                            <TextBlock x:Name="TotalLabel" Grid.Row="6" Style="{StaticResource SubtitleTextBlockStyle}"/>
                             <TextBlock Grid.Row="6" Grid.Column="1" x:Name="TotalAmountText" Text="$0" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
                         </Grid>
 
-                        <Button Content="計算總計" Click="Calculate_Click" HorizontalAlignment="Stretch"/>
+                        <Button x:Name="CalculateButton" Click="Calculate_Click" HorizontalAlignment="Stretch"/>
                     </StackPanel>
                 </Border>
             </Grid>

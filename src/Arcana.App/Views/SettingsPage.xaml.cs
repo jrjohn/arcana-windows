@@ -77,12 +77,12 @@ public sealed partial class SettingsPage : Page
             "System" => _localization.Get("settings.theme.system"),
             "Light" => _localization.Get("settings.theme.light"),
             "Dark" => _localization.Get("settings.theme.dark"),
-            "OceanBlue" => "Ocean Blue",
-            "ForestGreen" => "Forest Green",
-            "PurpleNight" => "Purple Night",
-            "SunsetOrange" => "Sunset Orange",
-            "RosePink" => "Rose Pink",
-            "MidnightBlue" => "Midnight Blue",
+            "OceanBlue" => _localization.Get("settings.theme.oceanblue"),
+            "ForestGreen" => _localization.Get("settings.theme.forestgreen"),
+            "PurpleNight" => _localization.Get("settings.theme.purplenight"),
+            "SunsetOrange" => _localization.Get("settings.theme.sunsetorange"),
+            "RosePink" => _localization.Get("settings.theme.rosepink"),
+            "MidnightBlue" => _localization.Get("settings.theme.midnightblue"),
             _ => theme.Name
         };
     }
@@ -144,18 +144,58 @@ public sealed partial class SettingsPage : Page
 
     private void UpdateLocalizedStrings()
     {
+        // Page title
         PageTitle.Text = _localization.Get("settings.title");
-        AppearanceTitle.Text = _localization.Get("settings.general");
+
+        // Appearance section
+        AppearanceTitle.Text = _localization.Get("settings.appearance");
         ThemeLabel.Text = _localization.Get("settings.theme");
         LanguageComboBox.Header = _localization.Get("settings.language");
 
-        SyncTitle.Text = _localization.Get("settings.sync");
+        // Language items
+        LangZhTW.Content = "繁體中文";
+        LangJaJP.Content = "日本語";
+
+        // Sync section
+        SyncTitle.Text = _localization.Get("settings.syncSettings");
+        AutoSyncToggle.Header = _localization.Get("settings.autoSync");
+        SyncFrequencyComboBox.Header = _localization.Get("settings.syncFrequency");
+        Freq5Min.Content = _localization.Get("settings.every5min");
+        Freq15Min.Content = _localization.Get("settings.every15min");
+        Freq30Min.Content = _localization.Get("settings.every30min");
+        FreqHour.Content = _localization.Get("settings.everyHour");
+        SyncNowButton.Content = _localization.Get("settings.syncNow");
+
+        // Data section
+        DataTitle.Text = _localization.Get("settings.dataSettings");
+        ExportButton.Content = _localization.Get("settings.export");
+        ImportButton.Content = _localization.Get("settings.import");
+        ClearCacheButton.Content = _localization.Get("settings.clearCache");
+
+        // About section
         AboutTitle.Text = _localization.Get("settings.about");
+        AppName.Text = _localization.Get("settings.appName");
+        AppVersion.Text = _localization.Get("settings.versionFormat", "1.0.0");
 
         // Update theme display names
         for (int i = 0; i < ThemeItems.Count && i < _themeService.AvailableThemes.Count; i++)
         {
             ThemeItems[i].DisplayName = GetThemeDisplayName(_themeService.AvailableThemes[i]);
+        }
+
+        // Refresh theme grid to show updated names
+        ThemeGridView.ItemsSource = null;
+        ThemeGridView.ItemsSource = ThemeItems;
+
+        // Re-select the current theme
+        var savedThemeId = _settingsService.ThemeId;
+        for (int i = 0; i < ThemeItems.Count; i++)
+        {
+            if (ThemeItems[i].Id == savedThemeId)
+            {
+                ThemeGridView.SelectedIndex = i;
+                break;
+            }
         }
     }
 
@@ -187,6 +227,27 @@ public sealed partial class SettingsPage : Page
                 _settingsService.ThemeId = themeItem.Id;
             }
         }
+    }
+
+    private void AutoSyncToggle_Toggled(object sender, RoutedEventArgs e)
+    {
+        if (_isInitializing) return;
+        _settingsService.AutoSyncEnabled = AutoSyncToggle.IsOn;
+    }
+
+    private void SyncFrequencyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInitializing) return;
+
+        var minutes = SyncFrequencyComboBox.SelectedIndex switch
+        {
+            0 => 5,
+            1 => 15,
+            2 => 30,
+            3 => 60,
+            _ => 5
+        };
+        _settingsService.SyncFrequencyMinutes = minutes;
     }
 
     private void SyncNow_Click(object sender, RoutedEventArgs e)

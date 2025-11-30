@@ -7,15 +7,15 @@
 
     <ScrollViewer Padding="24">
         <StackPanel Spacing="24" MaxWidth="800" HorizontalAlignment="Left">
-            <TextBlock x:Name="PageTitle" Text="設定" Style="{StaticResource TitleTextBlockStyle}"/>
+            <TextBlock x:Name="PageTitle" Style="{StaticResource TitleTextBlockStyle}"/>
 
             <!-- Appearance -->
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel Spacing="16">
-                    <TextBlock x:Name="AppearanceTitle" Text="外觀" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBlock x:Name="AppearanceTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
                     <!-- Theme Selection -->
-                    <TextBlock x:Name="ThemeLabel" Text="主題" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                    <TextBlock x:Name="ThemeLabel" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                     <GridView x:Name="ThemeGridView"
                               SelectionMode="Single"
                               SelectionChanged="ThemeGridView_SelectionChanged"
@@ -76,10 +76,10 @@
                         </GridView.ItemTemplate>
                     </GridView>
 
-                    <ComboBox x:Name="LanguageComboBox" Header="語言" Width="200" SelectionChanged="LanguageComboBox_SelectionChanged">
-                        <ComboBoxItem Content="繁體中文" Tag="zh-TW"/>
+                    <ComboBox x:Name="LanguageComboBox" Width="200" SelectionChanged="LanguageComboBox_SelectionChanged">
+                        <ComboBoxItem x:Name="LangZhTW" Tag="zh-TW"/>
                         <ComboBoxItem Content="English" Tag="en-US"/>
-                        <ComboBoxItem Content="日本語" Tag="ja-JP"/>
+                        <ComboBoxItem x:Name="LangJaJP" Tag="ja-JP"/>
                     </ComboBox>
                 </StackPanel>
             </Border>
@@ -87,38 +87,38 @@
             <!-- Sync Settings -->
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel Spacing="16">
-                    <TextBlock x:Name="SyncTitle" Text="同步設定" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBlock x:Name="SyncTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                    <ToggleSwitch x:Name="AutoSyncToggle" Header="啟用自動同步" IsOn="True"/>
+                    <ToggleSwitch x:Name="AutoSyncToggle" IsOn="True" Toggled="AutoSyncToggle_Toggled"/>
 
-                    <ComboBox x:Name="SyncFrequencyComboBox" Header="同步頻率" Width="200">
-                        <ComboBoxItem Content="每5分鐘" IsSelected="True"/>
-                        <ComboBoxItem Content="每15分鐘"/>
-                        <ComboBoxItem Content="每30分鐘"/>
-                        <ComboBoxItem Content="每小時"/>
+                    <ComboBox x:Name="SyncFrequencyComboBox" Width="200" SelectionChanged="SyncFrequencyComboBox_SelectionChanged">
+                        <ComboBoxItem x:Name="Freq5Min" IsSelected="True"/>
+                        <ComboBoxItem x:Name="Freq15Min"/>
+                        <ComboBoxItem x:Name="Freq30Min"/>
+                        <ComboBoxItem x:Name="FreqHour"/>
                     </ComboBox>
 
-                    <Button x:Name="SyncNowButton" Content="立即同步" Click="SyncNow_Click"/>
+                    <Button x:Name="SyncNowButton" Click="SyncNow_Click"/>
                 </StackPanel>
             </Border>
 
             <!-- Data Settings -->
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel Spacing="16">
-                    <TextBlock x:Name="DataTitle" Text="資料設定" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBlock x:Name="DataTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                    <Button x:Name="ExportButton" Content="匯出資料" Click="Export_Click"/>
-                    <Button x:Name="ImportButton" Content="匯入資料" Click="Import_Click"/>
-                    <Button x:Name="ClearCacheButton" Content="清除快取" Click="ClearCache_Click"/>
+                    <Button x:Name="ExportButton" Click="Export_Click"/>
+                    <Button x:Name="ImportButton" Click="Import_Click"/>
+                    <Button x:Name="ClearCacheButton" Click="ClearCache_Click"/>
                 </StackPanel>
             </Border>
 
             <!-- About -->
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel Spacing="8">
-                    <TextBlock x:Name="AboutTitle" Text="關於" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                    <TextBlock x:Name="AppName" Text="Arcana 企業管理系統"/>
-                    <TextBlock x:Name="AppVersion" Text="版本: 1.0.0" Opacity="0.7"/>
+                    <TextBlock x:Name="AboutTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBlock x:Name="AppName"/>
+                    <TextBlock x:Name="AppVersion" Opacity="0.7"/>
                     <TextBlock Text="© 2024 Arcana Team" Opacity="0.7"/>
                 </StackPanel>
             </Border>

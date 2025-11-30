@@ -137,11 +137,11 @@ public partial class App : Application
         // Create sample customers
         var customers = new List<Customer>
         {
-            new() { Code = "C001", Name = "台北科技有限公司", ContactName = "王大明", Phone = "02-2345-6789", Email = "wang@taipei-tech.com", Address = "台北市信義區信義路100號", City = "台北市", TaxId = "12345678", CreditLimit = 100000, IsActive = true },
-            new() { Code = "C002", Name = "新竹電子股份有限公司", ContactName = "李小華", Phone = "03-5678-1234", Email = "lee@hsinchu-elec.com", Address = "新竹市東區光復路200號", City = "新竹市", TaxId = "23456789", CreditLimit = 200000, IsActive = true },
-            new() { Code = "C003", Name = "台中精密工業", ContactName = "張美玲", Phone = "04-2345-6789", Email = "zhang@taichung-precision.com", Address = "台中市西屯區工業路300號", City = "台中市", TaxId = "34567890", CreditLimit = 150000, IsActive = true },
-            new() { Code = "C004", Name = "高雄貿易商行", ContactName = "陳志明", Phone = "07-7654-3210", Email = "chen@kaohsiung-trade.com", Address = "高雄市前鎮區中山路400號", City = "高雄市", TaxId = "45678901", CreditLimit = 80000, IsActive = true },
-            new() { Code = "C005", Name = "桃園物流中心", ContactName = "林佳蓉", Phone = "03-3456-7890", Email = "lin@taoyuan-logistics.com", Address = "桃園市中壢區中正路500號", City = "桃園市", TaxId = "56789012", CreditLimit = 120000, IsActive = true },
+            new() { Code = "C001", Name = "Taipei Tech Co., Ltd.", ContactName = "David Wang", Phone = "02-2345-6789", Email = "wang@taipei-tech.com", Address = "100 Xinyi Road, Xinyi District", City = "Taipei", TaxId = "12345678", CreditLimit = 100000, IsActive = true },
+            new() { Code = "C002", Name = "Hsinchu Electronics Inc.", ContactName = "Sarah Lee", Phone = "03-5678-1234", Email = "lee@hsinchu-elec.com", Address = "200 Guangfu Road, East District", City = "Hsinchu", TaxId = "23456789", CreditLimit = 200000, IsActive = true },
+            new() { Code = "C003", Name = "Taichung Precision Industries", ContactName = "Michelle Zhang", Phone = "04-2345-6789", Email = "zhang@taichung-precision.com", Address = "300 Industrial Road, Xitun District", City = "Taichung", TaxId = "34567890", CreditLimit = 150000, IsActive = true },
+            new() { Code = "C004", Name = "Kaohsiung Trading Co.", ContactName = "Michael Chen", Phone = "07-7654-3210", Email = "chen@kaohsiung-trade.com", Address = "400 Zhongshan Road, Qianzhen District", City = "Kaohsiung", TaxId = "45678901", CreditLimit = 80000, IsActive = true },
+            new() { Code = "C005", Name = "Taoyuan Logistics Center", ContactName = "Jennifer Lin", Phone = "03-3456-7890", Email = "lin@taoyuan-logistics.com", Address = "500 Zhongzheng Road, Zhongli District", City = "Taoyuan", TaxId = "56789012", CreditLimit = 120000, IsActive = true },
         };
         context.Customers.AddRange(customers);
         await context.SaveChangesAsync();
@@ -149,9 +149,9 @@ public partial class App : Application
         // Create sample product categories
         var categories = new List<ProductCategory>
         {
-            new() { Code = "ELEC", Name = "電子產品", SortOrder = 1 },
-            new() { Code = "COMP", Name = "電腦周邊", SortOrder = 2 },
-            new() { Code = "OFFICE", Name = "辦公用品", SortOrder = 3 },
+            new() { Code = "ELEC", Name = "Electronics", SortOrder = 1 },
+            new() { Code = "COMP", Name = "Computer Peripherals", SortOrder = 2 },
+            new() { Code = "OFFICE", Name = "Office Supplies", SortOrder = 3 },
         };
         context.ProductCategories.AddRange(categories);
         await context.SaveChangesAsync();
@@ -159,14 +159,14 @@ public partial class App : Application
         // Create sample products
         var products = new List<Product>
         {
-            new() { Code = "P001", Name = "筆記型電腦 15吋", CategoryId = categories[0].Id, Unit = "台", Price = 35000, Cost = 28000, StockQuantity = 50, MinStockLevel = 10, IsActive = true },
-            new() { Code = "P002", Name = "無線滑鼠", CategoryId = categories[1].Id, Unit = "個", Price = 800, Cost = 400, StockQuantity = 200, MinStockLevel = 50, IsActive = true },
-            new() { Code = "P003", Name = "機械鍵盤", CategoryId = categories[1].Id, Unit = "個", Price = 2500, Cost = 1500, StockQuantity = 100, MinStockLevel = 20, IsActive = true },
-            new() { Code = "P004", Name = "27吋螢幕", CategoryId = categories[0].Id, Unit = "台", Price = 12000, Cost = 8000, StockQuantity = 30, MinStockLevel = 5, IsActive = true },
-            new() { Code = "P005", Name = "USB隨身碟 64GB", CategoryId = categories[1].Id, Unit = "個", Price = 350, Cost = 150, StockQuantity = 500, MinStockLevel = 100, IsActive = true },
-            new() { Code = "P006", Name = "印表機", CategoryId = categories[2].Id, Unit = "台", Price = 8000, Cost = 5000, StockQuantity = 25, MinStockLevel = 5, IsActive = true },
-            new() { Code = "P007", Name = "A4影印紙 (500張)", CategoryId = categories[2].Id, Unit = "包", Price = 120, Cost = 80, StockQuantity = 1000, MinStockLevel = 200, IsActive = true },
-            new() { Code = "P008", Name = "網路攝影機", CategoryId = categories[1].Id, Unit = "個", Price = 1500, Cost = 800, StockQuantity = 80, MinStockLevel = 15, IsActive = true },
+            new() { Code = "P001", Name = "Laptop 15-inch", CategoryId = categories[0].Id, Unit = "pc", Price = 35000, Cost = 28000, StockQuantity = 50, MinStockLevel = 10, IsActive = true },
+            new() { Code = "P002", Name = "Wireless Mouse", CategoryId = categories[1].Id, Unit = "pc", Price = 800, Cost = 400, StockQuantity = 200, MinStockLevel = 50, IsActive = true },
+            new() { Code = "P003", Name = "Mechanical Keyboard", CategoryId = categories[1].Id, Unit = "pc", Price = 2500, Cost = 1500, StockQuantity = 100, MinStockLevel = 20, IsActive = true },
+            new() { Code = "P004", Name = "27-inch Monitor", CategoryId = categories[0].Id, Unit = "pc", Price = 12000, Cost = 8000, StockQuantity = 30, MinStockLevel = 5, IsActive = true },
+            new() { Code = "P005", Name = "USB Flash Drive 64GB", CategoryId = categories[1].Id, Unit = "pc", Price = 350, Cost = 150, StockQuantity = 500, MinStockLevel = 100, IsActive = true },
+            new() { Code = "P006", Name = "Printer", CategoryId = categories[2].Id, Unit = "pc", Price = 8000, Cost = 5000, StockQuantity = 25, MinStockLevel = 5, IsActive = true },
+            new() { Code = "P007", Name = "A4 Copy Paper (500 sheets)", CategoryId = categories[2].Id, Unit = "pack", Price = 120, Cost = 80, StockQuantity = 1000, MinStockLevel = 200, IsActive = true },
+            new() { Code = "P008", Name = "Webcam", CategoryId = categories[1].Id, Unit = "pc", Price = 1500, Cost = 800, StockQuantity = 80, MinStockLevel = 15, IsActive = true },
         };
         context.Products.AddRange(products);
         await context.SaveChangesAsync();

@@ -1,3 +1,5 @@
+using Arcana.Plugins.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -8,15 +10,61 @@ namespace Arcana.App.Views;
 /// </summary>
 public sealed partial class HomePage : Page
 {
+    private readonly ILocalizationService _localization;
+
     public HomePage()
     {
         this.InitializeComponent();
+        _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _localization.CultureChanged += OnCultureChanged;
+
         Loaded += OnLoaded;
+    }
+
+    private void OnCultureChanged(object? sender, CultureChangedEventArgs e)
+    {
+        DispatcherQueue.TryEnqueue(ApplyLocalization);
     }
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
+        ApplyLocalization();
         await LoadDashboardDataAsync();
+    }
+
+    private void ApplyLocalization()
+    {
+        // Header
+        WelcomeText.Text = _localization.Get("home.welcome");
+        SubtitleText.Text = _localization.Get("home.subtitle");
+
+        // Quick Actions
+        QuickActionsTitle.Text = _localization.Get("home.quickActions");
+        NewOrderText.Text = _localization.Get("home.newOrder");
+        NewCustomerText.Text = _localization.Get("home.newCustomer");
+        NewProductText.Text = _localization.Get("home.newProduct");
+        ViewReportsText.Text = _localization.Get("home.viewReports");
+
+        // Dashboard Cards
+        TodayOrdersLabel.Text = _localization.Get("home.todayOrders");
+        TodayOrdersUnit.Text = _localization.Get("unit.count");
+        TodayRevenueLabel.Text = _localization.Get("home.todayRevenue");
+        TodayRevenueUnit.Text = _localization.Get("unit.currency");
+        PendingOrdersLabel.Text = _localization.Get("home.pendingOrders");
+        PendingOrdersUnit.Text = _localization.Get("unit.count");
+        TotalCustomersLabel.Text = _localization.Get("home.totalCustomers");
+        TotalCustomersUnit.Text = _localization.Get("unit.people");
+
+        // Recent Orders
+        RecentOrdersTitle.Text = _localization.Get("home.recentOrders");
+        ViewAllLink.Content = _localization.Get("home.viewAll");
+
+        // System Info
+        SystemInfoTitle.Text = _localization.Get("home.systemInfo");
+        VersionLabel.Text = _localization.Get("home.version");
+        DatabaseLabel.Text = _localization.Get("home.database");
+        DatabaseStatus.Text = _localization.Get("home.connected");
+        LastSyncLabel.Text = _localization.Get("home.lastSync");
     }
 
     private async Task LoadDashboardDataAsync()

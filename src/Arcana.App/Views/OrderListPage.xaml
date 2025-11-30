@@ -26,16 +26,16 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel>
-                <TextBlock Text="訂單管理" Style="{StaticResource TitleTextBlockStyle}"/>
-                <TextBlock x:Name="OrderCountText" Text="共 0 筆訂單" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+                <TextBlock x:Name="PageTitle" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock x:Name="OrderCountText" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
             </StackPanel>
 
             <CommandBar Grid.Column="1" DefaultLabelPosition="Right" Background="Transparent">
-                <AppBarButton Icon="Add" Label="新增訂單" Click="NewOrder_Click"/>
-                <AppBarButton Icon="Refresh" Label="重新整理" Click="Refresh_Click"/>
+                <AppBarButton x:Name="AddOrderButton" Icon="Add" Click="NewOrder_Click"/>
+                <AppBarButton x:Name="RefreshButton" Icon="Refresh" Click="Refresh_Click"/>
                 <AppBarSeparator/>
-                <AppBarButton Icon="Download" Label="匯出"/>
-                <AppBarButton Icon="Print" Label="列印"/>
+                <AppBarButton x:Name="ExportButton" Icon="Download"/>
+                <AppBarButton x:Name="PrintButton" Icon="Print"/>
             </CommandBar>
         </Grid>
 
@@ -51,59 +51,63 @@
                 </Grid.ColumnDefinitions>
 
                 <AutoSuggestBox x:Name="SearchBox"
-                               PlaceholderText="搜尋訂單編號、客戶名稱..."
                                QueryIcon="Find"
                                Width="300"
                                HorizontalAlignment="Left"
                                QuerySubmitted="SearchBox_QuerySubmitted"/>
 
-                <ComboBox Grid.Column="1" x:Name="StatusFilter" PlaceholderText="狀態" Width="120" Margin="16,0,0,0">
-                    <ComboBoxItem Content="全部"/>
-                    <ComboBoxItem Content="草稿"/>
-                    <ComboBoxItem Content="待處理"/>
-                    <ComboBoxItem Content="已確認"/>
-                    <ComboBoxItem Content="處理中"/>
-                    <ComboBoxItem Content="已出貨"/>
-                    <ComboBoxItem Content="已完成"/>
-                    <ComboBoxItem Content="已取消"/>
+                <ComboBox Grid.Column="1" x:Name="StatusFilter" Width="120" Margin="16,0,0,0">
+                    <ComboBoxItem x:Name="StatusAll"/>
+                    <ComboBoxItem x:Name="StatusDraft"/>
+                    <ComboBoxItem x:Name="StatusPending"/>
+                    <ComboBoxItem x:Name="StatusConfirmed"/>
+                    <ComboBoxItem x:Name="StatusProcessing"/>
+                    <ComboBoxItem x:Name="StatusShipped"/>
+                    <ComboBoxItem x:Name="StatusCompleted"/>
+                    <ComboBoxItem x:Name="StatusCancelled"/>
                 </ComboBox>
 
-                <CalendarDatePicker Grid.Column="2" x:Name="FromDatePicker" PlaceholderText="開始日期" Margin="16,0,0,0"/>
-                <CalendarDatePicker Grid.Column="3" x:Name="ToDatePicker" PlaceholderText="結束日期" Margin="8,0,0,0"/>
+                <CalendarDatePicker Grid.Column="2" x:Name="FromDatePicker" Margin="16,0,0,0"/>
+                <CalendarDatePicker Grid.Column="3" x:Name="ToDatePicker" Margin="8,0,0,0"/>
 
-                <Button Grid.Column="4" Content="清除篩選" Margin="16,0,0,0" Click="ClearFilter_Click"/>
+                <Button Grid.Column="4" x:Name="ClearFilterButton" Margin="16,0,0,0" Click="ClearFilter_Click"/>
             </Grid>
         </Border>
 
         <!-- Data Grid -->
         <Border Grid.Row="2" Style="{StaticResource CardStyle}">
-            <ListView x:Name="OrdersListView"
-                     SelectionMode="Single"
-                     IsItemClickEnabled="True"
-                     ItemClick="OrdersListView_ItemClick">
-                <ListView.HeaderTemplate>
-                    <DataTemplate>
-                        <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="80"/>
-                            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                            <TextBlock Text="訂單編號" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Column="1" Text="日期" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Column="2" Text="客戶" FontWeight="SemiBold"/>
-                            <TextBlock Grid.Column="3" Text="金額" FontWeight="SemiBold" HorizontalAlignment="Right"/>
-                            <TextBlock Grid.Column="4" Text="付款狀態" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="5" Text="訂單狀態" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="6" Text="操作" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.HeaderTemplate>
+                <!-- Header Row -->
+                <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="ColOrderNumber" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ColDate" Grid.Column="1" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ColCustomer" Grid.Column="2" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ColAmount" Grid.Column="3" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                    <TextBlock x:Name="ColPaymentStatus" Grid.Column="4" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="ColOrderStatus" Grid.Column="5" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="ColActions" Grid.Column="6" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                </Grid>
+
+                <ListView x:Name="OrdersListView"
+                         Grid.Row="1"
+                         SelectionMode="Single"
+                         IsItemClickEnabled="True"
+                         ItemClick="OrdersListView_ItemClick">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -134,10 +138,10 @@
                             </Border>
 
                             <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Style="{StaticResource AlternateCloseButtonStyle}" ToolTipService.ToolTip="編輯" Click="EditOrder_Click">
+                                <Button Style="{StaticResource AlternateCloseButtonStyle}" Click="EditOrder_Click">
                                     <FontIcon Glyph="&#xE70F;" FontSize="14"/>
                                 </Button>
-                                <Button Style="{StaticResource AlternateCloseButtonStyle}" ToolTipService.ToolTip="刪除" Click="DeleteOrder_Click">
+                                <Button Style="{StaticResource AlternateCloseButtonStyle}" Click="DeleteOrder_Click">
                                     <FontIcon Glyph="&#xE74D;" FontSize="14"/>
                                 </Button>
                             </StackPanel>
@@ -145,6 +149,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            </Grid>
         </Border>
 
         <!-- Pagination -->
@@ -154,12 +159,12 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock x:Name="PaginationInfo" Text="第 1-20 筆，共 0 筆" VerticalAlignment="Center"/>
+            <TextBlock x:Name="PaginationInfo" VerticalAlignment="Center"/>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                <Button Content="上一頁" x:Name="PrevButton" Click="PrevPage_Click" IsEnabled="False"/>
-                <TextBlock x:Name="PageInfo" Text="第 1 頁 / 共 1 頁" VerticalAlignment="Center" Margin="8,0"/>
-                <Button Content="下一頁" x:Name="NextButton" Click="NextPage_Click" IsEnabled="False"/>
+                <Button x:Name="PrevButton" Click="PrevPage_Click" IsEnabled="False"/>
+                <TextBlock x:Name="PageInfo" VerticalAlignment="Center" Margin="8,0"/>
+                <Button x:Name="NextButton" Click="NextPage_Click" IsEnabled="False"/>
             </StackPanel>
         </Grid>
 

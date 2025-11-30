@@ -8,8 +8,8 @@
     <Grid Padding="24">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <FontIcon Glyph="&#xE716;" FontSize="64" Opacity="0.3"/>
-            <TextBlock Text="客戶管理" Style="{StaticResource TitleTextBlockStyle}" Margin="0,16,0,0"/>
-            <TextBlock Text="此功能開發中..." Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+            <TextBlock x:Name="PageTitle" Style="{StaticResource TitleTextBlockStyle}" Margin="0,16,0,0"/>
+            <TextBlock x:Name="DevelopingText" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
         </StackPanel>
     </Grid>
 </Page>

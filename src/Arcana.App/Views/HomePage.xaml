@@ -13,13 +13,13 @@
         <StackPanel Spacing="24">
             <!-- Header -->
             <StackPanel>
-                <TextBlock Text="歡迎使用 Arcana" Style="{StaticResource TitleTextBlockStyle}"/>
-                <TextBlock Text="企業管理系統" Style="{StaticResource SubtitleTextBlockStyle}" Opacity="0.7"/>
+                <TextBlock x:Name="WelcomeText" Style="{StaticResource TitleTextBlockStyle}"/>
+                <TextBlock x:Name="SubtitleText" Style="{StaticResource SubtitleTextBlockStyle}" Opacity="0.7"/>
             </StackPanel>
 
             <!-- Quick Actions -->
             <StackPanel>
-                <TextBlock Text="快速操作" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,12"/>
+                <TextBlock x:Name="QuickActionsTitle" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,12"/>
                 <GridView SelectionMode="None">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -30,28 +30,28 @@
                     <Button Width="160" Height="120" Margin="4" Click="NewOrder_Click">
                         <StackPanel Spacing="8">
                             <FontIcon Glyph="&#xE710;" FontSize="32"/>
-                            <TextBlock Text="新增訂單"/>
+                            <TextBlock x:Name="NewOrderText"/>
                         </StackPanel>
                     </Button>
 
                     <Button Width="160" Height="120" Margin="4" Click="NewCustomer_Click">
                         <StackPanel Spacing="8">
                             <FontIcon Glyph="&#xE77B;" FontSize="32"/>
-                            <TextBlock Text="新增客戶"/>
+                            <TextBlock x:Name="NewCustomerText"/>
                         </StackPanel>
                     </Button>
 
                     <Button Width="160" Height="120" Margin="4" Click="NewProduct_Click">
                         <StackPanel Spacing="8">
                             <FontIcon Glyph="&#xE7BF;" FontSize="32"/>
-                            <TextBlock Text="新增產品"/>
+                            <TextBlock x:Name="NewProductText"/>
                         </StackPanel>
                     </Button>
 
                     <Button Width="160" Height="120" Margin="4" Click="ViewReports_Click">
                         <StackPanel Spacing="8">
                             <FontIcon Glyph="&#xE9F9;" FontSize="32"/>
-                            <TextBlock Text="查看報表"/>
+                            <TextBlock x:Name="ViewReportsText"/>
                         </StackPanel>
                     </Button>
                 </GridView>
@@ -69,36 +69,36 @@
                 <!-- Today's Orders -->
                 <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,8,0">
                     <StackPanel>
-                        <TextBlock Text="今日訂單" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+                        <TextBlock x:Name="TodayOrdersLabel" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
                         <TextBlock x:Name="TodayOrdersCount" Text="0" Style="{StaticResource HeaderTextBlockStyle}"/>
-                        <TextBlock Text="筆" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock x:Name="TodayOrdersUnit" Style="{StaticResource CaptionTextBlockStyle}"/>
                     </StackPanel>
                 </Border>
 
                 <!-- Today's Revenue -->
                 <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="4,0">
                     <StackPanel>
-                        <TextBlock Text="今日營收" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+                        <TextBlock x:Name="TodayRevenueLabel" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
                         <TextBlock x:Name="TodayRevenue" Text="$0" Style="{StaticResource HeaderTextBlockStyle}"/>
-                        <TextBlock Text="元" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock x:Name="TodayRevenueUnit" Style="{StaticResource CaptionTextBlockStyle}"/>
                     </StackPanel>
                 </Border>
 
                 <!-- Pending Orders -->
                 <Border Grid.Column="2" Style="{StaticResource CardStyle}" Margin="4,0">
                     <StackPanel>
-                        <TextBlock Text="待處理訂單" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+                        <TextBlock x:Name="PendingOrdersLabel" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
                         <TextBlock x:Name="PendingOrdersCount" Text="0" Style="{StaticResource HeaderTextBlockStyle}"/>
-                        <TextBlock Text="筆" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock x:Name="PendingOrdersUnit" Style="{StaticResource CaptionTextBlockStyle}"/>
                     </StackPanel>
                 </Border>
 
                 <!-- Total Customers -->
                 <Border Grid.Column="3" Style="{StaticResource CardStyle}" Margin="8,0,0,0">
                     <StackPanel>
-                        <TextBlock Text="總客戶數" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
+                        <TextBlock x:Name="TotalCustomersLabel" Style="{StaticResource CaptionTextBlockStyle}" Opacity="0.7"/>
                         <TextBlock x:Name="TotalCustomers" Text="0" Style="{StaticResource HeaderTextBlockStyle}"/>
-                        <TextBlock Text="位" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock x:Name="TotalCustomersUnit" Style="{StaticResource CaptionTextBlockStyle}"/>
                     </StackPanel>
                 </Border>
             </Grid>
@@ -110,8 +110,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="最近訂單" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                    <HyperlinkButton Grid.Column="1" Content="查看全部" Click="ViewAllOrders_Click"/>
+                    <TextBlock x:Name="RecentOrdersTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <HyperlinkButton x:Name="ViewAllLink" Grid.Column="1" Click="ViewAllOrders_Click"/>
                 </Grid>
 
                 <Border Style="{StaticResource CardStyle}" Margin="0,12,0,0">
@@ -142,7 +142,7 @@
             <!-- System Info -->
             <Border Style="{StaticResource CardStyle}">
                 <StackPanel Spacing="8">
-                    <TextBlock Text="系統資訊" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBlock x:Name="SystemInfoTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="120"/>
@@ -154,14 +154,14 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="版本:" Opacity="0.7"/>
+                        <TextBlock x:Name="VersionLabel" Opacity="0.7"/>
                         <TextBlock Grid.Column="1" Text="1.0.0"/>
 
-                        <TextBlock Grid.Row="1" Text="資料庫:" Opacity="0.7"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="DatabaseStatus" Text="已連線"/>
+                        <TextBlock x:Name="DatabaseLabel" Grid.Row="1" Opacity="0.7"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="DatabaseStatus"/>
 
-                        <TextBlock Grid.Row="2" Text="最後同步:" Opacity="0.7"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="LastSyncTime" Text="從未"/>
+                        <TextBlock x:Name="LastSyncLabel" Grid.Row="2" Opacity="0.7"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="LastSyncTime"/>
                     </Grid>
                 </StackPanel>
             </Border>
