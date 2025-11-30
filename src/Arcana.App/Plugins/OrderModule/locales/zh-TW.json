@@ -1,0 +1,17 @@
+{
+  "order.title": "訂單",
+  "order.list": "訂單管理",
+  "order.new": "新增訂單",
+  "order.detail": "訂單明細",
+  "order.number": "訂單編號",
+  "order.date": "訂單日期",
+  "order.customer": "客戶",
+  "order.status": "狀態",
+  "order.total": "總金額",
+  "order.items": "訂單項目",
+  "order.copy": "複製訂單",
+  "order.copiedFrom": "複製自",
+  "menu.business": "業務",
+  "module.order.new": "新增訂單",
+  "module.order.list": "訂單列表"
+}

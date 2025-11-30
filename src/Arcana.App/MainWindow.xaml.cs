@@ -252,15 +252,15 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
-        if (args.IsSettingsSelected)
+        if (args.IsSettingsInvoked)
         {
             NavigateToPage("SettingsPage");
             return;
         }
 
-        if (args.SelectedItem is NavigationViewItem item)
+        if (args.InvokedItemContainer is NavigationViewItem item)
         {
             var tag = item.Tag?.ToString();
             if (!string.IsNullOrEmpty(tag))

@@ -60,7 +60,7 @@
                        PaneDisplayMode="Left"
                        IsPaneOpen="True"
                        OpenPaneLength="240"
-                       SelectionChanged="NavView_SelectionChanged"
+                       ItemInvoked="NavView_ItemInvoked"
                        BackRequested="NavView_BackRequested"
                        Background="{ThemeResource NavigationViewDefaultPaneBackground}">
 

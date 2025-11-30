@@ -10,6 +10,7 @@ using Arcana.Infrastructure.Services;
 using Arcana.Infrastructure.Localization;
 using Arcana.Infrastructure.Settings;
 using Arcana.Plugins.Contracts;
+using Arcana.Plugins.Contracts.Manifest;
 using Arcana.Plugins.Core;
 using Arcana.Plugins.Services;
 using Arcana.Sync;
@@ -181,12 +182,27 @@ public static class ServiceCollectionExtensions
         // Plugin health monitor
         services.AddSingleton<PluginHealthMonitor>();
 
+        // Manifest and lazy loading services
+        services.AddSingleton<IManifestService, ManifestService>();
+        services.AddSingleton<ActivationEventService>();
+        services.AddSingleton<IActivationEventService>(sp =>
+            sp.GetRequiredService<ActivationEventService>());
+        services.AddSingleton<LazyContributionService>();
+
         // Plugin manager (core)
         services.AddSingleton(sp =>
         {
             var logger = sp.GetRequiredService<ILogger<PluginManager>>();
             var pluginsPath = Path.Combine(AppContext.BaseDirectory, "plugins");
-            return new PluginManager(sp, logger, pluginsPath);
+            var manager = new PluginManager(sp, logger, pluginsPath);
+
+            // Initialize lazy loading
+            var manifestService = sp.GetRequiredService<IManifestService>();
+            var activationService = sp.GetRequiredService<ActivationEventService>();
+            var lazyContribService = sp.GetRequiredService<LazyContributionService>();
+            manager.InitializeLazyLoading(manifestService, activationService, lazyContribService);
+
+            return manager;
         });
 
         // Plugin manager service (full-featured, implements IPluginManager)

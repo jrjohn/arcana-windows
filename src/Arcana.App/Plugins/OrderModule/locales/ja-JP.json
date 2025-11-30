@@ -1,0 +1,17 @@
+{
+  "order.title": "注文",
+  "order.list": "注文管理",
+  "order.new": "新規注文",
+  "order.detail": "注文詳細",
+  "order.number": "注文番号",
+  "order.date": "注文日",
+  "order.customer": "顧客",
+  "order.status": "ステータス",
+  "order.total": "合計金額",
+  "order.items": "注文項目",
+  "order.copy": "注文をコピー",
+  "order.copiedFrom": "コピー元",
+  "menu.business": "業務",
+  "module.order.new": "新規注文",
+  "module.order.list": "注文一覧"
+}

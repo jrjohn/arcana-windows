@@ -1,0 +1,171 @@
+{
+  "id": "arcana.module.order",
+  "name": "Order Module",
+  "version": "1.0.0",
+  "description": "Order management module with list and detail views",
+  "author": "Arcana Team",
+  "type": "Module",
+  "main": "Arcana.App.dll",
+  "pluginClass": "Arcana.App.Plugins.OrderModulePlugin",
+
+  "activationEvents": [
+    "onView:OrderListPage",
+    "onView:OrderDetailPage",
+    "onCommand:order.list",
+    "onCommand:order.new",
+    "onCommand:order.view"
+  ],
+
+  "contributes": {
+    "views": [
+      {
+        "id": "OrderListPage",
+        "titleKey": "order.list",
+        "title": "Order Management",
+        "icon": "\\uE8A5",
+        "type": "Page",
+        "viewClass": "Arcana.App.Views.OrderListPage",
+        "viewModelClass": "Arcana.App.ViewModels.OrderListViewModel",
+        "category": "Business",
+        "categoryKey": "menu.business",
+        "order": 10,
+        "moduleId": "OrderModule",
+        "isModuleDefaultTab": true,
+        "moduleTabOrder": 0
+      },
+      {
+        "id": "OrderDetailPage",
+        "titleKey": "order.detail",
+        "title": "Order Detail",
+        "icon": "\\uE7C3",
+        "type": "Page",
+        "viewClass": "Arcana.App.Views.OrderDetailPage",
+        "viewModelClass": "Arcana.App.ViewModels.OrderDetailViewModel",
+        "category": "Business",
+        "categoryKey": "menu.business",
+        "canHaveMultipleInstances": true,
+        "moduleId": "OrderModule"
+      }
+    ],
+
+    "menus": [
+      {
+        "id": "menu.business.order",
+        "titleKey": "order.title",
+        "title": "Order",
+        "location": "MainMenu",
+        "parentId": "menu.business",
+        "icon": "\\uE7C3",
+        "order": 1
+      },
+      {
+        "id": "menu.business.order.list",
+        "titleKey": "order.list",
+        "title": "Order List",
+        "location": "MainMenu",
+        "parentId": "menu.business.order",
+        "icon": "\\uE7C3",
+        "order": 1,
+        "command": "order.list"
+      },
+      {
+        "id": "menu.business.order.new",
+        "titleKey": "order.new",
+        "title": "New Order",
+        "location": "MainMenu",
+        "parentId": "menu.business.order",
+        "icon": "\\uE710",
+        "shortcut": "Ctrl+Shift+O",
+        "order": 2,
+        "command": "order.new"
+      },
+      {
+        "id": "tree.order",
+        "titleKey": "order.list",
+        "title": "Order Management",
+        "location": "FunctionTree",
+        "icon": "\\uE7C3",
+        "order": 10,
+        "command": "order.list"
+      },
+      {
+        "id": "quick.newOrder",
+        "titleKey": "order.new",
+        "title": "New Order",
+        "location": "QuickAccess",
+        "icon": "\\uE7C3",
+        "order": 1,
+        "group": "business",
+        "command": "order.new"
+      },
+      {
+        "id": "module.order.new",
+        "titleKey": "order.new",
+        "title": "New Order",
+        "location": "ModuleQuickAccess",
+        "moduleId": "OrderModule",
+        "icon": "\\uE710",
+        "order": 1,
+        "group": "actions",
+        "command": "module.order.new"
+      },
+      {
+        "id": "module.order.list",
+        "titleKey": "module.order.list",
+        "title": "Order List",
+        "location": "ModuleQuickAccess",
+        "moduleId": "OrderModule",
+        "icon": "\\uE8A5",
+        "order": 10,
+        "group": "navigation",
+        "command": "module.order.list"
+      }
+    ],
+
+    "commands": [
+      {
+        "id": "order.list",
+        "titleKey": "order.list",
+        "title": "Order List",
+        "category": "Business"
+      },
+      {
+        "id": "order.new",
+        "titleKey": "order.new",
+        "title": "New Order",
+        "category": "Business"
+      },
+      {
+        "id": "order.view",
+        "titleKey": "order.detail",
+        "title": "View Order",
+        "category": "Business"
+      },
+      {
+        "id": "module.order.new",
+        "titleKey": "order.new",
+        "title": "New Order (Module)",
+        "category": "Module"
+      },
+      {
+        "id": "module.order.list",
+        "titleKey": "module.order.list",
+        "title": "Order List (Module)",
+        "category": "Module"
+      }
+    ],
+
+    "keybindings": [
+      {
+        "command": "order.new",
+        "key": "Ctrl+Shift+O"
+      }
+    ]
+  },
+
+  "l10n": {
+    "zh-TW": "./locales/zh-TW.json",
+    "en-US": "./locales/en-US.json",
+    "ja-JP": "./locales/ja-JP.json"
+  }
+}

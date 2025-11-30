@@ -1,0 +1,17 @@
+{
+  "order.title": "Order",
+  "order.list": "Order Management",
+  "order.new": "New Order",
+  "order.detail": "Order Detail",
+  "order.number": "Order Number",
+  "order.date": "Order Date",
+  "order.customer": "Customer",
+  "order.status": "Status",
+  "order.total": "Total Amount",
+  "order.items": "Order Items",
+  "order.copy": "Copy Order",
+  "order.copiedFrom": "Copied from",
+  "menu.business": "Business",
+  "module.order.new": "New Order",
+  "module.order.list": "Order List"
+}
