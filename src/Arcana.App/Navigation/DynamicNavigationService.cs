@@ -53,6 +53,43 @@ public class DynamicNavigationService : INavigationService
         return NavigateInternalAsync(viewId, parameter, true);
     }
 
+    public Task<bool> NavigateWithinTabAsync(string parentViewId, string viewId, object? parameter = null)
+    {
+        var previousViewId = CurrentViewId;
+
+        // Raise navigating event
+        var navigatingArgs = new NavigatingCancelEventArgs
+        {
+            FromViewId = previousViewId,
+            ToViewId = viewId,
+            Parameter = parameter
+        };
+        Navigating?.Invoke(this, navigatingArgs);
+        if (navigatingArgs.Cancel)
+        {
+            return Task.FromResult(false);
+        }
+
+        // Use MainWindow for navigation within tab
+        if (App.MainWindow is MainWindow mainWindow)
+        {
+            mainWindow.NavigateWithinTab(parentViewId, viewId, parameter);
+        }
+
+        CurrentViewId = viewId;
+
+        // Raise navigated event
+        Navigated?.Invoke(this, new NavEventArgs
+        {
+            FromViewId = previousViewId,
+            ToViewId = viewId,
+            Parameter = parameter,
+            NavigationType = NavigationType.Forward
+        });
+
+        return Task.FromResult(true);
+    }
+
     private Task<bool> NavigateInternalAsync(string viewId, object? parameter, bool newTab)
     {
         var previousViewId = CurrentViewId;

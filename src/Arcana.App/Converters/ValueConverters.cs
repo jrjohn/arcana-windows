@@ -185,3 +185,46 @@ public class BytesFormatConverter : IValueConverter
         throw new NotImplementedException();
     }
 }
+
+/// <summary>
+/// Converts status enum values to localized strings.
+/// Usage: ConverterParameter = "order.status" or "payment.status"
+/// </summary>
+public class StatusLocalizationConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+    {
+        if (value == null) return string.Empty;
+
+        var prefix = parameter as string ?? "order.status";
+        var statusKey = value.ToString()?.ToLowerInvariant() ?? string.Empty;
+        var localizationKey = $"{prefix}.{statusKey}";
+
+        try
+        {
+            var localization = App.Services.GetService(typeof(Arcana.Plugins.Contracts.ILocalizationService))
+                as Arcana.Plugins.Contracts.ILocalizationService;
+
+            if (localization != null)
+            {
+                var localizedValue = localization.Get(localizationKey);
+                // If the key is not found, return the original value
+                if (!string.IsNullOrEmpty(localizedValue) && localizedValue != localizationKey)
+                {
+                    return localizedValue;
+                }
+            }
+        }
+        catch
+        {
+            // Fallback to original value if localization fails
+        }
+
+        return value.ToString() ?? string.Empty;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    {
+        throw new NotImplementedException();
+    }
+}

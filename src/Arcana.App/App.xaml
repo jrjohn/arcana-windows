@@ -21,6 +21,7 @@
             <converters:NumberFormatConverter x:Key="NumberFormatConverter"/>
             <converters:DateFormatConverter x:Key="DateFormatConverter"/>
             <converters:BytesFormatConverter x:Key="BytesFormatConverter"/>
+            <converters:StatusLocalizationConverter x:Key="StatusLocalizationConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

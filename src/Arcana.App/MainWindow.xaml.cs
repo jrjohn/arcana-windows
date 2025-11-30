@@ -71,6 +71,42 @@ public sealed partial class MainWindow : Window
     {
         // Update Settings item after NavigationView is fully loaded
         UpdateSettingsItem();
+        UpdatePaneToggleButtonTooltip();
+
+        // Listen for pane state changes to update tooltip
+        NavView.PaneOpening += (s, args) => UpdatePaneToggleButtonTooltip();
+        NavView.PaneClosing += (s, args) => UpdatePaneToggleButtonTooltip();
+    }
+
+    private void UpdatePaneToggleButtonTooltip()
+    {
+        // Find the pane toggle button in the visual tree and update its tooltip
+        var toggleButton = FindVisualChild<Button>(NavView, "TogglePaneButton");
+        if (toggleButton != null)
+        {
+            var tooltipKey = NavView.IsPaneOpen ? "tooltip.closeNavigation" : "tooltip.openNavigation";
+            ToolTipService.SetToolTip(toggleButton, _localization.Get(tooltipKey));
+        }
+    }
+
+    private static T? FindVisualChild<T>(DependencyObject parent, string name) where T : FrameworkElement
+    {
+        var count = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChildrenCount(parent);
+        for (var i = 0; i < count; i++)
+        {
+            var child = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(parent, i);
+            if (child is T element && element.Name == name)
+            {
+                return element;
+            }
+
+            var result = FindVisualChild<T>(child, name);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+        return null;
     }
 
     private void OnThemeChanged(object? sender, ThemeChangedEventArgs e)
@@ -150,6 +186,7 @@ public sealed partial class MainWindow : Window
             UpdateNavigationItems();
             UpdateSettingsItem();
             UpdateTabHeaders();
+            UpdatePaneToggleButtonTooltip();
         });
     }
 
@@ -200,6 +237,12 @@ public sealed partial class MainWindow : Window
         SearchBox.PlaceholderText = _localization.Get("search.placeholder");
         ToolTipService.SetToolTip(AddTabButton, _localization.Get("tooltip.newTab"));
 
+        // Update quick action menu items
+        QuickNewOrder.Text = _localization.Get("quick.newOrder");
+        QuickNewCustomer.Text = _localization.Get("quick.newCustomer");
+        QuickNewProduct.Text = _localization.Get("quick.newProduct");
+        QuickHome.Text = _localization.Get("quick.home");
+
         // Update status bar
         StatusMessage.Text = _localization.Get("status.ready");
     }
@@ -247,9 +290,27 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private void AddTab_Click(object sender, RoutedEventArgs e)
+    private void QuickNewOrder_Click(object sender, RoutedEventArgs e)
     {
-        AddNewTab("HomePage", _localization.Get("nav.home"));
+        // Navigate within OrderListPage tab to OrderDetailPage (new order)
+        NavigateWithinTab("OrderListPage", "OrderDetailPage");
+    }
+
+    private void QuickNewCustomer_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Change to NavigateWithinTab when CustomerDetailPage is implemented
+        NavigateToPage("CustomerListPage");
+    }
+
+    private void QuickNewProduct_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO: Change to NavigateWithinTab when ProductDetailPage is implemented
+        NavigateToPage("ProductListPage");
+    }
+
+    private void QuickHome_Click(object sender, RoutedEventArgs e)
+    {
+        NavigateToPage("HomePage");
     }
 
     private void NavigateToPage(string pageTag, object? parameter = null)
@@ -329,6 +390,86 @@ public sealed partial class MainWindow : Window
     public void NavigateToPageWithParameter(string pageTag, object? parameter = null)
     {
         DispatcherQueue.TryEnqueue(() => NavigateToPage(pageTag, parameter));
+    }
+
+    /// <summary>
+    /// Navigates within an existing parent tab. If the parent tab doesn't exist, creates it first.
+    /// </summary>
+    public void NavigateWithinTab(string parentViewId, string viewId, object? parameter = null)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            // Find existing parent tab
+            TabViewItem? parentTab = null;
+            foreach (var item in TabViewMain.TabItems)
+            {
+                if (item is TabViewItem tab && tab.Tag?.ToString() == parentViewId)
+                {
+                    parentTab = tab;
+                    break;
+                }
+            }
+
+            // If parent tab doesn't exist, create it first
+            if (parentTab == null)
+            {
+                var parentPageType = GetPageType(parentViewId);
+                if (parentPageType == null) return;
+
+                var parentFrame = new Frame();
+                parentFrame.Navigate(parentPageType);
+                ApplyCurrentThemeToPage(parentFrame);
+
+                parentTab = new TabViewItem
+                {
+                    Header = GetPageTitle(parentViewId),
+                    Tag = parentViewId,
+                    Content = parentFrame,
+                    IconSource = GetPageIcon(parentViewId)
+                };
+                TabViewMain.TabItems.Add(parentTab);
+            }
+
+            // Select the parent tab
+            TabViewMain.SelectedItem = parentTab;
+
+            // Navigate within the parent tab's Frame
+            if (parentTab.Content is Frame frame)
+            {
+                var childPageType = GetPageType(viewId);
+                if (childPageType == null) return;
+
+                // Check if already on the same page type with same parameter (e.g., already on "New Order")
+                // to prevent duplicate navigation
+                if (frame.Content?.GetType() == childPageType)
+                {
+                    // For new item pages (parameter is null), don't navigate again
+                    if (parameter == null)
+                    {
+                        return; // Already on new item page, do nothing
+                    }
+                }
+
+                // Clear back stack before navigating to avoid stacking multiple "New Order" pages
+                // This ensures Cancel goes back to the list, not to previous "New Order"
+                if (parameter == null)
+                {
+                    // Navigating to a "new item" page - clear back stack after navigation
+                    frame.Navigate(childPageType, parameter);
+
+                    // Remove all entries except the list page from back stack
+                    while (frame.BackStackDepth > 1)
+                    {
+                        frame.BackStack.RemoveAt(frame.BackStackDepth - 1);
+                    }
+                }
+                else
+                {
+                    // Navigating to edit an existing item - normal navigation
+                    frame.Navigate(childPageType, parameter);
+                }
+            }
+        });
     }
 
     private static Type? GetPageType(string pageTag)

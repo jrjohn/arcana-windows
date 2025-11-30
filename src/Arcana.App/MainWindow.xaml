@@ -105,11 +105,34 @@
                     </TabView.Resources>
                     <TabView.TabStripHeader>
                         <Grid Padding="4,0">
-                            <Button x:Name="AddTabButton"
-                                   Content="+"
-                                   Click="AddTab_Click"
-                                   VerticalAlignment="Center"
-                                   Padding="8,4"/>
+                            <DropDownButton x:Name="AddTabButton" VerticalAlignment="Center" Padding="8,4">
+                                <FontIcon Glyph="&#xE710;" FontSize="12"/>
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                                        <MenuFlyoutItem x:Name="QuickNewOrder" Click="QuickNewOrder_Click">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE7C3;"/>
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutItem x:Name="QuickNewCustomer" Click="QuickNewCustomer_Click">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE716;"/>
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutItem x:Name="QuickNewProduct" Click="QuickNewProduct_Click">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE719;"/>
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutSeparator/>
+                                        <MenuFlyoutItem x:Name="QuickHome" Click="QuickHome_Click">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE80F;"/>
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
                         </Grid>
                     </TabView.TabStripHeader>
                 </TabView>

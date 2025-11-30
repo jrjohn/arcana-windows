@@ -107,7 +107,8 @@
                          Grid.Row="1"
                          SelectionMode="Single"
                          IsItemClickEnabled="True"
-                         ItemClick="OrdersListView_ItemClick">
+                         ItemClick="OrdersListView_ItemClick"
+                         ItemContainerStyle="{StaticResource HoverableListViewItemStyle}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -129,19 +130,23 @@
 
                             <Border Grid.Column="4" CornerRadius="4" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Background="{ThemeResource SystemAccentColorLight2}">
-                                <TextBlock Text="{Binding PaymentStatus}" FontSize="12"/>
+                                <TextBlock Text="{Binding PaymentStatus, Converter={StaticResource StatusLocalizationConverter}, ConverterParameter=payment.status}" FontSize="12"/>
                             </Border>
 
                             <Border Grid.Column="5" CornerRadius="4" Padding="8,4" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    Background="{ThemeResource SystemAccentColor}">
-                                <TextBlock Text="{Binding Status}" FontSize="12" Foreground="White"/>
+                                <TextBlock Text="{Binding Status, Converter={StaticResource StatusLocalizationConverter}, ConverterParameter=order.status}" FontSize="12" Foreground="White"/>
                             </Border>
 
-                            <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Style="{StaticResource AlternateCloseButtonStyle}" Click="EditOrder_Click">
+                            <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="4">
+                                <Button Style="{StaticResource ActionButtonStyle}"
+                                        Click="EditOrder_Click"
+                                        AutomationProperties.Name="Edit">
                                     <FontIcon Glyph="&#xE70F;" FontSize="14"/>
                                 </Button>
-                                <Button Style="{StaticResource AlternateCloseButtonStyle}" Click="DeleteOrder_Click">
+                                <Button Style="{StaticResource ActionButtonStyle}"
+                                        Click="DeleteOrder_Click"
+                                        AutomationProperties.Name="Delete">
                                     <FontIcon Glyph="&#xE74D;" FontSize="14"/>
                                 </Button>
                             </StackPanel>

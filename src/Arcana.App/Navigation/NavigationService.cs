@@ -73,6 +73,27 @@ public class NavigationService : INavigationService
         return Task.FromResult(true);
     }
 
+    public Task<bool> NavigateWithinTabAsync(string parentViewId, string viewId, object? parameter = null)
+    {
+        var previousViewId = CurrentViewId;
+        CurrentViewId = viewId;
+
+        // Use MainWindow for navigation within tab
+        if (App.MainWindow is MainWindow mainWindow)
+        {
+            mainWindow.NavigateWithinTab(parentViewId, viewId, parameter);
+        }
+
+        Navigated?.Invoke(this, new NavEventArgs
+        {
+            FromViewId = previousViewId,
+            ToViewId = viewId,
+            Parameter = parameter,
+            NavigationType = NavigationType.Forward
+        });
+        return Task.FromResult(true);
+    }
+
     public Task<bool> GoBackAsync()
     {
         if (!CanGoBack) return Task.FromResult(false);

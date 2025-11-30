@@ -21,7 +21,14 @@
   "nav.header.reports": "報表",
 
   "search.placeholder": "搜尋命令或功能... (Ctrl+K)",
-  "tooltip.newTab": "新增分頁",
+  "tooltip.newTab": "快速操作",
+  "tooltip.openNavigation": "展開導覽",
+  "tooltip.closeNavigation": "收合導覽",
+
+  "quick.newOrder": "新增訂單",
+  "quick.newCustomer": "新增客戶",
+  "quick.newProduct": "新增產品",
+  "quick.home": "首頁",
 
   "home.welcome": "歡迎使用 Arcana",
   "home.subtitle": "企業管理系統",
@@ -35,6 +42,7 @@
   "home.pendingOrders": "待處理訂單",
   "home.totalCustomers": "總客戶數",
   "home.recentOrders": "最近訂單",
+  "home.noRecentOrders": "暫無最近訂單",
   "home.viewAll": "查看全部",
   "home.systemInfo": "系統資訊",
   "home.version": "版本:",
@@ -68,6 +76,8 @@
   "settings.every30min": "每30分鐘",
   "settings.everyHour": "每小時",
   "settings.syncNow": "立即同步",
+  "settings.on": "開啟",
+  "settings.off": "關閉",
   "settings.dataSettings": "資料設定",
   "settings.export": "匯出資料",
   "settings.import": "匯入資料",
@@ -83,6 +93,15 @@
   "menu.view": "檢視",
   "menu.view.sidebar": "側邊欄",
   "menu.view.statusbar": "狀態列",
+  "menu.business.order": "訂單",
+  "menu.business.order.list": "訂單管理",
+  "menu.business.order.new": "新增訂單",
+  "menu.business.customer": "客戶",
+  "menu.business.customer.list": "客戶管理",
+  "menu.business.customer.new": "新增客戶",
+  "menu.business.product": "產品",
+  "menu.business.product.list": "產品管理",
+  "menu.business.product.new": "新增產品",
 
   "order.title": "訂單",
   "order.list": "訂單管理",
@@ -127,6 +146,11 @@
   "payment.check": "支票",
   "payment.credit": "賒帳",
 
+  "payment.status.paid": "已付款",
+  "payment.status.unpaid": "未付款",
+  "payment.status.partialPaid": "部分付款",
+  "payment.status.refunded": "已退款",
+
   "customer.title": "客戶",
   "customer.list": "客戶管理",
 
@@ -166,6 +190,7 @@
   "common.all": "全部",
   "common.clearFilter": "清除篩選",
   "common.actions": "操作",
+  "common.delete": "刪除",
   "common.prevPage": "上一頁",
   "common.nextPage": "下一頁",
   "common.pageFormat": "第 {0} 頁 / 共 {1} 頁",

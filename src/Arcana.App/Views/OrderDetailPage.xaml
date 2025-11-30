@@ -115,32 +115,30 @@
                                 </StackPanel>
                             </Grid>
 
-                            <ListView x:Name="OrderItemsListView" MinHeight="200" MaxHeight="400">
-                                <ListView.HeaderTemplate>
-                                    <DataTemplate>
-                                        <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="40"/>
-                                                <ColumnDefinition Width="100"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="80"/>
-                                                <ColumnDefinition Width="100"/>
-                                                <ColumnDefinition Width="80"/>
-                                                <ColumnDefinition Width="100"/>
-                                                <ColumnDefinition Width="60"/>
-                                            </Grid.ColumnDefinitions>
+                            <!-- Order Items Header -->
+                            <Grid Padding="8" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" CornerRadius="4,4,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock Text="#" FontWeight="SemiBold"/>
-                                            <TextBlock x:Name="ColProductCode" Grid.Column="1" FontWeight="SemiBold"/>
-                                            <TextBlock x:Name="ColProductName" Grid.Column="2" FontWeight="SemiBold"/>
-                                            <TextBlock x:Name="ColQuantity" Grid.Column="3" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                                            <TextBlock x:Name="ColUnitPrice" Grid.Column="4" FontWeight="SemiBold" HorizontalAlignment="Right"/>
-                                            <TextBlock x:Name="ColDiscount" Grid.Column="5" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                                            <TextBlock x:Name="ColSubtotal" Grid.Column="6" FontWeight="SemiBold" HorizontalAlignment="Right"/>
-                                            <TextBlock Grid.Column="7" Text="" FontWeight="SemiBold"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListView.HeaderTemplate>
+                                <TextBlock Text="#" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="ColProductCode" Grid.Column="1" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="ColProductName" Grid.Column="2" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="ColQuantity" Grid.Column="3" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="ColUnitPrice" Grid.Column="4" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                <TextBlock x:Name="ColDiscount" Grid.Column="5" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="ColSubtotal" Grid.Column="6" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="7" Text="" FontWeight="SemiBold"/>
+                            </Grid>
+
+                            <ListView x:Name="OrderItemsListView" MinHeight="200" MaxHeight="400" Margin="0,-4,0,0">
 
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
@@ -215,32 +213,45 @@
                     <StackPanel Spacing="16">
                         <TextBlock x:Name="OrderSummaryTitle" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                        <Grid>
+                        <Grid RowSpacing="12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock x:Name="SubtotalLabel"/>
-                            <TextBlock Grid.Column="1" x:Name="SubtotalText" Text="$0" HorizontalAlignment="Right"/>
+                            <TextBlock x:Name="SubtotalLabel" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" x:Name="SubtotalText" Text="$0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 
-                            <TextBlock x:Name="TaxLabel" Grid.Row="1"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TaxAmountText" Text="$0" HorizontalAlignment="Right"/>
+                            <TextBlock x:Name="TaxLabel" Grid.Row="1" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TaxAmountText" Text="$0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 
-                            <TextBlock x:Name="ShippingLabel" Grid.Row="2"/>
-                            <NumberBox Grid.Row="2" Grid.Column="1" x:Name="ShippingCostBox" Value="0" Minimum="0" HorizontalAlignment="Right" Width="100"/>
+                            <TextBlock x:Name="ShippingLabel" Grid.Row="2" VerticalAlignment="Center"/>
+                            <NumberBox Grid.Row="2" Grid.Column="1"
+                                       x:Name="ShippingCostBox"
+                                       Value="0"
+                                       Minimum="0"
+                                       SpinButtonPlacementMode="Compact"
+                                       HorizontalAlignment="Right"
+                                       Width="120"/>
 
-                            <TextBlock x:Name="DiscountLabel" Grid.Row="3"/>
-                            <NumberBox Grid.Row="3" Grid.Column="1" x:Name="DiscountAmountBox" Value="0" Minimum="0" HorizontalAlignment="Right" Width="100"/>
+                            <TextBlock x:Name="DiscountLabel" Grid.Row="3" VerticalAlignment="Center"/>
+                            <NumberBox Grid.Row="3" Grid.Column="1"
+                                       x:Name="DiscountAmountBox"
+                                       Value="0"
+                                       Minimum="0"
+                                       Maximum="100"
+                                       SpinButtonPlacementMode="Compact"
+                                       HorizontalAlignment="Right"
+                                       Width="120"/>
 
                             <Border Grid.Row="5" Grid.ColumnSpan="2" Height="1" Background="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,8"/>
 

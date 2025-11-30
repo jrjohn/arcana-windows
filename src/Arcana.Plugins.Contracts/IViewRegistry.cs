@@ -80,6 +80,12 @@ public interface INavigationService
     Task<bool> NavigateToNewTabAsync(string viewId, object? parameter = null);
 
     /// <summary>
+    /// Navigates to a view within an existing parent tab's Frame.
+    /// If the parent tab doesn't exist, it will be created first.
+    /// </summary>
+    Task<bool> NavigateWithinTabAsync(string parentViewId, string viewId, object? parameter = null);
+
+    /// <summary>
     /// Goes back.
     /// </summary>
     Task<bool> GoBackAsync();

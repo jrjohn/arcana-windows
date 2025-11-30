@@ -21,7 +21,14 @@
   "nav.header.reports": "レポート",
 
   "search.placeholder": "コマンドまたは機能を検索... (Ctrl+K)",
-  "tooltip.newTab": "新しいタブを追加",
+  "tooltip.newTab": "クイックアクション",
+  "tooltip.openNavigation": "ナビゲーションを開く",
+  "tooltip.closeNavigation": "ナビゲーションを閉じる",
+
+  "quick.newOrder": "新規注文",
+  "quick.newCustomer": "新規顧客",
+  "quick.newProduct": "新規製品",
+  "quick.home": "ホーム",
 
   "home.welcome": "Arcana へようこそ",
   "home.subtitle": "企業管理システム",
@@ -83,6 +90,15 @@
   "menu.view": "表示",
   "menu.view.sidebar": "サイドバー",
   "menu.view.statusbar": "ステータスバー",
+  "menu.business.order": "注文",
+  "menu.business.order.list": "注文管理",
+  "menu.business.order.new": "新規注文",
+  "menu.business.customer": "顧客",
+  "menu.business.customer.list": "顧客管理",
+  "menu.business.customer.new": "新規顧客",
+  "menu.business.product": "製品",
+  "menu.business.product.list": "製品管理",
+  "menu.business.product.new": "新規製品",
 
   "order.title": "注文",
   "order.list": "注文管理",

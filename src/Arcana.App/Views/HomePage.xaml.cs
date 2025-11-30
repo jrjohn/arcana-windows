@@ -58,6 +58,7 @@ public sealed partial class HomePage : Page
         // Recent Orders
         RecentOrdersTitle.Text = _localization.Get("home.recentOrders");
         ViewAllLink.Content = _localization.Get("home.viewAll");
+        NoRecentOrdersText.Text = _localization.Get("home.noRecentOrders");
 
         // System Info
         SystemInfoTitle.Text = _localization.Get("home.systemInfo");
@@ -76,7 +77,17 @@ public sealed partial class HomePage : Page
         TotalCustomers.Text = "128";
         LastSyncTime.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
 
+        // Update empty state visibility based on recent orders
+        UpdateRecentOrdersEmptyState();
+
         await Task.CompletedTask;
+    }
+
+    private void UpdateRecentOrdersEmptyState()
+    {
+        var hasOrders = RecentOrdersList.Items.Count > 0;
+        RecentOrdersList.Visibility = hasOrders ? Visibility.Visible : Visibility.Collapsed;
+        RecentOrdersEmptyState.Visibility = hasOrders ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void NewOrder_Click(object sender, RoutedEventArgs e)

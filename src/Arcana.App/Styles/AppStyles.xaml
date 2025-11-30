@@ -60,4 +60,20 @@
         <Setter Property="DefaultLabelPosition" Value="Right"/>
     </Style>
 
+    <!-- ListView Item Container Style with Hover Effect -->
+    <Style x:Key="HoverableListViewItemStyle" TargetType="ListViewItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0,1"/>
+    </Style>
+
+    <!-- Action Button Style (for edit/delete icons) -->
+    <Style x:Key="ActionButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="MinWidth" Value="32"/>
+        <Setter Property="MinHeight" Value="32"/>
+    </Style>
+
 </ResourceDictionary>

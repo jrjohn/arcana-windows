@@ -21,7 +21,14 @@
   "nav.header.reports": "Reports",
 
   "search.placeholder": "Search commands or features... (Ctrl+K)",
-  "tooltip.newTab": "Add new tab",
+  "tooltip.newTab": "Quick Actions",
+  "tooltip.openNavigation": "Open Navigation",
+  "tooltip.closeNavigation": "Close Navigation",
+
+  "quick.newOrder": "New Order",
+  "quick.newCustomer": "New Customer",
+  "quick.newProduct": "New Product",
+  "quick.home": "Home",
 
   "home.welcome": "Welcome to Arcana",
   "home.subtitle": "Enterprise Management System",
@@ -35,6 +42,7 @@
   "home.pendingOrders": "Pending Orders",
   "home.totalCustomers": "Total Customers",
   "home.recentOrders": "Recent Orders",
+  "home.noRecentOrders": "No recent orders",
   "home.viewAll": "View All",
   "home.systemInfo": "System Information",
   "home.version": "Version:",
@@ -68,6 +76,8 @@
   "settings.every30min": "Every 30 minutes",
   "settings.everyHour": "Every hour",
   "settings.syncNow": "Sync Now",
+  "settings.on": "On",
+  "settings.off": "Off",
   "settings.dataSettings": "Data Settings",
   "settings.export": "Export Data",
   "settings.import": "Import Data",
@@ -83,6 +93,15 @@
   "menu.view": "View",
   "menu.view.sidebar": "Sidebar",
   "menu.view.statusbar": "Status Bar",
+  "menu.business.order": "Order",
+  "menu.business.order.list": "Order Management",
+  "menu.business.order.new": "New Order",
+  "menu.business.customer": "Customer",
+  "menu.business.customer.list": "Customer Management",
+  "menu.business.customer.new": "New Customer",
+  "menu.business.product": "Product",
+  "menu.business.product.list": "Product Management",
+  "menu.business.product.new": "New Product",
 
   "order.title": "Order",
   "order.list": "Order Management",
@@ -127,6 +146,11 @@
   "payment.check": "Check",
   "payment.credit": "Credit",
 
+  "payment.status.paid": "Paid",
+  "payment.status.unpaid": "Unpaid",
+  "payment.status.partialPaid": "Partial Paid",
+  "payment.status.refunded": "Refunded",
+
   "customer.title": "Customer",
   "customer.list": "Customer Management",
 
@@ -166,6 +190,7 @@
   "common.all": "All",
   "common.clearFilter": "Clear Filter",
   "common.actions": "Actions",
+  "common.delete": "Delete",
   "common.prevPage": "Previous",
   "common.nextPage": "Next",
   "common.pageFormat": "Page {0} / {1}",

@@ -159,6 +159,8 @@ public sealed partial class SettingsPage : Page
         // Sync section
         SyncTitle.Text = _localization.Get("settings.syncSettings");
         AutoSyncToggle.Header = _localization.Get("settings.autoSync");
+        AutoSyncToggle.OnContent = _localization.Get("settings.on");
+        AutoSyncToggle.OffContent = _localization.Get("settings.off");
         SyncFrequencyComboBox.Header = _localization.Get("settings.syncFrequency");
         Freq5Min.Content = _localization.Get("settings.every5min");
         Freq15Min.Content = _localization.Get("settings.every15min");

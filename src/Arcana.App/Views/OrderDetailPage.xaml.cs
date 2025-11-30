@@ -62,6 +62,14 @@ public sealed partial class OrderDetailPage : Page
         ProductSearchBox.PlaceholderText = _localization.Get("order.searchProduct");
         ClearItemsButton.Content = _localization.Get("order.clearItems");
 
+        // Order items table headers
+        ColProductCode.Text = _localization.Get("order.productCode");
+        ColProductName.Text = _localization.Get("order.productName");
+        ColQuantity.Text = _localization.Get("order.quantity");
+        ColUnitPrice.Text = _localization.Get("order.unitPrice");
+        ColDiscount.Text = _localization.Get("order.discount");
+        ColSubtotal.Text = _localization.Get("order.subtotal");
+
         // Shipping section
         ShippingInfoTitle.Text = _localization.Get("order.shippingInfo");
         ShippingAddressText.Header = _localization.Get("order.shippingAddress");
