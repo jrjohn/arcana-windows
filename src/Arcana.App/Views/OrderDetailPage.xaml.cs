@@ -38,6 +38,7 @@ public sealed partial class OrderDetailPage : Page
         ExpectedDeliveryDatePicker.Language = currentCulture;
 
         // Command bar buttons
+        CopyButton.Label = _localization.Get("order.copy");
         EditButton.Label = _localization.Get("common.edit");
         SaveButton.Label = _localization.Get("common.save");
         CancelButton.Label = _localization.Get("common.cancel");
@@ -100,15 +101,48 @@ public sealed partial class OrderDetailPage : Page
     {
         base.OnNavigatedTo(e);
 
-        // Handle int parameter properly - boxing means we can't use "as int?"
-        int? orderId = e.Parameter switch
+        // Handle different parameter types
+        if (e.Parameter is OrderCopyParameter copyParam)
         {
-            int id => id,
-            string s when int.TryParse(s, out var parsed) => parsed,
-            _ => null
-        };
+            // Copy from existing order - create new order with pre-filled data
+            await ViewModel.LoadAsync(null); // Load as new order
 
-        await ViewModel.LoadAsync(orderId);
+            // Pre-fill from copied order
+            ViewModel.SelectedCustomer = copyParam.Customer;
+            ViewModel.Order.ShippingAddress = copyParam.ShippingAddress;
+            ViewModel.Order.ShippingCity = copyParam.ShippingCity;
+            ViewModel.Order.ShippingPostalCode = copyParam.ShippingPostalCode;
+            ViewModel.Order.Notes = $"{_localization.Get("order.copiedFrom")} #{copyParam.SourceOrderId}\n{copyParam.Notes}";
+            ViewModel.Order.PaymentMethod = copyParam.PaymentMethod;
+
+            // Copy items (create new instances to avoid reference issues)
+            foreach (var item in copyParam.Items)
+            {
+                ViewModel.Items.Add(new OrderItem
+                {
+                    ProductId = item.ProductId,
+                    ProductCode = item.ProductCode,
+                    ProductName = item.ProductName,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    DiscountPercent = item.DiscountPercent
+                });
+            }
+            ViewModel.Order.CalculateTotals();
+        }
+        else
+        {
+            // Handle int parameter properly - boxing means we can't use "as int?"
+            int? orderId = e.Parameter switch
+            {
+                int id => id,
+                string s when int.TryParse(s, out var parsed) => parsed,
+                _ => null
+            };
+
+            await ViewModel.LoadAsync(orderId);
+        }
+
         UpdateUI();
         ApplyLocalization();
     }
@@ -130,6 +164,8 @@ public sealed partial class OrderDetailPage : Page
 
         UpdateTotals();
 
+        // Show Copy and Edit buttons only for existing orders
+        CopyButton.Visibility = ViewModel.IsNew ? Visibility.Collapsed : Visibility.Visible;
         EditButton.Visibility = ViewModel.IsNew ? Visibility.Collapsed : Visibility.Visible;
         SaveButton.IsEnabled = ViewModel.IsEditing;
         BackButton.Visibility = Frame.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
@@ -254,6 +290,34 @@ public sealed partial class OrderDetailPage : Page
         UpdateTotals();
     }
 
+    private void Copy_Click(object sender, RoutedEventArgs e)
+    {
+        // Create a copy of the current order
+        var copyParam = new OrderCopyParameter
+        {
+            SourceOrderId = ViewModel.Order.Id,
+            Customer = ViewModel.SelectedCustomer,
+            Items = ViewModel.Items.ToList(),
+            ShippingAddress = ViewModel.Order.ShippingAddress,
+            ShippingCity = ViewModel.Order.ShippingCity,
+            ShippingPostalCode = ViewModel.Order.ShippingPostalCode,
+            Notes = ViewModel.Order.Notes,
+            PaymentMethod = ViewModel.Order.PaymentMethod
+        };
+
+        // Try to find parent OrderModulePage for nested tab navigation
+        var parent = FindParentOrderModulePage();
+        if (parent != null)
+        {
+            parent.OpenNewOrder(copyParam);
+        }
+        else
+        {
+            // Fallback: navigate within the same Frame
+            Frame.Navigate(typeof(OrderDetailPage), copyParam);
+        }
+    }
+
     private void Back_Click(object sender, RoutedEventArgs e)
     {
         // Navigate back within the same tab's Frame
@@ -262,4 +326,49 @@ public sealed partial class OrderDetailPage : Page
             Frame.GoBack();
         }
     }
+
+    private OrderModulePage? FindParentOrderModulePage()
+    {
+        // Navigate up the visual tree to find the OrderModulePage
+        DependencyObject? current = this;
+        while (current != null)
+        {
+            current = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(current);
+            if (current is OrderModulePage modulePage)
+            {
+                return modulePage;
+            }
+        }
+
+        // Alternative: check Frame's parent hierarchy
+        if (Frame?.Parent is TabViewItem item)
+        {
+            var parent = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(item);
+            while (parent != null)
+            {
+                if (parent is OrderModulePage page)
+                {
+                    return page;
+                }
+                parent = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(parent);
+            }
+        }
+
+        return null;
+    }
+}
+
+/// <summary>
+/// Parameter for copying an order.
+/// </summary>
+public class OrderCopyParameter
+{
+    public int SourceOrderId { get; set; }
+    public Customer? Customer { get; set; }
+    public List<OrderItem> Items { get; set; } = [];
+    public string? ShippingAddress { get; set; }
+    public string? ShippingCity { get; set; }
+    public string? ShippingPostalCode { get; set; }
+    public string? Notes { get; set; }
+    public PaymentMethod PaymentMethod { get; set; }
 }

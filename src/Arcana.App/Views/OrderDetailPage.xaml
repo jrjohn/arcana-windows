@@ -34,6 +34,11 @@
             </StackPanel>
 
             <CommandBar Grid.Column="2" DefaultLabelPosition="Right" Background="Transparent">
+                <AppBarButton x:Name="CopyButton" Click="Copy_Click" Visibility="Collapsed">
+                    <AppBarButton.Icon>
+                        <FontIcon Glyph="&#xE8C8;"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
                 <AppBarButton x:Name="EditButton" Icon="Edit" Click="Edit_Click" Visibility="Collapsed"/>
                 <AppBarButton x:Name="SaveButton" Icon="Save" Click="Save_Click"/>
                 <AppBarButton x:Name="CancelButton" Icon="Cancel" Click="Cancel_Click"/>

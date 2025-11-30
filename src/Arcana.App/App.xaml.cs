@@ -56,6 +56,7 @@ public partial class App : Application
                 // Register App Services
                 services.AddSingleton<ThemeService>();
                 services.AddSingleton<AppSettingsService>();
+                services.AddSingleton<IDocumentManager, DocumentManager>();
 
                 // Register ViewModels
                 services.AddTransient<PluginManagerViewModel>();

@@ -1,10 +1,13 @@
 App.xbf
+Controls\DocumentTabHost.xbf
+FloatingWindows\FloatingDocumentWindow.xbf
 MainWindow.xbf
 Styles\AppStyles.xbf
 Views\CustomerListPage.xbf
 Views\HomePage.xbf
 Views\OrderDetailPage.xbf
 Views\OrderListPage.xbf
+Views\OrderModulePage.xbf
 Views\PluginManagerPage.xbf
 Views\ProductListPage.xbf
 Views\SettingsPage.xbf

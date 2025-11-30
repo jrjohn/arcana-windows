@@ -107,6 +107,8 @@
   "order.list": "Order Management",
   "order.detail": "Order Detail",
   "order.new": "New Order",
+  "order.copy": "Copy",
+  "order.copiedFrom": "Copied from Order",
   "order.draft": "Draft",
   "order.edit": "Edit",
   "order.save": "Save",
@@ -194,5 +196,13 @@
   "common.prevPage": "Previous",
   "common.nextPage": "Next",
   "common.pageFormat": "Page {0} / {1}",
-  "common.showingFormat": "Showing {0}-{1} of {2}"
+  "common.showingFormat": "Showing {0}-{1} of {2}",
+
+  "common.noDocuments": "No documents open",
+  "common.createNew": "Create New",
+  "common.documentCount": "{0} documents",
+  "common.popOut": "Pop Out",
+  "common.close": "Close",
+  "common.dockBack": "Dock Back",
+  "common.dockBackTooltip": "Dock this window back to the main window"
 }

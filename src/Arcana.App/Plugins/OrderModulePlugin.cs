@@ -170,8 +170,8 @@ public class OrderModulePlugin : PluginBase
 
         RegisterCommand<int>("order.view", orderId =>
         {
-            // Navigate within OrderListPage tab instead of creating a new tab
-            return Context!.Navigation.NavigateWithinTabAsync("OrderListPage", "OrderDetailPage", orderId);
+            // Open existing order in a new tab for multi-tab reference capability
+            return Context!.Navigation.NavigateToNewTabAsync("OrderDetailPage", orderId);
         });
 
         LogInfo("Order module plugin activated");

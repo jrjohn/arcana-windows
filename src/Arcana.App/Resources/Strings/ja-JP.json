@@ -104,6 +104,8 @@
   "order.list": "注文管理",
   "order.detail": "注文詳細",
   "order.new": "新規注文",
+  "order.copy": "コピー",
+  "order.copiedFrom": "注文からコピー",
   "order.draft": "下書き",
   "order.edit": "編集",
   "order.save": "保存",
@@ -185,5 +187,13 @@
   "common.prevPage": "前へ",
   "common.nextPage": "次へ",
   "common.pageFormat": "{0} / {1} ページ",
-  "common.showingFormat": "{0}-{1} / {2} 件"
+  "common.showingFormat": "{0}-{1} / {2} 件",
+
+  "common.noDocuments": "開いているドキュメントがありません",
+  "common.createNew": "新規作成",
+  "common.documentCount": "{0} 件のドキュメント",
+  "common.popOut": "別ウィンドウで開く",
+  "common.close": "閉じる",
+  "common.dockBack": "メインウィンドウに戻す",
+  "common.dockBackTooltip": "このウィンドウをメインウィンドウに戻します"
 }

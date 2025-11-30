@@ -393,7 +393,8 @@ public sealed partial class MainWindow : Window
     }
 
     /// <summary>
-    /// Navigates within an existing parent tab. If the parent tab doesn't exist, creates it first.
+    /// Navigates within an existing parent module tab. If the parent tab doesn't exist, creates it first.
+    /// For modules with nested tabs (like OrderModulePage), opens a new document tab within the module.
     /// </summary>
     public void NavigateWithinTab(string parentViewId, string viewId, object? parameter = null)
     {
@@ -433,40 +434,73 @@ public sealed partial class MainWindow : Window
             // Select the parent tab
             TabViewMain.SelectedItem = parentTab;
 
-            // Navigate within the parent tab's Frame
-            if (parentTab.Content is Frame frame)
+            // For module pages with nested tabs, delegate to the module page
+            if (parentTab.Content is Frame frame && frame.Content is OrderModulePage orderModule)
             {
+                if (viewId == "OrderDetailPage")
+                {
+                    if (parameter is int orderId)
+                    {
+                        orderModule.OpenOrder(orderId);
+                    }
+                    else
+                    {
+                        orderModule.OpenNewOrder(parameter);
+                    }
+                }
+            }
+            else if (parentTab.Content is Frame legacyFrame)
+            {
+                // Legacy navigation for non-module pages
                 var childPageType = GetPageType(viewId);
                 if (childPageType == null) return;
 
-                // Check if already on the same page type with same parameter (e.g., already on "New Order")
-                // to prevent duplicate navigation
-                if (frame.Content?.GetType() == childPageType)
+                if (legacyFrame.Content?.GetType() == childPageType && parameter == null)
                 {
-                    // For new item pages (parameter is null), don't navigate again
-                    if (parameter == null)
-                    {
-                        return; // Already on new item page, do nothing
-                    }
+                    return; // Already on page, do nothing
                 }
 
-                // Clear back stack before navigating to avoid stacking multiple "New Order" pages
-                // This ensures Cancel goes back to the list, not to previous "New Order"
-                if (parameter == null)
-                {
-                    // Navigating to a "new item" page - clear back stack after navigation
-                    frame.Navigate(childPageType, parameter);
+                legacyFrame.Navigate(childPageType, parameter);
+            }
+        });
+    }
 
-                    // Remove all entries except the list page from back stack
-                    while (frame.BackStackDepth > 1)
-                    {
-                        frame.BackStack.RemoveAt(frame.BackStackDepth - 1);
-                    }
-                }
-                else
+    /// <summary>
+    /// Opens an order in a new document tab within the Order module
+    /// </summary>
+    public void OpenOrderInModule(int orderId)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            // Find or create the Order module tab
+            NavigateWithinTab("OrderListPage", "OrderDetailPage", orderId);
+        });
+    }
+
+    /// <summary>
+    /// Opens a new order in the Order module
+    /// </summary>
+    public void OpenNewOrderInModule(object? parameter = null)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            NavigateWithinTab("OrderListPage", "OrderDetailPage", parameter);
+        });
+    }
+
+    /// <summary>
+    /// Selects a module tab in the main TabView
+    /// </summary>
+    public void SelectModuleTab(string moduleTag)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            foreach (var item in TabViewMain.TabItems)
+            {
+                if (item is TabViewItem tab && tab.Tag?.ToString() == moduleTag)
                 {
-                    // Navigating to edit an existing item - normal navigation
-                    frame.Navigate(childPageType, parameter);
+                    TabViewMain.SelectedItem = tab;
+                    return;
                 }
             }
         });
@@ -477,7 +511,8 @@ public sealed partial class MainWindow : Window
         return pageTag switch
         {
             "HomePage" => typeof(HomePage),
-            "OrderListPage" => typeof(OrderListPage),
+            "OrderListPage" => typeof(OrderModulePage), // Use module page with nested tabs
+            "OrderModulePage" => typeof(OrderModulePage),
             "OrderDetailPage" => typeof(OrderDetailPage),
             "CustomerListPage" => typeof(CustomerListPage),
             "ProductListPage" => typeof(ProductListPage),

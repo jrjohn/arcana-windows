@@ -14,12 +14,14 @@ public sealed partial class OrderListPage : Page
 {
     private OrderListViewModel ViewModel { get; }
     private readonly ILocalizationService _localization;
+    private readonly INavigationService _navigationService;
 
     public OrderListPage()
     {
         this.InitializeComponent();
         ViewModel = App.Services.GetRequiredService<OrderListViewModel>();
         _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _navigationService = App.Services.GetRequiredService<INavigationService>();
         _localization.CultureChanged += OnCultureChanged;
         DataContext = ViewModel;
         Loaded += OnLoaded;
@@ -104,8 +106,17 @@ public sealed partial class OrderListPage : Page
 
     private void NewOrder_Click(object sender, RoutedEventArgs e)
     {
-        // Navigate within the same tab's Frame (null parameter = new order)
-        Frame.Navigate(typeof(OrderDetailPage), null);
+        // Try to find parent OrderModulePage
+        var parent = FindParentOrderModulePage();
+        if (parent != null)
+        {
+            parent.OpenNewOrder();
+        }
+        else
+        {
+            // Fallback: navigate within the same tab's Frame
+            Frame.Navigate(typeof(OrderDetailPage), null);
+        }
     }
 
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -133,8 +144,7 @@ public sealed partial class OrderListPage : Page
     {
         if (e.ClickedItem is Order order)
         {
-            // Navigate within the same tab's Frame
-            Frame.Navigate(typeof(OrderDetailPage), order.Id);
+            OpenOrderInParentModule(order.Id);
         }
     }
 
@@ -142,9 +152,51 @@ public sealed partial class OrderListPage : Page
     {
         if (sender is FrameworkElement element && element.DataContext is Order order)
         {
-            // Navigate within the same tab's Frame
-            Frame.Navigate(typeof(OrderDetailPage), order.Id);
+            OpenOrderInParentModule(order.Id);
         }
+    }
+
+    private void OpenOrderInParentModule(int orderId)
+    {
+        // Try to find parent OrderModulePage
+        var parent = FindParentOrderModulePage();
+        if (parent != null)
+        {
+            parent.OpenOrder(orderId);
+        }
+        else
+        {
+            // Fallback: navigate through navigation service
+            _ = _navigationService.NavigateWithinTabAsync("OrderListPage", "OrderDetailPage", orderId);
+        }
+    }
+
+    private OrderModulePage? FindParentOrderModulePage()
+    {
+        // Navigate up the visual tree to find the OrderModulePage
+        DependencyObject? current = this;
+        while (current != null)
+        {
+            if (current is Frame frame && frame.Parent is TabViewItem tabItem &&
+                tabItem.Parent is TabView tabView && tabView.Parent is Grid grid &&
+                grid.Parent is OrderModulePage modulePage)
+            {
+                return modulePage;
+            }
+
+            current = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(current);
+        }
+
+        // Alternative: check if we're inside a Frame whose content's parent is OrderModulePage
+        if (Frame?.Parent is TabViewItem item &&
+            Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(item) is TabView tv &&
+            Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(tv) is Grid g &&
+            Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(g) is OrderModulePage page)
+        {
+            return page;
+        }
+
+        return null;
     }
 
     private async void DeleteOrder_Click(object sender, RoutedEventArgs e)

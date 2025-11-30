@@ -107,6 +107,8 @@
   "order.list": "訂單管理",
   "order.detail": "訂單明細",
   "order.new": "新增訂單",
+  "order.copy": "複製",
+  "order.copiedFrom": "複製自訂單",
   "order.draft": "草稿",
   "order.edit": "編輯",
   "order.save": "儲存",
@@ -194,5 +196,13 @@
   "common.prevPage": "上一頁",
   "common.nextPage": "下一頁",
   "common.pageFormat": "第 {0} 頁 / 共 {1} 頁",
-  "common.showingFormat": "第 {0}-{1} 筆，共 {2} 筆"
+  "common.showingFormat": "第 {0}-{1} 筆，共 {2} 筆",
+
+  "common.noDocuments": "沒有開啟的文件",
+  "common.createNew": "新增",
+  "common.documentCount": "{0} 個文件",
+  "common.popOut": "彈出視窗",
+  "common.close": "關閉",
+  "common.dockBack": "停靠回主視窗",
+  "common.dockBackTooltip": "將此視窗停靠回主視窗"
 }
