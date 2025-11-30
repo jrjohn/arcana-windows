@@ -17,11 +17,11 @@ namespace Arcana.App.Views;
 public sealed partial class OrderModulePage : Page
 {
     private const string ModuleId = "OrderModule";
-    private const string ListTabId = "OrderList";
 
     private readonly ILocalizationService _localization;
     private readonly IDocumentManager _documentManager;
     private readonly IMenuRegistry _menuRegistry;
+    private readonly IViewRegistry _viewRegistry;
     private readonly ICommandService _commandService;
     private readonly ThemeService _themeService;
     private readonly List<FloatingDocumentWindow> _floatingWindows = [];
@@ -32,11 +32,13 @@ public sealed partial class OrderModulePage : Page
         _localization = App.Services.GetRequiredService<ILocalizationService>();
         _documentManager = App.Services.GetRequiredService<IDocumentManager>();
         _menuRegistry = App.Services.GetRequiredService<IMenuRegistry>();
+        _viewRegistry = App.Services.GetRequiredService<IViewRegistry>();
         _commandService = App.Services.GetRequiredService<ICommandService>();
         _themeService = App.Services.GetRequiredService<ThemeService>();
 
         _localization.CultureChanged += OnCultureChanged;
         _menuRegistry.MenusChanged += OnMenusChanged;
+        _viewRegistry.ViewsChanged += OnViewsChanged;
         Loaded += OnLoaded;
     }
 
@@ -45,9 +47,14 @@ public sealed partial class OrderModulePage : Page
         ApplyLocalization();
         BuildModuleQuickActionsMenu();
 
-        // Ensure the Order List tab exists as the first (permanent) tab
-        EnsureListTabExists();
+        // Create default tabs from plugin configuration
+        EnsureDefaultTabsExist();
         UpdateUI();
+    }
+
+    private void OnViewsChanged(object? sender, EventArgs e)
+    {
+        DispatcherQueue.TryEnqueue(EnsureDefaultTabsExist);
     }
 
     private void OnCultureChanged(object? sender, CultureChangedEventArgs e)
@@ -115,7 +122,7 @@ public sealed partial class OrderModulePage : Page
             switch (commandId)
             {
                 case "module.order.list":
-                    SelectListTab();
+                    SelectFirstDefaultTab();
                     break;
                 case "module.order.new":
                 case "order.new":
@@ -137,17 +144,32 @@ public sealed partial class OrderModulePage : Page
     }
 
     /// <summary>
-    /// Selects the Order List tab
+    /// Selects a tab by view ID. If it's a default tab and doesn't exist, creates it first.
     /// </summary>
-    public void SelectListTab()
+    public void SelectTab(string viewId)
     {
+        // Ensure default tabs exist first
+        EnsureDefaultTabsExist();
+
         foreach (var item in DocumentTabs.TabItems)
         {
-            if (item is TabViewItem tab && tab.Tag is DocumentInfo doc && doc.Id == ListTabId)
+            if (item is TabViewItem tab && tab.Tag is DocumentInfo doc && doc.Id == viewId)
             {
                 DocumentTabs.SelectedItem = tab;
                 return;
             }
+        }
+    }
+
+    /// <summary>
+    /// Selects the first default tab (usually the list tab).
+    /// </summary>
+    public void SelectFirstDefaultTab()
+    {
+        var defaultTabs = _viewRegistry.GetModuleDefaultTabs(ModuleId);
+        if (defaultTabs.Count > 0)
+        {
+            SelectTab(defaultTabs[0].Id);
         }
     }
 
@@ -164,9 +186,13 @@ public sealed partial class OrderModulePage : Page
         {
             if (item is TabViewItem tab && tab.Tag is DocumentInfo doc)
             {
-                if (doc.Id == ListTabId)
+                // Check if it's a registered view with TitleKey for localization
+                var viewDef = _viewRegistry.GetView(doc.Id);
+                if (viewDef != null && !string.IsNullOrEmpty(viewDef.TitleKey))
                 {
-                    tab.Header = _localization.Get("order.list");
+                    // Use TitleKey to get localized title dynamically
+                    tab.Header = _localization.GetFromAnyPlugin(viewDef.TitleKey);
+                    doc.Title = tab.Header?.ToString() ?? viewDef.Title;
                 }
                 else if (doc.Id.StartsWith("Order_"))
                 {
@@ -174,7 +200,7 @@ public sealed partial class OrderModulePage : Page
                     var orderId = doc.Id.Replace("Order_", "");
                     tab.Header = $"{_localization.Get("order.title")} #{orderId}";
                 }
-                else if (doc.Id == "NewOrder")
+                else if (doc.Id == "NewOrder" || doc.Id.StartsWith("NewOrder_"))
                 {
                     tab.Header = _localization.Get("order.new");
                 }
@@ -182,58 +208,90 @@ public sealed partial class OrderModulePage : Page
         }
     }
 
-    private void AddListTab()
+    /// <summary>
+    /// Ensures all default tabs from plugin configuration exist.
+    /// </summary>
+    private void EnsureDefaultTabsExist()
     {
+        var defaultTabs = _viewRegistry.GetModuleDefaultTabs(ModuleId);
+
+        foreach (var viewDef in defaultTabs)
+        {
+            // Check if this default tab already exists
+            var exists = false;
+            foreach (var item in DocumentTabs.TabItems)
+            {
+                if (item is TabViewItem existingTab && existingTab.Tag is DocumentInfo doc && doc.Id == viewDef.Id)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (!exists)
+            {
+                AddDefaultTab(viewDef);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Adds a default tab from a view definition.
+    /// </summary>
+    private void AddDefaultTab(ViewDefinition viewDef)
+    {
+        if (viewDef.ViewClass == null) return;
+
         var frame = new Frame();
-        frame.Navigate(typeof(OrderListPage));
+        frame.Navigate(viewDef.ViewClass);
         ApplyThemeToFrame(frame);
 
-        // Wire up navigation from list page
-        if (frame.Content is OrderListPage listPage)
-        {
-            // Subscribe to list page events for opening orders
-        }
+        // Use TitleKey for localization if available, otherwise use Title
+        var title = !string.IsNullOrEmpty(viewDef.TitleKey)
+            ? _localization.GetFromAnyPlugin(viewDef.TitleKey)
+            : viewDef.Title;
 
-        var listDoc = new DocumentInfo
+        var doc = new DocumentInfo
         {
-            Id = ListTabId,
-            Title = _localization.Get("order.list"),
-            PageType = typeof(OrderListPage),
-            IconGlyph = "\uE8A5",
-            IsClosable = false
+            Id = viewDef.Id,
+            Title = title,
+            PageType = viewDef.ViewClass,
+            IconGlyph = viewDef.Icon ?? "\uE7C3",
+            IsClosable = false // Default tabs are not closable
         };
 
         var tab = new TabViewItem
         {
-            Header = listDoc.Title,
-            Tag = listDoc,
+            Header = title,
+            Tag = doc,
             Content = frame,
-            IconSource = new FontIconSource { Glyph = listDoc.IconGlyph },
+            IconSource = new FontIconSource { Glyph = doc.IconGlyph },
             IsClosable = false
         };
 
-        DocumentTabs.TabItems.Add(tab);
-        DocumentTabs.SelectedItem = tab;
-
-        _documentManager.RegisterDocument(ModuleId, listDoc);
-    }
-
-    /// <summary>
-    /// Ensures the Order List tab exists
-    /// </summary>
-    private void EnsureListTabExists()
-    {
-        // Check if list tab already exists
+        // Insert at the correct position based on ModuleTabOrder
+        var insertIndex = 0;
         foreach (var item in DocumentTabs.TabItems)
         {
-            if (item is TabViewItem tab && tab.Tag is DocumentInfo doc && doc.Id == ListTabId)
+            if (item is TabViewItem existingTab && existingTab.Tag is DocumentInfo existingDoc)
             {
-                return; // Already exists
+                var existingDef = _viewRegistry.GetView(existingDoc.Id);
+                if (existingDef != null && existingDef.IsModuleDefaultTab && existingDef.ModuleTabOrder < viewDef.ModuleTabOrder)
+                {
+                    insertIndex++;
+                }
             }
         }
 
-        // Add the list tab
-        AddListTab();
+        DocumentTabs.TabItems.Insert(insertIndex, tab);
+
+        // Select first default tab if nothing is selected
+        if (DocumentTabs.SelectedItem == null)
+        {
+            DocumentTabs.SelectedItem = tab;
+        }
+
+        _documentManager.RegisterDocument(ModuleId, doc);
     }
 
     /// <summary>
@@ -241,8 +299,8 @@ public sealed partial class OrderModulePage : Page
     /// </summary>
     public void OpenOrder(int orderId)
     {
-        // Ensure the list tab exists first
-        EnsureListTabExists();
+        // Ensure default tabs exist first
+        EnsureDefaultTabsExist();
 
         var docId = $"Order_{orderId}";
 
@@ -295,8 +353,8 @@ public sealed partial class OrderModulePage : Page
     /// </summary>
     public void OpenNewOrder(object? parameter = null)
     {
-        // Ensure the list tab exists first
-        EnsureListTabExists();
+        // Ensure default tabs exist first
+        EnsureDefaultTabsExist();
 
         // Generate unique ID for new order tab
         var docId = parameter is OrderCopyParameter ? $"NewOrder_{Guid.NewGuid():N}" : "NewOrder";

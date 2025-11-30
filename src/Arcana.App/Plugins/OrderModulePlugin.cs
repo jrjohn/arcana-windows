@@ -92,27 +92,36 @@ public class OrderModulePlugin : PluginBase
     protected override void RegisterContributions(IPluginContext context)
     {
         // Register views
+        // OrderListPage is a default tab in the OrderModule - it's always created when the module loads
         RegisterView(new ViewDefinition
         {
             Id = "OrderListPage",
             Title = L("order.list"),
-            Icon = "\uE7C3",
+            TitleKey = "order.list", // For dynamic localization when language changes
+            Icon = "\uE8A5",
             Type = ViewType.Page,
             ViewClass = typeof(OrderListPage),
             ViewModelType = typeof(OrderListViewModel),
-            Category = L("menu.business")
+            Category = L("menu.business"),
+            // Module default tab configuration
+            ModuleId = "OrderModule",
+            IsModuleDefaultTab = true,
+            ModuleTabOrder = 0
         });
 
         RegisterView(new ViewDefinition
         {
             Id = "OrderDetailPage",
             Title = L("order.detail"),
+            TitleKey = "order.detail", // For dynamic localization when language changes
             Icon = "\uE7C3",
             Type = ViewType.Page,
             ViewClass = typeof(OrderDetailPage),
             ViewModelType = typeof(OrderDetailViewModel),
             CanHaveMultipleInstances = true,
-            Category = L("menu.business")
+            Category = L("menu.business"),
+            // Not a default tab - opened on demand
+            ModuleId = "OrderModule"
         });
 
         // Register menu items under Business menu

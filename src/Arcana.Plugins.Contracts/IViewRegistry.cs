@@ -26,6 +26,11 @@ public interface IViewRegistry
     IReadOnlyList<ViewDefinition> GetAllViews();
 
     /// <summary>
+    /// Gets default tabs for a module.
+    /// </summary>
+    IReadOnlyList<ViewDefinition> GetModuleDefaultTabs(string moduleId);
+
+    /// <summary>
     /// Creates a view instance.
     /// </summary>
     object? CreateViewInstance(string viewId);
@@ -43,6 +48,13 @@ public record ViewDefinition
 {
     public required string Id { get; init; }
     public required string Title { get; init; }
+
+    /// <summary>
+    /// Localization key for the title. If set, this key will be used to get
+    /// the localized title dynamically when the language changes.
+    /// </summary>
+    public string? TitleKey { get; init; }
+
     public string? Icon { get; init; }
     public ViewType Type { get; init; } = Contracts.ViewType.Page;
     public Type? ViewClass { get; init; }
@@ -50,6 +62,22 @@ public record ViewDefinition
     public bool CanHaveMultipleInstances { get; init; }
     public string? Category { get; init; }
     public int Order { get; init; }
+
+    /// <summary>
+    /// Module ID this view belongs to (for nested tab modules).
+    /// </summary>
+    public string? ModuleId { get; init; }
+
+    /// <summary>
+    /// Whether this view is a default/permanent tab in its module.
+    /// Default tabs cannot be closed and are created when the module loads.
+    /// </summary>
+    public bool IsModuleDefaultTab { get; init; }
+
+    /// <summary>
+    /// Order of this tab within the module (lower = first).
+    /// </summary>
+    public int ModuleTabOrder { get; init; }
 }
 
 /// <summary>

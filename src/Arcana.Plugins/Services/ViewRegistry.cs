@@ -50,6 +50,14 @@ public class ViewRegistry : IViewRegistry
         return _views.Values.OrderBy(v => v.Order).ToList();
     }
 
+    public IReadOnlyList<ViewDefinition> GetModuleDefaultTabs(string moduleId)
+    {
+        return _views.Values
+            .Where(v => v.ModuleId == moduleId && v.IsModuleDefaultTab)
+            .OrderBy(v => v.ModuleTabOrder)
+            .ToList();
+    }
+
     public object? CreateViewInstance(string viewId)
     {
         if (_factories.TryGetValue(viewId, out var factory))
