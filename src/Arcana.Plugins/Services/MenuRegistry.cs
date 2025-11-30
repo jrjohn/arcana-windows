@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
 using Arcana.Plugins.Contracts;
+using Arcana.Plugins.Contracts.Validation;
+using Microsoft.Extensions.Logging;
 
 namespace Arcana.Plugins.Services;
 
@@ -9,11 +11,21 @@ namespace Arcana.Plugins.Services;
 public class MenuRegistry : IMenuRegistry
 {
     private readonly ConcurrentDictionary<string, MenuItemDefinition> _menuItems = new();
+    private readonly ILogger<MenuRegistry>? _logger;
 
     public event EventHandler? MenusChanged;
 
+    public MenuRegistry() { }
+
+    public MenuRegistry(ILogger<MenuRegistry> logger)
+    {
+        _logger = logger;
+    }
+
     public IDisposable RegisterMenuItem(MenuItemDefinition item)
     {
+        ValidateMenuItem(item);
+
         if (!_menuItems.TryAdd(item.Id, item))
         {
             throw new InvalidOperationException($"Menu item already registered: {item.Id}");
@@ -31,6 +43,13 @@ public class MenuRegistry : IMenuRegistry
     public IDisposable RegisterMenuItems(IEnumerable<MenuItemDefinition> items)
     {
         var itemList = items.ToList();
+
+        // Validate all items first
+        foreach (var item in itemList)
+        {
+            ValidateMenuItem(item);
+        }
+
         foreach (var item in itemList)
         {
             _menuItems[item.Id] = item;
@@ -46,6 +65,28 @@ public class MenuRegistry : IMenuRegistry
             }
             OnMenusChanged();
         });
+    }
+
+    private void ValidateMenuItem(MenuItemDefinition item)
+    {
+        var result = MenuItemValidator.Validate(item);
+
+        // Log warnings
+        foreach (var warning in result.Warnings)
+        {
+            _logger?.LogWarning("Menu item validation warning: {Warning}", warning);
+        }
+
+        // Throw on errors
+        if (!result.IsValid)
+        {
+            var errorMessage = string.Join("; ", result.Errors);
+            _logger?.LogError("Menu item validation failed: {Errors}", errorMessage);
+            throw new ContributionValidationException($"Menu item validation failed: {errorMessage}")
+            {
+                ValidationErrors = result.Errors
+            };
+        }
     }
 
     public IReadOnlyList<MenuItemDefinition> GetMenuItems(MenuLocation location)

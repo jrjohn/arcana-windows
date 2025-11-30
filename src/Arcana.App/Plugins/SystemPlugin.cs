@@ -26,37 +26,11 @@ public class SystemPlugin : PluginBase
         services.AddTransient<PluginManagerViewModel>();
     }
 
-    protected override Task OnActivateAsync(IPluginContext context)
+    protected override async Task OnActivateAsync(IPluginContext context)
     {
-        RegisterPluginResources();
-        return Task.CompletedTask;
-    }
-
-    private void RegisterPluginResources()
-    {
-        // Traditional Chinese (zh-TW)
-        RegisterResources("zh-TW", new Dictionary<string, string>
-        {
-            ["menu.system"] = "系統",
-            ["menu.system.plugins"] = "外掛管理",
-            ["menu.system.settings"] = "設定"
-        });
-
-        // English (en-US)
-        RegisterResources("en-US", new Dictionary<string, string>
-        {
-            ["menu.system"] = "System",
-            ["menu.system.plugins"] = "Plugin Manager",
-            ["menu.system.settings"] = "Settings"
-        });
-
-        // Japanese (ja-JP)
-        RegisterResources("ja-JP", new Dictionary<string, string>
-        {
-            ["menu.system"] = "システム",
-            ["menu.system.plugins"] = "プラグイン管理",
-            ["menu.system.settings"] = "設定"
-        });
+        // Load localization from external JSON files
+        var localesPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "System", "locales");
+        await LoadExternalLocalizationAsync(localesPath);
     }
 
     protected override void RegisterContributions(IPluginContext context)

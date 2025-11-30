@@ -53,6 +53,13 @@
     </Content>
   </ItemGroup>
 
+  <!-- Plugin localization files -->
+  <ItemGroup>
+    <Content Include="Plugins\**\locales\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>

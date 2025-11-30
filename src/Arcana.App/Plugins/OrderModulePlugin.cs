@@ -20,67 +20,11 @@ public class OrderModulePlugin : PluginBase
         Type = PluginType.Module
     };
 
-    protected override Task OnActivateAsync(IPluginContext context)
+    protected override async Task OnActivateAsync(IPluginContext context)
     {
-        RegisterPluginResources();
-        return Task.CompletedTask;
-    }
-
-    private void RegisterPluginResources()
-    {
-        // Traditional Chinese (zh-TW)
-        RegisterResources("zh-TW", new Dictionary<string, string>
-        {
-            ["order.title"] = "訂單",
-            ["order.list"] = "訂單管理",
-            ["order.new"] = "新增訂單",
-            ["order.detail"] = "訂單明細",
-            ["order.number"] = "訂單編號",
-            ["order.date"] = "訂單日期",
-            ["order.customer"] = "客戶",
-            ["order.status"] = "狀態",
-            ["order.total"] = "總金額",
-            ["order.items"] = "訂單項目",
-            ["menu.business"] = "業務",
-            ["module.order.new"] = "新增訂單",
-            ["module.order.list"] = "訂單列表"
-        });
-
-        // English (en-US)
-        RegisterResources("en-US", new Dictionary<string, string>
-        {
-            ["order.title"] = "Order",
-            ["order.list"] = "Order Management",
-            ["order.new"] = "New Order",
-            ["order.detail"] = "Order Detail",
-            ["order.number"] = "Order Number",
-            ["order.date"] = "Order Date",
-            ["order.customer"] = "Customer",
-            ["order.status"] = "Status",
-            ["order.total"] = "Total Amount",
-            ["order.items"] = "Order Items",
-            ["menu.business"] = "Business",
-            ["module.order.new"] = "New Order",
-            ["module.order.list"] = "Order List"
-        });
-
-        // Japanese (ja-JP)
-        RegisterResources("ja-JP", new Dictionary<string, string>
-        {
-            ["order.title"] = "注文",
-            ["order.list"] = "注文管理",
-            ["order.new"] = "新規注文",
-            ["order.detail"] = "注文詳細",
-            ["order.number"] = "注文番号",
-            ["order.date"] = "注文日",
-            ["order.customer"] = "顧客",
-            ["order.status"] = "ステータス",
-            ["order.total"] = "合計金額",
-            ["order.items"] = "注文項目",
-            ["menu.business"] = "業務",
-            ["module.order.new"] = "新規注文",
-            ["module.order.list"] = "注文一覧"
-        });
+        // Load localization from external JSON files
+        var localesPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "OrderModule", "locales");
+        await LoadExternalLocalizationAsync(localesPath);
     }
 
     public override void ConfigureServices(IServiceCollection services)

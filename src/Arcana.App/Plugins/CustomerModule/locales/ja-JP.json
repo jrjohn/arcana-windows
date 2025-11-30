@@ -1,0 +1,13 @@
+{
+  "customer.title": "顧客",
+  "customer.list": "顧客管理",
+  "customer.new": "新規顧客",
+  "customer.detail": "顧客詳細",
+  "customer.name": "顧客名",
+  "customer.code": "顧客コード",
+  "customer.contact": "連絡先",
+  "customer.phone": "電話",
+  "customer.email": "メール",
+  "customer.address": "住所",
+  "menu.business": "業務"
+}

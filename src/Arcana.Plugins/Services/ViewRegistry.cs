@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
 using Arcana.Plugins.Contracts;
+using Arcana.Plugins.Contracts.Validation;
+using Microsoft.Extensions.Logging;
 
 namespace Arcana.Plugins.Services;
 
@@ -10,11 +12,21 @@ public class ViewRegistry : IViewRegistry
 {
     private readonly ConcurrentDictionary<string, ViewDefinition> _views = new();
     private readonly ConcurrentDictionary<string, Func<object>> _factories = new();
+    private readonly ILogger<ViewRegistry>? _logger;
 
     public event EventHandler? ViewsChanged;
 
+    public ViewRegistry() { }
+
+    public ViewRegistry(ILogger<ViewRegistry> logger)
+    {
+        _logger = logger;
+    }
+
     public IDisposable RegisterView(ViewDefinition view)
     {
+        ValidateView(view);
+
         if (!_views.TryAdd(view.Id, view))
         {
             throw new InvalidOperationException($"View already registered: {view.Id}");
@@ -28,6 +40,28 @@ public class ViewRegistry : IViewRegistry
             _factories.TryRemove(view.Id, out _);
             OnViewsChanged();
         });
+    }
+
+    private void ValidateView(ViewDefinition view)
+    {
+        var result = ViewValidator.Validate(view);
+
+        // Log warnings
+        foreach (var warning in result.Warnings)
+        {
+            _logger?.LogWarning("View validation warning: {Warning}", warning);
+        }
+
+        // Throw on errors
+        if (!result.IsValid)
+        {
+            var errorMessage = string.Join("; ", result.Errors);
+            _logger?.LogError("View validation failed: {Errors}", errorMessage);
+            throw new ContributionValidationException($"View validation failed: {errorMessage}")
+            {
+                ValidationErrors = result.Errors
+            };
+        }
     }
 
     public IDisposable RegisterViewFactory(string viewId, Func<object> factory)

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Arcana.Plugins.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -222,5 +223,111 @@ public abstract class PluginBase : IPlugin
     protected void RegisterResources(string cultureName, IDictionary<string, string> resources)
     {
         Context?.Localization.RegisterPluginResources(Metadata.Id, cultureName, resources);
+    }
+
+    /// <summary>
+    /// Loads localization resources from external JSON files.
+    /// Files should be in the format: locales/{culture}.json (e.g., locales/zh-TW.json)
+    /// </summary>
+    /// <param name="basePath">Base path for localization files. If null, uses plugin path.</param>
+    protected async Task LoadExternalLocalizationAsync(string? basePath = null)
+    {
+        var localesPath = basePath ?? Path.Combine(Context!.PluginPath, "locales");
+
+        if (!Directory.Exists(localesPath))
+        {
+            LogWarning("Locales directory not found: {Path}", localesPath);
+            return;
+        }
+
+        foreach (var file in Directory.GetFiles(localesPath, "*.json"))
+        {
+            try
+            {
+                var cultureName = Path.GetFileNameWithoutExtension(file);
+                var json = await File.ReadAllTextAsync(file);
+                var resources = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+
+                if (resources != null)
+                {
+                    RegisterResources(cultureName, resources);
+                    LogInfo("Loaded {Count} localization resources for {Culture}", resources.Count, cultureName);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex, "Failed to load localization file: {File}", file);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Loads localization resources from embedded resource files.
+    /// Resource names should match: {Namespace}.Locales.{culture}.json
+    /// </summary>
+    protected void LoadEmbeddedLocalization()
+    {
+        var assembly = GetType().Assembly;
+        var resourcePrefix = GetType().Namespace + ".Locales.";
+
+        foreach (var resourceName in assembly.GetManifestResourceNames())
+        {
+            if (!resourceName.StartsWith(resourcePrefix) || !resourceName.EndsWith(".json"))
+                continue;
+
+            try
+            {
+                // Extract culture name from resource name
+                var cultureName = resourceName
+                    .Replace(resourcePrefix, "")
+                    .Replace(".json", "");
+
+                using var stream = assembly.GetManifestResourceStream(resourceName);
+                if (stream == null) continue;
+
+                using var reader = new StreamReader(stream);
+                var json = reader.ReadToEnd();
+                var resources = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+
+                if (resources != null)
+                {
+                    RegisterResources(cultureName, resources);
+                    LogInfo("Loaded {Count} embedded localization resources for {Culture}", resources.Count, cultureName);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex, "Failed to load embedded localization: {Resource}", resourceName);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Loads localization from a specific JSON file.
+    /// </summary>
+    protected async Task LoadLocalizationFileAsync(string cultureName, string filePath)
+    {
+        if (!File.Exists(filePath))
+        {
+            LogWarning("Localization file not found: {Path}", filePath);
+            return;
+        }
+
+        try
+        {
+            var json = await File.ReadAllTextAsync(filePath);
+            var resources = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+
+            if (resources != null)
+            {
+                RegisterResources(cultureName, resources);
+                LogInfo("Loaded {Count} localization resources for {Culture} from {Path}",
+                    resources.Count, cultureName, filePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            LogError(ex, "Failed to load localization file: {Path}", filePath);
+        }
     }
 }

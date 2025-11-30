@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
 using Arcana.Plugins.Contracts;
+using Arcana.Plugins.Contracts.Validation;
+using Microsoft.Extensions.Logging;
 
 namespace Arcana.Plugins.Services;
 
@@ -9,15 +11,41 @@ namespace Arcana.Plugins.Services;
 public class CommandService : ICommandService
 {
     private readonly ConcurrentDictionary<string, Func<object?[], Task>> _commands = new();
+    private readonly ILogger<CommandService>? _logger;
+
+    public CommandService() { }
+
+    public CommandService(ILogger<CommandService> logger)
+    {
+        _logger = logger;
+    }
 
     public IDisposable RegisterCommand(string commandId, Func<object?[], Task> handler)
     {
+        ValidateCommandId(commandId);
+
         if (!_commands.TryAdd(commandId, handler))
         {
             throw new InvalidOperationException($"Command already registered: {commandId}");
         }
 
+        _logger?.LogDebug("Registered command: {CommandId}", commandId);
         return new Subscription(() => _commands.TryRemove(commandId, out _));
+    }
+
+    private void ValidateCommandId(string commandId)
+    {
+        var result = CommandValidator.ValidateCommandId(commandId);
+
+        if (!result.IsValid)
+        {
+            var errorMessage = string.Join("; ", result.Errors);
+            _logger?.LogError("Command validation failed: {Errors}", errorMessage);
+            throw new ContributionValidationException($"Command validation failed: {errorMessage}")
+            {
+                ValidationErrors = result.Errors
+            };
+        }
     }
 
     public IDisposable RegisterCommand<T>(string commandId, Func<T, Task> handler)

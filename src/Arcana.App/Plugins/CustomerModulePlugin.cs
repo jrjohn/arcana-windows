@@ -18,61 +18,11 @@ public class CustomerModulePlugin : PluginBase
         Type = PluginType.Module
     };
 
-    protected override Task OnActivateAsync(IPluginContext context)
+    protected override async Task OnActivateAsync(IPluginContext context)
     {
-        RegisterPluginResources();
-        return Task.CompletedTask;
-    }
-
-    private void RegisterPluginResources()
-    {
-        // Traditional Chinese (zh-TW)
-        RegisterResources("zh-TW", new Dictionary<string, string>
-        {
-            ["customer.title"] = "客戶",
-            ["customer.list"] = "客戶管理",
-            ["customer.new"] = "新增客戶",
-            ["customer.detail"] = "客戶明細",
-            ["customer.name"] = "客戶名稱",
-            ["customer.code"] = "客戶代碼",
-            ["customer.contact"] = "聯絡人",
-            ["customer.phone"] = "電話",
-            ["customer.email"] = "電子郵件",
-            ["customer.address"] = "地址",
-            ["menu.business"] = "業務"
-        });
-
-        // English (en-US)
-        RegisterResources("en-US", new Dictionary<string, string>
-        {
-            ["customer.title"] = "Customer",
-            ["customer.list"] = "Customer Management",
-            ["customer.new"] = "New Customer",
-            ["customer.detail"] = "Customer Detail",
-            ["customer.name"] = "Customer Name",
-            ["customer.code"] = "Customer Code",
-            ["customer.contact"] = "Contact",
-            ["customer.phone"] = "Phone",
-            ["customer.email"] = "Email",
-            ["customer.address"] = "Address",
-            ["menu.business"] = "Business"
-        });
-
-        // Japanese (ja-JP)
-        RegisterResources("ja-JP", new Dictionary<string, string>
-        {
-            ["customer.title"] = "顧客",
-            ["customer.list"] = "顧客管理",
-            ["customer.new"] = "新規顧客",
-            ["customer.detail"] = "顧客詳細",
-            ["customer.name"] = "顧客名",
-            ["customer.code"] = "顧客コード",
-            ["customer.contact"] = "連絡先",
-            ["customer.phone"] = "電話",
-            ["customer.email"] = "メール",
-            ["customer.address"] = "住所",
-            ["menu.business"] = "業務"
-        });
+        // Load localization from external JSON files
+        var localesPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "CustomerModule", "locales");
+        await LoadExternalLocalizationAsync(localesPath);
     }
 
     protected override void RegisterContributions(IPluginContext context)

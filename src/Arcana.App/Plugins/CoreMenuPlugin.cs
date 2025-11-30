@@ -18,103 +18,11 @@ public class CoreMenuPlugin : PluginBase
         Type = PluginType.Menu
     };
 
-    protected override Task OnActivateAsync(IPluginContext context)
+    protected override async Task OnActivateAsync(IPluginContext context)
     {
-        RegisterPluginResources();
-        return Task.CompletedTask;
-    }
-
-    private void RegisterPluginResources()
-    {
-        // Traditional Chinese (zh-TW)
-        RegisterResources("zh-TW", new Dictionary<string, string>
-        {
-            ["menu.file"] = "檔案",
-            ["menu.file.new"] = "新增",
-            ["menu.file.open"] = "開啟",
-            ["menu.file.save"] = "儲存",
-            ["menu.file.exit"] = "結束",
-            ["menu.edit"] = "編輯",
-            ["menu.edit.undo"] = "復原",
-            ["menu.edit.redo"] = "重做",
-            ["menu.edit.cut"] = "剪下",
-            ["menu.edit.copy"] = "複製",
-            ["menu.edit.paste"] = "貼上",
-            ["menu.business"] = "業務",
-            ["menu.view"] = "檢視",
-            ["menu.view.refresh"] = "重新整理",
-            ["menu.view.fullscreen"] = "全螢幕",
-            ["menu.tools"] = "工具",
-            ["menu.tools.settings"] = "設定",
-            ["menu.help"] = "說明",
-            ["menu.help.docs"] = "文件",
-            ["menu.help.about"] = "關於",
-            ["quick.home"] = "首頁",
-            ["common.all.files"] = "所有檔案",
-            ["common.ok"] = "確定",
-            ["app.version"] = "1.0.0",
-            ["app.about.content"] = "Arcana 企業管理系統\n版本: {0}\n\n© 2024 Arcana Software"
-        });
-
-        // English (en-US)
-        RegisterResources("en-US", new Dictionary<string, string>
-        {
-            ["menu.file"] = "File",
-            ["menu.file.new"] = "New",
-            ["menu.file.open"] = "Open",
-            ["menu.file.save"] = "Save",
-            ["menu.file.exit"] = "Exit",
-            ["menu.edit"] = "Edit",
-            ["menu.edit.undo"] = "Undo",
-            ["menu.edit.redo"] = "Redo",
-            ["menu.edit.cut"] = "Cut",
-            ["menu.edit.copy"] = "Copy",
-            ["menu.edit.paste"] = "Paste",
-            ["menu.business"] = "Business",
-            ["menu.view"] = "View",
-            ["menu.view.refresh"] = "Refresh",
-            ["menu.view.fullscreen"] = "Fullscreen",
-            ["menu.tools"] = "Tools",
-            ["menu.tools.settings"] = "Settings",
-            ["menu.help"] = "Help",
-            ["menu.help.docs"] = "Documentation",
-            ["menu.help.about"] = "About",
-            ["quick.home"] = "Home",
-            ["common.all.files"] = "All Files",
-            ["common.ok"] = "OK",
-            ["app.version"] = "1.0.0",
-            ["app.about.content"] = "Arcana Enterprise Management System\nVersion: {0}\n\n© 2024 Arcana Software"
-        });
-
-        // Japanese (ja-JP)
-        RegisterResources("ja-JP", new Dictionary<string, string>
-        {
-            ["menu.file"] = "ファイル",
-            ["menu.file.new"] = "新規",
-            ["menu.file.open"] = "開く",
-            ["menu.file.save"] = "保存",
-            ["menu.file.exit"] = "終了",
-            ["menu.edit"] = "編集",
-            ["menu.edit.undo"] = "元に戻す",
-            ["menu.edit.redo"] = "やり直し",
-            ["menu.edit.cut"] = "切り取り",
-            ["menu.edit.copy"] = "コピー",
-            ["menu.edit.paste"] = "貼り付け",
-            ["menu.business"] = "業務",
-            ["menu.view"] = "表示",
-            ["menu.view.refresh"] = "更新",
-            ["menu.view.fullscreen"] = "全画面",
-            ["menu.tools"] = "ツール",
-            ["menu.tools.settings"] = "設定",
-            ["menu.help"] = "ヘルプ",
-            ["menu.help.docs"] = "ドキュメント",
-            ["menu.help.about"] = "Arcanaについて",
-            ["quick.home"] = "ホーム",
-            ["common.all.files"] = "すべてのファイル",
-            ["common.ok"] = "OK",
-            ["app.version"] = "1.0.0",
-            ["app.about.content"] = "Arcana 企業管理システム\nバージョン: {0}\n\n© 2024 Arcana Software"
-        });
+        // Load localization from external JSON files
+        var localesPath = Path.Combine(AppContext.BaseDirectory, "Plugins", "CoreMenu", "locales");
+        await LoadExternalLocalizationAsync(localesPath);
     }
 
     protected override void RegisterContributions(IPluginContext context)

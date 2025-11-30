@@ -1,0 +1,13 @@
+{
+  "customer.title": "Customer",
+  "customer.list": "Customer Management",
+  "customer.new": "New Customer",
+  "customer.detail": "Customer Detail",
+  "customer.name": "Customer Name",
+  "customer.code": "Customer Code",
+  "customer.contact": "Contact",
+  "customer.phone": "Phone",
+  "customer.email": "Email",
+  "customer.address": "Address",
+  "menu.business": "Business"
+}
