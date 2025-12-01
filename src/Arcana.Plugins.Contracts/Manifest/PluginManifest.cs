@@ -210,9 +210,15 @@ public class ManifestMenuDefinition
     [JsonPropertyName("id")]
     public required string Id { get; set; }
 
+    /// <summary>
+    /// Localization key for the title.
+    /// </summary>
     [JsonPropertyName("titleKey")]
-    public required string TitleKey { get; set; }
+    public string? TitleKey { get; set; }
 
+    /// <summary>
+    /// Fallback title if localization not found.
+    /// </summary>
     [JsonPropertyName("title")]
     public string? Title { get; set; }
 

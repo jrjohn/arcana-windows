@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <Platforms>x86;x64;ARM64</Platforms>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>14.0</LangVersion>
+    <UseWinUI>true</UseWinUI>
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <WindowsSdkPackageVersion>10.0.19041.48</WindowsSdkPackageVersion>
+    <OutputType>Library</OutputType>
+
+    <!-- Plugin Info -->
+    <AssemblyName>Arcana.Plugin.FlowChart</AssemblyName>
+    <RootNamespace>Arcana.Plugin.FlowChart</RootNamespace>
+    <Version>1.0.0</Version>
+    <Authors>Arcana Team</Authors>
+    <Description>FlowChart drawing and editing plugin with Draw.io compatibility</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240227000" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Arcana.Plugins.Contracts\Arcana.Plugins.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Arcana.Plugins\Arcana.Plugins.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="locales\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="plugin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

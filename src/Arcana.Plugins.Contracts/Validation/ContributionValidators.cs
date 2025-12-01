@@ -102,8 +102,8 @@ public static partial class ViewValidator
             errors.Add($"View '{view.Id}' requires a Title");
         }
 
-        // Warning: ViewClass recommended
-        if (view.ViewClass == null)
+        // Warning: ViewClass recommended (but ViewClassName is fine for lazy-loaded views)
+        if (view.ViewClass == null && string.IsNullOrEmpty(view.ViewClassName))
         {
             warnings.Add($"View '{view.Id}' has no ViewClass set. Views without ViewClass can only be created via factory.");
         }

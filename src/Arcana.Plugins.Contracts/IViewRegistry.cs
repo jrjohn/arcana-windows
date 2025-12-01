@@ -58,6 +58,10 @@ public record ViewDefinition
     public string? Icon { get; init; }
     public ViewType Type { get; init; } = Contracts.ViewType.Page;
     public Type? ViewClass { get; init; }
+    /// <summary>
+    /// View class name for lazy-loaded views (resolved when plugin activates).
+    /// </summary>
+    public string? ViewClassName { get; init; }
     public Type? ViewModelType { get; init; }
     public bool CanHaveMultipleInstances { get; init; }
     public string? Category { get; init; }

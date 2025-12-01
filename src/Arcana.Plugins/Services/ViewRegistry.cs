@@ -29,13 +29,17 @@ public class ViewRegistry : IViewRegistry
 
         if (!_views.TryAdd(view.Id, view))
         {
-            throw new InvalidOperationException($"View already registered: {view.Id}");
+            _logger?.LogInformation("View already registered, skipping: {ViewId}", view.Id);
+            return new Subscription(() => { });
         }
 
+        _logger?.LogInformation("Registered view: {ViewId} (ViewClass: {ViewClass})",
+            view.Id, view.ViewClass?.Name ?? view.ViewClassName ?? "null");
         OnViewsChanged();
 
         return new Subscription(() =>
         {
+            _logger?.LogInformation("Disposing view: {ViewId}", view.Id);
             _views.TryRemove(view.Id, out _);
             _factories.TryRemove(view.Id, out _);
             OnViewsChanged();

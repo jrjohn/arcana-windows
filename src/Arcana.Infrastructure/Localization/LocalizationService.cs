@@ -47,6 +47,11 @@ public class LocalizationService : ILocalizationService
 
     public string Get(string key)
     {
+        if (string.IsNullOrEmpty(key))
+        {
+            _logger.LogWarning("Localization key is null or empty");
+            return string.Empty;
+        }
         return GetString(_currentCulture.Name, key) ?? key;
     }
 
@@ -65,6 +70,11 @@ public class LocalizationService : ILocalizationService
 
     public string GetForPlugin(string pluginId, string key)
     {
+        if (string.IsNullOrEmpty(key))
+        {
+            _logger.LogWarning("GetForPlugin called with null or empty key for plugin {PluginId}", pluginId);
+            return string.Empty;
+        }
         return GetPluginString(pluginId, _currentCulture.Name, key) ?? Get(key);
     }
 
@@ -118,6 +128,12 @@ public class LocalizationService : ILocalizationService
 
     public string GetFromAnyPlugin(string key)
     {
+        if (string.IsNullOrEmpty(key))
+        {
+            _logger.LogWarning("GetFromAnyPlugin called with null or empty key");
+            return string.Empty;
+        }
+
         // First try core resources
         var coreResult = GetString(_currentCulture.Name, key);
         if (coreResult != null)
@@ -172,6 +188,10 @@ public class LocalizationService : ILocalizationService
 
     private string? GetString(string cultureName, string key)
     {
+        // Guard against null key
+        if (string.IsNullOrEmpty(key))
+            return null;
+
         // Try exact culture
         if (_coreResources.TryGetValue(cultureName, out var resources) &&
             resources.TryGetValue(key, out var value))
@@ -192,6 +212,10 @@ public class LocalizationService : ILocalizationService
 
     private string? GetPluginString(string pluginId, string cultureName, string key)
     {
+        // Guard against null key
+        if (string.IsNullOrEmpty(key))
+            return null;
+
         if (_pluginResources.TryGetValue(pluginId, out var pluginDict))
         {
             // Try exact culture

@@ -81,18 +81,8 @@ public class ProductModulePlugin : PluginBase
             }
         );
 
-        // Register function tree items
-        RegisterMenuItems(
-            new MenuItemDefinition
-            {
-                Id = "tree.product",
-                Title = L("product.list"),
-                Location = MenuLocation.FunctionTree,
-                Icon = "\uE719",
-                Order = 12,
-                Command = "product.list"
-            }
-        );
+        // Note: FunctionTree items are not registered here because they duplicate
+        // the built-in navigation items defined in MainWindow.xaml
 
         // Quick Access - New Product
         RegisterMenuItems(

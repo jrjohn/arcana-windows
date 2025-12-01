@@ -2369,32 +2369,39 @@
     ]
   },
   "packageFolders": {
-    "/Users/jrjohn/.nuget/packages/": {}
+    "C:\\Users\\jrjohn\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Data.Tests/Arcana.Data.Tests.csproj",
+      "projectUniqueName": "Z:\\Documents\\projects\\arcana-windows\\tests\\Arcana.Data.Tests\\Arcana.Data.Tests.csproj",
       "projectName": "Arcana.Data.Tests",
-      "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Data.Tests/Arcana.Data.Tests.csproj",
-      "packagesPath": "/Users/jrjohn/.nuget/packages/",
-      "outputPath": "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Data.Tests/obj/",
+      "projectPath": "Z:\\Documents\\projects\\arcana-windows\\tests\\Arcana.Data.Tests\\Arcana.Data.Tests.csproj",
+      "packagesPath": "C:\\Users\\jrjohn\\.nuget\\packages\\",
+      "outputPath": "Z:\\Documents\\projects\\arcana-windows\\tests\\Arcana.Data.Tests\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/jrjohn/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\jrjohn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj": {
-              "projectPath": "/Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Data/Arcana.Data.csproj"
+            "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj": {
+              "projectPath": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.Data\\Arcana.Data.csproj"
             }
           }
         }
@@ -2464,7 +2471,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/Users/jrjohn/.dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -2741,5 +2748,13 @@
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "取得套件弱點資料時發生錯誤: 無法載入來源 https://api.nuget.org/v3/index.json 的服務索引。"
+    }
+  ]
 }

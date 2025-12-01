@@ -1,4 +1,5 @@
 using Arcana.Plugins.Contracts;
+using Arcana.Plugins.Contracts.Manifest;
 
 namespace Arcana.Plugins.Core;
 
@@ -65,6 +66,31 @@ public class PluginInfo : IPluginInfo
             IsBuiltIn = isBuiltIn,
             Dependencies = plugin.Metadata.Dependencies,
             PluginInstance = plugin
+        };
+    }
+
+    /// <summary>
+    /// Creates a PluginInfo from a manifest (for pending/lazy-loaded plugins).
+    /// </summary>
+    public static PluginInfo FromManifest(PluginManifest manifest, string installPath)
+    {
+        var version = Version.TryParse(manifest.Version, out var v) ? v : new Version(1, 0, 0);
+        var pluginType = Enum.TryParse<PluginType>(manifest.Type, true, out var pt) ? pt : PluginType.Module;
+
+        return new PluginInfo
+        {
+            Id = manifest.Id,
+            Name = manifest.Name ?? manifest.Id,
+            Version = version,
+            Description = manifest.Description,
+            Author = manifest.Author,
+            Type = pluginType,
+            State = PluginState.Loaded, // Pending plugins are "loaded" but not "active"
+            IconPath = manifest.Icon,
+            InstallPath = installPath,
+            IsBuiltIn = false,
+            Dependencies = manifest.Dependencies,
+            PluginInstance = null
         };
     }
 }

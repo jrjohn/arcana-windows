@@ -102,18 +102,8 @@ public class OrderModulePlugin : PluginBase
             }
         );
 
-        // Register function tree items
-        RegisterMenuItems(
-            new MenuItemDefinition
-            {
-                Id = "tree.order",
-                Title = L("order.list"),
-                Location = MenuLocation.FunctionTree,
-                Icon = "\uE7C3",
-                Order = 10,
-                Command = "order.list"
-            }
-        );
+        // Note: FunctionTree items are not registered here because they duplicate
+        // the built-in navigation items defined in MainWindow.xaml
 
         // Quick Access - New Order (main tab strip)
         RegisterMenuItems(

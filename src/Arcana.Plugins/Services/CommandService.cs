@@ -26,11 +26,16 @@ public class CommandService : ICommandService
 
         if (!_commands.TryAdd(commandId, handler))
         {
-            throw new InvalidOperationException($"Command already registered: {commandId}");
+            _logger?.LogInformation("Command already registered, skipping: {CommandId}", commandId);
+            return new Subscription(() => { });
         }
 
-        _logger?.LogDebug("Registered command: {CommandId}", commandId);
-        return new Subscription(() => _commands.TryRemove(commandId, out _));
+        _logger?.LogInformation("Registered command: {CommandId}", commandId);
+        return new Subscription(() =>
+        {
+            _logger?.LogInformation("Disposing command: {CommandId}", commandId);
+            _commands.TryRemove(commandId, out _);
+        });
     }
 
     private void ValidateCommandId(string commandId)

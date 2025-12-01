@@ -44,15 +44,40 @@ public class PluginManagerService : IPluginManager, IAsyncDisposable
 
     public IReadOnlyList<IPluginInfo> GetAllPlugins()
     {
-        return _pluginManager.Plugins.Values
-            .Select(lp => PluginInfo.FromPlugin(lp.Plugin, lp.PluginPath))
-            .ToList();
+        var result = new List<IPluginInfo>();
+
+        // Add loaded plugins
+        foreach (var lp in _pluginManager.Plugins.Values)
+        {
+            result.Add(PluginInfo.FromPlugin(lp.Plugin, lp.PluginPath));
+        }
+
+        // Add pending (lazy-loaded) plugins
+        foreach (var pending in _pluginManager.PendingPlugins.Values)
+        {
+            result.Add(PluginInfo.FromManifest(pending.Manifest, pending.PluginPath));
+        }
+
+        return result;
     }
 
     public IPluginInfo? GetPlugin(string pluginId)
     {
+        // Check loaded plugins first
         var loaded = _pluginManager.Plugins.GetValueOrDefault(pluginId);
-        return loaded != null ? PluginInfo.FromPlugin(loaded.Plugin, loaded.PluginPath) : null;
+        if (loaded != null)
+        {
+            return PluginInfo.FromPlugin(loaded.Plugin, loaded.PluginPath);
+        }
+
+        // Check pending plugins
+        var pending = _pluginManager.PendingPlugins.GetValueOrDefault(pluginId);
+        if (pending != null)
+        {
+            return PluginInfo.FromManifest(pending.Manifest, pending.PluginPath);
+        }
+
+        return null;
     }
 
     public async Task<PluginOperationResult> ActivatePluginAsync(string pluginId, CancellationToken cancellationToken = default)
@@ -158,13 +183,13 @@ public class PluginManagerService : IPluginManager, IAsyncDisposable
 
             RaiseProgress(pluginId, InstallPhase.Installing, 0.6, "Installing plugin...");
 
-            // Move to plugins directory
+            // Move to plugins directory (use copy+delete for cross-volume support)
             var targetPath = Path.Combine(_pluginsPath, pluginId);
             if (Directory.Exists(targetPath))
             {
                 Directory.Delete(targetPath, true);
             }
-            Directory.Move(tempPath, targetPath);
+            MoveDirectoryCrossVolume(tempPath, targetPath);
             tempPath = null; // Prevent cleanup
 
             RaiseProgress(pluginId, InstallPhase.Activating, 0.8, "Loading plugin...");
@@ -785,6 +810,49 @@ public class PluginManagerService : IPluginManager, IAsyncDisposable
         await _pluginManager.DisposeAsync();
         _healthMonitor.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Moves a directory, supporting cross-volume moves by copying and deleting.
+    /// </summary>
+    private static void MoveDirectoryCrossVolume(string sourcePath, string destinationPath)
+    {
+        var sourceRoot = Path.GetPathRoot(sourcePath);
+        var destRoot = Path.GetPathRoot(destinationPath);
+
+        if (string.Equals(sourceRoot, destRoot, StringComparison.OrdinalIgnoreCase))
+        {
+            // Same volume, use standard move
+            Directory.Move(sourcePath, destinationPath);
+        }
+        else
+        {
+            // Different volumes, copy then delete
+            CopyDirectoryRecursive(sourcePath, destinationPath);
+            Directory.Delete(sourcePath, true);
+        }
+    }
+
+    /// <summary>
+    /// Recursively copies a directory and its contents.
+    /// </summary>
+    private static void CopyDirectoryRecursive(string sourcePath, string destinationPath)
+    {
+        Directory.CreateDirectory(destinationPath);
+
+        // Copy files
+        foreach (var file in Directory.GetFiles(sourcePath))
+        {
+            var destFile = Path.Combine(destinationPath, Path.GetFileName(file));
+            File.Copy(file, destFile, true);
+        }
+
+        // Copy subdirectories
+        foreach (var dir in Directory.GetDirectories(sourcePath))
+        {
+            var destDir = Path.Combine(destinationPath, Path.GetFileName(dir));
+            CopyDirectoryRecursive(dir, destDir);
+        }
     }
 
     private class VersionHistoryEntry

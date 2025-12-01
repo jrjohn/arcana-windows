@@ -71,18 +71,8 @@ public class CustomerModulePlugin : PluginBase
             }
         );
 
-        // Register function tree items
-        RegisterMenuItems(
-            new MenuItemDefinition
-            {
-                Id = "tree.customer",
-                Title = L("customer.list"),
-                Location = MenuLocation.FunctionTree,
-                Icon = "\uE716",
-                Order = 11,
-                Command = "customer.list"
-            }
-        );
+        // Note: FunctionTree items are not registered here because they duplicate
+        // the built-in navigation items defined in MainWindow.xaml
 
         // Quick Access - New Customer
         RegisterMenuItems(

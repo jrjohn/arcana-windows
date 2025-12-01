@@ -89,37 +89,8 @@ public class SystemPlugin : PluginBase
             }
         );
 
-        // Register function tree items
-        RegisterMenuItems(
-            new MenuItemDefinition
-            {
-                Id = "tree.system",
-                Title = L("menu.system"),
-                Location = MenuLocation.FunctionTree,
-                Icon = "\uE770",
-                Order = 100
-            },
-            new MenuItemDefinition
-            {
-                Id = "tree.system.plugins",
-                Title = L("menu.system.plugins"),
-                Location = MenuLocation.FunctionTree,
-                ParentId = "tree.system",
-                Icon = "\uEA86",
-                Order = 1,
-                Command = "system.plugins"
-            },
-            new MenuItemDefinition
-            {
-                Id = "tree.system.settings",
-                Title = L("menu.system.settings"),
-                Location = MenuLocation.FunctionTree,
-                ParentId = "tree.system",
-                Icon = "\uE713",
-                Order = 99,
-                Command = "system.settings"
-            }
-        );
+        // Note: FunctionTree items are not registered here because they duplicate
+        // the built-in navigation items defined in MainWindow.xaml
 
         // Register commands
         RegisterCommand("system.plugins", () =>

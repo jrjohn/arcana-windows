@@ -183,8 +183,10 @@ public class LazyContributionService
                 TitleKey = viewDef.TitleKey,
                 Icon = viewDef.Icon,
                 Type = viewType,
-                // ViewClass is null for lazy views - will be set when plugin loads
+                // ViewClass is null for lazy views - will be resolved when plugin loads
                 ViewClass = null,
+                // Store the class name from manifest for lazy loading
+                ViewClassName = viewDef.ViewClass,
                 ViewModelType = null,
                 CanHaveMultipleInstances = viewDef.CanHaveMultipleInstances,
                 Category = viewDef.Category,
@@ -292,7 +294,7 @@ public class LazyContributionService
             // Register a command handler that triggers plugin activation
             return _commandService.RegisterCommand(cmdDef.Id, async (args) =>
             {
-                _logger.LogDebug("Lazy command triggered: {CommandId}, activating plugin: {PluginId}",
+                _logger.LogInformation("Lazy command triggered: {CommandId}, activating plugin: {PluginId}",
                     cmdDef.Id, pluginId);
 
                 // Fire activation event
@@ -300,9 +302,23 @@ public class LazyContributionService
 
                 // After activation, re-execute the command
                 // The real handler should now be registered
+                _logger.LogInformation("Plugin activated, checking for real command handler: {CommandId}", cmdDef.Id);
+
                 if (_commandService.HasCommand(cmdDef.Id))
                 {
-                    await _commandService.ExecuteAsync(cmdDef.Id, args);
+                    _logger.LogInformation("Re-executing command with real handler: {CommandId}", cmdDef.Id);
+                    try
+                    {
+                        await _commandService.ExecuteAsync(cmdDef.Id, args);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error executing command after plugin activation: {CommandId}", cmdDef.Id);
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("Command not found after plugin activation: {CommandId}", cmdDef.Id);
                 }
             });
         }

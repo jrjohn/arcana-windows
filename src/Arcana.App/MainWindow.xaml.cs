@@ -21,6 +21,7 @@ public sealed partial class MainWindow : Window
     private readonly IMenuRegistry _menuRegistry;
     private readonly ICommandService _commandService;
     private readonly ILocalizationService _localization;
+    private readonly IViewRegistry _viewRegistry;
     private readonly ThemeService _themeService;
     private readonly DispatcherTimer _timer;
 
@@ -39,6 +40,7 @@ public sealed partial class MainWindow : Window
         _menuRegistry = App.Services.GetRequiredService<IMenuRegistry>();
         _commandService = App.Services.GetRequiredService<ICommandService>();
         _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _viewRegistry = App.Services.GetRequiredService<IViewRegistry>();
         _themeService = App.Services.GetRequiredService<ThemeService>();
 
         // Setup event handlers
@@ -62,6 +64,7 @@ public sealed partial class MainWindow : Window
         UpdateClock();
         BuildMenuBar();
         BuildQuickActionsMenu();
+        BuildFunctionTree();
         UpdateNavigationItems();
 
         // Navigate to home page
@@ -185,6 +188,7 @@ public sealed partial class MainWindow : Window
             UpdateSyncStatus();
             BuildMenuBar();
             BuildQuickActionsMenu();
+            BuildFunctionTree();
             UpdateNavigationItems();
             UpdateSettingsItem();
             UpdateTabHeaders();
@@ -252,7 +256,7 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    private async void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
         if (args.IsSettingsInvoked)
         {
@@ -265,7 +269,22 @@ public sealed partial class MainWindow : Window
             var tag = item.Tag?.ToString();
             if (!string.IsNullOrEmpty(tag))
             {
-                NavigateToPage(tag);
+                // Check if it's a command (for dynamic plugin items)
+                if (_commandService.HasCommand(tag))
+                {
+                    try
+                    {
+                        await _commandService.ExecuteAsync(tag);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Command execution failed: {tag} - {ex.Message}");
+                    }
+                }
+                else
+                {
+                    NavigateToPage(tag);
+                }
             }
         }
     }
@@ -314,11 +333,17 @@ public sealed partial class MainWindow : Window
         var pageType = GetPageType(pageTag);
         if (pageType == null)
         {
+            System.Diagnostics.Debug.WriteLine($"[MainWindow] Unknown page type for: {pageTag}");
             return; // Unknown page, don't create tab
         }
 
+        System.Diagnostics.Debug.WriteLine($"[MainWindow] Creating tab for: {pageTag} ({pageType.Name})");
         var frame = new Frame();
-        frame.Navigate(pageType, parameter);
+
+        if (!SafeNavigate(frame, pageType, parameter))
+        {
+            return;
+        }
 
         // Apply current theme to the new page
         ApplyCurrentThemeToPage(frame);
@@ -358,6 +383,194 @@ public sealed partial class MainWindow : Window
     }
 
     /// <summary>
+    /// Safely navigates to a page, handling both built-in and external plugin pages.
+    /// External plugin pages are instantiated directly to avoid XAML type info lookup issues.
+    /// </summary>
+    private bool SafeNavigate(Frame frame, Type pageType, object? parameter = null)
+    {
+        var isExternalPlugin = pageType.Assembly != typeof(MainWindow).Assembly;
+
+        if (isExternalPlugin)
+        {
+            try
+            {
+                // For external plugin pages, we need to ensure all dependencies are loaded
+                // in a way that WinUI's XAML parser can resolve them.
+                var actualType = EnsurePluginDependenciesLoaded(pageType);
+
+                // Create instance directly - this triggers InitializeComponent()
+                var pageInstance = Activator.CreateInstance(actualType);
+                if (pageInstance is Page page)
+                {
+                    frame.Content = page;
+
+                    // Set localization service if the page supports it
+                    var setLocMethod = actualType.GetMethod("SetLocalizationService");
+                    if (setLocMethod != null)
+                    {
+                        setLocMethod.Invoke(page, new object[] { _localization });
+                    }
+
+                    // Pass navigation parameter if the page supports it
+                    if (parameter != null)
+                    {
+                        var handleMethod = actualType.GetMethod("HandleNavigationParameters");
+                        handleMethod?.Invoke(page, new[] { parameter });
+                    }
+                    return true;
+                }
+            }
+            catch (System.Reflection.TargetInvocationException tex)
+            {
+                // Log the inner exception for better debugging
+                var innerEx = tex.InnerException ?? tex;
+                System.Diagnostics.Debug.WriteLine($"[MainWindow] Failed to create plugin page: {innerEx.GetType().Name}: {innerEx.Message}");
+                System.Diagnostics.Debug.WriteLine($"[MainWindow] Inner stack trace: {innerEx.StackTrace}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[MainWindow] Failed to create plugin page: {ex.GetType().Name}: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[MainWindow] Stack trace: {ex.StackTrace}");
+                return false;
+            }
+        }
+        else
+        {
+            frame.Navigate(pageType, parameter);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Ensures that plugin and its dependencies are loaded in a way that WinUI's XAML parser can find them.
+    /// Returns the Type from the default context for proper XAML type resolution.
+    /// This is necessary because plugins loaded in custom AssemblyLoadContexts can't have their XAML types
+    /// resolved by the WinUI XAML parser which only looks in the default context.
+    /// </summary>
+    private static Type EnsurePluginDependenciesLoaded(Type pageType)
+    {
+        var pluginAssembly = pageType.Assembly;
+        System.Reflection.Assembly? defaultContextAssembly = null;
+
+        try
+        {
+            var pluginDir = Path.GetDirectoryName(pluginAssembly.Location);
+            if (string.IsNullOrEmpty(pluginDir)) return pageType;
+
+            // First, ensure the plugin assembly itself is loaded in the default context
+            // This is critical for XAML type resolution of plugin-defined controls
+            var pluginName = pluginAssembly.GetName().Name;
+            defaultContextAssembly = System.Runtime.Loader.AssemblyLoadContext.Default.Assemblies
+                .FirstOrDefault(a => a.GetName().Name == pluginName);
+
+            if (defaultContextAssembly == null)
+            {
+                var pluginPath = pluginAssembly.Location;
+                if (File.Exists(pluginPath))
+                {
+                    try
+                    {
+                        defaultContextAssembly = System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(pluginPath);
+                        System.Diagnostics.Debug.WriteLine($"[MainWindow] Loaded plugin in default context: {pluginName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[MainWindow] Could not load plugin in default context: {ex.Message}");
+                    }
+                }
+            }
+
+            // Get all referenced assemblies and load them
+            var referencedAssemblies = pluginAssembly.GetReferencedAssemblies();
+
+            foreach (var assemblyName in referencedAssemblies)
+            {
+                try
+                {
+                    // Skip framework assemblies
+                    if (assemblyName.Name?.StartsWith("System.") == true ||
+                        assemblyName.Name?.StartsWith("Microsoft.") == true ||
+                        assemblyName.Name == "netstandard" ||
+                        assemblyName.Name?.StartsWith("Arcana.Plugins") == true)
+                    {
+                        continue;
+                    }
+
+                    // Try to load in default context if not already loaded
+                    var loaded = System.Runtime.Loader.AssemblyLoadContext.Default.Assemblies
+                        .FirstOrDefault(a => a.GetName().Name == assemblyName.Name);
+
+                    if (loaded == null)
+                    {
+                        var assemblyPath = Path.Combine(pluginDir, $"{assemblyName.Name}.dll");
+                        if (File.Exists(assemblyPath))
+                        {
+                            System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
+                            System.Diagnostics.Debug.WriteLine($"[MainWindow] Loaded plugin dependency: {assemblyName.Name}");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[MainWindow] Could not load dependency {assemblyName.Name}: {ex.Message}");
+                }
+            }
+
+            // Also try to load CommunityToolkit assemblies explicitly if they exist
+            var toolkitAssemblies = new[]
+            {
+                "CommunityToolkit.WinUI.UI.Controls",
+                "CommunityToolkit.WinUI.UI.Controls.Core",
+                "CommunityToolkit.WinUI.UI.Controls.Layout"
+            };
+
+            foreach (var toolkitName in toolkitAssemblies)
+            {
+                try
+                {
+                    var loaded = System.Runtime.Loader.AssemblyLoadContext.Default.Assemblies
+                        .FirstOrDefault(a => a.GetName().Name == toolkitName);
+
+                    if (loaded == null)
+                    {
+                        var toolkitPath = Path.Combine(pluginDir, $"{toolkitName}.dll");
+                        if (File.Exists(toolkitPath))
+                        {
+                            System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(toolkitPath);
+                            System.Diagnostics.Debug.WriteLine($"[MainWindow] Loaded CommunityToolkit: {toolkitName}");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[MainWindow] Could not load {toolkitName}: {ex.Message}");
+                }
+            }
+
+            // Return the type from the default context assembly if we loaded it there
+            if (defaultContextAssembly != null)
+            {
+                var typeFromDefault = defaultContextAssembly.GetType(pageType.FullName!);
+                if (typeFromDefault != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[MainWindow] Using type from default context: {typeFromDefault.FullName}");
+                    return typeFromDefault;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[MainWindow] Error loading plugin dependencies: {ex.Message}");
+        }
+
+        // Fallback to original type if we couldn't load in default context
+        return pageType;
+    }
+
+    /// <summary>
     /// Public method for navigation service to use
     /// </summary>
     public void NavigateToPageWithParameter(string pageTag, object? parameter = null)
@@ -391,7 +604,10 @@ public sealed partial class MainWindow : Window
                 if (parentPageType == null) return;
 
                 var parentFrame = new Frame();
-                parentFrame.Navigate(parentPageType);
+                if (!SafeNavigate(parentFrame, parentPageType))
+                {
+                    return;
+                }
                 ApplyCurrentThemeToPage(parentFrame);
 
                 parentTab = new TabViewItem
@@ -433,7 +649,7 @@ public sealed partial class MainWindow : Window
                     return; // Already on page, do nothing
                 }
 
-                legacyFrame.Navigate(childPageType, parameter);
+                SafeNavigate(legacyFrame, childPageType, parameter);
             }
         });
     }
@@ -479,9 +695,10 @@ public sealed partial class MainWindow : Window
         });
     }
 
-    private static Type? GetPageType(string pageTag)
+    private Type? GetPageType(string pageTag)
     {
-        return pageTag switch
+        // First check built-in pages
+        var builtInType = pageTag switch
         {
             "HomePage" => typeof(HomePage),
             "OrderListPage" => typeof(OrderModulePage), // Use module page with nested tabs
@@ -493,13 +710,21 @@ public sealed partial class MainWindow : Window
             "SyncPage" => typeof(HomePage), // TODO: Create SyncPage
             "PluginManagerPage" => typeof(PluginManagerPage),
             "SettingsPage" => typeof(SettingsPage),
-            _ => null
+            _ => (Type?)null
         };
+
+        if (builtInType != null)
+            return builtInType;
+
+        // Check ViewRegistry for dynamic plugin views
+        var view = _viewRegistry.GetView(pageTag);
+        return view?.ViewClass;
     }
 
     private string GetPageTitle(string pageTag)
     {
-        return pageTag switch
+        // First check built-in pages
+        var builtInTitle = pageTag switch
         {
             "HomePage" => _localization.Get("nav.home"),
             "OrderListPage" => _localization.Get("order.list"),
@@ -510,13 +735,21 @@ public sealed partial class MainWindow : Window
             "SyncPage" => _localization.Get("nav.sync"),
             "PluginManagerPage" => _localization.Get("nav.plugins"),
             "SettingsPage" => _localization.Get("settings.title"),
-            _ => pageTag
+            _ => (string?)null
         };
+
+        if (builtInTitle != null)
+            return builtInTitle;
+
+        // Check ViewRegistry for dynamic plugin views
+        var view = _viewRegistry.GetView(pageTag);
+        return view?.Title ?? pageTag;
     }
 
-    private static IconSource? GetPageIcon(string pageTag)
+    private IconSource? GetPageIcon(string pageTag)
     {
-        var glyph = pageTag switch
+        // First check built-in pages
+        var builtInGlyph = pageTag switch
         {
             "HomePage" => "\uE80F",
             "OrderListPage" => "\uE7C3",
@@ -526,10 +759,18 @@ public sealed partial class MainWindow : Window
             "SyncPage" => "\uE895",
             "PluginManagerPage" => "\uEA86",
             "SettingsPage" => "\uE713",
-            _ => "\uE7C3"
+            _ => (string?)null
         };
 
-        return new FontIconSource { Glyph = glyph };
+        if (builtInGlyph != null)
+            return new FontIconSource { Glyph = builtInGlyph };
+
+        // Check ViewRegistry for dynamic plugin views
+        var view = _viewRegistry.GetView(pageTag);
+        if (!string.IsNullOrEmpty(view?.Icon))
+            return new FontIconSource { Glyph = view.Icon };
+
+        return new FontIconSource { Glyph = "\uE7C3" }; // Default icon
     }
 
     private void OnNetworkStatusChanged(object? sender, NetworkStatusChangedEventArgs e)
@@ -578,7 +819,86 @@ public sealed partial class MainWindow : Window
         {
             BuildMenuBar();
             BuildQuickActionsMenu();
+            BuildFunctionTree();
         });
+    }
+
+    private readonly List<object> _dynamicNavItems = new();
+
+    private void BuildFunctionTree()
+    {
+        // Remove previously added dynamic items (including separators)
+        foreach (var item in _dynamicNavItems)
+        {
+            NavView.MenuItems.Remove(item);
+        }
+        _dynamicNavItems.Clear();
+
+        // Get existing tags from built-in navigation items
+        var existingTags = new HashSet<string>();
+        foreach (var item in NavView.MenuItems)
+        {
+            if (item is NavigationViewItem navItem && navItem.Tag is string tag)
+            {
+                existingTags.Add(tag);
+            }
+        }
+        foreach (var item in NavView.FooterMenuItems)
+        {
+            if (item is NavigationViewItem navItem && navItem.Tag is string tag)
+            {
+                existingTags.Add(tag);
+            }
+        }
+
+        // Get FunctionTree items from menu registry, filtering out duplicates
+        var functionTreeItems = _menuRegistry.GetMenuItems(MenuLocation.FunctionTree)
+            .Where(m => !existingTags.Contains(m.Command ?? m.Id)) // Skip if tag already exists
+            .OrderBy(m => m.Order)
+            .ToList();
+
+        if (functionTreeItems.Count == 0)
+            return;
+
+        // Find the position to insert (before the reports section)
+        var insertIndex = NavView.MenuItems.Count;
+        for (var i = 0; i < NavView.MenuItems.Count; i++)
+        {
+            if (NavView.MenuItems[i] is NavigationViewItem navItem && navItem.Tag?.ToString() == "SalesReportPage")
+            {
+                // Insert before the separator that precedes reports
+                insertIndex = i > 0 ? i - 1 : i;
+                break;
+            }
+        }
+
+        // Add separator before dynamic items if needed
+        if (functionTreeItems.Count > 0 && insertIndex > 0)
+        {
+            var separator = new NavigationViewItemSeparator();
+            NavView.MenuItems.Insert(insertIndex, separator);
+            _dynamicNavItems.Add(separator); // Track the separator for removal
+            insertIndex++;
+        }
+
+        // Add dynamic FunctionTree items
+        foreach (var menuItem in functionTreeItems)
+        {
+            var navItem = new NavigationViewItem
+            {
+                Content = GetLocalizedMenuTitle(menuItem),
+                Tag = menuItem.Command ?? menuItem.Id
+            };
+
+            if (!string.IsNullOrEmpty(menuItem.Icon))
+            {
+                navItem.Icon = new FontIcon { Glyph = menuItem.Icon };
+            }
+
+            NavView.MenuItems.Insert(insertIndex, navItem);
+            _dynamicNavItems.Add(navItem);
+            insertIndex++;
+        }
     }
 
     private void BuildQuickActionsMenu()

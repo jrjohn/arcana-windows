@@ -1,0 +1,101 @@
+{
+  "id": "arcana.plugin.flowchart",
+  "name": "FlowChart",
+  "version": "1.0.0",
+  "description": "Flowchart drawing and editing plugin with Draw.io compatibility",
+  "author": "Arcana Team",
+  "main": "Arcana.Plugin.FlowChart.dll",
+  "pluginClass": "Arcana.Plugin.FlowChart.FlowChartPlugin",
+  "type": "module",
+  "activationEvents": [
+    "onCommand:flowchart.new",
+    "onCommand:flowchart.open",
+    "onCommand:flowchart.sample",
+    "onView:FlowChartEditorPage"
+  ],
+  "contributes": {
+    "views": [
+      {
+        "id": "FlowChartEditorPage",
+        "titleKey": "flowchart.editor",
+        "title": "FlowChart Editor",
+        "icon": "\uE8FD",
+        "type": "page",
+        "viewClass": "Arcana.Plugin.FlowChart.Views.FlowChartEditorPage"
+      }
+    ],
+    "menus": [
+      {
+        "id": "menu.tools.flowchart",
+        "title": "FlowChart",
+        "location": "mainMenu",
+        "parentId": "menu.tools",
+        "icon": "\uE8FD",
+        "order": 10
+      },
+      {
+        "id": "menu.tools.flowchart.new",
+        "title": "New FlowChart",
+        "location": "mainMenu",
+        "parentId": "menu.tools.flowchart",
+        "icon": "\uE710",
+        "order": 1,
+        "command": "flowchart.new"
+      },
+      {
+        "id": "menu.tools.flowchart.open",
+        "title": "Open FlowChart",
+        "location": "mainMenu",
+        "parentId": "menu.tools.flowchart",
+        "icon": "\uE8E5",
+        "order": 2,
+        "command": "flowchart.open"
+      },
+      {
+        "id": "menu.tools.flowchart.sample",
+        "title": "Sample FlowChart",
+        "location": "mainMenu",
+        "parentId": "menu.tools.flowchart",
+        "icon": "\uE8F1",
+        "order": 3,
+        "command": "flowchart.sample"
+      },
+      {
+        "id": "tree.flowchart",
+        "title": "FlowChart",
+        "location": "functionTree",
+        "icon": "\uE8FD",
+        "order": 50,
+        "command": "flowchart.new"
+      },
+      {
+        "id": "quick.newFlowChart",
+        "title": "New FlowChart",
+        "location": "quickAccess",
+        "icon": "\uE8FD",
+        "order": 10,
+        "group": "tools",
+        "command": "flowchart.new"
+      }
+    ],
+    "commands": [
+      {
+        "id": "flowchart.new",
+        "title": "New FlowChart"
+      },
+      {
+        "id": "flowchart.open",
+        "title": "Open FlowChart"
+      },
+      {
+        "id": "flowchart.sample",
+        "title": "Sample FlowChart"
+      }
+    ]
+  },
+  "locales": {
+    "en-US": "locales/en-US.json",
+    "zh-TW": "locales/zh-TW.json",
+    "ja-JP": "locales/ja-JP.json"
+  }
+}

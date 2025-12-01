@@ -1,0 +1,33 @@
+<Project>
+  <!-- Override the MRT PRI Tasks to use Visual Studio's path instead of .NET SDK -->
+  <PropertyGroup>
+    <MrtCoreGeneratePriFileEnabled>false</MrtCoreGeneratePriFileEnabled>
+    <MrtCoreIndexerEnabled>false</MrtCoreIndexerEnabled>
+    <GeneratePriFile>false</GeneratePriFile>
+    <DisableMrtGeneratedFiles>true</DisableMrtGeneratedFiles>
+    <EnableDefaultPriItems>false</EnableDefaultPriItems>
+    <AppxGeneratePrisForPortableLibrariesEnabled>false</AppxGeneratePrisForPortableLibrariesEnabled>
+
+    <!-- Redirect the AppxPackage tasks to Visual Studio installation -->
+    <AppxPackageTasksPath>C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Microsoft\VisualStudio\v18.0\AppxPackage\</AppxPackageTasksPath>
+  </PropertyGroup>
+
+  <!-- Override UsingTask to point to VS installation -->
+  <UsingTask TaskName="Microsoft.Build.Packaging.Pri.Tasks.ExpandPriContent"
+             AssemblyFile="$(AppxPackageTasksPath)Microsoft.Build.Packaging.Pri.Tasks.dll"
+             Condition="Exists('$(AppxPackageTasksPath)Microsoft.Build.Packaging.Pri.Tasks.dll')" />
+
+  <!-- Override all MRT-related targets to do nothing (safest approach) -->
+  <Target Name="_GenerateMrtCoreProjectPriConfigFileInputs" />
+  <Target Name="_GenerateMrtCorePriConfigFile" />
+  <Target Name="_GenerateMrtCorePriPayloadFilesFromResources" />
+  <Target Name="_GenerateMrtCorePriFilesCore" />
+  <Target Name="_GenerateMrtCorePriFiles" />
+  <Target Name="_GeneratePriConfigurationFiles" />
+  <Target Name="_GeneratePriFiles" />
+  <Target Name="_ExpandPriContent" />
+  <Target Name="_MrtCoreExpandPriContent" />
+  <Target Name="MrtCore" />
+  <Target Name="_MrtCoreIndexResourcesForSplitAppx" />
+  <Target Name="_MrtCoreGeneratePrisForPortableLibraries" />
+</Project>

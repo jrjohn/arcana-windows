@@ -1,0 +1,16 @@
+<Project>
+  <!-- Disable MRT/PRI generation BEFORE any targets are evaluated -->
+  <PropertyGroup>
+    <MrtCoreGeneratePriFileEnabled>false</MrtCoreGeneratePriFileEnabled>
+    <MrtCoreIndexerEnabled>false</MrtCoreIndexerEnabled>
+    <GeneratePriFile>false</GeneratePriFile>
+    <DisableMrtGeneratedFiles>true</DisableMrtGeneratedFiles>
+    <EnableDefaultPriItems>false</EnableDefaultPriItems>
+    <AppxGeneratePrisForPortableLibrariesEnabled>false</AppxGeneratePrisForPortableLibrariesEnabled>
+    <GenerateResourceUsePreserializedResources>false</GenerateResourceUsePreserializedResources>
+    <EnableMrtResourceGeneration>false</EnableMrtResourceGeneration>
+    <EnablePriGeneration>false</EnablePriGeneration>
+    <_GenerateAppxPackageOnBuildEnabled>false</_GenerateAppxPackageOnBuildEnabled>
+    <AppxPackage>false</AppxPackage>
+  </PropertyGroup>
+</Project>
