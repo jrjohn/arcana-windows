@@ -646,36 +646,41 @@ public sealed class FlowChartEditorPage : Page
 
     private async Task OpenDiagramAsync()
     {
-        var picker = new FileOpenPicker();
-        picker.FileTypeFilter.Add(".afc");
-        picker.FileTypeFilter.Add(".drawio");
-        picker.FileTypeFilter.Add(".json");
-
-        var windowHandle = GetWindowHandle();
-        if (windowHandle != IntPtr.Zero)
+        try
         {
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+            var picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".afc");
+            picker.FileTypeFilter.Add(".drawio");
+            picker.FileTypeFilter.Add(".json");
+
+            var windowHandle = GetWindowHandle();
+            if (windowHandle != IntPtr.Zero)
+            {
+                WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+            }
+
+            var file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                await LoadDiagramFromFileAsync(file.Path);
+            }
         }
-
-        var file = await picker.PickSingleFileAsync();
-        if (file != null)
+        catch (Exception ex)
         {
-            await LoadDiagramFromFileAsync(file.Path);
+            System.Diagnostics.Debug.WriteLine($"[FlowChart] Error opening file: {ex.Message}");
+            _viewModel.StatusMessage = $"Error opening file: {ex.Message}";
         }
     }
 
     private IntPtr GetWindowHandle()
     {
-        if (XamlRoot?.Content is FrameworkElement)
-        {
-            var appWindow = Microsoft.UI.Xaml.Window.Current;
-            if (appWindow != null)
-            {
-                return WinRT.Interop.WindowNative.GetWindowHandle(appWindow);
-            }
-        }
-        return IntPtr.Zero;
+        // Use Win32 API to get the active window handle
+        // This works reliably in WinUI 3 for file picker initialization
+        return GetActiveWindow();
     }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    private static extern IntPtr GetActiveWindow();
 
     private async Task LoadDiagramFromFileAsync(string filePath)
     {
@@ -687,14 +692,22 @@ public sealed class FlowChartEditorPage : Page
 
     private async void OnSaveClick(object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrEmpty(_viewModel.CurrentFilePath))
+        try
         {
-            await SaveDiagramAsAsync();
+            if (string.IsNullOrEmpty(_viewModel.CurrentFilePath))
+            {
+                await SaveDiagramAsAsync();
+            }
+            else
+            {
+                await _viewModel.SaveToFileAsync(_viewModel.CurrentFilePath);
+                UpdateStatusBar();
+            }
         }
-        else
+        catch (Exception ex)
         {
-            await _viewModel.SaveToFileAsync(_viewModel.CurrentFilePath);
-            UpdateStatusBar();
+            System.Diagnostics.Debug.WriteLine($"[FlowChart] Error saving: {ex.Message}");
+            _viewModel.StatusMessage = $"Error saving: {ex.Message}";
         }
     }
 
@@ -705,24 +718,32 @@ public sealed class FlowChartEditorPage : Page
 
     private async Task SaveDiagramAsAsync()
     {
-        var picker = new FileSavePicker();
-        picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-        picker.FileTypeChoices.Add("Arcana FlowChart", new[] { ".afc" });
-        picker.FileTypeChoices.Add("Draw.io", new[] { ".drawio" });
-        picker.FileTypeChoices.Add("JSON", new[] { ".json" });
-        picker.SuggestedFileName = _viewModel.Diagram.Name;
-
-        var windowHandle = GetWindowHandle();
-        if (windowHandle != IntPtr.Zero)
+        try
         {
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+            var picker = new FileSavePicker();
+            picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            picker.FileTypeChoices.Add("Arcana FlowChart", new[] { ".afc" });
+            picker.FileTypeChoices.Add("Draw.io", new[] { ".drawio" });
+            picker.FileTypeChoices.Add("JSON", new[] { ".json" });
+            picker.SuggestedFileName = _viewModel.Diagram.Name;
+
+            var windowHandle = GetWindowHandle();
+            if (windowHandle != IntPtr.Zero)
+            {
+                WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+            }
+
+            var file = await picker.PickSaveFileAsync();
+            if (file != null)
+            {
+                await _viewModel.SaveToFileAsync(file.Path);
+                UpdateStatusBar();
+            }
         }
-
-        var file = await picker.PickSaveFileAsync();
-        if (file != null)
+        catch (Exception ex)
         {
-            await _viewModel.SaveToFileAsync(file.Path);
-            UpdateStatusBar();
+            System.Diagnostics.Debug.WriteLine($"[FlowChart] Error saving file: {ex.Message}");
+            _viewModel.StatusMessage = $"Error saving file: {ex.Message}";
         }
     }
 
