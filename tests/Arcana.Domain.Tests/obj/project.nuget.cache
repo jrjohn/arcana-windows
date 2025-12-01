@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "dgSpecHash": "jGzjJCU5Ja8=",
+  "success": true,
+  "projectFilePath": "/Users/jrjohn/Documents/projects/arcana-windows/tests/Arcana.Domain.Tests/Arcana.Domain.Tests.csproj",
+  "expectedPackageFiles": [
+    "/Users/jrjohn/.nuget/packages/castle.core/5.1.1/castle.core.5.1.1.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/coverlet.collector/6.0.1/coverlet.collector.6.0.1.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/fluentassertions/6.12.0/fluentassertions.6.12.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/fluentvalidation/11.9.0/fluentvalidation.11.9.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/microsoft.codecoverage/17.9.0/microsoft.codecoverage.17.9.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.0/microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/microsoft.extensions.logging.abstractions/10.0.0/microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/microsoft.net.test.sdk/17.9.0/microsoft.net.test.sdk.17.9.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/microsoft.testplatform.objectmodel/17.9.0/microsoft.testplatform.objectmodel.17.9.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/microsoft.testplatform.testhost/17.9.0/microsoft.testplatform.testhost.17.9.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/moq/4.20.70/moq.4.20.70.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/system.configuration.configurationmanager/4.4.0/system.configuration.configurationmanager.4.4.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/system.diagnostics.eventlog/6.0.0/system.diagnostics.eventlog.6.0.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/system.security.cryptography.protecteddata/4.4.0/system.security.cryptography.protecteddata.4.4.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/xunit/2.7.0/xunit.2.7.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/xunit.abstractions/2.0.3/xunit.abstractions.2.0.3.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/xunit.analyzers/1.11.0/xunit.analyzers.1.11.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/xunit.assert/2.7.0/xunit.assert.2.7.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/xunit.core/2.7.0/xunit.core.2.7.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/xunit.extensibility.core/2.7.0/xunit.extensibility.core.2.7.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/xunit.extensibility.execution/2.7.0/xunit.extensibility.execution.2.7.0.nupkg.sha512",
+    "/Users/jrjohn/.nuget/packages/xunit.runner.visualstudio/2.5.7/xunit.runner.visualstudio.2.5.7.nupkg.sha512"
+  ],
+  "logs": []
+}
