@@ -1,3 +1,4 @@
+using System.Linq;
 using Arcana.Plugin.FlowChart.Models;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
@@ -18,12 +19,24 @@ public sealed class FlowChartCanvas : Canvas
 {
     private readonly Dictionary<string, FrameworkElement> _nodeElements = new();
     private readonly Dictionary<string, XamlPath> _edgeElements = new();
+    private readonly Dictionary<string, List<Ellipse>> _waypointHandles = new();
+    private readonly Dictionary<string, Polygon> _arrowHeads = new();
     private DiagramNode? _draggedNode;
     private Windows.Foundation.Point _dragOffset;
     private bool _isConnecting;
     private string? _connectionSourceNodeId;
     private ConnectionPoint _connectionSourcePoint;
     private Line? _connectionPreviewLine;
+
+    // Waypoint dragging state
+    private bool _isDraggingWaypoint;
+    private string? _draggingWaypointEdgeId;
+    private int _draggingWaypointIndex;
+    private Ellipse? _draggingWaypointHandle;
+
+    // Node dragging state
+    private FrameworkElement? _draggedNodeElement;
+    private uint _dragPointerId;
 
     #region Dependency Properties
 
@@ -100,6 +113,7 @@ public sealed class FlowChartCanvas : Canvas
     public event EventHandler<EdgeSelectedEventArgs>? EdgeSelected;
     public event EventHandler<NodeMovedEventArgs>? NodeMoved;
     public event EventHandler<ConnectionCreatedEventArgs>? ConnectionCreated;
+    public event EventHandler<WaypointChangedEventArgs>? WaypointChanged;
 
     #endregion
 
@@ -157,6 +171,8 @@ public sealed class FlowChartCanvas : Canvas
         Children.Clear();
         _nodeElements.Clear();
         _edgeElements.Clear();
+        _waypointHandles.Clear();
+        _arrowHeads.Clear();
 
         if (Diagram == null) return;
 
@@ -175,13 +191,15 @@ public sealed class FlowChartCanvas : Canvas
         }
 
         // Draw nodes
+        var nodePadding = IsConnectMode ? ConnectionPointPadding : 0;
         foreach (var node in Diagram.Nodes.OrderBy(n => n.ZIndex))
         {
             var nodeElement = CreateNodeElement(node);
             _nodeElements[node.Id] = nodeElement;
             Children.Add(nodeElement);
-            SetLeft(nodeElement, node.X);
-            SetTop(nodeElement, node.Y);
+            // Offset position by padding so the shape stays at the correct visual position
+            SetLeft(nodeElement, node.X - nodePadding);
+            SetTop(nodeElement, node.Y - nodePadding);
         }
 
         ApplyZoom();
@@ -223,17 +241,31 @@ public sealed class FlowChartCanvas : Canvas
         }
     }
 
+    // Padding to accommodate connection point hit areas (28px diameter, centered on edge)
+    private const double ConnectionPointPadding = 14;
+
     private FrameworkElement CreateNodeElement(DiagramNode node)
     {
+        // When in connect mode, add padding to accommodate connection points that extend beyond node bounds
+        var padding = IsConnectMode ? ConnectionPointPadding : 0;
+
         var grid = new Grid
         {
-            Width = node.Width,
-            Height = node.Height,
+            Width = node.Width + (padding * 2),
+            Height = node.Height + (padding * 2),
             Tag = node.Id
         };
 
+        // Create a container for the shape and text, offset by padding
+        var contentContainer = new Grid
+        {
+            Width = node.Width,
+            Height = node.Height,
+            Margin = new Thickness(padding)
+        };
+
         var shape = CreateShape(node);
-        grid.Children.Add(shape);
+        contentContainer.Children.Add(shape);
 
         var textBlock = new TextBlock
         {
@@ -246,17 +278,18 @@ public sealed class FlowChartCanvas : Canvas
             TextWrapping = TextWrapping.Wrap,
             Margin = new Thickness(5)
         };
-        grid.Children.Add(textBlock);
+        contentContainer.Children.Add(textBlock);
+
+        grid.Children.Add(contentContainer);
 
         // Add connection point indicators when in connect mode
         if (IsConnectMode)
         {
-            AddConnectionPoints(grid, node);
+            AddConnectionPoints(grid, node, padding);
         }
 
-        grid.PointerPressed += (s, e) => OnNodePointerPressed(node, e);
-        grid.PointerMoved += (s, e) => OnNodePointerMoved(node, e);
-        grid.PointerReleased += (s, e) => OnNodePointerReleased(node, e);
+        // Only need PointerPressed - move/release handled at canvas level with pointer capture
+        grid.PointerPressed += (s, e) => OnNodePointerPressed(node, grid, e);
 
         return grid;
     }
@@ -399,7 +432,11 @@ public sealed class FlowChartCanvas : Canvas
         return path;
     }
 
-    private void AddConnectionPoints(Grid grid, DiagramNode node)
+    // Size constants for connection points
+    private const double ConnectionPointVisualSize = 14;
+    private const double ConnectionPointHitAreaSize = 28; // Larger hit area for easier clicking
+
+    private void AddConnectionPoints(Grid grid, DiagramNode node, double padding)
     {
         var points = new[]
         {
@@ -411,29 +448,56 @@ public sealed class FlowChartCanvas : Canvas
 
         foreach (var (point, xRatio, yRatio) in points)
         {
-            var ellipse = new Ellipse
+            // Container with larger hit area
+            var hitArea = new Grid
             {
-                Width = 12,
-                Height = 12,
-                Fill = new SolidColorBrush(Colors.DodgerBlue),
-                Stroke = new SolidColorBrush(Colors.White),
-                StrokeThickness = 2,
+                Width = ConnectionPointHitAreaSize,
+                Height = ConnectionPointHitAreaSize,
+                Background = new SolidColorBrush(Colors.Transparent),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(
-                    node.Width * xRatio - 6,
-                    node.Height * yRatio - 6,
+                    padding + (node.Width * xRatio) - (ConnectionPointHitAreaSize / 2),
+                    padding + (node.Height * yRatio) - (ConnectionPointHitAreaSize / 2),
                     0, 0),
                 Tag = point
             };
 
-            ellipse.PointerPressed += (s, e) =>
+            // Visual indicator (smaller, centered in hit area)
+            var ellipse = new Ellipse
+            {
+                Width = ConnectionPointVisualSize,
+                Height = ConnectionPointVisualSize,
+                Fill = new SolidColorBrush(Colors.DodgerBlue),
+                Stroke = new SolidColorBrush(Colors.White),
+                StrokeThickness = 2,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            hitArea.Children.Add(ellipse);
+
+            hitArea.PointerEntered += (s, e) =>
+            {
+                ellipse.Fill = new SolidColorBrush(Colors.Orange);
+                ellipse.Width = ConnectionPointVisualSize + 4;
+                ellipse.Height = ConnectionPointVisualSize + 4;
+            };
+
+            hitArea.PointerExited += (s, e) =>
+            {
+                ellipse.Fill = new SolidColorBrush(Colors.DodgerBlue);
+                ellipse.Width = ConnectionPointVisualSize;
+                ellipse.Height = ConnectionPointVisualSize;
+            };
+
+            hitArea.PointerPressed += (s, e) =>
             {
                 e.Handled = true;
                 StartConnection(node.Id, point);
             };
 
-            ellipse.PointerReleased += (s, e) =>
+            hitArea.PointerReleased += (s, e) =>
             {
                 if (_isConnecting && _connectionSourceNodeId != node.Id)
                 {
@@ -442,7 +506,7 @@ public sealed class FlowChartCanvas : Canvas
                 }
             };
 
-            grid.Children.Add(ellipse);
+            grid.Children.Add(hitArea);
         }
     }
 
@@ -462,34 +526,51 @@ public sealed class FlowChartCanvas : Canvas
         var pathGeometry = new PathGeometry();
         var pathFigure = new PathFigure { StartPoint = startPoint };
 
-        if (edge.Routing == RoutingStyle.Orthogonal)
+        // Build list of all points for the path
+        var allPoints = new List<Windows.Foundation.Point> { startPoint };
+
+        // Check if edge has manual waypoints
+        if (edge.Waypoints.Count > 0)
         {
-            // Create orthogonal path with right angles
-            var midX = (startPoint.X + endPoint.X) / 2;
-            pathFigure.Segments.Add(new LineSegment { Point = new Windows.Foundation.Point(midX, startPoint.Y) });
-            pathFigure.Segments.Add(new LineSegment { Point = new Windows.Foundation.Point(midX, endPoint.Y) });
+            // Use manual waypoints
+            foreach (var wp in edge.Waypoints)
+            {
+                var wpPoint = new Windows.Foundation.Point(wp.X, wp.Y);
+                allPoints.Add(wpPoint);
+                pathFigure.Segments.Add(new LineSegment { Point = wpPoint });
+            }
             pathFigure.Segments.Add(new LineSegment { Point = endPoint });
+            allPoints.Add(endPoint);
+        }
+        else if (edge.Routing == RoutingStyle.Orthogonal)
+        {
+            // Smart orthogonal routing based on connection point directions
+            var routePoints = CalculateOrthogonalRoute(startPoint, endPoint, edge.SourcePoint, edge.TargetPoint);
+            foreach (var pt in routePoints)
+            {
+                allPoints.Add(pt);
+                pathFigure.Segments.Add(new LineSegment { Point = pt });
+            }
         }
         else if (edge.Routing == RoutingStyle.Curved)
         {
-            // Create bezier curve
-            var controlPoint1 = new Windows.Foundation.Point(
-                startPoint.X + (endPoint.X - startPoint.X) / 3,
-                startPoint.Y);
-            var controlPoint2 = new Windows.Foundation.Point(
-                startPoint.X + 2 * (endPoint.X - startPoint.X) / 3,
-                endPoint.Y);
+            // Create bezier curve based on connection point directions
+            var offset = 50.0;
+            var controlPoint1 = GetOffsetPoint(startPoint, edge.SourcePoint, offset);
+            var controlPoint2 = GetOffsetPoint(endPoint, edge.TargetPoint, offset);
             pathFigure.Segments.Add(new BezierSegment
             {
                 Point1 = controlPoint1,
                 Point2 = controlPoint2,
                 Point3 = endPoint
             });
+            allPoints.Add(endPoint);
         }
         else
         {
             // Direct line
             pathFigure.Segments.Add(new LineSegment { Point = endPoint });
+            allPoints.Add(endPoint);
         }
 
         pathGeometry.Figures.Add(pathFigure);
@@ -504,7 +585,7 @@ public sealed class FlowChartCanvas : Canvas
         {
             Data = pathGeometry,
             Stroke = strokeBrush,
-            StrokeThickness = edge.StrokeWidth,
+            StrokeThickness = edge.IsSelected ? edge.StrokeWidth + 2 : edge.StrokeWidth,
             Tag = edge.Id
         };
 
@@ -517,19 +598,220 @@ public sealed class FlowChartCanvas : Canvas
             _ => null
         };
 
-        // Add arrow at target
+        // Add arrow at target - use the last segment direction for proper arrow orientation
         if (edge.TargetArrow != ArrowType.None)
         {
-            AddArrowHead(path, startPoint, endPoint, edge.TargetArrow, strokeBrush);
+            var arrowStartPoint = startPoint;
+            // For orthogonal/curved routing, get the second-to-last point for correct arrow direction
+            if (pathFigure.Segments.Count >= 2)
+            {
+                var secondToLast = pathFigure.Segments[pathFigure.Segments.Count - 2];
+                if (secondToLast is LineSegment lineSegment)
+                {
+                    arrowStartPoint = lineSegment.Point;
+                }
+            }
+            AddArrowHead(edge.Id, arrowStartPoint, endPoint, edge.TargetArrow, strokeBrush);
         }
 
+        // Handle edge click - select edge or add waypoint
         path.PointerPressed += (s, e) =>
         {
             e.Handled = true;
-            EdgeSelected?.Invoke(this, new EdgeSelectedEventArgs(edge));
+            var clickPoint = e.GetCurrentPoint(this).Position;
+
+            if (edge.IsSelected)
+            {
+                // Edge already selected - add waypoint at click position
+                AddWaypointToEdge(edge, clickPoint, allPoints);
+            }
+            else
+            {
+                // Select the edge
+                EdgeSelected?.Invoke(this, new EdgeSelectedEventArgs(edge));
+            }
         };
 
+        // Show waypoint handles if edge is selected
+        if (edge.IsSelected)
+        {
+            CreateWaypointHandles(edge);
+        }
+
         return path;
+    }
+
+    /// <summary>
+    /// Creates draggable waypoint handles for a selected edge.
+    /// </summary>
+    private void CreateWaypointHandles(DiagramEdge edge)
+    {
+        // Remove existing handles
+        if (_waypointHandles.TryGetValue(edge.Id, out var existingHandles))
+        {
+            foreach (var handle in existingHandles)
+            {
+                Children.Remove(handle);
+            }
+        }
+
+        var handles = new List<Ellipse>();
+
+        for (int i = 0; i < edge.Waypoints.Count; i++)
+        {
+            var wp = edge.Waypoints[i];
+            var waypointIndex = i;
+
+            var handle = new Ellipse
+            {
+                Width = 12,
+                Height = 12,
+                Fill = new SolidColorBrush(Colors.White),
+                Stroke = new SolidColorBrush(Colors.DodgerBlue),
+                StrokeThickness = 2,
+                Tag = new WaypointHandleTag { EdgeId = edge.Id, WaypointIndex = waypointIndex }
+            };
+
+            SetLeft(handle, wp.X - 6);
+            SetTop(handle, wp.Y - 6);
+
+            // Drag to move waypoint
+            handle.PointerPressed += (s, e) =>
+            {
+                e.Handled = true;
+                _isDraggingWaypoint = true;
+                _draggingWaypointEdgeId = edge.Id;
+                _draggingWaypointIndex = waypointIndex;
+                _draggingWaypointHandle = handle;
+                handle.Fill = new SolidColorBrush(Colors.DodgerBlue);
+            };
+
+            // Double-click to delete waypoint
+            handle.DoubleTapped += (s, e) =>
+            {
+                e.Handled = true;
+                RemoveWaypoint(edge, waypointIndex);
+            };
+
+            // Right-click context menu for delete
+            var flyout = new MenuFlyout();
+            var deleteItem = new MenuFlyoutItem { Text = "Delete Waypoint", Icon = new FontIcon { Glyph = "\uE74D" } };
+            deleteItem.Click += (s, e) => RemoveWaypoint(edge, waypointIndex);
+            flyout.Items.Add(deleteItem);
+            handle.ContextFlyout = flyout;
+
+            handles.Add(handle);
+            Children.Add(handle);
+        }
+
+        _waypointHandles[edge.Id] = handles;
+    }
+
+    /// <summary>
+    /// Adds a waypoint to an edge at the specified position.
+    /// </summary>
+    private void AddWaypointToEdge(DiagramEdge edge, Windows.Foundation.Point clickPoint, List<Windows.Foundation.Point> pathPoints)
+    {
+        // Find which segment was clicked
+        int insertIndex = 0;
+        double minDistance = double.MaxValue;
+
+        for (int i = 0; i < pathPoints.Count - 1; i++)
+        {
+            var segmentStart = pathPoints[i];
+            var segmentEnd = pathPoints[i + 1];
+            var dist = DistanceToSegment(clickPoint, segmentStart, segmentEnd);
+
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                // Adjust insert index to account for waypoints vs path points
+                // pathPoints[0] is start, pathPoints[1..n] are waypoints or auto-route points
+                insertIndex = Math.Max(0, i - (pathPoints.Count - edge.Waypoints.Count - 2) + edge.Waypoints.Count);
+                if (i <= edge.Waypoints.Count) insertIndex = i;
+            }
+        }
+
+        // Insert waypoint
+        var newWaypoint = new Models.Point(clickPoint.X, clickPoint.Y);
+        if (insertIndex >= edge.Waypoints.Count)
+        {
+            edge.Waypoints.Add(newWaypoint);
+        }
+        else
+        {
+            edge.Waypoints.Insert(insertIndex, newWaypoint);
+        }
+
+        WaypointChanged?.Invoke(this, new WaypointChangedEventArgs(edge, WaypointChangeType.Added, insertIndex));
+        RefreshEdge(edge);
+    }
+
+    /// <summary>
+    /// Removes a waypoint from an edge.
+    /// </summary>
+    private void RemoveWaypoint(DiagramEdge edge, int waypointIndex)
+    {
+        if (waypointIndex >= 0 && waypointIndex < edge.Waypoints.Count)
+        {
+            edge.Waypoints.RemoveAt(waypointIndex);
+            WaypointChanged?.Invoke(this, new WaypointChangedEventArgs(edge, WaypointChangeType.Removed, waypointIndex));
+            RefreshEdge(edge);
+        }
+    }
+
+    /// <summary>
+    /// Calculates the distance from a point to a line segment.
+    /// </summary>
+    private static double DistanceToSegment(Windows.Foundation.Point p, Windows.Foundation.Point a, Windows.Foundation.Point b)
+    {
+        var dx = b.X - a.X;
+        var dy = b.Y - a.Y;
+        var lengthSquared = dx * dx + dy * dy;
+
+        if (lengthSquared == 0) return Math.Sqrt((p.X - a.X) * (p.X - a.X) + (p.Y - a.Y) * (p.Y - a.Y));
+
+        var t = Math.Max(0, Math.Min(1, ((p.X - a.X) * dx + (p.Y - a.Y) * dy) / lengthSquared));
+        var projX = a.X + t * dx;
+        var projY = a.Y + t * dy;
+
+        return Math.Sqrt((p.X - projX) * (p.X - projX) + (p.Y - projY) * (p.Y - projY));
+    }
+
+    /// <summary>
+    /// Refreshes a single edge without redrawing everything.
+    /// </summary>
+    private void RefreshEdge(DiagramEdge edge)
+    {
+        // Remove old path
+        if (_edgeElements.TryGetValue(edge.Id, out var oldPath))
+        {
+            Children.Remove(oldPath);
+        }
+
+        // Remove old arrow head
+        if (_arrowHeads.TryGetValue(edge.Id, out var oldArrow))
+        {
+            Children.Remove(oldArrow);
+            _arrowHeads.Remove(edge.Id);
+        }
+
+        // Remove old waypoint handles
+        if (_waypointHandles.TryGetValue(edge.Id, out var oldHandles))
+        {
+            foreach (var h in oldHandles)
+            {
+                Children.Remove(h);
+            }
+            _waypointHandles.Remove(edge.Id);
+        }
+
+        // Create new path
+        var newPath = CreateEdgePath(edge);
+        _edgeElements[edge.Id] = newPath;
+
+        // Insert at the beginning (below nodes)
+        Children.Insert(0, newPath);
     }
 
     private static Windows.Foundation.Point GetConnectionPoint(DiagramNode node, ConnectionPoint point)
@@ -549,7 +831,144 @@ public sealed class FlowChartCanvas : Canvas
         };
     }
 
-    private void AddArrowHead(XamlPath edgePath, Windows.Foundation.Point start, Windows.Foundation.Point end, ArrowType arrowType, SolidColorBrush brush)
+    /// <summary>
+    /// Calculates orthogonal route points based on connection point directions.
+    /// </summary>
+    private static List<Windows.Foundation.Point> CalculateOrthogonalRoute(
+        Windows.Foundation.Point start,
+        Windows.Foundation.Point end,
+        ConnectionPoint sourcePoint,
+        ConnectionPoint targetPoint)
+    {
+        var points = new List<Windows.Foundation.Point>();
+        const double minOffset = 30; // Minimum distance to extend from connection point
+
+        // Determine routing strategy based on connection point directions
+        bool srcHorizontal = sourcePoint == ConnectionPoint.Left || sourcePoint == ConnectionPoint.Right;
+        bool tgtHorizontal = targetPoint == ConnectionPoint.Left || targetPoint == ConnectionPoint.Right;
+
+        if (srcHorizontal && tgtHorizontal)
+        {
+            // Both horizontal (Left/Right to Left/Right)
+            var srcRight = sourcePoint == ConnectionPoint.Right;
+            var tgtRight = targetPoint == ConnectionPoint.Right;
+
+            if (srcRight && !tgtRight && end.X > start.X)
+            {
+                // Right to Left, target is to the right - direct horizontal possible
+                var midX = (start.X + end.X) / 2;
+                points.Add(new Windows.Foundation.Point(midX, start.Y));
+                points.Add(new Windows.Foundation.Point(midX, end.Y));
+            }
+            else if (!srcRight && tgtRight && end.X < start.X)
+            {
+                // Left to Right, target is to the left - direct horizontal possible
+                var midX = (start.X + end.X) / 2;
+                points.Add(new Windows.Foundation.Point(midX, start.Y));
+                points.Add(new Windows.Foundation.Point(midX, end.Y));
+            }
+            else
+            {
+                // Need to go around
+                var offsetX = srcRight ? Math.Max(start.X, end.X) + minOffset : Math.Min(start.X, end.X) - minOffset;
+                points.Add(new Windows.Foundation.Point(offsetX, start.Y));
+                points.Add(new Windows.Foundation.Point(offsetX, end.Y));
+            }
+        }
+        else if (!srcHorizontal && !tgtHorizontal)
+        {
+            // Both vertical (Top/Bottom to Top/Bottom)
+            var srcDown = sourcePoint == ConnectionPoint.Bottom;
+            var tgtDown = targetPoint == ConnectionPoint.Bottom;
+
+            if (srcDown && !tgtDown && end.Y > start.Y)
+            {
+                // Bottom to Top, target is below - can go mostly straight down
+                if (Math.Abs(start.X - end.X) < 5)
+                {
+                    // Nearly aligned - direct line
+                    // No intermediate points needed
+                }
+                else
+                {
+                    // Offset horizontally
+                    var midY = (start.Y + end.Y) / 2;
+                    points.Add(new Windows.Foundation.Point(start.X, midY));
+                    points.Add(new Windows.Foundation.Point(end.X, midY));
+                }
+            }
+            else if (!srcDown && tgtDown && end.Y < start.Y)
+            {
+                // Top to Bottom, target is above - can go mostly straight up
+                if (Math.Abs(start.X - end.X) < 5)
+                {
+                    // Nearly aligned - direct line
+                    // No intermediate points needed
+                }
+                else
+                {
+                    // Offset horizontally
+                    var midY = (start.Y + end.Y) / 2;
+                    points.Add(new Windows.Foundation.Point(start.X, midY));
+                    points.Add(new Windows.Foundation.Point(end.X, midY));
+                }
+            }
+            else
+            {
+                // Same direction or need to go around
+                var offsetY = srcDown ? Math.Max(start.Y, end.Y) + minOffset : Math.Min(start.Y, end.Y) - minOffset;
+                points.Add(new Windows.Foundation.Point(start.X, offsetY));
+                points.Add(new Windows.Foundation.Point(end.X, offsetY));
+            }
+        }
+        else
+        {
+            // Mixed: one horizontal, one vertical - L-shape route
+            if (srcHorizontal)
+            {
+                // Source is horizontal (Left/Right), target is vertical (Top/Bottom)
+                points.Add(new Windows.Foundation.Point(end.X, start.Y));
+            }
+            else
+            {
+                // Source is vertical (Top/Bottom), target is horizontal (Left/Right)
+                points.Add(new Windows.Foundation.Point(start.X, end.Y));
+            }
+        }
+
+        points.Add(end);
+        return points;
+    }
+
+    /// <summary>
+    /// Gets the direction vector for a connection point.
+    /// </summary>
+    private static (double dx, double dy) GetDirectionVector(ConnectionPoint point)
+    {
+        return point switch
+        {
+            ConnectionPoint.Top => (0, -1),
+            ConnectionPoint.Bottom => (0, 1),
+            ConnectionPoint.Left => (-1, 0),
+            ConnectionPoint.Right => (1, 0),
+            ConnectionPoint.TopLeft => (-1, -1),
+            ConnectionPoint.TopRight => (1, -1),
+            ConnectionPoint.BottomLeft => (-1, 1),
+            ConnectionPoint.BottomRight => (1, 1),
+            _ => (0, 0)
+        };
+    }
+
+    /// <summary>
+    /// Gets a point offset from the given point in the direction of the connection point.
+    /// </summary>
+    private static Windows.Foundation.Point GetOffsetPoint(Windows.Foundation.Point point, ConnectionPoint connectionPoint, double offset)
+    {
+        var (dx, dy) = GetDirectionVector(connectionPoint);
+        return new Windows.Foundation.Point(point.X + dx * offset, point.Y + dy * offset);
+    }
+
+    private void AddArrowHead(string edgeId, Windows.Foundation.Point start, Windows.Foundation.Point end, ArrowType arrowType, SolidColorBrush brush)
     {
         var angle = Math.Atan2(end.Y - start.Y, end.X - start.X);
         var arrowSize = 12.0;
@@ -593,6 +1012,13 @@ public sealed class FlowChartCanvas : Canvas
             StrokeThickness = 1
         };
 
+        // Remove old arrow if exists
+        if (_arrowHeads.TryGetValue(edgeId, out var oldArrow))
+        {
+            Children.Remove(oldArrow);
+        }
+
+        _arrowHeads[edgeId] = arrow;
         Children.Add(arrow);
     }
 
@@ -631,19 +1057,24 @@ public sealed class FlowChartCanvas : Canvas
         if (oldEdge != null)
         {
             oldEdge.IsSelected = false;
-            if (_edgeElements.TryGetValue(oldEdge.Id, out var oldPath))
+            // Remove waypoint handles
+            if (_waypointHandles.TryGetValue(oldEdge.Id, out var oldHandles))
             {
-                oldPath.Stroke = new SolidColorBrush(ParseColor(oldEdge.StrokeColor));
+                foreach (var handle in oldHandles)
+                {
+                    Children.Remove(handle);
+                }
+                _waypointHandles.Remove(oldEdge.Id);
             }
+            // Refresh the edge to update appearance
+            RefreshEdge(oldEdge);
         }
 
         if (newEdge != null)
         {
             newEdge.IsSelected = true;
-            if (_edgeElements.TryGetValue(newEdge.Id, out var newPath))
-            {
-                newPath.Stroke = new SolidColorBrush(Colors.DodgerBlue);
-            }
+            // Refresh to show waypoint handles
+            RefreshEdge(newEdge);
         }
     }
 
@@ -672,9 +1103,55 @@ public sealed class FlowChartCanvas : Canvas
 
     private void OnCanvasPointerMoved(object sender, PointerRoutedEventArgs e)
     {
+        var point = e.GetCurrentPoint(this).Position;
+
+        // Handle node dragging
+        if (_draggedNode != null && _draggedNodeElement != null)
+        {
+            var newX = point.X - _dragOffset.X;
+            var newY = point.Y - _dragOffset.Y;
+
+            var padding = IsConnectMode ? ConnectionPointPadding : 0;
+            // Offset position by padding so the shape stays at the correct visual position
+            SetLeft(_draggedNodeElement, newX - padding);
+            SetTop(_draggedNodeElement, newY - padding);
+
+            _draggedNode.X = newX;
+            _draggedNode.Y = newY;
+
+            // Refresh edges connected to this node
+            RefreshConnectedEdges(_draggedNode.Id);
+            return;
+        }
+
+        // Handle waypoint dragging
+        if (_isDraggingWaypoint && _draggingWaypointEdgeId != null && _draggingWaypointHandle != null)
+        {
+            // Update handle position
+            SetLeft(_draggingWaypointHandle, point.X - 6);
+            SetTop(_draggingWaypointHandle, point.Y - 6);
+
+            // Update waypoint in edge
+            var edge = Diagram?.Edges.FirstOrDefault(ed => ed.Id == _draggingWaypointEdgeId);
+            if (edge != null && _draggingWaypointIndex < edge.Waypoints.Count)
+            {
+                edge.Waypoints[_draggingWaypointIndex] = new Models.Point(point.X, point.Y);
+
+                // Refresh the edge path (but not handles, to avoid flicker)
+                if (_edgeElements.TryGetValue(edge.Id, out var oldPath))
+                {
+                    Children.Remove(oldPath);
+                    var newPath = CreateEdgePathWithoutHandles(edge);
+                    _edgeElements[edge.Id] = newPath;
+                    Children.Insert(0, newPath);
+                }
+            }
+            return;
+        }
+
+        // Handle connection preview
         if (_isConnecting && _connectionPreviewLine != null)
         {
-            var point = e.GetCurrentPoint(this).Position;
             _connectionPreviewLine.X2 = point.X;
             _connectionPreviewLine.Y2 = point.Y;
         }
@@ -682,10 +1159,96 @@ public sealed class FlowChartCanvas : Canvas
 
     private void OnCanvasPointerReleased(object sender, PointerRoutedEventArgs e)
     {
+        // Finish node dragging
+        if (_draggedNode != null)
+        {
+            NodeMoved?.Invoke(this, new NodeMovedEventArgs(_draggedNode, _draggedNode.X, _draggedNode.Y));
+
+            // Release pointer capture
+            if (_draggedNodeElement != null)
+            {
+                _draggedNodeElement.ReleasePointerCapture(e.Pointer);
+            }
+
+            _draggedNode = null;
+            _draggedNodeElement = null;
+            return;
+        }
+
+        // Finish waypoint dragging
+        if (_isDraggingWaypoint && _draggingWaypointEdgeId != null)
+        {
+            var edge = Diagram?.Edges.FirstOrDefault(ed => ed.Id == _draggingWaypointEdgeId);
+            if (edge != null)
+            {
+                WaypointChanged?.Invoke(this, new WaypointChangedEventArgs(edge, WaypointChangeType.Moved, _draggingWaypointIndex));
+            }
+
+            _isDraggingWaypoint = false;
+            _draggingWaypointEdgeId = null;
+            _draggingWaypointIndex = -1;
+            if (_draggingWaypointHandle != null)
+            {
+                _draggingWaypointHandle.Fill = new SolidColorBrush(Colors.White);
+                _draggingWaypointHandle = null;
+            }
+            return;
+        }
+
         CancelConnection();
     }
 
-    private void OnNodePointerPressed(DiagramNode node, PointerRoutedEventArgs e)
+    /// <summary>
+    /// Creates edge path without creating waypoint handles (used during drag).
+    /// </summary>
+    private XamlPath CreateEdgePathWithoutHandles(DiagramEdge edge)
+    {
+        var sourceNode = Diagram?.GetNode(edge.SourceNodeId);
+        var targetNode = Diagram?.GetNode(edge.TargetNodeId);
+
+        if (sourceNode == null || targetNode == null)
+        {
+            return new XamlPath();
+        }
+
+        var startPoint = GetConnectionPoint(sourceNode, edge.SourcePoint);
+        var endPoint = GetConnectionPoint(targetNode, edge.TargetPoint);
+
+        var pathGeometry = new PathGeometry();
+        var pathFigure = new PathFigure { StartPoint = startPoint };
+
+        // Use waypoints
+        foreach (var wp in edge.Waypoints)
+        {
+            pathFigure.Segments.Add(new LineSegment { Point = new Windows.Foundation.Point(wp.X, wp.Y) });
+        }
+        pathFigure.Segments.Add(new LineSegment { Point = endPoint });
+
+        pathGeometry.Figures.Add(pathFigure);
+
+        var strokeBrush = new SolidColorBrush(edge.IsSelected ? Colors.DodgerBlue : ParseColor(edge.StrokeColor));
+
+        var path = new XamlPath
+        {
+            Data = pathGeometry,
+            Stroke = strokeBrush,
+            StrokeThickness = edge.IsSelected ? edge.StrokeWidth + 2 : edge.StrokeWidth,
+            Tag = edge.Id
+        };
+
+        // Arrow
+        if (edge.TargetArrow != ArrowType.None && pathFigure.Segments.Count >= 1)
+        {
+            Windows.Foundation.Point arrowStart = pathFigure.Segments.Count >= 2
+                ? ((LineSegment)pathFigure.Segments[pathFigure.Segments.Count - 2]).Point
+                : startPoint;
+            AddArrowHead(edge.Id, arrowStart, endPoint, edge.TargetArrow, strokeBrush);
+        }
+
+        return path;
+    }
+
+    private void OnNodePointerPressed(DiagramNode node, FrameworkElement element, PointerRoutedEventArgs e)
     {
         e.Handled = true;
 
@@ -696,39 +1259,14 @@ public sealed class FlowChartCanvas : Canvas
 
         NodeSelected?.Invoke(this, new NodeSelectedEventArgs(node));
         _draggedNode = node;
+        _draggedNodeElement = element;
+
+        // Capture pointer for smooth dragging even when mouse moves fast
+        _dragPointerId = e.Pointer.PointerId;
+        element.CapturePointer(e.Pointer);
 
         var point = e.GetCurrentPoint(this).Position;
         _dragOffset = new Windows.Foundation.Point(point.X - node.X, point.Y - node.Y);
-    }
-
-    private void OnNodePointerMoved(DiagramNode node, PointerRoutedEventArgs e)
-    {
-        if (_draggedNode == null || _draggedNode.Id != node.Id) return;
-
-        var point = e.GetCurrentPoint(this).Position;
-        var newX = point.X - _dragOffset.X;
-        var newY = point.Y - _dragOffset.Y;
-
-        if (_nodeElements.TryGetValue(node.Id, out var element))
-        {
-            SetLeft(element, newX);
-            SetTop(element, newY);
-        }
-
-        node.X = newX;
-        node.Y = newY;
-
-        // Refresh edges connected to this node
-        RefreshConnectedEdges(node.Id);
-    }
-
-    private void OnNodePointerReleased(DiagramNode node, PointerRoutedEventArgs e)
-    {
-        if (_draggedNode != null && _draggedNode.Id == node.Id)
-        {
-            NodeMoved?.Invoke(this, new NodeMovedEventArgs(node, node.X, node.Y));
-            _draggedNode = null;
-        }
     }
 
     private void RefreshConnectedEdges(string nodeId)
@@ -867,6 +1405,36 @@ public class ConnectionCreatedEventArgs : EventArgs
         SourcePoint = sourcePoint;
         TargetPoint = targetPoint;
     }
+}
+
+public class WaypointChangedEventArgs : EventArgs
+{
+    public DiagramEdge Edge { get; }
+    public WaypointChangeType ChangeType { get; }
+    public int WaypointIndex { get; }
+
+    public WaypointChangedEventArgs(DiagramEdge edge, WaypointChangeType changeType, int waypointIndex)
+    {
+        Edge = edge;
+        ChangeType = changeType;
+        WaypointIndex = waypointIndex;
+    }
+}
+
+public enum WaypointChangeType
+{
+    Added,
+    Moved,
+    Removed
+}
+
+/// <summary>
+/// Tag class for waypoint handles to track edge and index.
+/// </summary>
+internal class WaypointHandleTag
+{
+    public string EdgeId { get; set; } = string.Empty;
+    public int WaypointIndex { get; set; }
 }
 
 #endregion

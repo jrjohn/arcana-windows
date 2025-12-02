@@ -751,26 +751,31 @@ public sealed partial class MainWindow : Window
         // First check built-in pages
         var builtInGlyph = pageTag switch
         {
-            "HomePage" => "\uE80F",
-            "OrderListPage" => "\uE7C3",
-            "CustomerListPage" => "\uE716",
-            "ProductListPage" => "\uE719",
-            "SalesReportPage" => "\uE9F9",
-            "SyncPage" => "\uE895",
-            "PluginManagerPage" => "\uEA86",
-            "SettingsPage" => "\uE713",
+            "HomePage" => "\uE80F",           // Home
+            "OrderListPage" => "\uE7C3",      // List
+            "CustomerListPage" => "\uE716",   // Contact
+            "ProductListPage" => "\uE719",    // Shop
+            "SalesReportPage" => "\uE9F9",    // Chart
+            "SyncPage" => "\uE895",           // Sync
+            "PluginManagerPage" => "\uEA86",  // Extension
+            "SettingsPage" => "\uE713",       // Settings
             _ => (string?)null
         };
 
-        if (builtInGlyph != null)
-            return new FontIconSource { Glyph = builtInGlyph };
+        string? glyph = builtInGlyph;
 
         // Check ViewRegistry for dynamic plugin views
-        var view = _viewRegistry.GetView(pageTag);
-        if (!string.IsNullOrEmpty(view?.Icon))
-            return new FontIconSource { Glyph = view.Icon };
+        if (glyph == null)
+        {
+            var view = _viewRegistry.GetView(pageTag);
+            glyph = !string.IsNullOrEmpty(view?.Icon) ? view.Icon : "\uE7C3"; // Default icon
+        }
 
-        return new FontIconSource { Glyph = "\uE7C3" }; // Default icon
+        return new FontIconSource
+        {
+            Glyph = glyph,
+            FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets")
+        };
     }
 
     private void OnNetworkStatusChanged(object? sender, NetworkStatusChangedEventArgs e)

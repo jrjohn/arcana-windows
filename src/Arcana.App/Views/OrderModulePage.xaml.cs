@@ -265,7 +265,11 @@ public sealed partial class OrderModulePage : Page
             Header = title,
             Tag = doc,
             Content = frame,
-            IconSource = new FontIconSource { Glyph = doc.IconGlyph },
+            IconSource = new FontIconSource
+            {
+                Glyph = doc.IconGlyph,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets")
+            },
             IsClosable = false
         };
 
@@ -334,7 +338,11 @@ public sealed partial class OrderModulePage : Page
             Header = orderDoc.Title,
             Tag = orderDoc,
             Content = frame,
-            IconSource = new FontIconSource { Glyph = orderDoc.IconGlyph },
+            IconSource = new FontIconSource
+            {
+                Glyph = orderDoc.IconGlyph,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets")
+            },
             IsClosable = true
         };
 
@@ -395,7 +403,11 @@ public sealed partial class OrderModulePage : Page
             Header = orderDoc.Title,
             Tag = orderDoc,
             Content = frame,
-            IconSource = new FontIconSource { Glyph = orderDoc.IconGlyph },
+            IconSource = new FontIconSource
+            {
+                Glyph = orderDoc.IconGlyph,
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets")
+            },
             IsClosable = true
         };
 
@@ -488,7 +500,11 @@ public sealed partial class OrderModulePage : Page
             Header = doc.Title,
             Tag = doc,
             Content = newContent,
-            IconSource = new FontIconSource { Glyph = doc.IconGlyph ?? "\uE7C3" },
+            IconSource = new FontIconSource
+            {
+                Glyph = doc.IconGlyph ?? "\uE7C3",
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets")
+            },
             IsClosable = doc.IsClosable
         };
 

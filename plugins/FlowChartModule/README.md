@@ -14,6 +14,70 @@ A flowchart drawing and editing plugin with Draw.io compatibility.
 - **Zoom**: Zoom in/out/reset (10%-300%)
 - **i18n Ready**: English, Traditional Chinese, Japanese
 
+## Development
+
+This plugin has a **standalone development environment** that allows you to develop and test without running the full Arcana application.
+
+### Project Structure
+
+```
+FlowChartModule/
+├── Arcana.Plugin.FlowChart.sln   # Standalone solution
+├── Arcana.Plugin.FlowChart.csproj # Plugin library
+├── TestHost/                      # Standalone WinUI test app
+│   └── Arcana.Plugin.FlowChart.TestHost.csproj
+├── Tests/                         # Unit tests
+│   └── Arcana.Plugin.FlowChart.Tests.csproj
+├── Views/                         # XAML views (loaded at runtime)
+├── Models/                        # Data models
+├── Services/                      # Business logic
+├── Controls/                      # Custom controls
+├── locales/                       # i18n JSON files
+├── dev.ps1                        # Development helper script
+└── install.ps1                    # Install to main app
+```
+
+### Quick Start (Standalone Development)
+
+1. Open `Arcana.Plugin.FlowChart.sln` in Visual Studio
+2. Set `Arcana.Plugin.FlowChart.TestHost` as startup project
+3. Press F5 to run
+
+Or use the command line:
+
+```powershell
+# Build and run TestHost
+.\dev.ps1 run
+
+# Build only
+.\dev.ps1 build
+
+# Run tests
+.\dev.ps1 test
+
+# Create package
+.\dev.ps1 package -Configuration Release
+
+# Clean build outputs
+.\dev.ps1 clean
+```
+
+### Development Workflow
+
+1. **Develop**: Make changes to plugin code
+2. **Test Standalone**: Run TestHost to verify changes
+3. **Unit Test**: Run `.\dev.ps1 test` to verify logic
+4. **Install**: Run `.\install.ps1` to deploy to main app
+5. **Integration Test**: Test within full Arcana app
+
+### TestHost Features
+
+The TestHost provides:
+- Full FlowChart editor UI
+- Language switching (EN/ZH-TW/JA)
+- Sample diagram loading
+- Mock localization service
+
 ## Building
 
 ### Prerequisites
@@ -39,6 +103,24 @@ A flowchart drawing and editing plugin with Draw.io compatibility.
 ```
 
 The script will create a zip package: `FlowChartPlugin-v1.0.0-x64.zip`
+
+### Installing to Arcana App
+
+After testing, install to the main app:
+
+```powershell
+# Install with tests
+.\install.ps1
+
+# Install skipping tests
+.\install.ps1 -SkipTests
+
+# Force overwrite
+.\install.ps1 -Force
+
+# Custom target path
+.\install.ps1 -TargetAppPath "C:\path\to\Arcana\Plugins\FlowChartPlugin"
+```
 
 ## Installation
 

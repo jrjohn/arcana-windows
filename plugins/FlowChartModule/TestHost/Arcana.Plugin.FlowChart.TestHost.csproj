@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <Platforms>x86;x64;ARM64</Platforms>
@@ -8,16 +9,15 @@
     <Nullable>enable</Nullable>
     <LangVersion>14.0</LangVersion>
     <UseWinUI>true</UseWinUI>
-    <EnableMsixTooling>false</EnableMsixTooling>
+    <EnableMsixTooling>true</EnableMsixTooling>
     <WindowsSdkPackageVersion>10.0.19041.48</WindowsSdkPackageVersion>
-    <OutputType>Library</OutputType>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
 
-    <!-- Plugin Info -->
-    <AssemblyName>Arcana.Plugin.FlowChart</AssemblyName>
-    <RootNamespace>Arcana.Plugin.FlowChart</RootNamespace>
+    <AssemblyName>Arcana.Plugin.FlowChart.TestHost</AssemblyName>
+    <RootNamespace>Arcana.Plugin.FlowChart.TestHost</RootNamespace>
     <Version>1.0.0</Version>
     <Authors>Arcana Team</Authors>
-    <Description>FlowChart drawing and editing plugin with Draw.io compatibility</Description>
+    <Description>Standalone test host for FlowChart plugin development</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,33 +28,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Arcana.Plugins.Contracts\Arcana.Plugins.Contracts.csproj" />
-    <ProjectReference Include="..\..\src\Arcana.Plugins\Arcana.Plugins.csproj" />
+    <ProjectReference Include="..\Arcana.Plugin.FlowChart.csproj" />
+    <ProjectReference Include="..\..\..\src\Arcana.Plugins.Contracts\Arcana.Plugins.Contracts.csproj" />
   </ItemGroup>
 
+  <!-- Copy plugin assets to output -->
   <ItemGroup>
-    <Content Include="locales\*.json">
+    <Content Include="..\Views\FlowChartEditorPage.xaml" Link="Views\FlowChartEditorPage.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="plugin.json">
+    <Content Include="..\locales\*.json" Link="locales\%(Filename)%(Extension)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <!-- XAML loaded at runtime via XamlReader - not compiled -->
-    <Content Include="Views\FlowChartEditorPage.xaml">
+    <Content Include="..\plugin.json" Link="plugin.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
-  <!-- Exclude XAML from compilation - loaded at runtime -->
-  <ItemGroup>
-    <Page Remove="Views\FlowChartEditorPage.xaml" />
-    <None Include="Views\FlowChartEditorPage.xaml" />
-  </ItemGroup>
-
-  <!-- Exclude Tests folder from main project - tests should use separate test project -->
-  <ItemGroup>
-    <Compile Remove="Tests\**" />
-    <None Remove="Tests\**" />
-  </ItemGroup>
-
 </Project>

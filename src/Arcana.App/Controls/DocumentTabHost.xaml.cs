@@ -130,7 +130,11 @@ public sealed partial class DocumentTabHost : UserControl
             Header = document.Title,
             Tag = document,
             Content = frame,
-            IconSource = new FontIconSource { Glyph = document.IconGlyph ?? "\uE7C3" },
+            IconSource = new FontIconSource
+            {
+                Glyph = document.IconGlyph ?? "\uE7C3",
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets")
+            },
             IsClosable = document.IsClosable
         };
 
@@ -302,7 +306,11 @@ public sealed partial class DocumentTabHost : UserControl
             Header = document.Title,
             Tag = document,
             Content = content,
-            IconSource = new FontIconSource { Glyph = document.IconGlyph ?? "\uE7C3" },
+            IconSource = new FontIconSource
+            {
+                Glyph = document.IconGlyph ?? "\uE7C3",
+                FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets")
+            },
             IsClosable = document.IsClosable
         };
 

@@ -177,6 +177,33 @@ public class DiagramSerializer
         foreach (var edge in diagram.Edges)
         {
             var style = GetDrawIOEdgeStyle(edge);
+            var geometry = new XElement("mxGeometry",
+                new XAttribute("relative", "1"),
+                new XAttribute("as", "geometry")
+            );
+
+            // Add waypoints if present
+            if (edge.Waypoints.Count > 0)
+            {
+                var points = new XElement("Array", new XAttribute("as", "points"));
+                foreach (var wp in edge.Waypoints)
+                {
+                    points.Add(new XElement("mxPoint",
+                        new XAttribute("x", wp.X),
+                        new XAttribute("y", wp.Y)
+                    ));
+                }
+                geometry.Add(points);
+            }
+
+            // Add exit/entry points
+            var exitX = GetExitX(edge.SourcePoint);
+            var exitY = GetExitY(edge.SourcePoint);
+            var entryX = GetExitX(edge.TargetPoint);
+            var entryY = GetExitY(edge.TargetPoint);
+
+            style += $";exitX={exitX};exitY={exitY};entryX={entryX};entryY={entryY}";
+
             var cell = new XElement("mxCell",
                 new XAttribute("id", edge.Id),
                 new XAttribute("value", edge.Label),
@@ -185,10 +212,7 @@ public class DiagramSerializer
                 new XAttribute("parent", "1"),
                 new XAttribute("source", edge.SourceNodeId),
                 new XAttribute("target", edge.TargetNodeId),
-                new XElement("mxGeometry",
-                    new XAttribute("relative", "1"),
-                    new XAttribute("as", "geometry")
-                )
+                geometry
             );
             root.Add(cell);
         }
@@ -209,8 +233,37 @@ public class DiagramSerializer
         return mxfile.ToString();
     }
 
+    private static double GetExitX(ConnectionPoint point) => point switch
+    {
+        ConnectionPoint.Left => 0,
+        ConnectionPoint.Right => 1,
+        ConnectionPoint.Top => 0.5,
+        ConnectionPoint.Bottom => 0.5,
+        ConnectionPoint.TopLeft => 0,
+        ConnectionPoint.TopRight => 1,
+        ConnectionPoint.BottomLeft => 0,
+        ConnectionPoint.BottomRight => 1,
+        ConnectionPoint.Center => 0.5,
+        _ => 0.5
+    };
+
+    private static double GetExitY(ConnectionPoint point) => point switch
+    {
+        ConnectionPoint.Left => 0.5,
+        ConnectionPoint.Right => 0.5,
+        ConnectionPoint.Top => 0,
+        ConnectionPoint.Bottom => 1,
+        ConnectionPoint.TopLeft => 0,
+        ConnectionPoint.TopRight => 0,
+        ConnectionPoint.BottomLeft => 1,
+        ConnectionPoint.BottomRight => 1,
+        ConnectionPoint.Center => 0.5,
+        _ => 0.5
+    };
+
     /// <summary>
     /// Deserializes a diagram from Draw.io XML format.
+    /// Supports both uncompressed and compressed (base64 + deflate) formats.
     /// </summary>
     public Diagram? DeserializeFromDrawIO(string xml)
     {
@@ -218,6 +271,30 @@ public class DiagramSerializer
         {
             var doc = XDocument.Parse(xml);
             var diagram = new Diagram();
+
+            // Check for compressed content in diagram element
+            var diagramElement = doc.Descendants("diagram").FirstOrDefault();
+            if (diagramElement != null && !diagramElement.HasElements)
+            {
+                // Content might be compressed - try to decompress
+                var compressedContent = diagramElement.Value?.Trim();
+                if (!string.IsNullOrEmpty(compressedContent))
+                {
+                    var decompressed = DecompressDrawIOContent(compressedContent);
+                    if (!string.IsNullOrEmpty(decompressed))
+                    {
+                        // Parse the decompressed content as mxGraphModel
+                        var decompressedDoc = XDocument.Parse($"<root>{decompressed}</root>");
+                        var mxGraphModel = decompressedDoc.Descendants("mxGraphModel").FirstOrDefault();
+                        if (mxGraphModel != null)
+                        {
+                            diagramElement.RemoveNodes();
+                            diagramElement.Add(mxGraphModel);
+                            doc = XDocument.Parse(doc.ToString());
+                        }
+                    }
+                }
+            }
 
             // Parse mxfile metadata
             var mxfile = doc.Element("mxfile");
@@ -228,8 +305,8 @@ public class DiagramSerializer
                     diagram.ModifiedAt = modifiedDate;
             }
 
-            // Parse diagram element
-            var diagramElement = doc.Descendants("diagram").FirstOrDefault();
+            // Parse diagram element (reuse from above, may have been updated after decompression)
+            diagramElement = doc.Descendants("diagram").FirstOrDefault();
             if (diagramElement != null)
             {
                 diagram.Id = diagramElement.Attribute("id")?.Value ?? Guid.NewGuid().ToString();
@@ -327,8 +404,84 @@ public class DiagramSerializer
 
         if (style.Contains("dashed=1"))
             edge.Style = LineStyle.Dashed;
+        if (style.Contains("dashPattern=1 2"))
+            edge.Style = LineStyle.Dotted;
+        if (style.Contains("dashPattern=3 1 1 1"))
+            edge.Style = LineStyle.DashDot;
+
+        // Parse routing style
+        if (style.Contains("edgeStyle=orthogonalEdgeStyle"))
+            edge.Routing = RoutingStyle.Orthogonal;
+        else if (style.Contains("curved=1"))
+            edge.Routing = RoutingStyle.Curved;
+        else if (style.Contains("edgeStyle=entityRelationEdgeStyle"))
+            edge.Routing = RoutingStyle.EntityRelation;
+
+        // Parse arrow types
+        edge.TargetArrow = ParseArrowType(ParseStyleValue(style, "endArrow"));
+        edge.SourceArrow = ParseArrowType(ParseStyleValue(style, "startArrow"));
+
+        // Parse connection points
+        edge.SourcePoint = ParseConnectionPoint(
+            ParseStyleValue(style, "exitX"),
+            ParseStyleValue(style, "exitY"));
+        edge.TargetPoint = ParseConnectionPoint(
+            ParseStyleValue(style, "entryX"),
+            ParseStyleValue(style, "entryY"));
+
+        // Parse waypoints
+        var geometry = cell.Element("mxGeometry");
+        if (geometry != null)
+        {
+            var pointsArray = geometry.Element("Array");
+            if (pointsArray != null && pointsArray.Attribute("as")?.Value == "points")
+            {
+                foreach (var point in pointsArray.Elements("mxPoint"))
+                {
+                    if (double.TryParse(point.Attribute("x")?.Value, out var x) &&
+                        double.TryParse(point.Attribute("y")?.Value, out var y))
+                    {
+                        edge.Waypoints.Add(new Point(x, y));
+                    }
+                }
+            }
+        }
 
         return edge;
+    }
+
+    private static ArrowType ParseArrowType(string? arrowStyle)
+    {
+        return arrowStyle switch
+        {
+            "classic" => ArrowType.Arrow,
+            "open" => ArrowType.OpenArrow,
+            "diamond" => ArrowType.Diamond,
+            "oval" => ArrowType.Circle,
+            "block" => ArrowType.Square,
+            _ => ArrowType.None
+        };
+    }
+
+    private static ConnectionPoint ParseConnectionPoint(string? xValue, string? yValue)
+    {
+        if (!double.TryParse(xValue, out var x) || !double.TryParse(yValue, out var y))
+            return ConnectionPoint.Center;
+
+        // Map x,y coordinates to connection points
+        return (x, y) switch
+        {
+            (0, 0.5) => ConnectionPoint.Left,
+            (1, 0.5) => ConnectionPoint.Right,
+            (0.5, 0) => ConnectionPoint.Top,
+            (0.5, 1) => ConnectionPoint.Bottom,
+            (0, 0) => ConnectionPoint.TopLeft,
+            (1, 0) => ConnectionPoint.TopRight,
+            (0, 1) => ConnectionPoint.BottomLeft,
+            (1, 1) => ConnectionPoint.BottomRight,
+            (0.5, 0.5) => ConnectionPoint.Center,
+            _ => ConnectionPoint.Center
+        };
     }
 
     private static NodeShape ParseShapeFromStyle(string style)
@@ -415,6 +568,52 @@ public class DiagramSerializer
         };
 
         return $"{routing}{dashStyle}{startArrow}{endArrow}strokeColor={edge.StrokeColor};strokeWidth={edge.StrokeWidth};html=1";
+    }
+
+    /// <summary>
+    /// Decompresses Draw.io content (base64 + URL encoded + deflate).
+    /// </summary>
+    private static string? DecompressDrawIOContent(string compressed)
+    {
+        try
+        {
+            // Draw.io uses: base64 encode -> URL encode -> deflate
+            // We reverse: base64 decode -> inflate -> URL decode
+            var base64Decoded = Convert.FromBase64String(compressed);
+
+            using var inputStream = new MemoryStream(base64Decoded);
+            using var deflateStream = new DeflateStream(inputStream, CompressionMode.Decompress);
+            using var outputStream = new MemoryStream();
+
+            deflateStream.CopyTo(outputStream);
+            var decompressed = Encoding.UTF8.GetString(outputStream.ToArray());
+
+            // URL decode the result
+            return Uri.UnescapeDataString(decompressed);
+        }
+        catch
+        {
+            // If decompression fails, the content might not be compressed
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Compresses content for Draw.io format (deflate + URL encode + base64).
+    /// </summary>
+    private static string CompressDrawIOContent(string content)
+    {
+        // URL encode first
+        var urlEncoded = Uri.EscapeDataString(content);
+        var bytes = Encoding.UTF8.GetBytes(urlEncoded);
+
+        using var outputStream = new MemoryStream();
+        using (var deflateStream = new DeflateStream(outputStream, CompressionLevel.Optimal))
+        {
+            deflateStream.Write(bytes, 0, bytes.Length);
+        }
+
+        return Convert.ToBase64String(outputStream.ToArray());
     }
 
     #endregion

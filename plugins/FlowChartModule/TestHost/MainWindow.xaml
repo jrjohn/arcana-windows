@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Arcana.Plugin.FlowChart.TestHost.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Arcana.Plugin.FlowChart.TestHost"
+    Title="FlowChart Plugin - Test Host">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Test Host Header -->
+        <Border Grid.Row="0"
+                Background="{ThemeResource SystemAccentColorLight2}"
+                Padding="16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <FontIcon Glyph="&#xE8FD;" FontSize="24"/>
+                    <TextBlock Text="FlowChart Plugin - Standalone Test Mode"
+                               Style="{ThemeResource SubtitleTextBlockStyle}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    <ComboBox Name="LanguageComboBox"
+                              Header="Language"
+                              Width="150"
+                              SelectionChanged="OnLanguageChanged">
+                        <ComboBoxItem Content="English" Tag="en-US"/>
+                        <ComboBoxItem Content="繁體中文" Tag="zh-TW"/>
+                        <ComboBoxItem Content="日本語" Tag="ja-JP"/>
+                    </ComboBox>
+                    <Button Name="SampleButton" Content="Load Sample" Click="OnLoadSampleClick"/>
+                    <Button Name="NewButton" Content="New Diagram" Click="OnNewDiagramClick"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- FlowChart Page Container -->
+        <Frame Name="ContentFrame" Grid.Row="1"/>
+    </Grid>
+</Window>

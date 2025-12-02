@@ -210,7 +210,11 @@ public class DynamicNavigationService : INavigationService
     private static IconSource? GetIconSource(string? icon)
     {
         if (string.IsNullOrEmpty(icon)) return null;
-        return new FontIconSource { Glyph = icon };
+        return new FontIconSource
+        {
+            Glyph = icon,
+            FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe Fluent Icons,Segoe MDL2 Assets")
+        };
     }
 
     public async Task<bool> GoBackAsync()
