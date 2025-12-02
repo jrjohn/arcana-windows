@@ -59,7 +59,7 @@ A **Local-First, Plugin-Everything** Windows desktop application built with WinU
 - [Roadmap](#roadmap)
 - [Development](#development)
   - [Adding a New Entity](#adding-a-new-entity)
-  - [Plugin Development Guide](#plugin-development-guide)
+  - [Plugin Development Guide](#plugin-development-guide) → [Full Guide](docs/PLUGIN_DEVELOPMENT_GUIDE.md)
   - [Plugin Manifest (Declarative)](#plugin-manifest-declarative)
   - [Contribution Validation](#contribution-validation)
 - [Summary Statistics](#summary-statistics)
@@ -1529,364 +1529,160 @@ The application includes 9 built-in themes with support for custom color schemes
 
 ### Plugin Development Guide
 
-> **Reference Implementation:** See `plugins/FlowChartModule/` for a complete example.
+> **📖 Full Documentation:** See [docs/PLUGIN_DEVELOPMENT_GUIDE.md](docs/PLUGIN_DEVELOPMENT_GUIDE.md) for complete step-by-step instructions.
+
+> **📁 Reference Implementation:** See `plugins/FlowChartModule/` for a working example.
+
+#### Quick Start
+
+```powershell
+# Build the sample FlowChart plugin
+cd plugins/FlowChartModule
+.\build.ps1
+
+# Install for development testing
+.\install.ps1
+
+# Package will be created at:
+# plugins/FlowChartModule/FlowChartPlugin-v1.0.0-x64.zip
+```
 
 #### Plugin Structure
 
 ```
 plugins/
-└── MyPlugin/
-    ├── MyPlugin.csproj              # Class library targeting net10.0
-    ├── MyPlugin.cs                  # Main plugin class (inherits PluginBase)
+└── FlowChartModule/                    # Reference implementation
+    ├── Arcana.Plugin.FlowChart.csproj  # Project file (net10.0)
+    ├── FlowChartPlugin.cs              # Plugin entry point
+    ├── plugin.json                     # Plugin manifest
+    │
     ├── Navigation/
-    │   └── MyPluginNavGraph.cs      # Type-safe navigation (wraps INavGraph)
+    │   └── FlowChartNavGraph.cs        # Type-safe navigation (wraps INavGraph)
+    │
     ├── ViewModels/
-    │   └── MyPageViewModel.cs       # MVVM UDF pattern (Input/Output/Effect)
+    │   └── FlowChartEditorViewModel.cs # MVVM UDF (Input/Output/Effect)
+    │
     ├── Views/
-    │   └── MyPage.xaml(.cs)         # WinUI 3 XAML views
+    │   ├── FlowChartEditorPage.xaml    # WinUI 3 XAML
+    │   └── FlowChartEditorPage.xaml.cs # Code-behind
+    │
     ├── Models/
-    │   └── MyModel.cs               # Data models
+    │   ├── Diagram.cs                  # Domain models
+    │   ├── DiagramNode.cs
+    │   └── DiagramEdge.cs
+    │
     ├── Services/
-    │   └── MyService.cs             # Plugin-specific services
-    └── locales/
-        ├── en-US.json               # English translations
-        ├── zh-TW.json               # Traditional Chinese
-        └── ja-JP.json               # Japanese
+    │   └── DiagramSerializer.cs        # Business logic
+    │
+    ├── locales/
+    │   ├── en-US.json                  # English
+    │   ├── zh-TW.json                  # Traditional Chinese
+    │   └── ja-JP.json                  # Japanese
+    │
+    ├── Tests/                          # Unit tests
+    ├── build.ps1                       # Build & package script
+    └── install.ps1                     # Development install script
 ```
 
-#### Step 1: Create Plugin Class
+#### Build & Install Scripts
 
-```csharp
-// MyPlugin.cs
-using Arcana.Plugins.Contracts;
-using Arcana.Plugins.Core;
+**build.ps1** - Build and create distributable ZIP:
 
-namespace MyCompany.MyPlugin;
+```powershell
+# Build release package
+.\build.ps1
 
-public class MyPlugin : PluginBase
-{
-    private MyPluginNavGraph? _nav;
+# Build with clean
+.\build.ps1 -Clean
 
-    // Type-safe navigation accessor
-    public MyPluginNavGraph Nav => _nav ?? throw new InvalidOperationException("Plugin not activated");
-
-    public override PluginMetadata Metadata => new()
-    {
-        Id = "mycompany.myplugin",
-        Name = "My Plugin",
-        Version = new Version(1, 0, 0),
-        Description = "Description of my plugin",
-        Type = PluginType.Module,
-        Author = "My Company"
-    };
-
-    protected override async Task OnActivateAsync(IPluginContext context)
-    {
-        // Initialize type-safe NavGraph
-        _nav = new MyPluginNavGraph(context.NavGraph);
-
-        // Load localization from external JSON files
-        var localesPath = Path.Combine(context.PluginPath, "locales");
-        await LoadExternalLocalizationAsync(localesPath);
-    }
-
-    protected override void RegisterContributions(IPluginContext context)
-    {
-        // Register views with dynamic title localization
-        RegisterView(new ViewDefinition
-        {
-            Id = "MyPage",
-            Title = L("myplugin.page.title"),      // Initial title
-            TitleKey = "myplugin.page.title",      // Key for dynamic updates
-            Icon = "\uE8A5",
-            Type = ViewType.Page,
-            ViewClass = typeof(MyPage)
-        });
-
-        // Register menu items
-        RegisterMenuItems(
-            new MenuItemDefinition
-            {
-                Id = "menu.myplugin",
-                Title = L("myplugin.menu.title"),
-                Location = MenuLocation.MainMenu,
-                ParentId = "menu.tools",
-                Icon = "\uE8A5",
-                Order = 20,
-                Command = "myplugin.open"
-            }
-        );
-
-        // Register commands with type-safe navigation
-        RegisterCommand("myplugin.open", async () =>
-        {
-            await Nav.ToMainPage();  // Type-safe!
-        });
-
-        LogInfo("My plugin activated");
-    }
-}
+# Build for different platform
+.\build.ps1 -Platform ARM64
 ```
 
-#### Step 2: Create Type-Safe NavGraph
+**install.ps1** - Install to Arcana app for development:
 
-```csharp
-// Navigation/MyPluginNavGraph.cs
-using Arcana.Plugins.Contracts;
+```powershell
+# Install (builds automatically)
+.\install.ps1
 
-namespace MyCompany.MyPlugin.Navigation;
+# Install without running tests
+.\install.ps1 -SkipTests
 
-public sealed class MyPluginNavGraph
-{
-    private readonly INavGraph _nav;
+# Force overwrite existing
+.\install.ps1 -Force
 
-    public MyPluginNavGraph(INavGraph nav) => _nav = nav;
-
-    // Route constants
-    public static class Routes
-    {
-        public const string MainPage = "MyPage";
-        public const string SettingsPage = "MySettingsPage";
-    }
-
-    // Type-safe navigation methods
-    public Task<bool> ToMainPage()
-        => _nav.ToNewTab(Routes.MainPage);
-
-    public Task<bool> ToMainPage(MyPageArgs args)
-        => _nav.ToNewTab(Routes.MainPage, args);
-
-    public Task<bool> ToSettings()
-        => _nav.ToNewTab(Routes.SettingsPage);
-
-    // Common navigation
-    public Task<bool> Back() => _nav.Back();
-    public Task Close() => _nav.Close();
-
-    // Cross-plugin navigation (when needed)
-    public Task<bool> ToOrderDetail(int orderId)
-        => _nav.ToNewTab("OrderDetailPage", orderId);
-
-    // Navigation arguments
-    public record MyPageArgs(string? FilePath, bool ReadOnly = false);
-}
+# Install to custom path
+.\install.ps1 -TargetAppPath "C:\MyApp\plugins\arcana.plugin.flowchart"
 ```
 
-#### Step 3: Create ViewModel with MVVM UDF Pattern
+#### User Installation (from ZIP)
 
-```csharp
-// ViewModels/MyPageViewModel.cs
-using System.Collections.ObjectModel;
-using Arcana.Plugins.Contracts.Mvvm;
-using CommunityToolkit.Mvvm.ComponentModel;
+```powershell
+# Extract plugin to Arcana plugins folder
+$pluginZip = "FlowChartPlugin-v1.0.0-x64.zip"
+$targetPath = "$env:LOCALAPPDATA\Arcana\plugins\arcana.plugin.flowchart"
 
-namespace MyCompany.MyPlugin.ViewModels;
+Expand-Archive -Path $pluginZip -DestinationPath $targetPath -Force
 
-public partial class MyPageViewModel : ReactiveViewModelBase
-{
-    // ============ Private State ============
-    [ObservableProperty]
-    private ObservableCollection<MyItem> _items = new();
-
-    [ObservableProperty]
-    private MyItem? _selectedItem;
-
-    [ObservableProperty]
-    private bool _isLoading;
-
-    [ObservableProperty]
-    private string? _errorMessage;
-
-    // ============ Input/Output/Effect ============
-    private Input? _input;
-    private Output? _output;
-    private Effect? _effect;
-
-    public Input In => _input ??= new Input(this);
-    public Output Out => _output ??= new Output(this);
-    public Effect Fx => _effect ??= new Effect();
-
-    // ============ Lifecycle ============
-    public override async Task InitializeAsync()
-    {
-        await LoadItemsAsync();
-    }
-
-    // ============ Private Actions ============
-    private async Task LoadItemsAsync()
-    {
-        try
-        {
-            IsLoading = true;
-            ErrorMessage = null;
-            // Load data...
-            Items.Clear();
-            // Items.Add(...)
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = ex.Message;
-            Fx.ShowError.Emit(ex.Message);
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    private async Task SaveItemAsync(MyItem item)
-    {
-        // Save logic...
-        Fx.ShowSuccess.Emit("Saved successfully");
-    }
-
-    // ============ Nested Classes ============
-
-    #region Input
-    public sealed class Input : IViewModelInput
-    {
-        private readonly MyPageViewModel _vm;
-        internal Input(MyPageViewModel vm) => _vm = vm;
-
-        public Task LoadItems() => _vm.LoadItemsAsync();
-        public Task SaveItem(MyItem item) => _vm.SaveItemAsync(item);
-        public void SelectItem(MyItem? item) => _vm.SelectedItem = item;
-    }
-    #endregion
-
-    #region Output
-    public sealed class Output : IViewModelOutput
-    {
-        private readonly MyPageViewModel _vm;
-        internal Output(MyPageViewModel vm) => _vm = vm;
-
-        public ObservableCollection<MyItem> Items => _vm.Items;
-        public MyItem? SelectedItem => _vm.SelectedItem;
-        public bool IsLoading => _vm.IsLoading;
-        public bool HasError => !string.IsNullOrEmpty(_vm.ErrorMessage);
-        public string? ErrorMessage => _vm.ErrorMessage;
-    }
-    #endregion
-
-    #region Effect
-    public sealed class Effect : IViewModelEffect, IDisposable
-    {
-        public EffectSubject<string> ShowError { get; } = new();
-        public EffectSubject<string> ShowSuccess { get; } = new();
-        public EffectSubject<MyItem> NavigateToDetail { get; } = new();
-
-        public void Dispose()
-        {
-            ShowError.Dispose();
-            ShowSuccess.Dispose();
-            NavigateToDetail.Dispose();
-        }
-    }
-    #endregion
-}
-
-public record MyItem(string Id, string Name);
+# Or use the Plugin Manager UI in Arcana
 ```
 
-#### Step 4: Create Localization Files
+#### Key Development Patterns
 
-```json
-// locales/en-US.json
-{
-  "myplugin.page.title": "My Plugin",
-  "myplugin.menu.title": "My Plugin",
-  "myplugin.action.save": "Save",
-  "myplugin.action.delete": "Delete",
-  "myplugin.status.saved": "Saved successfully"
-}
-```
-
-```json
-// locales/zh-TW.json
-{
-  "myplugin.page.title": "我的插件",
-  "myplugin.menu.title": "我的插件",
-  "myplugin.action.save": "儲存",
-  "myplugin.action.delete": "刪除",
-  "myplugin.status.saved": "儲存成功"
-}
-```
-
-#### Step 5: Create View
-
-```csharp
-// Views/MyPage.xaml.cs
-public sealed partial class MyPage : Page
-{
-    private MyPageViewModel _vm;
-
-    public MyPage()
-    {
-        InitializeComponent();
-        _vm = App.Services.GetRequiredService<MyPageViewModel>();
-    }
-
-    private async void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        // Subscribe to effects
-        _vm.Fx.ShowError.Subscribe(msg => ShowErrorDialog(msg));
-        _vm.Fx.ShowSuccess.Subscribe(msg => ShowSuccessNotification(msg));
-
-        // Initialize
-        await _vm.InitializeAsync();
-    }
-}
-```
-
-```xml
-<!-- Views/MyPage.xaml -->
-<Page x:Class="MyCompany.MyPlugin.Views.MyPage">
-    <Grid>
-        <!-- Bind to Output properties -->
-        <ProgressRing IsActive="{x:Bind _vm.Out.IsLoading, Mode=OneWay}" />
-        <ListView ItemsSource="{x:Bind _vm.Out.Items, Mode=OneWay}"
-                  SelectedItem="{x:Bind _vm.Out.SelectedItem, Mode=TwoWay}" />
-    </Grid>
-</Page>
-```
+| Pattern | Location | Description |
+|---------|----------|-------------|
+| **Plugin Entry** | `FlowChartPlugin.cs` | Inherit `PluginBase`, override `OnActivateAsync` and `RegisterContributions` |
+| **NavGraph** | `Navigation/FlowChartNavGraph.cs` | Wrap `INavGraph` for type-safe navigation |
+| **MVVM UDF** | `ViewModels/*.cs` | Use `Input`/`Output`/`Effect` nested classes |
+| **Localization** | `locales/*.json` | External JSON files, use `L("key")` helper |
+| **Manifest** | `plugin.json` | Declare views, menus, commands, activation events |
 
 ### Plugin Manifest (Declarative)
 
-Plugins can declare contributions in `plugin.manifest.json` for lazy loading:
+Reference: `plugins/FlowChartModule/plugin.json`
 
 ```json
 {
-  "id": "mycompany.myplugin",
-  "name": "My Plugin",
+  "id": "arcana.plugin.flowchart",
+  "name": "FlowChart",
   "version": "1.0.0",
-  "main": "MyPlugin.dll",
+  "description": "Flowchart drawing and editing plugin",
+  "author": "Arcana Team",
+  "main": "Arcana.Plugin.FlowChart.dll",
+  "pluginClass": "Arcana.Plugin.FlowChart.FlowChartPlugin",
+  "type": "module",
   "activationEvents": [
-    "onCommand:myplugin.open",
-    "onView:MyPage"
+    "onCommand:flowchart.new",
+    "onView:FlowChartEditorPage"
   ],
   "contributes": {
-    "commands": [
+    "views": [
       {
-        "id": "myplugin.open",
-        "title": "%myplugin.menu.title%"
+        "id": "FlowChartEditorPage",
+        "titleKey": "flowchart.editor",
+        "title": "FlowChart Editor",
+        "icon": "\uE8FD",
+        "type": "page"
       }
     ],
     "menus": [
       {
-        "id": "menu.myplugin",
-        "title": "%myplugin.menu.title%",
-        "location": "MainMenu",
+        "id": "menu.tools.flowchart",
+        "title": "FlowChart",
+        "location": "mainMenu",
         "parentId": "menu.tools",
-        "order": 20
+        "icon": "\uE8FD",
+        "order": 10
       }
     ],
-    "views": [
-      {
-        "id": "MyPage",
-        "title": "%myplugin.page.title%",
-        "type": "Page"
-      }
+    "commands": [
+      { "id": "flowchart.new", "title": "New FlowChart" }
     ]
+  },
+  "locales": {
+    "en-US": "locales/en-US.json",
+    "zh-TW": "locales/zh-TW.json",
+    "ja-JP": "locales/ja-JP.json"
   }
 }
 ```
