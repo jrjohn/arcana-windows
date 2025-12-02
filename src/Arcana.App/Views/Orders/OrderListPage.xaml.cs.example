@@ -1,0 +1,163 @@
+// ============================================================
+// EXAMPLE: How to use UDF ViewModel in a View
+// This file demonstrates the pattern - not a production file
+// ============================================================
+
+using Arcana.App.ViewModels.Orders;
+using Microsoft.UI.Xaml.Controls;
+
+namespace Arcana.App.Views.Orders;
+
+/// <summary>
+/// Example View implementation showing UDF ViewModel usage.
+///
+/// Key Principles:
+/// 1. View ONLY reads from Out (never writes to ViewModel state directly)
+/// 2. View ONLY calls In methods to trigger state changes
+/// 3. View subscribes to Fx streams for side effects
+/// </summary>
+public sealed partial class OrderListPage : Page
+{
+    private readonly OrderListViewModel _vm;
+    private readonly List<IDisposable> _subscriptions = new();
+
+    public OrderListPage(OrderListViewModel viewModel)
+    {
+        _vm = viewModel;
+        InitializeComponent();
+        SubscribeToEffects();
+    }
+
+    /// <summary>
+    /// Subscribe to Fx (Effect) streams for handling side effects.
+    /// </summary>
+    private void SubscribeToEffects()
+    {
+        _subscriptions.Add(_vm.Fx.NavigateToOrder.Subscribe(request =>
+        {
+            // Handle navigation
+        }));
+
+        _subscriptions.Add(_vm.Fx.ConfirmDelete.Subscribe(request =>
+        {
+            // Show confirmation dialog, then call request.OnConfirm() if confirmed
+        }));
+
+        _subscriptions.Add(_vm.Fx.ShowError.Subscribe(error =>
+        {
+            ShowErrorDialog(error.Message);
+        }));
+
+        _subscriptions.Add(_vm.Fx.ShowSuccess.Subscribe(message =>
+        {
+            ShowSuccessNotification(message);
+        }));
+
+        _subscriptions.Add(_vm.Fx.DataRefreshed.Subscribe(() =>
+        {
+            // UI refresh actions (scroll to top, etc.)
+        }));
+    }
+
+    // ============================================================
+    // UI Event Handlers - Call In (Input) methods only
+    // ============================================================
+
+    private async void OnPageLoaded(object sender, RoutedEventArgs e)
+    {
+        await _vm.In.Initialize();
+    }
+
+    private async void OnRefreshButtonClick(object sender, RoutedEventArgs e)
+    {
+        await _vm.In.Refresh();
+    }
+
+    private async void OnSearchButtonClick(object sender, RoutedEventArgs e)
+    {
+        await _vm.In.Search();
+    }
+
+    private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+    {
+        var searchBox = sender as TextBox;
+        _vm.In.UpdateSearchText(searchBox?.Text);
+    }
+
+    private async void OnCreateOrderButtonClick(object sender, RoutedEventArgs e)
+    {
+        await _vm.In.CreateOrder();
+    }
+
+    private async void OnEditOrderClick(object sender, RoutedEventArgs e)
+    {
+        if (_vm.Out.SelectedOrder != null)
+        {
+            await _vm.In.EditOrder(_vm.Out.SelectedOrder);
+        }
+    }
+
+    private async void OnDeleteOrderClick(object sender, RoutedEventArgs e)
+    {
+        if (_vm.Out.SelectedOrder != null)
+        {
+            await _vm.In.DeleteOrder(_vm.Out.SelectedOrder);
+        }
+    }
+
+    private async void OnPreviousPageClick(object sender, RoutedEventArgs e)
+    {
+        await _vm.In.PreviousPage();
+    }
+
+    private async void OnNextPageClick(object sender, RoutedEventArgs e)
+    {
+        await _vm.In.NextPage();
+    }
+
+    private void OnOrderSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var listView = sender as ListView;
+        _vm.In.SelectOrder(listView?.SelectedItem as Order);
+    }
+
+    // ============================================================
+    // Data Binding in XAML - Bind to Out (Output) only
+    // ============================================================
+    /*
+    XAML Example:
+
+    <!-- Bind to Out properties (read-only) -->
+    <ListView ItemsSource="{x:Bind _vm.Out.Orders, Mode=OneWay}"
+              SelectedItem="{x:Bind _vm.Out.SelectedOrder, Mode=OneWay}" />
+
+    <TextBlock Text="{x:Bind _vm.Out.StatusMessage, Mode=OneWay}" />
+
+    <ProgressRing IsActive="{x:Bind _vm.Out.IsLoading, Mode=OneWay}" />
+
+    <Button Content="Previous"
+            IsEnabled="{x:Bind _vm.Out.CanGoPrevious, Mode=OneWay}"
+            Click="OnPreviousPageClick" />
+
+    <Button Content="Next"
+            IsEnabled="{x:Bind _vm.Out.CanGoNext, Mode=OneWay}"
+            Click="OnNextPageClick" />
+    */
+
+    // ============================================================
+    // Cleanup
+    // ============================================================
+
+    private void OnPageUnloaded(object sender, RoutedEventArgs e)
+    {
+        foreach (var subscription in _subscriptions)
+        {
+            subscription.Dispose();
+        }
+        _subscriptions.Clear();
+    }
+
+    // Helper methods
+    private void ShowErrorDialog(string message) { }
+    private void ShowSuccessNotification(string message) { }
+}
