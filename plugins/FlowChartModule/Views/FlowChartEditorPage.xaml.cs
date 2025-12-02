@@ -901,25 +901,25 @@ public sealed class FlowChartEditorPage : Page
 
     #region Canvas Events
 
-    private void OnNodeSelected(object sender, NodeSelectedEventArgs e)
+    private void OnNodeSelected(object? sender, NodeSelectedEventArgs e)
     {
         _viewModel.In.SelectNode(e.Node?.Id);
         UpdatePropertiesPanel();
     }
 
-    private void OnEdgeSelected(object sender, EdgeSelectedEventArgs e)
+    private void OnEdgeSelected(object? sender, EdgeSelectedEventArgs e)
     {
         _viewModel.In.SelectEdge(e.Edge?.Id);
         UpdatePropertiesPanel();
     }
 
-    private void OnNodeMoved(object sender, NodeMovedEventArgs e)
+    private void OnNodeMoved(object? sender, NodeMovedEventArgs e)
     {
         _viewModel.In.UpdateNodePosition(e.Node.Id, e.X, e.Y);
         UpdateStatusBar();
     }
 
-    private void OnConnectionCreated(object sender, ConnectionCreatedEventArgs e)
+    private void OnConnectionCreated(object? sender, ConnectionCreatedEventArgs e)
     {
         _viewModel.In.AddConnection(e.SourceNodeId, e.TargetNodeId, e.SourcePoint, e.TargetPoint);
         RefreshCanvas();

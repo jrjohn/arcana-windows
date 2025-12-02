@@ -12,6 +12,9 @@
     <WindowsSdkPackageVersion>10.0.19041.48</WindowsSdkPackageVersion>
     <OutputType>Library</OutputType>
 
+    <!-- Suppress MVVMTK0045: Partial properties require additional WinRT configuration -->
+    <NoWarn>$(NoWarn);MVVMTK0045</NoWarn>
+
     <!-- Plugin Info -->
     <AssemblyName>Arcana.Plugin.FlowChart</AssemblyName>
     <RootNamespace>Arcana.Plugin.FlowChart</RootNamespace>

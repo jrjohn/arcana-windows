@@ -19,7 +19,8 @@
     <!-- Suppress warnings -->
     <!-- NETSDK1206: RID warning for Windows App SDK packages -->
     <!-- WMC1006: XAML compiler assembly resolution warnings (build order related) -->
-    <NoWarn>$(NoWarn);NETSDK1206;WMC1006</NoWarn>
+    <!-- MVVMTK0045: Partial properties require additional WinRT configuration -->
+    <NoWarn>$(NoWarn);NETSDK1206;WMC1006;MVVMTK0045</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
