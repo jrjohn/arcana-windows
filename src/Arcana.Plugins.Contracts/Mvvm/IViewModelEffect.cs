@@ -1,4 +1,4 @@
-namespace Arcana.App.ViewModels.Core;
+namespace Arcana.Plugins.Contracts.Mvvm;
 
 /// <summary>
 /// Marker interface for ViewModel effects (side effects).

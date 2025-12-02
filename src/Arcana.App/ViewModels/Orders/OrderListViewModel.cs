@@ -1,10 +1,10 @@
 using System.Collections.ObjectModel;
 using Arcana.App.Navigation;
-using Arcana.App.ViewModels.Core;
 using Arcana.Core.Common;
 using Arcana.Domain.Entities;
 using Arcana.Domain.Services;
 using Arcana.Plugins.Contracts;
+using Arcana.Plugins.Contracts.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Arcana.App.ViewModels.Orders;

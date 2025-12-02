@@ -91,9 +91,9 @@ public sealed partial class OrderDetailPage : Page
         CalculateButton.Content = _localization.Get("order.calculate");
 
         // Update status text
-        if (ViewModel?.Order != null)
+        if (ViewModel?.Out.Order != null)
         {
-            OrderStatusText.Text = _localization.Get($"order.status.{ViewModel.Order.Status.ToString().ToLowerInvariant()}");
+            OrderStatusText.Text = _localization.Get($"order.status.{ViewModel.Out.Order.Status.ToString().ToLowerInvariant()}");
         }
     }
 
@@ -105,20 +105,20 @@ public sealed partial class OrderDetailPage : Page
         if (e.Parameter is OrderCopyParameter copyParam)
         {
             // Copy from existing order - create new order with pre-filled data
-            await ViewModel.LoadAsync(null); // Load as new order
+            await ViewModel.In.Load(null); // Load as new order
 
             // Pre-fill from copied order
-            ViewModel.SelectedCustomer = copyParam.Customer;
-            ViewModel.Order.ShippingAddress = copyParam.ShippingAddress;
-            ViewModel.Order.ShippingCity = copyParam.ShippingCity;
-            ViewModel.Order.ShippingPostalCode = copyParam.ShippingPostalCode;
-            ViewModel.Order.Notes = $"{_localization.Get("order.copiedFrom")} #{copyParam.SourceOrderId}\n{copyParam.Notes}";
-            ViewModel.Order.PaymentMethod = copyParam.PaymentMethod;
+            ViewModel.In.SelectCustomer(copyParam.Customer);
+            ViewModel.Out.Order.ShippingAddress = copyParam.ShippingAddress;
+            ViewModel.Out.Order.ShippingCity = copyParam.ShippingCity;
+            ViewModel.Out.Order.ShippingPostalCode = copyParam.ShippingPostalCode;
+            ViewModel.Out.Order.Notes = $"{_localization.Get("order.copiedFrom")} #{copyParam.SourceOrderId}\n{copyParam.Notes}";
+            ViewModel.Out.Order.PaymentMethod = copyParam.PaymentMethod;
 
             // Copy items (create new instances to avoid reference issues)
             foreach (var item in copyParam.Items)
             {
-                ViewModel.Items.Add(new OrderItem
+                ViewModel.Out.Items.Add(new OrderItem
                 {
                     ProductId = item.ProductId,
                     ProductCode = item.ProductCode,
@@ -128,7 +128,7 @@ public sealed partial class OrderDetailPage : Page
                     DiscountPercent = item.DiscountPercent
                 });
             }
-            ViewModel.Order.CalculateTotals();
+            ViewModel.Out.Order.CalculateTotals();
         }
         else
         {
@@ -140,7 +140,7 @@ public sealed partial class OrderDetailPage : Page
                 _ => null
             };
 
-            await ViewModel.LoadAsync(orderId);
+            await ViewModel.In.Load(orderId);
         }
 
         UpdateUI();
@@ -149,40 +149,40 @@ public sealed partial class OrderDetailPage : Page
 
     private void UpdateUI()
     {
-        PageTitle.Text = ViewModel.Title;
-        OrderStatusText.Text = ViewModel.Order.Status.ToString();
-        OrderNumberText.Text = ViewModel.Order.OrderNumber;
-        OrderDatePicker.Date = ViewModel.Order.OrderDate;
-        CustomerComboBox.ItemsSource = ViewModel.Customers;
-        CustomerComboBox.SelectedItem = ViewModel.SelectedCustomer;
-        OrderItemsListView.ItemsSource = ViewModel.Items;
+        PageTitle.Text = ViewModel.Out.Title;
+        OrderStatusText.Text = ViewModel.Out.Order.Status.ToString();
+        OrderNumberText.Text = ViewModel.Out.Order.OrderNumber;
+        OrderDatePicker.Date = ViewModel.Out.Order.OrderDate;
+        CustomerComboBox.ItemsSource = ViewModel.Out.Customers;
+        CustomerComboBox.SelectedItem = ViewModel.Out.SelectedCustomer;
+        OrderItemsListView.ItemsSource = ViewModel.Out.Items;
 
-        ShippingAddressText.Text = ViewModel.Order.ShippingAddress ?? string.Empty;
-        ShippingCityText.Text = ViewModel.Order.ShippingCity ?? string.Empty;
-        ShippingPostalCodeText.Text = ViewModel.Order.ShippingPostalCode ?? string.Empty;
-        NotesText.Text = ViewModel.Order.Notes ?? string.Empty;
+        ShippingAddressText.Text = ViewModel.Out.Order.ShippingAddress ?? string.Empty;
+        ShippingCityText.Text = ViewModel.Out.Order.ShippingCity ?? string.Empty;
+        ShippingPostalCodeText.Text = ViewModel.Out.Order.ShippingPostalCode ?? string.Empty;
+        NotesText.Text = ViewModel.Out.Order.Notes ?? string.Empty;
 
         UpdateTotals();
 
         // Show Copy and Edit buttons only for existing orders
-        CopyButton.Visibility = ViewModel.IsNew ? Visibility.Collapsed : Visibility.Visible;
-        EditButton.Visibility = ViewModel.IsNew ? Visibility.Collapsed : Visibility.Visible;
-        SaveButton.IsEnabled = ViewModel.IsEditing;
+        CopyButton.Visibility = ViewModel.Out.IsNew ? Visibility.Collapsed : Visibility.Visible;
+        EditButton.Visibility = ViewModel.Out.IsNew ? Visibility.Collapsed : Visibility.Visible;
+        SaveButton.IsEnabled = ViewModel.Out.IsEditing;
         BackButton.Visibility = Frame.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void UpdateTotals()
     {
-        SubtotalText.Text = $"${ViewModel.Order.Subtotal:N0}";
-        TaxAmountText.Text = $"${ViewModel.Order.TaxAmount:N0}";
-        TotalAmountText.Text = $"${ViewModel.Order.TotalAmount:N0}";
-        ShippingCostBox.Value = (double)ViewModel.Order.ShippingCost;
-        DiscountAmountBox.Value = (double)ViewModel.Order.DiscountAmount;
+        SubtotalText.Text = $"${ViewModel.Out.Order.Subtotal:N0}";
+        TaxAmountText.Text = $"${ViewModel.Out.Order.TaxAmount:N0}";
+        TotalAmountText.Text = $"${ViewModel.Out.Order.TotalAmount:N0}";
+        ShippingCostBox.Value = (double)ViewModel.Out.Order.ShippingCost;
+        DiscountAmountBox.Value = (double)ViewModel.Out.Order.DiscountAmount;
     }
 
     private void Edit_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.EditCommand.Execute(null);
+        ViewModel.In.Edit();
         SaveButton.IsEnabled = true;
     }
 
@@ -191,24 +191,24 @@ public sealed partial class OrderDetailPage : Page
         // Update order from form
         if (OrderDatePicker.Date.HasValue)
         {
-            ViewModel.Order.OrderDate = OrderDatePicker.Date.Value.DateTime;
+            ViewModel.Out.Order.OrderDate = OrderDatePicker.Date.Value.DateTime;
         }
-        ViewModel.Order.ShippingAddress = ShippingAddressText.Text;
-        ViewModel.Order.ShippingCity = ShippingCityText.Text;
-        ViewModel.Order.ShippingPostalCode = ShippingPostalCodeText.Text;
-        ViewModel.Order.Notes = NotesText.Text;
-        ViewModel.Order.ShippingCost = (decimal)ShippingCostBox.Value;
-        ViewModel.Order.DiscountAmount = (decimal)DiscountAmountBox.Value;
-        ViewModel.SelectedCustomer = CustomerComboBox.SelectedItem as Customer;
+        ViewModel.Out.Order.ShippingAddress = ShippingAddressText.Text;
+        ViewModel.Out.Order.ShippingCity = ShippingCityText.Text;
+        ViewModel.Out.Order.ShippingPostalCode = ShippingPostalCodeText.Text;
+        ViewModel.Out.Order.Notes = NotesText.Text;
+        ViewModel.Out.Order.ShippingCost = (decimal)ShippingCostBox.Value;
+        ViewModel.Out.Order.DiscountAmount = (decimal)DiscountAmountBox.Value;
+        ViewModel.In.SelectCustomer(CustomerComboBox.SelectedItem as Customer);
 
-        await ViewModel.SaveCommand.ExecuteAsync(null);
+        await ViewModel.In.Save();
         UpdateUI();
     }
 
     private async void Cancel_Click(object sender, RoutedEventArgs e)
     {
         // If dirty, ask for confirmation
-        if (ViewModel.IsDirty)
+        if (ViewModel.Out.IsDirty)
         {
             var windowService = App.Services.GetRequiredService<IWindowService>();
             var confirmed = await windowService.ShowConfirmAsync(
@@ -226,24 +226,24 @@ public sealed partial class OrderDetailPage : Page
 
     private async void ProductSearch_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        ViewModel.ProductSearchText = args.QueryText;
-        await ViewModel.SearchProductsCommand.ExecuteAsync(null);
+        ViewModel.In.UpdateProductSearchText(args.QueryText);
+        await ViewModel.In.SearchProducts();
 
         // Show products in a flyout or add the first result
-        if (ViewModel.Products.Count > 0)
+        if (ViewModel.Out.Products.Count > 0)
         {
-            ViewModel.AddItemCommand.Execute(ViewModel.Products[0]);
+            ViewModel.In.AddItem(ViewModel.Out.Products[0]);
             OrderItemsListView.ItemsSource = null;
-            OrderItemsListView.ItemsSource = ViewModel.Items;
+            OrderItemsListView.ItemsSource = ViewModel.Out.Items;
             UpdateTotals();
         }
     }
 
     private void ClearItems_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.ClearItemsCommand.Execute(null);
+        ViewModel.In.ClearItems();
         OrderItemsListView.ItemsSource = null;
-        OrderItemsListView.ItemsSource = ViewModel.Items;
+        OrderItemsListView.ItemsSource = ViewModel.Out.Items;
         UpdateTotals();
     }
 
@@ -251,7 +251,7 @@ public sealed partial class OrderDetailPage : Page
     {
         if (sender is FrameworkElement element && element.DataContext is OrderItem item)
         {
-            ViewModel.IncreaseQuantityCommand.Execute(item);
+            ViewModel.In.IncreaseQuantity(item);
             RefreshItems();
         }
     }
@@ -260,7 +260,7 @@ public sealed partial class OrderDetailPage : Page
     {
         if (sender is FrameworkElement element && element.DataContext is OrderItem item)
         {
-            ViewModel.DecreaseQuantityCommand.Execute(item);
+            ViewModel.In.DecreaseQuantity(item);
             RefreshItems();
         }
     }
@@ -269,7 +269,7 @@ public sealed partial class OrderDetailPage : Page
     {
         if (sender is FrameworkElement element && element.DataContext is OrderItem item)
         {
-            ViewModel.RemoveItemCommand.Execute(item);
+            ViewModel.In.RemoveItem(item);
             RefreshItems();
         }
     }
@@ -277,16 +277,16 @@ public sealed partial class OrderDetailPage : Page
     private void RefreshItems()
     {
         OrderItemsListView.ItemsSource = null;
-        OrderItemsListView.ItemsSource = ViewModel.Items;
+        OrderItemsListView.ItemsSource = ViewModel.Out.Items;
         UpdateTotals();
     }
 
     private void Calculate_Click(object sender, RoutedEventArgs e)
     {
-        ViewModel.Order.ShippingCost = (decimal)ShippingCostBox.Value;
-        ViewModel.Order.DiscountAmount = (decimal)DiscountAmountBox.Value;
-        ViewModel.Order.Items = ViewModel.Items.ToList();
-        ViewModel.Order.CalculateTotals();
+        ViewModel.Out.Order.ShippingCost = (decimal)ShippingCostBox.Value;
+        ViewModel.Out.Order.DiscountAmount = (decimal)DiscountAmountBox.Value;
+        ViewModel.Out.Order.Items = ViewModel.Out.Items.ToList();
+        ViewModel.Out.Order.CalculateTotals();
         UpdateTotals();
     }
 
@@ -295,14 +295,14 @@ public sealed partial class OrderDetailPage : Page
         // Create a copy of the current order
         var copyParam = new OrderCopyParameter
         {
-            SourceOrderId = ViewModel.Order.Id,
-            Customer = ViewModel.SelectedCustomer,
-            Items = ViewModel.Items.ToList(),
-            ShippingAddress = ViewModel.Order.ShippingAddress,
-            ShippingCity = ViewModel.Order.ShippingCity,
-            ShippingPostalCode = ViewModel.Order.ShippingPostalCode,
-            Notes = ViewModel.Order.Notes,
-            PaymentMethod = ViewModel.Order.PaymentMethod
+            SourceOrderId = ViewModel.Out.Order.Id,
+            Customer = ViewModel.Out.SelectedCustomer,
+            Items = ViewModel.Out.Items.ToList(),
+            ShippingAddress = ViewModel.Out.Order.ShippingAddress,
+            ShippingCity = ViewModel.Out.Order.ShippingCity,
+            ShippingPostalCode = ViewModel.Out.Order.ShippingPostalCode,
+            Notes = ViewModel.Out.Order.Notes,
+            PaymentMethod = ViewModel.Out.Order.PaymentMethod
         };
 
         // Try to find parent OrderModulePage for nested tab navigation

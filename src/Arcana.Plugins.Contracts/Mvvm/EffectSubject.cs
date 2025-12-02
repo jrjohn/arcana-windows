@@ -1,4 +1,4 @@
-namespace Arcana.App.ViewModels.Core;
+namespace Arcana.Plugins.Contracts.Mvvm;
 
 /// <summary>
 /// A subject for emitting one-time effects (side effects) from ViewModels.
@@ -40,8 +40,6 @@ public sealed class EffectSubject<T> : IDisposable
     /// <summary>
     /// Subscribes to the effect stream.
     /// </summary>
-    /// <param name="onNext">Action to execute when a value is emitted</param>
-    /// <returns>A disposable that removes the subscription when disposed</returns>
     public IDisposable Subscribe(Action<T> onNext)
     {
         if (_disposed) return new EmptyDisposable();
@@ -143,8 +141,6 @@ public sealed class EffectSubject : IDisposable
     /// <summary>
     /// Subscribes to the effect stream.
     /// </summary>
-    /// <param name="onNext">Action to execute when the effect is emitted</param>
-    /// <returns>A disposable that removes the subscription when disposed</returns>
     public IDisposable Subscribe(Action onNext)
     {
         if (_disposed) return new EmptyDisposable();

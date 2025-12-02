@@ -35,7 +35,7 @@ public sealed partial class PluginManagerPage : Page
     {
         if (sender is Button button && button.Tag is PluginVersionInfo version)
         {
-            await ViewModel.RollbackPluginCommand.ExecuteAsync(version);
+            await ViewModel.In.RollbackPlugin(version);
         }
     }
 }

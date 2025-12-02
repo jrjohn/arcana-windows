@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Arcana.App.ViewModels.Core;
+namespace Arcana.Plugins.Contracts.Mvvm;
 
 /// <summary>
 /// Base class for ViewModels following the UDF (Unidirectional Data Flow) pattern.
@@ -39,9 +39,9 @@ namespace Arcana.App.ViewModels.Core;
 /// <code>
 /// public partial class MyViewModel : ReactiveViewModelBase
 /// {
-///     public new Input Input => ...;
-///     public new Output Output => ...;
-///     public new Effect Effect => ...;
+///     public Input In => ...;
+///     public Output Out => ...;
+///     public Effect Fx => ...;
 ///
 ///     public sealed class Input : IViewModelInput { ... }
 ///     public sealed class Output : IViewModelOutput { ... }

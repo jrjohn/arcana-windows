@@ -1,51 +1,24 @@
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 using Arcana.Plugin.FlowChart.Models;
 using Arcana.Plugin.FlowChart.Services;
+using Arcana.Plugins.Contracts.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace Arcana.Plugin.FlowChart.ViewModels;
 
 /// <summary>
-/// ViewModel for the FlowChart editor.
+/// ViewModel for the FlowChart editor using UDF (Unidirectional Data Flow) pattern.
 /// </summary>
-public partial class FlowChartEditorViewModel : ObservableObject
+public partial class FlowChartEditorViewModel : ReactiveViewModelBase
 {
+    // ============ Dependencies ============
     private readonly DiagramSerializer _serializer = new();
     private readonly Stack<string> _undoStack = new();
     private readonly Stack<string> _redoStack = new();
-    private string? _currentFilePath;
-    private bool _isModified;
 
-    public FlowChartEditorViewModel()
-    {
-        Diagram = Diagram.CreateNew();
-        AvailableShapes = Enum.GetValues<NodeShape>().ToList();
-        SelectedShape = NodeShape.Rectangle;
-
-        // Initialize commands
-        NewCommand = new RelayCommand(NewDiagram);
-        OpenCommand = new AsyncRelayCommand(OpenDiagramAsync);
-        SaveCommand = new AsyncRelayCommand(SaveDiagramAsync);
-        SaveAsCommand = new AsyncRelayCommand(SaveDiagramAsAsync);
-        UndoCommand = new RelayCommand(Undo, CanUndo);
-        RedoCommand = new RelayCommand(Redo, CanRedo);
-        DeleteSelectedCommand = new RelayCommand(DeleteSelected, () => SelectedNode != null || SelectedEdge != null);
-        DuplicateSelectedCommand = new RelayCommand(DuplicateSelected, () => SelectedNode != null);
-        ZoomInCommand = new RelayCommand(() => ZoomLevel = Math.Min(ZoomLevel + 0.1, 3.0));
-        ZoomOutCommand = new RelayCommand(() => ZoomLevel = Math.Max(ZoomLevel - 0.1, 0.1));
-        ZoomResetCommand = new RelayCommand(() => ZoomLevel = 1.0);
-        CreateSampleCommand = new RelayCommand(CreateSampleDiagram);
-        AddNodeCommand = new RelayCommand<NodeShape?>(AddNode);
-        BringToFrontCommand = new RelayCommand(BringToFront, () => SelectedNode != null);
-        SendToBackCommand = new RelayCommand(SendToBack, () => SelectedNode != null);
-    }
-
-    #region Properties
+    // ============ Private State ============
 
     [ObservableProperty]
-    private Diagram _diagram;
+    private Diagram _diagram = Diagram.CreateNew();
 
     [ObservableProperty]
     private DiagramNode? _selectedNode;
@@ -54,7 +27,7 @@ public partial class FlowChartEditorViewModel : ObservableObject
     private DiagramEdge? _selectedEdge;
 
     [ObservableProperty]
-    private NodeShape _selectedShape;
+    private NodeShape _selectedShape = NodeShape.Rectangle;
 
     [ObservableProperty]
     private double _zoomLevel = 1.0;
@@ -71,55 +44,31 @@ public partial class FlowChartEditorViewModel : ObservableObject
     [ObservableProperty]
     private string _title = "Untitled - FlowChart Editor";
 
-    public List<NodeShape> AvailableShapes { get; }
+    [ObservableProperty]
+    private string? _currentFilePath;
 
-    public bool IsModified
+    [ObservableProperty]
+    private bool _isModified;
+
+    // ============ Input/Output/Effect ============
+    private Input? _input;
+    private Output? _output;
+    private Effect? _effect;
+
+    public Input In => _input ??= new Input(this);
+    public Output Out => _output ??= new Output(this);
+    public Effect Fx => _effect ??= new Effect();
+
+    // ============ Constructor ============
+    public FlowChartEditorViewModel()
     {
-        get => _isModified;
-        private set
-        {
-            if (SetProperty(ref _isModified, value))
-            {
-                UpdateTitle();
-            }
-        }
     }
 
-    public string? CurrentFilePath
-    {
-        get => _currentFilePath;
-        private set
-        {
-            if (SetProperty(ref _currentFilePath, value))
-            {
-                UpdateTitle();
-            }
-        }
-    }
+    // ============ State Change Handlers ============
+    partial void OnIsModifiedChanged(bool value) => UpdateTitle();
+    partial void OnCurrentFilePathChanged(string? value) => UpdateTitle();
 
-    #endregion
-
-    #region Commands
-
-    public ICommand NewCommand { get; }
-    public ICommand OpenCommand { get; }
-    public ICommand SaveCommand { get; }
-    public ICommand SaveAsCommand { get; }
-    public ICommand UndoCommand { get; }
-    public ICommand RedoCommand { get; }
-    public ICommand DeleteSelectedCommand { get; }
-    public ICommand DuplicateSelectedCommand { get; }
-    public ICommand ZoomInCommand { get; }
-    public ICommand ZoomOutCommand { get; }
-    public ICommand ZoomResetCommand { get; }
-    public ICommand CreateSampleCommand { get; }
-    public ICommand AddNodeCommand { get; }
-    public ICommand BringToFrontCommand { get; }
-    public ICommand SendToBackCommand { get; }
-
-    #endregion
-
-    #region Command Implementations
+    // ============ Internal Actions ============
 
     private void NewDiagram()
     {
@@ -127,38 +76,22 @@ public partial class FlowChartEditorViewModel : ObservableObject
         Diagram = Diagram.CreateNew();
         CurrentFilePath = null;
         IsModified = false;
-        ClearSelection();
+        ClearSelectionInternal();
         StatusMessage = "New diagram created";
+        Fx.DiagramChanged.Emit();
     }
 
     private async Task OpenDiagramAsync()
     {
-        try
-        {
-            // In a real implementation, this would use a file picker dialog
-            // For now, we'll use a placeholder that can be implemented with WinUI FileOpenPicker
-            StatusMessage = "Opening diagram...";
-
-            // TODO: Implement with FileOpenPicker
-            // var picker = new FileOpenPicker();
-            // picker.FileTypeFilter.Add(".afc");
-            // picker.FileTypeFilter.Add(".drawio");
-            // picker.FileTypeFilter.Add(".json");
-            // var file = await picker.PickSingleFileAsync();
-
-            StatusMessage = "Use File Picker to open diagram";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error opening file: {ex.Message}";
-        }
+        StatusMessage = "Opening diagram...";
+        Fx.RequestFileOpen.Emit();
     }
 
     private async Task SaveDiagramAsync()
     {
         if (string.IsNullOrEmpty(CurrentFilePath))
         {
-            await SaveDiagramAsAsync();
+            Fx.RequestFileSaveAs.Emit();
             return;
         }
 
@@ -168,37 +101,21 @@ public partial class FlowChartEditorViewModel : ObservableObject
             await _serializer.SaveToFileAsync(Diagram, CurrentFilePath, format);
             IsModified = false;
             StatusMessage = $"Saved to {Path.GetFileName(CurrentFilePath)}";
+            Fx.ShowSuccess.Emit($"Saved to {Path.GetFileName(CurrentFilePath)}");
         }
         catch (Exception ex)
         {
             StatusMessage = $"Error saving file: {ex.Message}";
+            Fx.ShowError.Emit(ex.Message);
         }
     }
 
     private async Task SaveDiagramAsAsync()
     {
-        try
-        {
-            // TODO: Implement with FileSavePicker
-            // var picker = new FileSavePicker();
-            // picker.FileTypeChoices.Add("Arcana FlowChart", new[] { ".afc" });
-            // picker.FileTypeChoices.Add("Draw.io", new[] { ".drawio" });
-            // picker.FileTypeChoices.Add("JSON", new[] { ".json" });
-            // picker.SuggestedFileName = Diagram.Name;
-            // var file = await picker.PickSaveFileAsync();
-
-            StatusMessage = "Use File Picker to save diagram";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error saving file: {ex.Message}";
-        }
+        Fx.RequestFileSaveAs.Emit();
     }
 
-    /// <summary>
-    /// Loads a diagram from the specified file path.
-    /// </summary>
-    public async Task LoadFromFileAsync(string filePath)
+    internal async Task LoadFromFileAsync(string filePath)
     {
         try
         {
@@ -209,20 +126,19 @@ public partial class FlowChartEditorViewModel : ObservableObject
                 Diagram = diagram;
                 CurrentFilePath = filePath;
                 IsModified = false;
-                ClearSelection();
+                ClearSelectionInternal();
                 StatusMessage = $"Loaded {Path.GetFileName(filePath)}";
+                Fx.DiagramChanged.Emit();
             }
         }
         catch (Exception ex)
         {
             StatusMessage = $"Error loading file: {ex.Message}";
+            Fx.ShowError.Emit(ex.Message);
         }
     }
 
-    /// <summary>
-    /// Saves the diagram to the specified file path.
-    /// </summary>
-    public async Task SaveToFileAsync(string filePath)
+    internal async Task SaveToFileAsync(string filePath)
     {
         try
         {
@@ -231,10 +147,12 @@ public partial class FlowChartEditorViewModel : ObservableObject
             CurrentFilePath = filePath;
             IsModified = false;
             StatusMessage = $"Saved to {Path.GetFileName(filePath)}";
+            Fx.ShowSuccess.Emit($"Saved to {Path.GetFileName(filePath)}");
         }
         catch (Exception ex)
         {
             StatusMessage = $"Error saving file: {ex.Message}";
+            Fx.ShowError.Emit(ex.Message);
         }
     }
 
@@ -250,12 +168,11 @@ public partial class FlowChartEditorViewModel : ObservableObject
         if (diagram != null)
         {
             Diagram = diagram;
-            ClearSelection();
+            ClearSelectionInternal();
             StatusMessage = "Undo";
+            Fx.DiagramChanged.Emit();
         }
     }
-
-    private bool CanUndo() => _undoStack.Count > 0;
 
     private void Redo()
     {
@@ -269,12 +186,11 @@ public partial class FlowChartEditorViewModel : ObservableObject
         if (diagram != null)
         {
             Diagram = diagram;
-            ClearSelection();
+            ClearSelectionInternal();
             StatusMessage = "Redo";
+            Fx.DiagramChanged.Emit();
         }
     }
-
-    private bool CanRedo() => _redoStack.Count > 0;
 
     private void DeleteSelected()
     {
@@ -294,7 +210,7 @@ public partial class FlowChartEditorViewModel : ObservableObject
         }
 
         IsModified = true;
-        OnPropertyChanged(nameof(Diagram));
+        Fx.DiagramChanged.Emit();
     }
 
     private void DuplicateSelected()
@@ -308,7 +224,7 @@ public partial class FlowChartEditorViewModel : ObservableObject
         SelectedNode = clone;
         IsModified = true;
         StatusMessage = "Node duplicated";
-        OnPropertyChanged(nameof(Diagram));
+        Fx.DiagramChanged.Emit();
     }
 
     private void AddNode(NodeShape? shape)
@@ -329,7 +245,7 @@ public partial class FlowChartEditorViewModel : ObservableObject
         SelectedNode = node;
         IsModified = true;
         StatusMessage = $"Added {actualShape} node";
-        OnPropertyChanged(nameof(Diagram));
+        Fx.DiagramChanged.Emit();
     }
 
     private void BringToFront()
@@ -339,7 +255,7 @@ public partial class FlowChartEditorViewModel : ObservableObject
         SaveUndoState();
         SelectedNode.ZIndex = Diagram.GetNextZIndex();
         IsModified = true;
-        OnPropertyChanged(nameof(Diagram));
+        Fx.DiagramChanged.Emit();
     }
 
     private void SendToBack()
@@ -350,7 +266,7 @@ public partial class FlowChartEditorViewModel : ObservableObject
         var minZ = Diagram.Nodes.Min(n => n.ZIndex);
         SelectedNode.ZIndex = minZ - 1;
         IsModified = true;
-        OnPropertyChanged(nameof(Diagram));
+        Fx.DiagramChanged.Emit();
     }
 
     private void CreateSampleDiagram()
@@ -359,20 +275,13 @@ public partial class FlowChartEditorViewModel : ObservableObject
         Diagram = Diagram.CreateSample();
         CurrentFilePath = null;
         IsModified = true;
-        ClearSelection();
+        ClearSelectionInternal();
         StatusMessage = "Sample diagram created";
+        Fx.DiagramChanged.Emit();
     }
 
-    #endregion
-
-    #region Public Methods
-
-    /// <summary>
-    /// Adds a connection between two nodes.
-    /// </summary>
-    public void AddConnection(string sourceNodeId, string targetNodeId,
-        ConnectionPoint sourcePoint = ConnectionPoint.Right,
-        ConnectionPoint targetPoint = ConnectionPoint.Left)
+    internal void AddConnection(string sourceNodeId, string targetNodeId,
+        ConnectionPoint sourcePoint, ConnectionPoint targetPoint)
     {
         if (sourceNodeId == targetNodeId) return;
 
@@ -390,18 +299,14 @@ public partial class FlowChartEditorViewModel : ObservableObject
         SelectedEdge = edge;
         IsModified = true;
         StatusMessage = "Connection added";
-        OnPropertyChanged(nameof(Diagram));
+        Fx.DiagramChanged.Emit();
     }
 
-    /// <summary>
-    /// Updates a node's position.
-    /// </summary>
-    public void UpdateNodePosition(string nodeId, double x, double y)
+    internal void UpdateNodePosition(string nodeId, double x, double y)
     {
         var node = Diagram.GetNode(nodeId);
         if (node == null) return;
 
-        // Snap to grid if enabled
         if (Diagram.SnapToGrid)
         {
             x = Math.Round(x / Diagram.GridSize) * Diagram.GridSize;
@@ -414,10 +319,7 @@ public partial class FlowChartEditorViewModel : ObservableObject
         IsModified = true;
     }
 
-    /// <summary>
-    /// Updates a node's size.
-    /// </summary>
-    public void UpdateNodeSize(string nodeId, double width, double height)
+    internal void UpdateNodeSize(string nodeId, double width, double height)
     {
         var node = Diagram.GetNode(nodeId);
         if (node == null) return;
@@ -428,12 +330,8 @@ public partial class FlowChartEditorViewModel : ObservableObject
         IsModified = true;
     }
 
-    /// <summary>
-    /// Selects a node.
-    /// </summary>
-    public void SelectNode(string? nodeId)
+    internal void SelectNode(string? nodeId)
     {
-        // Deselect previous
         if (SelectedNode != null)
             SelectedNode.IsSelected = false;
         if (SelectedEdge != null)
@@ -455,12 +353,8 @@ public partial class FlowChartEditorViewModel : ObservableObject
         }
     }
 
-    /// <summary>
-    /// Selects an edge.
-    /// </summary>
-    public void SelectEdge(string? edgeId)
+    internal void SelectEdge(string? edgeId)
     {
-        // Deselect previous
         if (SelectedNode != null)
             SelectedNode.IsSelected = false;
         if (SelectedEdge != null)
@@ -482,18 +376,13 @@ public partial class FlowChartEditorViewModel : ObservableObject
         }
     }
 
-    /// <summary>
-    /// Clears the current selection.
-    /// </summary>
-    public void ClearSelection()
+    private void ClearSelectionInternal()
     {
         SelectNode(null);
         SelectEdge(null);
     }
 
-    #endregion
-
-    #region Private Methods
+    // ============ Private Helpers ============
 
     private void SaveUndoState()
     {
@@ -501,7 +390,6 @@ public partial class FlowChartEditorViewModel : ObservableObject
         _undoStack.Push(state);
         _redoStack.Clear();
 
-        // Limit undo history
         while (_undoStack.Count > 50)
         {
             var items = _undoStack.ToArray();
@@ -532,6 +420,158 @@ public partial class FlowChartEditorViewModel : ObservableObject
             NodeShape.Cloud => "Cloud",
             _ => "Process"
         };
+    }
+
+    // ============ Disposal ============
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _effect?.Dispose();
+        }
+        base.Dispose(disposing);
+    }
+
+    // ============================================================
+    // NESTED CLASSES: Input, Output, Effect
+    // ============================================================
+
+    #region Input
+
+    /// <summary>
+    /// Input actions - the ONLY entry point for state changes.
+    /// </summary>
+    public sealed class Input : IViewModelInput
+    {
+        private readonly FlowChartEditorViewModel _vm;
+
+        internal Input(FlowChartEditorViewModel vm) => _vm = vm;
+
+        // File operations
+        public void NewDiagram() => _vm.NewDiagram();
+        public Task OpenDiagram() => _vm.OpenDiagramAsync();
+        public Task SaveDiagram() => _vm.SaveDiagramAsync();
+        public Task SaveDiagramAs() => _vm.SaveDiagramAsAsync();
+        public Task LoadFromFile(string filePath) => _vm.LoadFromFileAsync(filePath);
+        public Task SaveToFile(string filePath) => _vm.SaveToFileAsync(filePath);
+
+        // Edit operations
+        public void Undo() => _vm.Undo();
+        public void Redo() => _vm.Redo();
+        public void DeleteSelected() => _vm.DeleteSelected();
+        public void DuplicateSelected() => _vm.DuplicateSelected();
+
+        // Node operations
+        public void AddNode(NodeShape? shape = null) => _vm.AddNode(shape);
+        public void BringToFront() => _vm.BringToFront();
+        public void SendToBack() => _vm.SendToBack();
+        public void UpdateNodePosition(string nodeId, double x, double y) => _vm.UpdateNodePosition(nodeId, x, y);
+        public void UpdateNodeSize(string nodeId, double width, double height) => _vm.UpdateNodeSize(nodeId, width, height);
+
+        // Connection operations
+        public void AddConnection(string sourceId, string targetId,
+            ConnectionPoint sourcePoint = ConnectionPoint.Right,
+            ConnectionPoint targetPoint = ConnectionPoint.Left)
+            => _vm.AddConnection(sourceId, targetId, sourcePoint, targetPoint);
+
+        // Selection
+        public void SelectNode(string? nodeId) => _vm.SelectNode(nodeId);
+        public void SelectEdge(string? edgeId) => _vm.SelectEdge(edgeId);
+        public void ClearSelection() => _vm.ClearSelectionInternal();
+
+        // View operations
+        public void ZoomIn() => _vm.ZoomLevel = Math.Min(_vm.ZoomLevel + 0.1, 3.0);
+        public void ZoomOut() => _vm.ZoomLevel = Math.Max(_vm.ZoomLevel - 0.1, 0.1);
+        public void ZoomReset() => _vm.ZoomLevel = 1.0;
+        public void SetZoom(double level) => _vm.ZoomLevel = Math.Clamp(level, 0.1, 3.0);
+
+        // Mode toggles
+        public void ToggleConnectMode() => _vm.IsConnectMode = !_vm.IsConnectMode;
+        public void TogglePanMode() => _vm.IsPanMode = !_vm.IsPanMode;
+        public void SetConnectMode(bool enabled) => _vm.IsConnectMode = enabled;
+        public void SetPanMode(bool enabled) => _vm.IsPanMode = enabled;
+
+        // Shape selection
+        public void SetSelectedShape(NodeShape shape) => _vm.SelectedShape = shape;
+
+        // Sample
+        public void CreateSampleDiagram() => _vm.CreateSampleDiagram();
+    }
+
+    #endregion
+
+    #region Output
+
+    /// <summary>
+    /// Output state - read-only reactive state exposed to View.
+    /// </summary>
+    public sealed class Output : IViewModelOutput
+    {
+        private readonly FlowChartEditorViewModel _vm;
+
+        internal Output(FlowChartEditorViewModel vm) => _vm = vm;
+
+        // Diagram state
+        public Diagram Diagram => _vm.Diagram;
+        public DiagramNode? SelectedNode => _vm.SelectedNode;
+        public DiagramEdge? SelectedEdge => _vm.SelectedEdge;
+
+        // View state
+        public double ZoomLevel => _vm.ZoomLevel;
+        public bool IsConnectMode => _vm.IsConnectMode;
+        public bool IsPanMode => _vm.IsPanMode;
+        public NodeShape SelectedShape => _vm.SelectedShape;
+        public List<NodeShape> AvailableShapes => Enum.GetValues<NodeShape>().ToList();
+
+        // File state
+        public string Title => _vm.Title;
+        public string? CurrentFilePath => _vm.CurrentFilePath;
+        public bool IsModified => _vm.IsModified;
+        public string StatusMessage => _vm.StatusMessage;
+
+        // Computed state
+        public bool CanUndo => _vm._undoStack.Count > 0;
+        public bool CanRedo => _vm._redoStack.Count > 0;
+        public bool HasSelection => _vm.SelectedNode != null || _vm.SelectedEdge != null;
+        public bool HasNodeSelection => _vm.SelectedNode != null;
+        public bool HasEdgeSelection => _vm.SelectedEdge != null;
+    }
+
+    #endregion
+
+    #region Effect
+
+    /// <summary>
+    /// Effect - one-time events for side effects.
+    /// </summary>
+    public sealed class Effect : IViewModelEffect, IDisposable
+    {
+        private bool _disposed;
+
+        // File dialogs
+        public EffectSubject RequestFileOpen { get; } = new();
+        public EffectSubject RequestFileSaveAs { get; } = new();
+
+        // Notifications
+        public EffectSubject<string> ShowError { get; } = new();
+        public EffectSubject<string> ShowSuccess { get; } = new();
+        public EffectSubject<string> ShowInfo { get; } = new();
+
+        // Events
+        public EffectSubject DiagramChanged { get; } = new();
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+
+            RequestFileOpen.Dispose();
+            RequestFileSaveAs.Dispose();
+            ShowError.Dispose();
+            ShowSuccess.Dispose();
+            ShowInfo.Dispose();
+            DiagramChanged.Dispose();
+        }
     }
 
     #endregion

@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "Z:\\Documents\\projects\\arcana-windows\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{499CDAFD-8763-71F5-54E9-67C5147BFC97}|plugins\\FlowChartModule\\Arcana.Plugin.FlowChart.csproj|z:\\documents\\projects\\arcana-windows\\plugins\\flowchartmodule\\views\\flowcharteditorpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{499CDAFD-8763-71F5-54E9-67C5147BFC97}|plugins\\FlowChartModule\\Arcana.Plugin.FlowChart.csproj|solutionrelative:plugins\\flowchartmodule\\views\\flowcharteditorpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{499CDAFD-8763-71F5-54E9-67C5147BFC97}|plugins\\FlowChartModule\\Arcana.Plugin.FlowChart.csproj|z:\\documents\\projects\\arcana-windows\\plugins\\flowchartmodule\\viewmodels\\flowcharteditorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{499CDAFD-8763-71F5-54E9-67C5147BFC97}|plugins\\FlowChartModule\\Arcana.Plugin.FlowChart.csproj|solutionrelative:plugins\\flowchartmodule\\viewmodels\\flowcharteditorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|z:\\documents\\projects\\arcana-windows\\src\\arcana.app\\viewmodels\\viewmodelbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|solutionrelative:src\\arcana.app\\viewmodels\\viewmodelbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|z:\\documents\\projects\\arcana-windows\\src\\arcana.app\\navigation\\navigationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|solutionrelative:src\\arcana.app\\navigation\\navigationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -29,18 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|z:\\documents\\projects\\arcana-windows\\src\\arcana.app\\viewmodels\\orderdetailviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|solutionrelative:src\\arcana.app\\viewmodels\\orderdetailviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|z:\\documents\\projects\\arcana-windows\\src\\arcana.app\\viewmodels\\core\\reactiveviewmodelbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|solutionrelative:src\\arcana.app\\viewmodels\\core\\reactiveviewmodelbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|z:\\documents\\projects\\arcana-windows\\src\\arcana.app\\viewmodels\\core\\iviewmodeloutput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|solutionrelative:src\\arcana.app\\viewmodels\\core\\iviewmodeloutput.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|z:\\documents\\projects\\arcana-windows\\src\\arcana.app\\viewmodels\\viewmodelbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8C9D0E1-F2A3-4567-1234-678901234567}|src\\Arcana.App\\Arcana.App.csproj|solutionrelative:src\\arcana.app\\viewmodels\\viewmodelbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B2C3D4E5-F6A7-8901-BCDE-F12345678901}|src\\Arcana.Domain\\Arcana.Domain.csproj|z:\\documents\\projects\\arcana-windows\\src\\arcana.domain\\validation\\ordervalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -78,6 +78,31 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "FlowChartEditorPage.xaml",
+              "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\plugins\\FlowChartModule\\Views\\FlowChartEditorPage.xaml",
+              "RelativeDocumentMoniker": "plugins\\FlowChartModule\\Views\\FlowChartEditorPage.xaml",
+              "ToolTip": "Z:\\Documents\\projects\\arcana-windows\\plugins\\FlowChartModule\\Views\\FlowChartEditorPage.xaml",
+              "RelativeToolTip": "plugins\\FlowChartModule\\Views\\FlowChartEditorPage.xaml",
+              "ViewState": "AgIAAL4AAADQ0MzMzMwwwMoAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-12-02T06:49:53.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FlowChartEditorViewModel.cs",
+              "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\plugins\\FlowChartModule\\ViewModels\\FlowChartEditorViewModel.cs",
+              "RelativeDocumentMoniker": "plugins\\FlowChartModule\\ViewModels\\FlowChartEditorViewModel.cs",
+              "ToolTip": "Z:\\Documents\\projects\\arcana-windows\\plugins\\FlowChartModule\\ViewModels\\FlowChartEditorViewModel.cs",
+              "RelativeToolTip": "plugins\\FlowChartModule\\ViewModels\\FlowChartEditorViewModel.cs",
+              "ViewState": "AgIAAOYBAAAAhJmZmZkzwEECAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-02T06:47:33.983Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "NavigationService.cs",
               "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\Navigation\\NavigationService.cs",
               "RelativeDocumentMoniker": "src\\Arcana.App\\Navigation\\NavigationService.cs",
@@ -85,24 +110,11 @@
               "RelativeToolTip": "src\\Arcana.App\\Navigation\\NavigationService.cs",
               "ViewState": "AgIAAAoAAACAmZmZmZkRwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T06:35:51.37Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-02T06:35:51.37Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "src\\Arcana.App\\MainWindow.xaml",
-              "ToolTip": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\MainWindow.xaml",
-              "RelativeToolTip": "src\\Arcana.App\\MainWindow.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-02T06:32:38.08Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "OrderDetailPage.xaml",
               "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\Views\\OrderDetailPage.xaml",
               "RelativeDocumentMoniker": "src\\Arcana.App\\Views\\OrderDetailPage.xaml",
@@ -114,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "NavGraph.cs",
               "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\Navigation\\NavGraph.cs",
               "RelativeDocumentMoniker": "src\\Arcana.App\\Navigation\\NavGraph.cs",
@@ -126,7 +138,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "App.xaml.cs",
               "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\App.xaml.cs",
               "RelativeDocumentMoniker": "src\\Arcana.App\\App.xaml.cs",
@@ -138,7 +150,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "OrderListViewModel.cs",
               "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\ViewModels\\Orders\\OrderListViewModel.cs",
               "RelativeDocumentMoniker": "src\\Arcana.App\\ViewModels\\Orders\\OrderListViewModel.cs",
@@ -150,27 +162,27 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "IViewModelOutput.cs",
-              "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\ViewModels\\Core\\IViewModelOutput.cs",
-              "RelativeDocumentMoniker": "src\\Arcana.App\\ViewModels\\Core\\IViewModelOutput.cs",
-              "ToolTip": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\ViewModels\\Core\\IViewModelOutput.cs",
-              "RelativeToolTip": "src\\Arcana.App\\ViewModels\\Core\\IViewModelOutput.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T06:22:50.106Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 2,
               "Title": "ViewModelBase.cs",
               "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\ViewModels\\ViewModelBase.cs",
               "RelativeDocumentMoniker": "src\\Arcana.App\\ViewModels\\ViewModelBase.cs",
               "ToolTip": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\ViewModels\\ViewModelBase.cs",
               "RelativeToolTip": "src\\Arcana.App\\ViewModels\\ViewModelBase.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAAAAUAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-02T06:22:23.242Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "src\\Arcana.App\\MainWindow.xaml",
+              "ToolTip": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\MainWindow.xaml",
+              "RelativeToolTip": "src\\Arcana.App\\MainWindow.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-12-02T06:32:38.08Z"
             },
             {
               "$type": "Document",
@@ -198,19 +210,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ReactiveViewModelBase.cs",
-              "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\ViewModels\\Core\\ReactiveViewModelBase.cs",
-              "RelativeDocumentMoniker": "src\\Arcana.App\\ViewModels\\Core\\ReactiveViewModelBase.cs",
-              "ToolTip": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\ViewModels\\Core\\ReactiveViewModelBase.cs",
-              "RelativeToolTip": "src\\Arcana.App\\ViewModels\\Core\\ReactiveViewModelBase.cs",
-              "ViewState": "AgIAADQAAAAAoJmZmZnJvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-02T06:07:02.098Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "OrderDetailViewModel.cs",
               "DocumentMoniker": "Z:\\Documents\\projects\\arcana-windows\\src\\Arcana.App\\ViewModels\\OrderDetailViewModel.cs",
               "RelativeDocumentMoniker": "src\\Arcana.App\\ViewModels\\OrderDetailViewModel.cs",

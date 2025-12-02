@@ -1,26 +1,27 @@
 using System.Collections.ObjectModel;
+using Arcana.App.Navigation;
 using Arcana.Core.Common;
 using Arcana.Domain.Entities;
 using Arcana.Domain.Services;
 using Arcana.Plugins.Contracts;
+using Arcana.Plugins.Contracts.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace Arcana.App.ViewModels;
 
 /// <summary>
-/// ViewModel for order detail page.
+/// ViewModel for order detail page using UDF pattern.
 /// </summary>
-public partial class OrderDetailViewModel : ViewModelBase
+public partial class OrderDetailViewModel : ReactiveViewModelBase
 {
+    // ============ Dependencies ============
     private readonly IOrderService _orderService;
     private readonly ICustomerService _customerService;
     private readonly IProductService _productService;
-    private readonly INavigationService _navigationService;
+    private readonly NavGraph _nav;
     private readonly IWindowService _windowService;
 
-    private int? _orderId;
-    private bool _isNew;
+    // ============ Private State ============
 
     [ObservableProperty]
     private Order _order = new();
@@ -49,30 +50,57 @@ public partial class OrderDetailViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isEditing;
 
-    public bool IsNew => _isNew;
-    public string Title => _isNew ? "New Order" : $"Order {Order.OrderNumber}";
+    [ObservableProperty]
+    private bool _isLoading;
 
+    [ObservableProperty]
+    private bool _isBusy;
+
+    [ObservableProperty]
+    private string? _errorMessage;
+
+    private int? _orderId;
+    private bool _isNew;
+
+    // ============ Input/Output/Effect ============
+    private Input? _input;
+    private Output? _output;
+    private Effect? _effect;
+
+    public Input In => _input ??= new Input(this);
+    public Output Out => _output ??= new Output(this);
+    public Effect Fx => _effect ??= new Effect();
+
+    // ============ Constructor ============
     public OrderDetailViewModel(
         IOrderService orderService,
         ICustomerService customerService,
         IProductService productService,
-        INavigationService navigationService,
+        NavGraph nav,
         IWindowService windowService)
     {
         _orderService = orderService;
         _customerService = customerService;
         _productService = productService;
-        _navigationService = navigationService;
+        _nav = nav;
         _windowService = windowService;
     }
 
-    public async Task LoadAsync(int? orderId)
-    {
-        _orderId = orderId;
-        _isNew = !orderId.HasValue;
+    // ============ Internal Actions ============
 
-        await ExecuteWithLoadingAsync(async () =>
+    private async Task LoadAsync(int? orderId)
+    {
+        if (IsBusy) return;
+
+        try
         {
+            IsBusy = true;
+            IsLoading = true;
+            ErrorMessage = null;
+
+            _orderId = orderId;
+            _isNew = !orderId.HasValue;
+
             // Load customers for lookup
             var customerResult = await _customerService.SearchCustomersAsync("", 100);
             if (customerResult.IsSuccess)
@@ -82,7 +110,6 @@ public partial class OrderDetailViewModel : ViewModelBase
 
             if (_isNew)
             {
-                // Create new order
                 Order = new Order
                 {
                     OrderNumber = await _orderService.GenerateOrderNumberAsync(),
@@ -95,7 +122,6 @@ public partial class OrderDetailViewModel : ViewModelBase
             }
             else
             {
-                // Load existing order
                 var result = await _orderService.GetOrderByIdAsync(orderId!.Value);
                 if (result.IsSuccess)
                 {
@@ -106,35 +132,46 @@ public partial class OrderDetailViewModel : ViewModelBase
                 }
                 else
                 {
-                    SetError(result.Error!.Message);
+                    ErrorMessage = result.Error!.Message;
+                    Fx.ShowError.Emit(result.Error);
                 }
             }
-        });
+
+            Fx.DataLoaded.Emit();
+        }
+        finally
+        {
+            IsBusy = false;
+            IsLoading = false;
+        }
     }
 
-    [RelayCommand]
     private void Edit()
     {
         IsEditing = true;
     }
 
-    [RelayCommand]
     private async Task SaveAsync()
     {
-        await ExecuteWithLoadingAsync(async () =>
-        {
-            // Validate
-            if (SelectedCustomer == null)
-            {
-                await _windowService.ShowWarningAsync("Please select a customer");
-                return;
-            }
+        if (IsBusy) return;
 
-            if (Items.Count == 0)
-            {
-                await _windowService.ShowWarningAsync("Please add at least one order item");
-                return;
-            }
+        // Validate
+        if (SelectedCustomer == null)
+        {
+            Fx.ShowWarning.Emit("Please select a customer");
+            return;
+        }
+
+        if (Items.Count == 0)
+        {
+            Fx.ShowWarning.Emit("Please add at least one order item");
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+            IsLoading = true;
 
             // Update order from form
             Order.CustomerId = SelectedCustomer.Id;
@@ -159,42 +196,50 @@ public partial class OrderDetailViewModel : ViewModelBase
                 _isNew = false;
                 IsEditing = false;
                 IsDirty = false;
-                OnPropertyChanged(nameof(Title));
 
-                await _windowService.ShowInfoAsync("Order saved successfully");
+                Fx.ShowSuccess.Emit("Order saved successfully");
+                Fx.OrderSaved.Emit(Order);
             }
             else
             {
-                await _windowService.ShowErrorAsync(result.Error!.ToUserMessage());
+                Fx.ShowError.Emit(result.Error!);
             }
-        });
+        }
+        finally
+        {
+            IsBusy = false;
+            IsLoading = false;
+        }
     }
 
-    [RelayCommand]
     private async Task CancelAsync()
     {
         if (IsDirty)
         {
-            var confirmed = await _windowService.ShowConfirmAsync(
-                "Discard Changes",
-                "You have unsaved changes. Are you sure you want to discard them?");
-
-            if (!confirmed) return;
-        }
-
-        if (_isNew)
-        {
-            await _navigationService.CloseAsync();
+            Fx.ConfirmDiscard.Emit(new ConfirmDiscardRequest(async () =>
+            {
+                await PerformCancelAsync();
+            }));
         }
         else
         {
-            // Reload the order
+            await PerformCancelAsync();
+        }
+    }
+
+    private async Task PerformCancelAsync()
+    {
+        if (_isNew)
+        {
+            await _nav.Close();
+        }
+        else
+        {
             await LoadAsync(_orderId);
             IsEditing = false;
         }
     }
 
-    [RelayCommand]
     private async Task SearchProductsAsync()
     {
         if (string.IsNullOrWhiteSpace(ProductSearchText)) return;
@@ -206,7 +251,6 @@ public partial class OrderDetailViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
     private void AddItem(Product? product)
     {
         if (product == null) return;
@@ -238,7 +282,6 @@ public partial class OrderDetailViewModel : ViewModelBase
         CalculateTotals();
     }
 
-    [RelayCommand]
     private void RemoveItem(OrderItem? item)
     {
         if (item != null)
@@ -250,7 +293,6 @@ public partial class OrderDetailViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
     private void IncreaseQuantity(OrderItem? item)
     {
         if (item != null)
@@ -262,7 +304,6 @@ public partial class OrderDetailViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
     private void DecreaseQuantity(OrderItem? item)
     {
         if (item != null && item.Quantity > 1)
@@ -274,7 +315,6 @@ public partial class OrderDetailViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
     private void ClearItems()
     {
         Items.Clear();
@@ -303,6 +343,8 @@ public partial class OrderDetailViewModel : ViewModelBase
         OnPropertyChanged(nameof(Order));
     }
 
+    // ============ State Change Handlers ============
+
     partial void OnSelectedCustomerChanged(Customer? value)
     {
         if (value != null && IsEditing)
@@ -315,4 +357,127 @@ public partial class OrderDetailViewModel : ViewModelBase
             IsDirty = true;
         }
     }
+
+    // ============ Disposal ============
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _effect?.Dispose();
+        }
+        base.Dispose(disposing);
+    }
+
+    // ============================================================
+    // NESTED CLASSES: Input, Output, Effect
+    // ============================================================
+
+    #region Input
+
+    public sealed class Input : IViewModelInput
+    {
+        private readonly OrderDetailViewModel _vm;
+
+        internal Input(OrderDetailViewModel vm) => _vm = vm;
+
+        public Task Load(int? orderId) => _vm.LoadAsync(orderId);
+        public void Edit() => _vm.Edit();
+        public Task Save() => _vm.SaveAsync();
+        public Task Cancel() => _vm.CancelAsync();
+
+        // Product search
+        public void UpdateProductSearchText(string? text) => _vm.ProductSearchText = text;
+        public Task SearchProducts() => _vm.SearchProductsAsync();
+
+        // Item operations
+        public void AddItem(Product? product) => _vm.AddItem(product);
+        public void RemoveItem(OrderItem? item) => _vm.RemoveItem(item);
+        public void IncreaseQuantity(OrderItem? item) => _vm.IncreaseQuantity(item);
+        public void DecreaseQuantity(OrderItem? item) => _vm.DecreaseQuantity(item);
+        public void ClearItems() => _vm.ClearItems();
+
+        // Selection
+        public void SelectItem(OrderItem? item) => _vm.SelectedItem = item;
+        public void SelectCustomer(Customer? customer) => _vm.SelectedCustomer = customer;
+    }
+
+    #endregion
+
+    #region Output
+
+    public sealed class Output : IViewModelOutput
+    {
+        private readonly OrderDetailViewModel _vm;
+
+        internal Output(OrderDetailViewModel vm) => _vm = vm;
+
+        // Order state
+        public Order Order => _vm.Order;
+        public ObservableCollection<OrderItem> Items => _vm.Items;
+        public OrderItem? SelectedItem => _vm.SelectedItem;
+
+        // Lookup data
+        public ObservableCollection<Customer> Customers => _vm.Customers;
+        public Customer? SelectedCustomer => _vm.SelectedCustomer;
+        public ObservableCollection<Product> Products => _vm.Products;
+        public string? ProductSearchText => _vm.ProductSearchText;
+
+        // UI state
+        public bool IsDirty => _vm.IsDirty;
+        public bool IsEditing => _vm.IsEditing;
+        public bool IsLoading => _vm.IsLoading;
+        public bool IsBusy => _vm.IsBusy;
+        public string? ErrorMessage => _vm.ErrorMessage;
+
+        // Computed state
+        public bool IsNew => _vm._isNew;
+        public string Title => _vm._isNew ? "New Order" : $"Order {_vm.Order.OrderNumber}";
+        public bool CanSave => _vm.IsEditing && !_vm.IsBusy;
+        public bool CanEdit => !_vm.IsEditing && !_vm._isNew;
+        public bool HasItems => _vm.Items.Count > 0;
+    }
+
+    #endregion
+
+    #region Effect
+
+    public sealed class Effect : IViewModelEffect, IDisposable
+    {
+        private bool _disposed;
+
+        // Notifications
+        public EffectSubject<AppError> ShowError { get; } = new();
+        public EffectSubject<string> ShowWarning { get; } = new();
+        public EffectSubject<string> ShowSuccess { get; } = new();
+        public EffectSubject<string> ShowInfo { get; } = new();
+
+        // Confirmations
+        public EffectSubject<ConfirmDiscardRequest> ConfirmDiscard { get; } = new();
+
+        // Events
+        public EffectSubject DataLoaded { get; } = new();
+        public EffectSubject<Order> OrderSaved { get; } = new();
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+
+            ShowError.Dispose();
+            ShowWarning.Dispose();
+            ShowSuccess.Dispose();
+            ShowInfo.Dispose();
+            ConfirmDiscard.Dispose();
+            DataLoaded.Dispose();
+            OrderSaved.Dispose();
+        }
+    }
+
+    #endregion
+
+    #region Records
+
+    public record ConfirmDiscardRequest(Action OnConfirm);
+
+    #endregion
 }

@@ -11,3 +11,16 @@
 /Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/obj/x64/Debug/net10.0/refint/Arcana.Plugins.Contracts.dll
 /Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/obj/x64/Debug/net10.0/Arcana.Plugins.Contracts.pdb
 /Users/jrjohn/Documents/projects/arcana-windows/src/Arcana.Plugins.Contracts/obj/x64/Debug/net10.0/ref/Arcana.Plugins.Contracts.dll
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\bin\x64\Debug\net10.0\Arcana.Plugins.Contracts.deps.json
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\bin\x64\Debug\net10.0\Arcana.Plugins.Contracts.dll
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\bin\x64\Debug\net10.0\Arcana.Plugins.Contracts.pdb
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\Arcana.Plugins.Contracts.csproj.AssemblyReference.cache
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\Arcana.Plugins.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\Arcana.Plugins.Contracts.AssemblyInfoInputs.cache
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\Arcana.Plugins.Contracts.AssemblyInfo.cs
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\Arcana.Plugins.Contracts.csproj.CoreCompileInputs.cache
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\Arcana.Plugins.Contracts.sourcelink.json
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\Arcana.Plugins.Contracts.dll
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\refint\Arcana.Plugins.Contracts.dll
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\Arcana.Plugins.Contracts.pdb
+Z:\Documents\projects\arcana-windows\src\Arcana.Plugins.Contracts\obj\x64\Debug\net10.0\ref\Arcana.Plugins.Contracts.dll

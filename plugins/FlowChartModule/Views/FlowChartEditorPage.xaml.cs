@@ -505,7 +505,7 @@ public sealed class FlowChartEditorPage : Page
         {
             Width = 2000,
             Height = 2000,
-            Diagram = _viewModel.Diagram
+            Diagram = _viewModel.Out.Diagram
         };
 
         // Use the stored DiagramScrollViewer reference (since Parent is null before visual tree is built)
@@ -585,7 +585,7 @@ public sealed class FlowChartEditorPage : Page
             return;
         }
 
-        foreach (var shape in _viewModel.AvailableShapes)
+        foreach (var shape in _viewModel.Out.AvailableShapes)
         {
             var btn = new Button
             {
@@ -638,7 +638,7 @@ public sealed class FlowChartEditorPage : Page
                     _ = OpenDiagramAsync();
                     break;
                 case "sample":
-                    _viewModel.CreateSampleCommand.Execute(null);
+                    _viewModel.In.CreateSampleDiagram();
                     RefreshCanvas();
                     break;
                 case "load" when parameters.TryGetValue("filePath", out var filePath):
@@ -705,7 +705,7 @@ public sealed class FlowChartEditorPage : Page
 
     private void OnNewClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.NewCommand.Execute(null);
+        _viewModel.In.NewDiagram();
         RefreshCanvas();
         UpdateStatusBar();
     }
@@ -739,7 +739,7 @@ public sealed class FlowChartEditorPage : Page
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[FlowChart] Error opening file: {ex.Message}");
-            _viewModel.StatusMessage = $"Error opening file: {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"[FlowChart] Error opening file: {ex.Message}");
         }
     }
 
@@ -753,7 +753,7 @@ public sealed class FlowChartEditorPage : Page
 
     private async Task LoadDiagramFromFileAsync(string filePath)
     {
-        await _viewModel.LoadFromFileAsync(filePath);
+        await _viewModel.In.LoadFromFile(filePath);
         RefreshCanvas();
         UpdateStatusBar();
         UpdatePropertiesPanel();
@@ -763,20 +763,19 @@ public sealed class FlowChartEditorPage : Page
     {
         try
         {
-            if (string.IsNullOrEmpty(_viewModel.CurrentFilePath))
+            if (string.IsNullOrEmpty(_viewModel.Out.CurrentFilePath))
             {
                 await SaveDiagramAsAsync();
             }
             else
             {
-                await _viewModel.SaveToFileAsync(_viewModel.CurrentFilePath);
+                await _viewModel.In.SaveToFile(_viewModel.Out.CurrentFilePath);
                 UpdateStatusBar();
             }
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[FlowChart] Error saving: {ex.Message}");
-            _viewModel.StatusMessage = $"Error saving: {ex.Message}";
         }
     }
 
@@ -794,7 +793,7 @@ public sealed class FlowChartEditorPage : Page
             picker.FileTypeChoices.Add("Arcana FlowChart", new[] { ".afc" });
             picker.FileTypeChoices.Add("Draw.io", new[] { ".drawio" });
             picker.FileTypeChoices.Add("JSON", new[] { ".json" });
-            picker.SuggestedFileName = _viewModel.Diagram.Name;
+            picker.SuggestedFileName = _viewModel.Out.Diagram.Name;
 
             var windowHandle = GetWindowHandle();
             if (windowHandle != IntPtr.Zero)
@@ -805,34 +804,33 @@ public sealed class FlowChartEditorPage : Page
             var file = await picker.PickSaveFileAsync();
             if (file != null)
             {
-                await _viewModel.SaveToFileAsync(file.Path);
+                await _viewModel.In.SaveToFile(file.Path);
                 UpdateStatusBar();
             }
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[FlowChart] Error saving file: {ex.Message}");
-            _viewModel.StatusMessage = $"Error saving file: {ex.Message}";
         }
     }
 
     private void OnUndoClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.UndoCommand.Execute(null);
+        _viewModel.In.Undo();
         RefreshCanvas();
         UpdateStatusBar();
     }
 
     private void OnRedoClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.RedoCommand.Execute(null);
+        _viewModel.In.Redo();
         RefreshCanvas();
         UpdateStatusBar();
     }
 
     private void OnDeleteClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.DeleteSelectedCommand.Execute(null);
+        _viewModel.In.DeleteSelected();
         RefreshCanvas();
         UpdateStatusBar();
         UpdatePropertiesPanel();
@@ -840,46 +838,46 @@ public sealed class FlowChartEditorPage : Page
 
     private void OnDuplicateClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.DuplicateSelectedCommand.Execute(null);
+        _viewModel.In.DuplicateSelected();
         RefreshCanvas();
         UpdateStatusBar();
     }
 
     private void OnZoomInClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.ZoomInCommand.Execute(null);
+        _viewModel.In.ZoomIn();
         if (_flowChartCanvas != null)
-            _flowChartCanvas.ZoomLevel = _viewModel.ZoomLevel;
+            _flowChartCanvas.ZoomLevel = _viewModel.Out.ZoomLevel;
         UpdateStatusBar();
     }
 
     private void OnZoomOutClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.ZoomOutCommand.Execute(null);
+        _viewModel.In.ZoomOut();
         if (_flowChartCanvas != null)
-            _flowChartCanvas.ZoomLevel = _viewModel.ZoomLevel;
+            _flowChartCanvas.ZoomLevel = _viewModel.Out.ZoomLevel;
         UpdateStatusBar();
     }
 
     private void OnZoomResetClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.ZoomResetCommand.Execute(null);
+        _viewModel.In.ZoomReset();
         if (_flowChartCanvas != null)
-            _flowChartCanvas.ZoomLevel = _viewModel.ZoomLevel;
+            _flowChartCanvas.ZoomLevel = _viewModel.Out.ZoomLevel;
         UpdateStatusBar();
     }
 
     private void OnConnectModeClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.IsConnectMode = ConnectModeButton.IsChecked ?? false;
+        _viewModel.In.SetConnectMode(ConnectModeButton.IsChecked ?? false);
         if (_flowChartCanvas != null)
-            _flowChartCanvas.IsConnectMode = _viewModel.IsConnectMode;
+            _flowChartCanvas.IsConnectMode = _viewModel.Out.IsConnectMode;
         RefreshCanvas();
     }
 
     private void OnSampleClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.CreateSampleCommand.Execute(null);
+        _viewModel.In.CreateSampleDiagram();
         RefreshCanvas();
         UpdateStatusBar();
         UpdatePropertiesPanel();
@@ -893,7 +891,7 @@ public sealed class FlowChartEditorPage : Page
     {
         if (sender is Button button && button.Tag is NodeShape shape)
         {
-            _viewModel.AddNodeCommand.Execute(shape);
+            _viewModel.In.AddNode(shape);
             RefreshCanvas();
             UpdateStatusBar();
         }
@@ -905,25 +903,25 @@ public sealed class FlowChartEditorPage : Page
 
     private void OnNodeSelected(object sender, NodeSelectedEventArgs e)
     {
-        _viewModel.SelectNode(e.Node?.Id);
+        _viewModel.In.SelectNode(e.Node?.Id);
         UpdatePropertiesPanel();
     }
 
     private void OnEdgeSelected(object sender, EdgeSelectedEventArgs e)
     {
-        _viewModel.SelectEdge(e.Edge?.Id);
+        _viewModel.In.SelectEdge(e.Edge?.Id);
         UpdatePropertiesPanel();
     }
 
     private void OnNodeMoved(object sender, NodeMovedEventArgs e)
     {
-        _viewModel.UpdateNodePosition(e.Node.Id, e.X, e.Y);
+        _viewModel.In.UpdateNodePosition(e.Node.Id, e.X, e.Y);
         UpdateStatusBar();
     }
 
     private void OnConnectionCreated(object sender, ConnectionCreatedEventArgs e)
     {
-        _viewModel.AddConnection(e.SourceNodeId, e.TargetNodeId, e.SourcePoint, e.TargetPoint);
+        _viewModel.In.AddConnection(e.SourceNodeId, e.TargetNodeId, e.SourcePoint, e.TargetPoint);
         RefreshCanvas();
         UpdateStatusBar();
     }
@@ -936,8 +934,8 @@ public sealed class FlowChartEditorPage : Page
     {
         _isUpdatingProperties = true;
 
-        var selectedNode = _viewModel.SelectedNode;
-        var selectedEdge = _viewModel.SelectedEdge;
+        var selectedNode = _viewModel.Out.SelectedNode;
+        var selectedEdge = _viewModel.Out.SelectedEdge;
 
         if (selectedNode != null)
         {
@@ -970,11 +968,11 @@ public sealed class FlowChartEditorPage : Page
             EdgePropertiesPanel.Visibility = Visibility.Collapsed;
             DiagramPropertiesPanel.Visibility = Visibility.Visible;
 
-            DiagramNameBox.Text = _viewModel.Diagram.Name;
-            DiagramDescBox.Text = _viewModel.Diagram.Description;
-            ShowGridCheckBox.IsChecked = _viewModel.Diagram.ShowGrid;
-            SnapToGridCheckBox.IsChecked = _viewModel.Diagram.SnapToGrid;
-            GridSizeBox.Value = _viewModel.Diagram.GridSize;
+            DiagramNameBox.Text = _viewModel.Out.Diagram.Name;
+            DiagramDescBox.Text = _viewModel.Out.Diagram.Description;
+            ShowGridCheckBox.IsChecked = _viewModel.Out.Diagram.ShowGrid;
+            SnapToGridCheckBox.IsChecked = _viewModel.Out.Diagram.SnapToGrid;
+            GridSizeBox.Value = _viewModel.Out.Diagram.GridSize;
         }
 
         _isUpdatingProperties = false;
@@ -982,115 +980,115 @@ public sealed class FlowChartEditorPage : Page
 
     private void OnNodeTextChanged(object sender, TextChangedEventArgs e)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedNode == null) return;
-        _viewModel.SelectedNode.Text = NodeTextBox.Text;
+        if (_isUpdatingProperties || _viewModel.Out.SelectedNode == null) return;
+        _viewModel.Out.SelectedNode.Text = NodeTextBox.Text;
         RefreshCanvas();
     }
 
     private void OnNodeFillColorChanged(ColorPicker sender, ColorChangedEventArgs args)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedNode == null) return;
-        _viewModel.SelectedNode.FillColor = ColorToHex(args.NewColor);
+        if (_isUpdatingProperties || _viewModel.Out.SelectedNode == null) return;
+        _viewModel.Out.SelectedNode.FillColor = ColorToHex(args.NewColor);
         RefreshCanvas();
     }
 
     private void OnNodeStrokeColorChanged(ColorPicker sender, ColorChangedEventArgs args)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedNode == null) return;
-        _viewModel.SelectedNode.StrokeColor = ColorToHex(args.NewColor);
+        if (_isUpdatingProperties || _viewModel.Out.SelectedNode == null) return;
+        _viewModel.Out.SelectedNode.StrokeColor = ColorToHex(args.NewColor);
         RefreshCanvas();
     }
 
     private void OnNodeSizeChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedNode == null) return;
-        _viewModel.UpdateNodeSize(_viewModel.SelectedNode.Id, NodeWidthBox.Value, NodeHeightBox.Value);
+        if (_isUpdatingProperties || _viewModel.Out.SelectedNode == null) return;
+        _viewModel.In.UpdateNodeSize(_viewModel.Out.SelectedNode.Id, NodeWidthBox.Value, NodeHeightBox.Value);
         RefreshCanvas();
     }
 
     private void OnNodeFontSizeChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedNode == null) return;
-        _viewModel.SelectedNode.FontSize = args.NewValue;
+        if (_isUpdatingProperties || _viewModel.Out.SelectedNode == null) return;
+        _viewModel.Out.SelectedNode.FontSize = args.NewValue;
         RefreshCanvas();
     }
 
     private void OnBringToFrontClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.BringToFrontCommand.Execute(null);
+        _viewModel.In.BringToFront();
         RefreshCanvas();
     }
 
     private void OnSendToBackClick(object sender, RoutedEventArgs e)
     {
-        _viewModel.SendToBackCommand.Execute(null);
+        _viewModel.In.SendToBack();
         RefreshCanvas();
     }
 
     private void OnEdgeLabelChanged(object sender, TextChangedEventArgs e)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedEdge == null) return;
-        _viewModel.SelectedEdge.Label = EdgeLabelBox.Text;
+        if (_isUpdatingProperties || _viewModel.Out.SelectedEdge == null) return;
+        _viewModel.Out.SelectedEdge.Label = EdgeLabelBox.Text;
         RefreshCanvas();
     }
 
     private void OnEdgeStyleChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedEdge == null) return;
-        _viewModel.SelectedEdge.Style = (LineStyle)EdgeStyleComboBox.SelectedIndex;
+        if (_isUpdatingProperties || _viewModel.Out.SelectedEdge == null) return;
+        _viewModel.Out.SelectedEdge.Style = (LineStyle)EdgeStyleComboBox.SelectedIndex;
         RefreshCanvas();
     }
 
     private void OnEdgeRoutingChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedEdge == null) return;
-        _viewModel.SelectedEdge.Routing = (RoutingStyle)EdgeRoutingComboBox.SelectedIndex;
+        if (_isUpdatingProperties || _viewModel.Out.SelectedEdge == null) return;
+        _viewModel.Out.SelectedEdge.Routing = (RoutingStyle)EdgeRoutingComboBox.SelectedIndex;
         RefreshCanvas();
     }
 
     private void OnEdgeArrowChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedEdge == null) return;
-        _viewModel.SelectedEdge.TargetArrow = (ArrowType)EdgeArrowComboBox.SelectedIndex;
+        if (_isUpdatingProperties || _viewModel.Out.SelectedEdge == null) return;
+        _viewModel.Out.SelectedEdge.TargetArrow = (ArrowType)EdgeArrowComboBox.SelectedIndex;
         RefreshCanvas();
     }
 
     private void OnEdgeColorChanged(ColorPicker sender, ColorChangedEventArgs args)
     {
-        if (_isUpdatingProperties || _viewModel.SelectedEdge == null) return;
-        _viewModel.SelectedEdge.StrokeColor = ColorToHex(args.NewColor);
+        if (_isUpdatingProperties || _viewModel.Out.SelectedEdge == null) return;
+        _viewModel.Out.SelectedEdge.StrokeColor = ColorToHex(args.NewColor);
         RefreshCanvas();
     }
 
     private void OnDiagramNameChanged(object sender, TextChangedEventArgs e)
     {
         if (_isUpdatingProperties) return;
-        _viewModel.Diagram.Name = DiagramNameBox.Text;
+        _viewModel.Out.Diagram.Name = DiagramNameBox.Text;
     }
 
     private void OnDiagramDescChanged(object sender, TextChangedEventArgs e)
     {
         if (_isUpdatingProperties) return;
-        _viewModel.Diagram.Description = DiagramDescBox.Text;
+        _viewModel.Out.Diagram.Description = DiagramDescBox.Text;
     }
 
     private void OnShowGridChanged(object sender, RoutedEventArgs e)
     {
         if (_isUpdatingProperties) return;
-        _viewModel.Diagram.ShowGrid = ShowGridCheckBox.IsChecked ?? true;
+        _viewModel.Out.Diagram.ShowGrid = ShowGridCheckBox.IsChecked ?? true;
         RefreshCanvas();
     }
 
     private void OnSnapToGridChanged(object sender, RoutedEventArgs e)
     {
         if (_isUpdatingProperties) return;
-        _viewModel.Diagram.SnapToGrid = SnapToGridCheckBox.IsChecked ?? true;
+        _viewModel.Out.Diagram.SnapToGrid = SnapToGridCheckBox.IsChecked ?? true;
     }
 
     private void OnGridSizeChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
     {
         if (_isUpdatingProperties) return;
-        _viewModel.Diagram.GridSize = args.NewValue;
+        _viewModel.Out.Diagram.GridSize = args.NewValue;
         RefreshCanvas();
     }
 
@@ -1102,16 +1100,16 @@ public sealed class FlowChartEditorPage : Page
     {
         if (_flowChartCanvas != null)
         {
-            _flowChartCanvas.Diagram = _viewModel.Diagram;
+            _flowChartCanvas.Diagram = _viewModel.Out.Diagram;
             _flowChartCanvas.RefreshDiagram();
         }
     }
 
     private void UpdateStatusBar()
     {
-        StatusText.Text = _viewModel.StatusMessage;
-        ZoomText.Text = $"{_viewModel.ZoomLevel * 100:F0}%";
-        ElementCountText.Text = $"{_viewModel.Diagram.Nodes.Count} nodes, {_viewModel.Diagram.Edges.Count} edges";
+        StatusText.Text = _viewModel.Out.StatusMessage;
+        ZoomText.Text = $"{_viewModel.Out.ZoomLevel * 100:F0}%";
+        ElementCountText.Text = $"{_viewModel.Out.Diagram.Nodes.Count} nodes, {_viewModel.Out.Diagram.Edges.Count} edges";
     }
 
     private static Color ParseColor(string hex)
