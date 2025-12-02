@@ -25,6 +25,8 @@ This codebase demonstrates exceptional software engineering practices with a sop
 #### ✅ Key Implementation Highlights
 
 - ✅ **Clean Architecture** with strict layer separation and dependency inversion
+- ✅ **MVVM UDF Pattern** - Input/Output/Effect for predictable state management
+- ✅ **Type-Safe Navigation** - NavGraph with INavGraph abstraction for plugins
 - ✅ **18 Plugin Types** with assembly isolation and lifecycle management
 - ✅ **CRDT Sync Engine** with 5 conflict resolution strategies
 - ✅ **Enterprise Security** - PBKDF2-SHA256, RBAC, audit logging
@@ -39,6 +41,8 @@ This codebase demonstrates exceptional software engineering practices with a sop
 |----------|-------|-------|------------|
 | **Clean Architecture** | 9.0/10 | A | Excellent layer separation, no circular dependencies, interface-driven design |
 | **Plugin System** | 9.5/10 | A+ | 18 plugin types, assembly isolation, dependency resolution, rich context API |
+| **MVVM Pattern** | 9.5/10 | A+ | UDF pattern (Input/Output/Effect), predictable state, testable actions |
+| **Navigation** | 9.0/10 | A | Type-safe NavGraph, plugin INavGraph abstraction, layered routing |
 | **Security** | 9.0/10 | A | PBKDF2-SHA256 (100k iterations), RBAC, account lockout, comprehensive audit logs |
 | **Sync Engine** | 9.0/10 | A | Vector clocks, LWW/MV registers, 5 conflict strategies, field-level merge |
 | **Data Patterns** | 9.0/10 | A | Repository + UoW, soft-delete, audit trails, query filters, sync marking |
@@ -120,7 +124,71 @@ Authentication Flow:
                             └─────────┘
 ```
 
-#### 4. Clean Layer Separation
+#### 4. MVVM UDF Pattern (Unidirectional Data Flow)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                         VIEW                                │
+│  ┌─────────────────┐              ┌─────────────────┐      │
+│  │  User Actions   │              │  UI Rendering   │      │
+│  └────────┬────────┘              └────────▲────────┘      │
+└───────────┼────────────────────────────────┼───────────────┘
+            │                                │
+            ▼                                │
+┌───────────────────┐              ┌─────────────────────┐
+│    vm.In          │              │      vm.Out         │
+│  (Input Actions)  │              │  (Readonly State)   │
+└─────────┬─────────┘              └──────────▲──────────┘
+          │                                   │
+          ▼                                   │
+┌─────────────────────────────────────────────────────────────┐
+│                    VIEWMODEL STATE                          │
+│                  (Private Properties)                       │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌───────────────────┐
+│      vm.Fx        │
+│  (Side Effects)   │
+└───────────────────┘
+```
+
+#### 5. Type-Safe Navigation (NavGraph)
+
+```
+┌─────────────────────────────────────────────────┐
+│         Arcana.Plugins.Contracts                │
+│  ┌───────────────────────────────────────────┐  │
+│  │  INavGraph (Interface)                    │  │
+│  │  - To(routeId, param)                     │  │
+│  │  - ToNewTab(routeId, param)               │  │
+│  │  - Back() / Forward() / Close()           │  │
+│  │  - ShowDialog<T>(routeId, param)          │  │
+│  └───────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────┘
+                        ▲
+┌───────────────────────┼─────────────────────────┐
+│               Arcana.App                        │
+│  ┌───────────────────────────────────────────┐  │
+│  │  NavGraph : INavGraph                     │  │
+│  │  + ToOrderDetail(orderId)  ← Type-safe    │  │
+│  │  + ToPluginManager()                      │  │
+│  │  + ToNewOrder()                           │  │
+│  └───────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────┘
+                        ▲
+┌───────────────────────┼─────────────────────────┐
+│              Plugin Layer                       │
+│  ┌───────────────────────────────────────────┐  │
+│  │  FlowChartNavGraph (Plugin-specific)      │  │
+│  │  + ToNewEditor()      ← Plugin type-safe  │  │
+│  │  + ToEditor(filePath)                     │  │
+│  │  + ToSampleEditor()                       │  │
+│  └───────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────┘
+```
+
+#### 6. Clean Layer Separation
 
 ```
 ┌──────────────────────────────────────────┐
@@ -154,6 +222,8 @@ Authentication Flow:
 | Area | Strength | Impact |
 |------|----------|--------|
 | **Plugin System** | 18 plugin types with full lifecycle management | Extreme extensibility, third-party ecosystem ready |
+| **MVVM UDF** | Input/Output/Effect pattern with EffectSubject | Predictable state, easy testing, clear data flow |
+| **Navigation** | Type-safe NavGraph with plugin INavGraph abstraction | No magic strings, IDE autocomplete, compile-time safety |
 | **Offline-First** | CRDT-based sync with vector clocks | Works without internet, seamless sync when online |
 | **Security** | PBKDF2-SHA256, RBAC, lockout, audit trails | Enterprise-grade authentication and authorization |
 | **Architecture** | Clean Architecture with strict boundaries | Maintainable, testable, scalable codebase |
@@ -187,6 +257,8 @@ Authentication Flow:
 | Feature | Arcana Windows | Industry Average |
 |---------|---------------|------------------|
 | Plugin Architecture | ✅ 18 types, assembly isolation | ❌ Usually monolithic |
+| MVVM Pattern | ✅ UDF (Input/Output/Effect) | ⚠️ Basic MVVM |
+| Navigation | ✅ Type-safe NavGraph | ❌ String-based routing |
 | Offline Support | ✅ CRDT-based sync | ⚠️ Basic local storage |
 | Conflict Resolution | ✅ 5 strategies | ❌ Last-write-wins only |
 | Security | ✅ PBKDF2 + RBAC + Audit | ⚠️ Basic auth |
@@ -324,7 +396,14 @@ mindmap
   root((Arcana Windows))
     Architecture
       Clean Architecture
-      MVVM Pattern
+      MVVM UDF Pattern
+        Input Actions
+        Output State
+        Effect Side-Effects
+      NavGraph Navigation
+        INavGraph Interface
+        Type-safe Routes
+        Plugin NavGraph
       8 Source Projects
       125 C# Source Files
       Repository + UoW
@@ -397,8 +476,9 @@ mindmap
 │  ┌─────────────────────────────────────────────────────────────────────────┐│
 │  │                         Arcana.App (WinUI 3)                            ││
 │  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐   ││
-│  │  │   Views      │ │  ViewModels  │ │   Plugins    │ │   Services   │   ││
-│  │  │  (XAML)      │ │  (MVVM)      │ │  (Built-in)  │ │  (Platform)  │   ││
+│  │  │   Views      │ │  ViewModels  │ │   Plugins    │ │   NavGraph   │   ││
+│  │  │  (XAML)      │ │  (UDF MVVM)  │ │  (Built-in)  │ │  (Type-safe) │   ││
+│  │  │              │ │  In/Out/Fx   │ │              │ │  Navigation  │   ││
 │  │  └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘   ││
 │  └─────────────────────────────────────────────────────────────────────────┘│
 ├─────────────────────────────────────────────────────────────────────────────┤
@@ -965,6 +1045,146 @@ dotnet run
 
 ## Code Examples
 
+### MVVM UDF Pattern (Input/Output/Effect)
+
+```csharp
+// ViewModel with UDF pattern
+public partial class OrderListViewModel : ReactiveViewModelBase
+{
+    // Private state
+    [ObservableProperty]
+    private ObservableCollection<Order> _orders = new();
+
+    [ObservableProperty]
+    private bool _isLoading;
+
+    // Expose nested classes
+    public Input In => _input ??= new Input(this);
+    public Output Out => _output ??= new Output(this);
+    public Effect Fx => _effect ??= new Effect();
+
+    // Input: Actions that trigger state changes
+    public sealed class Input : IViewModelInput
+    {
+        private readonly OrderListViewModel _vm;
+        internal Input(OrderListViewModel vm) => _vm = vm;
+
+        public Task LoadOrders() => _vm.LoadOrdersAsync();
+        public Task Search(string query) => _vm.SearchAsync(query);
+        public void SelectOrder(Order order) => _vm.SelectedOrder = order;
+    }
+
+    // Output: Read-only state for View binding
+    public sealed class Output : IViewModelOutput
+    {
+        private readonly OrderListViewModel _vm;
+        internal Output(OrderListViewModel vm) => _vm = vm;
+
+        public ReadOnlyObservableCollection<Order> Orders => ...;
+        public bool IsLoading => _vm.IsLoading;
+        public bool HasOrders => _vm.Orders.Count > 0;
+    }
+
+    // Effect: Side effects (navigation, dialogs, notifications)
+    public sealed class Effect : IViewModelEffect, IDisposable
+    {
+        public EffectSubject<Order> NavigateToOrder { get; } = new();
+        public EffectSubject<string> ShowError { get; } = new();
+        public EffectSubject<string> ShowSuccess { get; } = new();
+    }
+}
+
+// View usage
+public sealed partial class OrderListPage : Page
+{
+    private OrderListViewModel _vm;
+
+    private async void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        // Subscribe to effects
+        _vm.Fx.ShowError.Subscribe(msg => ShowErrorDialog(msg));
+        _vm.Fx.NavigateToOrder.Subscribe(order => NavigateToDetail(order));
+
+        // Trigger input action
+        await _vm.In.LoadOrders();
+    }
+}
+
+// XAML binding to Output
+// <ListView ItemsSource="{x:Bind _vm.Out.Orders, Mode=OneWay}" />
+// <ProgressRing IsActive="{x:Bind _vm.Out.IsLoading, Mode=OneWay}" />
+```
+
+### Type-Safe Navigation (NavGraph)
+
+```csharp
+// App-level NavGraph with type-safe methods
+public sealed class NavGraph : INavGraph
+{
+    public static class Routes
+    {
+        public const string OrderList = "OrderListPage";
+        public const string OrderDetail = "OrderDetailPage";
+    }
+
+    // Type-safe navigation methods
+    public Task<bool> ToOrderList()
+        => ToNewTab(Routes.OrderList);
+
+    public Task<bool> ToOrderDetail(int orderId, bool readOnly = false)
+        => ToNewTab(Routes.OrderDetail, new OrderDetailArgs(orderId, readOnly));
+
+    public Task<bool> ToNewOrder()
+        => ToNewTab(Routes.OrderDetail, new OrderDetailArgs(null, false));
+
+    public record OrderDetailArgs(int? OrderId, bool ReadOnly);
+}
+
+// Plugin-specific NavGraph (wraps INavGraph)
+public sealed class FlowChartNavGraph
+{
+    private readonly INavGraph _nav;
+
+    public FlowChartNavGraph(INavGraph nav) => _nav = nav;
+
+    public static class Routes
+    {
+        public const string Editor = "FlowChartEditorPage";
+    }
+
+    // Plugin type-safe navigation
+    public Task<bool> ToNewEditor()
+        => _nav.ToNewTab(Routes.Editor);
+
+    public Task<bool> ToEditor(string filePath)
+        => _nav.ToNewTab(Routes.Editor, new EditorArgs(EditorAction.Open, filePath));
+
+    public record EditorArgs(EditorAction Action, string? FilePath);
+    public enum EditorAction { New, Open, OpenDialog, Sample }
+}
+
+// Usage in Plugin
+public class FlowChartPlugin : PluginBase
+{
+    private FlowChartNavGraph? _nav;
+
+    protected override Task OnActivateAsync(IPluginContext context)
+    {
+        // Initialize plugin's type-safe NavGraph
+        _nav = new FlowChartNavGraph(context.NavGraph);
+        return Task.CompletedTask;
+    }
+
+    protected override void RegisterContributions(IPluginContext context)
+    {
+        RegisterCommand("flowchart.new", async () =>
+        {
+            await _nav!.ToNewEditor();  // Type-safe!
+        });
+    }
+}
+```
+
 ### Authentication
 
 ```csharp
@@ -1233,6 +1453,9 @@ The application includes 9 built-in themes with support for custom color schemes
 - [x] Lazy plugin loading (Activation Events) - **Completed**
 - [x] Contribution validation - **Completed**
 - [x] Comprehensive test coverage (507 tests) - **Completed**
+- [x] MVVM UDF Pattern (Input/Output/Effect) - **Completed**
+- [x] Type-safe NavGraph navigation - **Completed**
+- [x] Plugin NavGraph abstraction (INavGraph) - **Completed**
 - [ ] Backup/restore functionality
 - [ ] Mobile companion app (MAUI)
 - [ ] Cloud sync option
@@ -1324,17 +1547,19 @@ Validation errors throw `ContributionValidationException`, warnings are logged.
 | **Test Projects** | 4 | Domain, Data, Sync, Plugins |
 | **Total Tests** | 507 | Unit + Integration tests |
 | **Plugin Types** | 18 | Menu, View, Module, Theme, Auth, Sync, etc. |
-| **Plugin Interfaces** | 17 | IPlugin, IAuthPlugin, IMfaPlugin, ICommandService, etc. |
-| **Plugin Services** | 12 | MessageBus, EventAggregator, ViewRegistry, etc. |
+| **Plugin Interfaces** | 17 | IPlugin, IAuthPlugin, IMfaPlugin, ICommandService, INavGraph, etc. |
+| **Plugin Services** | 12 | MessageBus, EventAggregator, ViewRegistry, NavGraph, etc. |
 | **Manifest Types** | 10 | Views, Menus, Commands, Toolbars, Keybindings, etc. |
 | **Domain Entities** | 12 | Business + Identity entities |
 | **Repository Types** | 6 | Generic + Specialized repositories |
 | **CRDT Types** | 5 | VectorClock, LWWRegister, LWWMap, MVRegister, ISyncable |
 | **Conflict Strategies** | 5 | LWW, FWW, FieldLevelMerge, KeepBoth, Custom |
 | **Security Services** | 6 | Auth, Authorization, Token, Password, CurrentUser, Network |
-| **Built-in Plugins** | 5 | Order, Customer, Product, CoreMenu, System |
+| **Built-in Plugins** | 6 | Order, Customer, Product, CoreMenu, System, FlowChart |
 | **XAML Views** | 13 | Pages, Windows, Controls |
 | **Supported Languages** | 3 | en-US, zh-TW, ja-JP |
+| **MVVM Pattern** | UDF | Input/Output/Effect with ReactiveViewModelBase |
+| **Navigation** | NavGraph | Type-safe routing with INavGraph for plugins |
 
 ---
 
