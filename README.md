@@ -21,6 +21,22 @@ A **Local-First, Plugin-Everything** Windows desktop application built with WinU
 
 ---
 
+## 📸 Screenshots
+
+| Home Dashboard | Order Manager |
+|:-:|:-:|
+| ![Home](docs/screen/Home.png) | ![Order Manager](docs/screen/Order%20Manager.png) |
+
+| Order Manager - New Order | Plugin Manager |
+|:-:|:-:|
+| ![Order Manager - New Order](docs/screen/Order%20Manager%20-%20New%20Order.png) | ![Plugin Manager](docs/screen/Plugin%20Manger.png) |
+
+| Flow Chart Plugin |
+|:-:|
+| ![Flow Chart Plugin](docs/screen/Flow%20Chart%20Plugin.png) |
+
+---
+
 ## 📑 Table of Contents
 
 <details>
