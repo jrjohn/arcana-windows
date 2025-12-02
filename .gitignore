@@ -3,4 +3,4 @@
 **/Debug/
 /.vs
 .gitignore.swp
-/.vs
+.DS_Store
