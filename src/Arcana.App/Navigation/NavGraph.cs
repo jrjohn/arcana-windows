@@ -5,8 +5,9 @@ namespace Arcana.App.Navigation;
 /// <summary>
 /// Centralized navigation graph for type-safe navigation.
 /// All navigation routes and actions are defined here.
+/// Implements INavGraph for plugin consumption.
 /// </summary>
-public sealed class NavGraph
+public sealed class NavGraph : INavGraph
 {
     private readonly INavigationService _navigationService;
 
@@ -14,6 +15,44 @@ public sealed class NavGraph
     {
         _navigationService = navigationService;
     }
+
+    // ============================================================
+    // INavGraph Implementation
+    // ============================================================
+
+    /// <inheritdoc />
+    public Task<bool> To(string routeId, object? parameter = null)
+        => _navigationService.NavigateToAsync(routeId, parameter);
+
+    /// <inheritdoc />
+    public Task<bool> ToNewTab(string routeId, object? parameter = null)
+        => _navigationService.NavigateToNewTabAsync(routeId, parameter);
+
+    /// <inheritdoc />
+    public Task<bool> ToWithinTab(string parentRouteId, string routeId, object? parameter = null)
+        => _navigationService.NavigateWithinTabAsync(parentRouteId, routeId, parameter);
+
+    /// <inheritdoc />
+    public Task<bool> Back() => _navigationService.GoBackAsync();
+
+    /// <inheritdoc />
+    public Task<bool> Forward() => _navigationService.GoForwardAsync();
+
+    /// <inheritdoc />
+    public Task Close() => _navigationService.CloseAsync();
+
+    /// <inheritdoc />
+    public Task<TResult?> ShowDialog<TResult>(string routeId, object? parameter = null)
+        => _navigationService.ShowDialogAsync<TResult>(routeId, parameter);
+
+    /// <inheritdoc />
+    public bool CanGoBack => _navigationService.CanGoBack;
+
+    /// <inheritdoc />
+    public bool CanGoForward => _navigationService.CanGoForward;
+
+    /// <inheritdoc />
+    public string? CurrentRouteId => _navigationService.CurrentViewId;
 
     // ============================================================
     // ROUTES - All navigation destinations
@@ -131,36 +170,7 @@ public sealed class NavGraph
 
     #endregion
 
-    #region Common Actions
-
-    /// <summary>
-    /// Navigate back.
-    /// </summary>
-    public Task<bool> Back() => _navigationService.GoBackAsync();
-
-    /// <summary>
-    /// Navigate forward.
-    /// </summary>
-    public Task<bool> Forward() => _navigationService.GoForwardAsync();
-
-    /// <summary>
-    /// Close current view.
-    /// </summary>
-    public Task Close() => _navigationService.CloseAsync();
-
-    /// <summary>
-    /// Navigate to any route by ID.
-    /// </summary>
-    public Task<bool> To(string routeId, object? parameter = null)
-        => _navigationService.NavigateToNewTabAsync(routeId, parameter);
-
-    /// <summary>
-    /// Show dialog.
-    /// </summary>
-    public Task<TResult?> ShowDialog<TResult>(string routeId, object? parameter = null)
-        => _navigationService.ShowDialogAsync<TResult>(routeId, parameter);
-
-    #endregion
+    // Common Actions (Back, Forward, Close, To, ShowDialog) are implemented via INavGraph interface above
 
     // ============================================================
     // NAVIGATION ARGS

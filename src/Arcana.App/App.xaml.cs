@@ -59,8 +59,9 @@ public partial class App : Application
                 services.AddSingleton<AppSettingsService>();
                 services.AddSingleton<IDocumentManager, DocumentManager>();
 
-                // Register NavGraph
+                // Register NavGraph (both as concrete type and interface for plugins)
                 services.AddSingleton<NavGraph>();
+                services.AddSingleton<INavGraph>(sp => sp.GetRequiredService<NavGraph>());
 
                 // Register ViewModels
                 services.AddTransient<PluginManagerViewModel>();

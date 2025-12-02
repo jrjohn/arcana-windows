@@ -23,6 +23,7 @@ public class PluginContext : IPluginContext
     public IMenuRegistry Menus { get; }
     public IViewRegistry Views { get; }
     public INavigationService Navigation { get; }
+    public INavGraph NavGraph { get; }
     public ILocalizationService Localization { get; }
     public IList<IDisposable> Subscriptions { get; } = new List<IDisposable>();
 
@@ -48,6 +49,7 @@ public class PluginContext : IPluginContext
         Menus = serviceProvider.GetRequiredService<IMenuRegistry>();
         Views = serviceProvider.GetRequiredService<IViewRegistry>();
         Navigation = serviceProvider.GetRequiredService<INavigationService>();
+        NavGraph = serviceProvider.GetRequiredService<INavGraph>();
         Localization = serviceProvider.GetRequiredService<ILocalizationService>();
     }
 

@@ -1,3 +1,4 @@
+using Arcana.Plugin.FlowChart.Navigation;
 using Arcana.Plugin.FlowChart.Views;
 using Arcana.Plugins.Contracts;
 using Arcana.Plugins.Core;
@@ -10,6 +11,13 @@ namespace Arcana.Plugin.FlowChart;
 /// </summary>
 public class FlowChartPlugin : PluginBase
 {
+    private FlowChartNavGraph? _nav;
+
+    /// <summary>
+    /// Type-safe navigation for this plugin.
+    /// </summary>
+    public FlowChartNavGraph Nav => _nav ?? throw new InvalidOperationException("Plugin not activated");
+
     public override PluginMetadata Metadata => new()
     {
         Id = "arcana.plugin.flowchart",
@@ -22,6 +30,9 @@ public class FlowChartPlugin : PluginBase
 
     protected override async Task OnActivateAsync(IPluginContext context)
     {
+        // Initialize plugin's type-safe NavGraph
+        _nav = new FlowChartNavGraph(context.NavGraph);
+
         // Load localization from external JSON files
         var localesPath = Path.Combine(context.PluginPath, "locales");
         await LoadExternalLocalizationAsync(localesPath);
@@ -111,26 +122,20 @@ public class FlowChartPlugin : PluginBase
             }
         );
 
-        // Register commands
+        // Register commands using type-safe NavGraph
         RegisterCommand("flowchart.new", async () =>
         {
-            await Context!.Navigation.NavigateToNewTabAsync("FlowChartEditorPage");
+            await Nav.ToNewEditor();
         });
 
         RegisterCommand("flowchart.open", async () =>
         {
-            await Context!.Navigation.NavigateToNewTabAsync("FlowChartEditorPage", new Dictionary<string, object>
-            {
-                ["action"] = "open"
-            });
+            await Nav.ToEditorWithOpenDialog();
         });
 
         RegisterCommand("flowchart.sample", async () =>
         {
-            await Context!.Navigation.NavigateToNewTabAsync("FlowChartEditorPage", new Dictionary<string, object>
-            {
-                ["action"] = "sample"
-            });
+            await Nav.ToSampleEditor();
         });
 
         LogInfo("FlowChart plugin activated");

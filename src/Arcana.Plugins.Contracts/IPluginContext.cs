@@ -63,9 +63,15 @@ public interface IPluginContext
     IViewRegistry Views { get; }
 
     /// <summary>
-    /// Access to the navigation service.
+    /// Access to the navigation service (low-level).
     /// </summary>
     INavigationService Navigation { get; }
+
+    /// <summary>
+    /// Access to the navigation graph (high-level, type-safe).
+    /// Plugins can wrap this in their own NavGraph class for stronger typing.
+    /// </summary>
+    INavGraph NavGraph { get; }
 
     /// <summary>
     /// Access to the localization service.
