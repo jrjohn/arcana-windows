@@ -660,6 +660,7 @@
       },
       "Arcana.Plugins.Contracts/1.0.0": {
         "dependencies": {
+          "CommunityToolkit.Mvvm": "8.4.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "10.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "10.0.0"
         },
