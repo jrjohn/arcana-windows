@@ -4,6 +4,7 @@ using Arcana.Plugins.Contracts.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Dispatching;
 
 namespace Arcana.App.ViewModels;
 
@@ -15,6 +16,7 @@ public partial class PluginManagerViewModel : ReactiveViewModelBase
     // ============ Dependencies ============
     private readonly IPluginManager _pluginManager;
     private readonly ILogger<PluginManagerViewModel> _logger;
+    private readonly DispatcherQueue? _dispatcherQueue;
     private System.Timers.Timer? _healthCheckTimer;
 
     // ============ Private State ============
@@ -108,6 +110,7 @@ public partial class PluginManagerViewModel : ReactiveViewModelBase
     {
         _pluginManager = pluginManager;
         _logger = logger;
+        _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         _pluginManager.PluginStateChanged += OnPluginStateChanged;
         _pluginManager.InstallProgressChanged += OnInstallProgressChanged;
@@ -485,11 +488,16 @@ public partial class PluginManagerViewModel : ReactiveViewModelBase
             try
             {
                 var healthStatuses = await _pluginManager.CheckAllHealthAsync();
-                foreach (var health in healthStatuses)
+
+                // Dispatch to UI thread to avoid collection modification issues
+                _dispatcherQueue?.TryEnqueue(() =>
                 {
-                    var plugin = Plugins.FirstOrDefault(p => p.Id == health.PluginId);
-                    plugin?.UpdateHealth(health);
-                }
+                    foreach (var health in healthStatuses)
+                    {
+                        var plugin = Plugins.FirstOrDefault(p => p.Id == health.PluginId);
+                        plugin?.UpdateHealth(health);
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -508,17 +516,23 @@ public partial class PluginManagerViewModel : ReactiveViewModelBase
 
     private void OnPluginStateChanged(object? sender, PluginStateChangedEventArgs e)
     {
-        var plugin = Plugins.FirstOrDefault(p => p.Id == e.PluginId);
-        if (plugin != null)
+        _dispatcherQueue?.TryEnqueue(() =>
         {
-            plugin.State = e.NewState;
-        }
+            var plugin = Plugins.FirstOrDefault(p => p.Id == e.PluginId);
+            if (plugin != null)
+            {
+                plugin.State = e.NewState;
+            }
+        });
     }
 
     private void OnInstallProgressChanged(object? sender, PluginInstallProgressEventArgs e)
     {
-        InstallProgress = e.Progress;
-        InstallPhase = e.Message ?? e.Phase.ToString();
+        _dispatcherQueue?.TryEnqueue(() =>
+        {
+            InstallProgress = e.Progress;
+            InstallPhase = e.Message ?? e.Phase.ToString();
+        });
     }
 
     // ============ Disposal ============

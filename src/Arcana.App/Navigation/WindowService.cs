@@ -118,10 +118,47 @@ public class WindowService : IWindowService
         return result == ContentDialogResult.Primary;
     }
 
-    public Task<string[]?> ShowOpenFileDialogAsync(FileDialogOptions options)
+    public async Task<string[]?> ShowOpenFileDialogAsync(FileDialogOptions options)
     {
-        // Implement using Windows.Storage.Pickers
-        return Task.FromResult<string[]?>(null);
+        var picker = new Windows.Storage.Pickers.FileOpenPicker();
+
+        // Initialize the picker with the window handle
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+        picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.List;
+        picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+
+        // Add file type filters
+        if (options.Filters != null && options.Filters.Count > 0)
+        {
+            foreach (var filter in options.Filters)
+            {
+                foreach (var ext in filter.Extensions)
+                {
+                    var extension = ext.StartsWith(".") ? ext : $".{ext}";
+                    if (extension != ".*")
+                        picker.FileTypeFilter.Add(extension);
+                }
+            }
+        }
+
+        // Ensure at least one filter exists
+        if (picker.FileTypeFilter.Count == 0)
+        {
+            picker.FileTypeFilter.Add("*");
+        }
+
+        if (options.AllowMultiple)
+        {
+            var files = await picker.PickMultipleFilesAsync();
+            return files?.Select(f => f.Path).ToArray();
+        }
+        else
+        {
+            var file = await picker.PickSingleFileAsync();
+            return file != null ? [file.Path] : null;
+        }
     }
 
     public Task<string?> ShowSaveFileDialogAsync(FileDialogOptions options)

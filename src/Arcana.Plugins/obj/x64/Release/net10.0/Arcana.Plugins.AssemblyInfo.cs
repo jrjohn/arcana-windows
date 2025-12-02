@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Arcana.Plugins")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62baeace20f643418c6cc242ab5ef71dde901c69")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c42598945adeccc00961d40305f9101bb1cd4381")]
 [assembly: System.Reflection.AssemblyProductAttribute("Arcana.Plugins")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Arcana.Plugins")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
