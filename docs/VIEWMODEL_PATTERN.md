@@ -162,4 +162,46 @@ ViewModels/
 |----------|------|---------|
 | `In` | `Input` | Actions to trigger state changes |
 | `Out` | `Output` | Read-only state for View |
-| `Fx` | `Effect` | Side effect streams |
+| `Fx` | `Effect` | Side effect streams (dialogs, notifications) |
+
+## NavGraph - Centralized Navigation
+
+All navigation is centralized in `NavGraph` for type-safe routing:
+
+```csharp
+public sealed class NavGraph
+{
+    // Routes
+    public static class Routes
+    {
+        public const string OrderList = "OrderListPage";
+        public const string OrderDetail = "OrderDetailPage";
+    }
+
+    // Navigation actions
+    public Task<bool> ToOrderList() => ...;
+    public Task<bool> ToOrderDetail(int orderId, bool readOnly = false) => ...;
+    public Task<bool> ToNewOrder() => ...;
+    public Task<bool> Back() => ...;
+}
+```
+
+### Usage in ViewModel
+
+```csharp
+public class OrderListViewModel
+{
+    private readonly NavGraph _nav;
+
+    private Task CreateOrderAsync() => _nav.ToNewOrder();
+    private Task EditOrderAsync(Order order) => _nav.ToOrderDetail(order.Id);
+    private Task ViewOrderAsync(Order order) => _nav.ToOrderDetail(order.Id, readOnly: true);
+}
+```
+
+### Benefits
+
+1. **Type-safe navigation** - compile-time route checking
+2. **Centralized routes** - all destinations in one place
+3. **Readable code** - `_nav.ToOrderDetail()` vs `NavigateToNewTabAsync("OrderDetailPage")`
+4. **Easy refactoring** - change route in one place

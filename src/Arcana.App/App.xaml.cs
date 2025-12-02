@@ -2,6 +2,7 @@ using Arcana.App.Navigation;
 using Arcana.App.Plugins;
 using Arcana.App.Services;
 using Arcana.App.ViewModels;
+using Arcana.App.ViewModels.Orders;
 using Arcana.Data.Local;
 using Arcana.Domain.Entities;
 using Arcana.Infrastructure.DependencyInjection;
@@ -57,6 +58,9 @@ public partial class App : Application
                 services.AddSingleton<ThemeService>();
                 services.AddSingleton<AppSettingsService>();
                 services.AddSingleton<IDocumentManager, DocumentManager>();
+
+                // Register NavGraph
+                services.AddSingleton<NavGraph>();
 
                 // Register ViewModels
                 services.AddTransient<PluginManagerViewModel>();

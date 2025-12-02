@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Arcana.App.Navigation;
 using Arcana.App.ViewModels.Core;
 using Arcana.Core.Common;
 using Arcana.Domain.Entities;
@@ -14,7 +15,7 @@ namespace Arcana.App.ViewModels.Orders;
 /// Architecture:
 /// - INPUT:  Actions that trigger state changes (the only entry point)
 /// - OUTPUT: Read-only reactive state exposed to View
-/// - EFFECT: One-time events for side effects (navigation, dialogs)
+/// - EFFECT: One-time events for side effects (dialogs, notifications)
 ///
 /// Data Flow: View → Input → State Mutation → Output → View Re-render
 /// </summary>
@@ -22,7 +23,7 @@ public partial class OrderListViewModel : ReactiveViewModelBase
 {
     // ============ Dependencies ============
     private readonly IOrderService _orderService;
-    private readonly INavigationService _navigationService;
+    private readonly NavGraph _nav;
     private readonly IWindowService _windowService;
 
     // ============ Private State ============
@@ -83,11 +84,11 @@ public partial class OrderListViewModel : ReactiveViewModelBase
     // ============ Constructor ============
     public OrderListViewModel(
         IOrderService orderService,
-        INavigationService navigationService,
+        NavGraph nav,
         IWindowService windowService)
     {
         _orderService = orderService;
-        _navigationService = navigationService;
+        _nav = nav;
         _windowService = windowService;
 
         // Default date range to last 30 days
@@ -182,22 +183,19 @@ public partial class OrderListViewModel : ReactiveViewModelBase
         }
     }
 
-    private async Task CreateOrderAsync()
+    private Task CreateOrderAsync()
     {
-        Fx.NavigateToCreate.Emit();
-        await _navigationService.NavigateToNewTabAsync("OrderDetailPage");
+        return _nav.ToNewOrder();
     }
 
-    private async Task EditOrderAsync(Order order)
+    private Task EditOrderAsync(Order order)
     {
-        Fx.NavigateToOrder.Emit(new NavigationRequest(order.Id, false));
-        await _navigationService.NavigateToNewTabAsync("OrderDetailPage", order.Id);
+        return _nav.ToOrderDetail(order.Id, readOnly: false);
     }
 
-    private async Task ViewOrderAsync(Order order)
+    private Task ViewOrderAsync(Order order)
     {
-        Fx.NavigateToOrder.Emit(new NavigationRequest(order.Id, true));
-        await _navigationService.NavigateToNewTabAsync("OrderDetailPage", order.Id);
+        return _nav.ToOrderDetail(order.Id, readOnly: true);
     }
 
     private async Task DeleteOrderAsync(Order order)
@@ -246,22 +244,22 @@ public partial class OrderListViewModel : ReactiveViewModelBase
         }
     }
 
-    private async Task ExportAsync()
+    private Task ExportAsync()
     {
         Fx.ShowInfo.Emit("Export functionality is under development...");
-        await Task.CompletedTask;
+        return Task.CompletedTask;
     }
 
-    private async Task PrintAsync()
+    private Task PrintAsync()
     {
         if (SelectedOrder == null)
         {
             Fx.ShowWarning.Emit("Please select an order to print");
-            return;
+            return Task.CompletedTask;
         }
 
         Fx.ShowInfo.Emit("Print functionality is under development...");
-        await Task.CompletedTask;
+        return Task.CompletedTask;
     }
 
     // ============ Helper Methods ============
@@ -380,15 +378,12 @@ public partial class OrderListViewModel : ReactiveViewModelBase
     #region Effect
 
     /// <summary>
-    /// Effect - one-time events for side effects (navigation, dialogs).
+    /// Effect - one-time events for side effects (dialogs, notifications).
+    /// Navigation is handled by NavGraph, not Effect.
     /// </summary>
     public sealed class Effect : IViewModelEffect, IDisposable
     {
         private bool _disposed;
-
-        // Navigation
-        public EffectSubject<NavigationRequest> NavigateToOrder { get; } = new();
-        public EffectSubject NavigateToCreate { get; } = new();
 
         // Dialogs
         public EffectSubject<ConfirmDeleteRequest> ConfirmDelete { get; } = new();
@@ -407,8 +402,6 @@ public partial class OrderListViewModel : ReactiveViewModelBase
             if (_disposed) return;
             _disposed = true;
 
-            NavigateToOrder.Dispose();
-            NavigateToCreate.Dispose();
             ConfirmDelete.Dispose();
             ShowError.Dispose();
             ShowInfo.Dispose();
@@ -422,9 +415,8 @@ public partial class OrderListViewModel : ReactiveViewModelBase
 
     #endregion
 
-    #region Effect Records
+    #region Records
 
-    public record NavigationRequest(int OrderId, bool IsReadOnly = false);
     public record ConfirmDeleteRequest(Order Order, Action OnConfirm);
     public record StatusChangedEvent(Order Order, OrderStatus OldStatus, OrderStatus NewStatus);
 

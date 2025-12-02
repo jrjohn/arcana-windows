@@ -1,4 +1,5 @@
 using Arcana.App.ViewModels;
+using Arcana.App.ViewModels.Orders;
 using Arcana.Domain.Entities;
 using Arcana.Plugins.Contracts;
 using Microsoft.Extensions.DependencyInjection;
@@ -121,14 +122,14 @@ public sealed partial class OrderListPage : Page
 
     private async void Refresh_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.RefreshCommand.ExecuteAsync(null);
+        await ViewModel.In.Refresh();
         UpdateUI();
     }
 
     private async void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        ViewModel.SearchText = args.QueryText;
-        await ViewModel.SearchCommand.ExecuteAsync(null);
+        ViewModel.In.UpdateSearchText(args.QueryText);
+        await ViewModel.In.Search();
         UpdateUI();
     }
 
@@ -136,7 +137,7 @@ public sealed partial class OrderListPage : Page
     {
         SearchBox.Text = string.Empty;
         StatusFilter.SelectedIndex = 0;
-        await ViewModel.ClearFilterCommand.ExecuteAsync(null);
+        await ViewModel.In.ClearFilter();
         UpdateUI();
     }
 
@@ -203,20 +204,20 @@ public sealed partial class OrderListPage : Page
     {
         if (sender is FrameworkElement element && element.DataContext is Order order)
         {
-            await ViewModel.DeleteOrderCommand.ExecuteAsync(order);
+            await ViewModel.In.DeleteOrder(order);
             UpdateUI();
         }
     }
 
     private async void PrevPage_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.PreviousPageCommand.ExecuteAsync(null);
+        await ViewModel.In.PreviousPage();
         UpdateUI();
     }
 
     private async void NextPage_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.NextPageCommand.ExecuteAsync(null);
+        await ViewModel.In.NextPage();
         UpdateUI();
     }
 }

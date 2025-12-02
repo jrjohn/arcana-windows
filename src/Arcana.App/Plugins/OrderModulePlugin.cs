@@ -1,4 +1,5 @@
 using Arcana.App.ViewModels;
+using Arcana.App.ViewModels.Orders;
 using Arcana.App.Views;
 using Arcana.Plugins.Contracts;
 using Arcana.Plugins.Core;
