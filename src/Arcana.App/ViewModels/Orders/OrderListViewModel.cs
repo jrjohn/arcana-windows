@@ -341,8 +341,8 @@ public partial class OrderListViewModel : ReactiveViewModelBase
         internal Output(OrderListViewModel vm) => _vm = vm;
 
         // Collection State
-        public ReadOnlyObservableCollection<Order> Orders =>
-            _vm._ordersReadOnly ??= new ReadOnlyObservableCollection<Order>(_vm._orders);
+        public ReadOnlyObservableCollection<Order> OrdersReadOnly =>
+            _vm._ordersReadOnly ??= new ReadOnlyObservableCollection<Order>(_vm.Orders);
         public Order? SelectedOrder => _vm.SelectedOrder;
 
         // Pagination State
@@ -367,10 +367,10 @@ public partial class OrderListViewModel : ReactiveViewModelBase
         public bool CanGoPrevious => CurrentPage > 1;
         public bool CanGoNext => CurrentPage < TotalPages;
         public bool HasSelection => SelectedOrder != null;
-        public bool IsEmpty => Orders.Count == 0 && !IsLoading;
+        public bool IsEmpty => OrdersReadOnly.Count == 0 && !IsLoading;
         public string StatusMessage => IsLoading
             ? "Loading..."
-            : $"Showing {Orders.Count} of {TotalCount} orders (Page {CurrentPage} of {TotalPages})";
+            : $"Showing {OrdersReadOnly.Count} of {TotalCount} orders (Page {CurrentPage} of {TotalPages})";
     }
 
     #endregion
