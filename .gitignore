@@ -2,3 +2,4 @@
 **/obj/
 **/Debug/
 /.vs
+.gitignore.swp
