@@ -1,7 +1,10 @@
 # Arcana Windows
 
+<div align="center">
+
 A **Local-First, Plugin-Everything** Windows desktop application built with WinUI 3 and .NET 10.0. Designed for offline-capable business operations with CRDT-based synchronization and a comprehensive plugin architecture.
 
+[![Architecture Rating](https://img.shields.io/badge/Architecture%20Rating-⭐⭐⭐⭐⭐%208.9%2F10-gold.svg)](#architecture-evaluation)
 [![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
 [![WinUI](https://img.shields.io/badge/WinUI-3.0-0078D4)](https://microsoft.github.io/microsoft-ui-xaml/)
 [![C#](https://img.shields.io/badge/C%23-14.0-239120)](https://docs.microsoft.com/dotnet/csharp/)
@@ -12,15 +15,11 @@ A **Local-First, Plugin-Everything** Windows desktop application built with WinU
 [![Grade](https://img.shields.io/badge/Grade-8.9%2F10-blue)]()
 [![Production](https://img.shields.io/badge/Production-Ready-success)]()
 
----
-
-## 🏆 Architecture Evaluation
-
-### Overall Grade: A (8.9/10) ⭐⭐⭐⭐⭐
-
 **Production-Ready, Enterprise-Level Architecture**
 
-This codebase demonstrates exceptional software engineering practices with a sophisticated plugin system, robust security implementation, and innovative CRDT-based offline synchronization.
+</div>
+
+---
 
 #### ✅ Key Implementation Highlights
 
