@@ -29,8 +29,7 @@ public class ViewRegistry : IViewRegistry
 
         if (!_views.TryAdd(view.Id, view))
         {
-            _logger?.LogInformation("View already registered, skipping: {ViewId}", view.Id);
-            return new Subscription(() => { });
+            throw new InvalidOperationException($"View already registered: {view.Id}");
         }
 
         _logger?.LogInformation("Registered view: {ViewId} (ViewClass: {ViewClass})",

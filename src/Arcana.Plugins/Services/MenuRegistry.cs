@@ -28,8 +28,7 @@ public class MenuRegistry : IMenuRegistry
 
         if (!_menuItems.TryAdd(item.Id, item))
         {
-            _logger?.LogInformation("Menu item already registered, skipping: {MenuId}", item.Id);
-            return new Subscription(() => { });
+            throw new InvalidOperationException($"Menu item already registered: {item.Id}");
         }
 
         _logger?.LogInformation("Registered menu item: {MenuId} (Location: {Location})", item.Id, item.Location);
