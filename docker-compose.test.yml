@@ -1,0 +1,7 @@
+services:
+  test:
+    build: .
+    working_dir: /app
+    volumes:
+      - ./test-results:/output
+    command: sh -c "dotnet test -c Release --no-build --collect:\"XPlat Code Coverage\" --results-directory /app/results 2>&1; cp -r /app/results/* /output/ 2>/dev/null || true"

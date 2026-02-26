@@ -1,0 +1,4 @@
+services:
+  dotnet-build:
+    build: .
+    image: localhost:5000/arcana/dotnet-app:${VERSION:-0.2.0}
