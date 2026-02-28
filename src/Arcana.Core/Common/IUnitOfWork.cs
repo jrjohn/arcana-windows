@@ -33,12 +33,12 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     /// <summary>
     /// Gets a repository for the specified entity type.
     /// </summary>
-    IRepository<T> GetRepository<T>() where T : class;
+    Repository<T> GetRepository<T>() where T : class;
 
     /// <summary>
     /// Gets a repository for the specified entity type with a specific key type.
     /// </summary>
-    IRepository<T, TKey> GetRepository<T, TKey>() where T : class where TKey : notnull;
+    Repository<T, TKey> GetRepository<T, TKey>() where T : class where TKey : notnull;
 
     /// <summary>
     /// Begins a new transaction scope.

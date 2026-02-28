@@ -6,7 +6,7 @@ namespace Arcana.Domain.Services;
 /// <summary>
 /// Customer service interface.
 /// </summary>
-public interface ICustomerService
+public interface CustomerService
 {
     /// <summary>
     /// Gets all customers with paging.

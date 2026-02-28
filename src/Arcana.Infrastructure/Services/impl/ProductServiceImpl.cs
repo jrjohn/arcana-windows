@@ -6,21 +6,21 @@ using Arcana.Domain.Validation;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace Arcana.Infrastructure.Services;
+namespace Arcana.Infrastructure.Services.Impl;
 
 /// <summary>
 /// Product service implementation.
 /// </summary>
-public class ProductService : IProductService
+public class ProductServiceImpl : ProductService
 {
-    private readonly IProductRepository _productRepository;
+    private readonly ProductRepository _productRepository;
     private readonly IValidator<Product> _validator;
-    private readonly ILogger<ProductService> _logger;
+    private readonly ILogger<ProductServiceImpl> _logger;
 
-    public ProductService(
-        IProductRepository productRepository,
+    public ProductServiceImpl(
+        ProductRepository productRepository,
         IValidator<Product> validator,
-        ILogger<ProductService> logger)
+        ILogger<ProductServiceImpl> logger)
     {
         _productRepository = productRepository;
         _validator = validator;

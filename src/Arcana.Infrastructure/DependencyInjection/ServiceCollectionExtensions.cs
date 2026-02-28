@@ -1,12 +1,15 @@
 using Arcana.Core.Common;
 using Arcana.Core.Security;
+using Arcana.Data.Dao;
+using Arcana.Data.Dao.Impl;
 using Arcana.Data.Local;
 using Arcana.Data.Repository;
+using Arcana.Data.Repository.Impl;
 using Arcana.Domain.Services;
 using Arcana.Domain.Validation;
 using Arcana.Infrastructure.Platform;
 using Arcana.Infrastructure.Security;
-using Arcana.Infrastructure.Services;
+using Arcana.Infrastructure.Services.Impl;
 using Arcana.Infrastructure.Localization;
 using Arcana.Infrastructure.Settings;
 using Arcana.Plugins.Contracts;
@@ -20,6 +23,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using CoreCommon = Arcana.Core.Common;
+using DataRepository = Arcana.Data.Repository;
 
 namespace Arcana.Infrastructure.DependencyInjection;
 
@@ -113,7 +118,7 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Adds data layer services.
+    /// Adds data layer services (DAOs, Repositories, Unit of Work).
     /// </summary>
     public static IServiceCollection AddDataServices(this IServiceCollection services, IConfiguration configuration)
     {
@@ -132,12 +137,19 @@ public static class ServiceCollectionExtensions
             options.UseSqlite($"Data Source={dbPath}");
         });
 
-        // Repositories
-        services.AddScoped(typeof(Arcana.Data.Repository.IRepository<>), typeof(Repository<>));
-        services.AddScoped(typeof(Arcana.Data.Repository.IRepository<,>), typeof(Repository<,>));
-        services.AddScoped<IOrderRepository, OrderRepository>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
+        // DAOs (EF Core access is isolated here)
+        services.AddScoped<CustomerDao, CustomerDaoImpl>();
+        services.AddScoped<OrderDao, OrderDaoImpl>();
+        services.AddScoped<ProductDao, ProductDaoImpl>();
+
+        // Generic repository (Arcana.Core.Common.Repository<T> → RepositoryImpl<T>)
+        services.AddScoped(typeof(CoreCommon.Repository<>), typeof(DataRepository.RepositoryImpl<>));
+        services.AddScoped(typeof(CoreCommon.Repository<,>), typeof(DataRepository.RepositoryImpl<,>));
+
+        // Entity-specific repositories (inject corresponding DAOs)
+        services.AddScoped<OrderRepository, OrderRepositoryImpl>();
+        services.AddScoped<CustomerRepository, CustomerRepositoryImpl>();
+        services.AddScoped<ProductRepository, ProductRepositoryImpl>();
 
         // Unit of Work
         services.AddDbContextFactory<AppDbContext>(options =>
@@ -151,14 +163,14 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Adds domain layer services.
+    /// Adds domain layer services (service impls in Infrastructure).
     /// </summary>
     public static IServiceCollection AddDomainServices(this IServiceCollection services)
     {
-        // Services
-        services.AddScoped<IOrderService, OrderService>();
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<IProductService, ProductService>();
+        // Service implementations (interfaces are in Arcana.Domain.Services)
+        services.AddScoped<OrderService, OrderServiceImpl>();
+        services.AddScoped<CustomerService, CustomerServiceImpl>();
+        services.AddScoped<ProductService, ProductServiceImpl>();
 
         // Validators
         services.AddValidatorsFromAssemblyContaining<OrderValidator>();

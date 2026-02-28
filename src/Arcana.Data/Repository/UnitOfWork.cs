@@ -28,13 +28,13 @@ public class UnitOfWork : CoreCommon.IUnitOfWork
         _serviceProvider = serviceProvider;
     }
 
-    public CoreCommon.IRepository<T> GetRepository<T>() where T : class
+    public CoreCommon.Repository<T> GetRepository<T>() where T : class
     {
         var type = typeof(T);
         if (!_repositories.TryGetValue(type, out var repo))
         {
             // Try to get specialized repository from DI
-            var specializedRepo = _serviceProvider.GetService<CoreCommon.IRepository<T>>();
+            var specializedRepo = _serviceProvider.GetService<CoreCommon.Repository<T>>();
             if (specializedRepo != null)
             {
                 _repositories[type] = specializedRepo;
@@ -42,20 +42,20 @@ public class UnitOfWork : CoreCommon.IUnitOfWork
             }
 
             // Fall back to generic repository
-            repo = new Repository<T>(_context);
+            repo = new RepositoryImpl<T>(_context);
             _repositories[type] = repo;
         }
-        return (CoreCommon.IRepository<T>)repo;
+        return (CoreCommon.Repository<T>)repo;
     }
 
-    public CoreCommon.IRepository<T, TKey> GetRepository<T, TKey>() where T : class where TKey : notnull
+    public CoreCommon.Repository<T, TKey> GetRepository<T, TKey>() where T : class where TKey : notnull
     {
         var type = typeof(T);
 
         if (!_repositories.TryGetValue(type, out var repo))
         {
             // Try to get specialized repository from DI
-            var specializedRepo = _serviceProvider.GetService<CoreCommon.IRepository<T, TKey>>();
+            var specializedRepo = _serviceProvider.GetService<CoreCommon.Repository<T, TKey>>();
             if (specializedRepo != null)
             {
                 _repositories[type] = specializedRepo;
@@ -63,10 +63,10 @@ public class UnitOfWork : CoreCommon.IUnitOfWork
             }
 
             // Fall back to generic repository
-            repo = new Repository<T, TKey>(_context);
+            repo = new RepositoryImpl<T, TKey>(_context);
             _repositories[type] = repo;
         }
-        return (CoreCommon.IRepository<T, TKey>)repo;
+        return (CoreCommon.Repository<T, TKey>)repo;
     }
 
     public async Task<CoreCommon.ITransactionScope> BeginTransactionAsync(CancellationToken cancellationToken = default)

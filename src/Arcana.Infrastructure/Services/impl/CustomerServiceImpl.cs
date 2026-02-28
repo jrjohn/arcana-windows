@@ -6,21 +6,21 @@ using Arcana.Domain.Validation;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace Arcana.Infrastructure.Services;
+namespace Arcana.Infrastructure.Services.Impl;
 
 /// <summary>
 /// Customer service implementation.
 /// </summary>
-public class CustomerService : ICustomerService
+public class CustomerServiceImpl : CustomerService
 {
-    private readonly ICustomerRepository _customerRepository;
+    private readonly CustomerRepository _customerRepository;
     private readonly IValidator<Customer> _validator;
-    private readonly ILogger<CustomerService> _logger;
+    private readonly ILogger<CustomerServiceImpl> _logger;
 
-    public CustomerService(
-        ICustomerRepository customerRepository,
+    public CustomerServiceImpl(
+        CustomerRepository customerRepository,
         IValidator<Customer> validator,
-        ILogger<CustomerService> logger)
+        ILogger<CustomerServiceImpl> logger)
     {
         _customerRepository = customerRepository;
         _validator = validator;

@@ -1,5 +1,7 @@
+using Arcana.Data.Dao.Impl;
 using Arcana.Data.Local;
 using Arcana.Data.Repository;
+using Arcana.Data.Repository.Impl;
 using Arcana.Domain.Entities;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +12,7 @@ namespace Arcana.Data.Tests.Repository;
 public class OrderRepositoryTests : IDisposable
 {
     private readonly AppDbContext _context;
-    private readonly OrderRepository _repository;
+    private readonly OrderRepositoryImpl _repository;
 
     public OrderRepositoryTests()
     {
@@ -19,7 +21,7 @@ public class OrderRepositoryTests : IDisposable
             .Options;
 
         _context = new AppDbContext(options);
-        _repository = new OrderRepository(_context);
+        _repository = new OrderRepositoryImpl(_context, new OrderDaoImpl(_context));
 
         SeedData();
     }

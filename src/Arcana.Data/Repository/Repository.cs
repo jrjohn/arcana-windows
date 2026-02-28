@@ -9,14 +9,14 @@ namespace Arcana.Data.Repository;
 /// <summary>
 /// Generic repository implementation using Entity Framework Core.
 /// </summary>
-public class Repository<TEntity, TKey> : CoreCommon.IRepository<TEntity, TKey>
+public class RepositoryImpl<TEntity, TKey> : CoreCommon.Repository<TEntity, TKey>
     where TEntity : class
     where TKey : notnull
 {
     protected readonly AppDbContext Context;
     protected readonly DbSet<TEntity> DbSet;
 
-    public Repository(AppDbContext context)
+    public RepositoryImpl(AppDbContext context)
     {
         Context = context;
         DbSet = context.Set<TEntity>();
@@ -157,12 +157,12 @@ public class Repository<TEntity, TKey> : CoreCommon.IRepository<TEntity, TKey>
 }
 
 /// <summary>
-/// Repository with int primary key.
+/// Repository implementation with int primary key.
 /// </summary>
-public class Repository<TEntity> : Repository<TEntity, int>, CoreCommon.IRepository<TEntity>
+public class RepositoryImpl<TEntity> : RepositoryImpl<TEntity, int>, CoreCommon.Repository<TEntity>
     where TEntity : class
 {
-    public Repository(AppDbContext context) : base(context)
+    public RepositoryImpl(AppDbContext context) : base(context)
     {
     }
 }

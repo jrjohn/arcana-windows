@@ -6,23 +6,23 @@ using Arcana.Domain.Validation;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
-namespace Arcana.Infrastructure.Services;
+namespace Arcana.Infrastructure.Services.Impl;
 
 /// <summary>
 /// Order service implementation.
 /// </summary>
-public class OrderService : IOrderService
+public class OrderServiceImpl : OrderService
 {
-    private readonly IOrderRepository _orderRepository;
-    private readonly ICustomerRepository _customerRepository;
+    private readonly OrderRepository _orderRepository;
+    private readonly CustomerRepository _customerRepository;
     private readonly IValidator<Order> _validator;
-    private readonly ILogger<OrderService> _logger;
+    private readonly ILogger<OrderServiceImpl> _logger;
 
-    public OrderService(
-        IOrderRepository orderRepository,
-        ICustomerRepository customerRepository,
+    public OrderServiceImpl(
+        OrderRepository orderRepository,
+        CustomerRepository customerRepository,
         IValidator<Order> validator,
-        ILogger<OrderService> logger)
+        ILogger<OrderServiceImpl> logger)
     {
         _orderRepository = orderRepository;
         _customerRepository = customerRepository;

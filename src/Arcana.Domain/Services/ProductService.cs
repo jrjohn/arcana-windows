@@ -6,7 +6,7 @@ namespace Arcana.Domain.Services;
 /// <summary>
 /// Product service interface.
 /// </summary>
-public interface IProductService
+public interface ProductService
 {
     /// <summary>
     /// Gets all products with paging.

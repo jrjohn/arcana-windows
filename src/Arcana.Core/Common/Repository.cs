@@ -1,15 +1,14 @@
 using System.Linq.Expressions;
-using Arcana.Core.Common;
 
-namespace Arcana.Data.Repository;
+namespace Arcana.Core.Common;
 
 /// <summary>
 /// Generic repository interface for data access.
 /// </summary>
 /// <typeparam name="TEntity">Entity type</typeparam>
 /// <typeparam name="TKey">Primary key type</typeparam>
-public interface IRepository<TEntity, TKey>
-    where TEntity : class, IEntity<TKey>
+public interface Repository<TEntity, TKey>
+    where TEntity : class
     where TKey : notnull
 {
     /// <summary>
@@ -86,7 +85,7 @@ public interface IRepository<TEntity, TKey>
 /// <summary>
 /// Repository interface with int primary key.
 /// </summary>
-public interface IRepository<TEntity> : IRepository<TEntity, int>
-    where TEntity : class, IEntity<int>
+public interface Repository<TEntity> : Repository<TEntity, int>
+    where TEntity : class
 {
 }

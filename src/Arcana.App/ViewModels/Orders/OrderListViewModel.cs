@@ -22,7 +22,7 @@ namespace Arcana.App.ViewModels.Orders;
 public partial class OrderListViewModel : ReactiveViewModelBase
 {
     // ============ Dependencies ============
-    private readonly IOrderService _orderService;
+    private readonly OrderService _orderService;
     private readonly NavGraph _nav;
     private readonly IWindowService _windowService;
 
@@ -83,7 +83,7 @@ public partial class OrderListViewModel : ReactiveViewModelBase
 
     // ============ Constructor ============
     public OrderListViewModel(
-        IOrderService orderService,
+        OrderService orderService,
         NavGraph nav,
         IWindowService windowService)
     {
