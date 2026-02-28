@@ -4,7 +4,7 @@ namespace Arcana.Core.Common;
 /// Base interface for all entities with a unique identifier.
 /// </summary>
 /// <typeparam name="TKey">The type of the entity's identifier</typeparam>
-public interface IEntity<TKey> where TKey : notnull
+public interface Entity<TKey> where TKey : notnull
 {
     /// <summary>
     /// The unique identifier of the entity
@@ -15,7 +15,7 @@ public interface IEntity<TKey> where TKey : notnull
 /// <summary>
 /// Base interface for entities with auditing information.
 /// </summary>
-public interface IAuditableEntity
+public interface AuditableEntity
 {
     /// <summary>
     /// When the entity was created
@@ -41,7 +41,7 @@ public interface IAuditableEntity
 /// <summary>
 /// Base interface for soft-deletable entities.
 /// </summary>
-public interface ISoftDeletable
+public interface SoftDeletable
 {
     /// <summary>
     /// Whether the entity has been deleted
@@ -62,7 +62,7 @@ public interface ISoftDeletable
 /// <summary>
 /// Base interface for entities that support optimistic concurrency.
 /// </summary>
-public interface IConcurrencyAware
+public interface ConcurrencyAware
 {
     /// <summary>
     /// Row version for optimistic concurrency
@@ -73,7 +73,7 @@ public interface IConcurrencyAware
 /// <summary>
 /// Base interface for syncable entities.
 /// </summary>
-public interface ISyncable
+public interface Syncable
 {
     /// <summary>
     /// Global unique identifier for sync
@@ -94,7 +94,7 @@ public interface ISyncable
 /// <summary>
 /// Combined base entity interface with all common features.
 /// </summary>
-public interface IFullEntity<TKey> : IEntity<TKey>, IAuditableEntity, ISoftDeletable, IConcurrencyAware, ISyncable
+public interface FullEntity<TKey> : Entity<TKey>, AuditableEntity, SoftDeletable, ConcurrencyAware, Syncable
     where TKey : notnull
 {
 }

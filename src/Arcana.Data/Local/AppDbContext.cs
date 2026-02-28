@@ -277,12 +277,12 @@ public class AppDbContext : DbContext
     private void UpdateAuditFields()
     {
         var entries = ChangeTracker.Entries()
-            .Where(e => e.Entity is IAuditableEntity &&
+            .Where(e => e.Entity is AuditableEntity &&
                        (e.State == EntityState.Added || e.State == EntityState.Modified));
 
         foreach (var entry in entries)
         {
-            var entity = (IAuditableEntity)entry.Entity;
+            var entity = (AuditableEntity)entry.Entity;
 
             if (entry.State == EntityState.Added)
             {

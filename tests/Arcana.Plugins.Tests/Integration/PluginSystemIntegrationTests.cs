@@ -47,7 +47,7 @@ public class PluginSystemIntegrationTests : IDisposable
                 sp.GetRequiredService<ILogger<PluginPermissionManager>>(),
                 _testDataPath));
 
-        services.AddScoped<IPluginVersionRepository, PluginVersionRepository>();
+        services.AddScoped<PluginVersionRepository, PluginVersionRepository>();
         services.AddSingleton<PluginLoadContextManager>();
 
         _serviceProvider = services.BuildServiceProvider();
@@ -71,7 +71,7 @@ public class PluginSystemIntegrationTests : IDisposable
     {
         // Arrange
         var permissionManager = _serviceProvider.GetRequiredService<IPluginPermissionManager>();
-        var versionRepository = _serviceProvider.GetRequiredService<IPluginVersionRepository>();
+        var versionRepository = _serviceProvider.GetRequiredService<PluginVersionRepository>();
 
         var pluginId = "test-plugin";
         var manifest = new PluginPermissionManifest
@@ -108,7 +108,7 @@ public class PluginSystemIntegrationTests : IDisposable
     {
         // Arrange
         var permissionManager = _serviceProvider.GetRequiredService<IPluginPermissionManager>();
-        var versionRepository = _serviceProvider.GetRequiredService<IPluginVersionRepository>();
+        var versionRepository = _serviceProvider.GetRequiredService<PluginVersionRepository>();
         var pluginId = "test-plugin";
 
         // Install v1.0.0
@@ -154,7 +154,7 @@ public class PluginSystemIntegrationTests : IDisposable
     public async Task PluginRollback_ShouldRestorePreviousVersion()
     {
         // Arrange
-        var versionRepository = _serviceProvider.GetRequiredService<IPluginVersionRepository>();
+        var versionRepository = _serviceProvider.GetRequiredService<PluginVersionRepository>();
         var pluginId = "test-plugin";
 
         // Create version history
@@ -373,7 +373,7 @@ public class PluginSystemIntegrationTests : IDisposable
     public async Task HealthHistory_ShouldTrackOverTime()
     {
         // Arrange
-        var versionRepository = _serviceProvider.GetRequiredService<IPluginVersionRepository>();
+        var versionRepository = _serviceProvider.GetRequiredService<PluginVersionRepository>();
         var pluginId = "monitored-plugin";
 
         // Record health snapshots over time
@@ -418,7 +418,7 @@ public class PluginSystemIntegrationTests : IDisposable
     {
         // Arrange
         var permissionManager = _serviceProvider.GetRequiredService<IPluginPermissionManager>();
-        var versionRepository = _serviceProvider.GetRequiredService<IPluginVersionRepository>();
+        var versionRepository = _serviceProvider.GetRequiredService<PluginVersionRepository>();
         var loadContextManager = _serviceProvider.GetRequiredService<PluginLoadContextManager>();
         var pluginId = "lifecycle-plugin";
 

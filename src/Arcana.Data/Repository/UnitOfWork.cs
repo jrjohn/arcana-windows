@@ -10,7 +10,7 @@ namespace Arcana.Data.Repository;
 /// <summary>
 /// Unit of Work implementation using Entity Framework Core.
 /// </summary>
-public class UnitOfWork : CoreCommon.IUnitOfWork
+public class UnitOfWorkImpl : CoreCommon.UnitOfWork
 {
     private readonly AppDbContext _context;
     private readonly IServiceProvider _serviceProvider;
@@ -69,7 +69,7 @@ public class UnitOfWork : CoreCommon.IUnitOfWork
         return (CoreCommon.Repository<T, TKey>)repo;
     }
 
-    public async Task<CoreCommon.ITransactionScope> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    public async Task<CoreCommon.TransactionScope> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
         if (_transaction != null)
         {
@@ -141,7 +141,7 @@ public class UnitOfWork : CoreCommon.IUnitOfWork
     {
         var now = DateTime.UtcNow;
 
-        foreach (var entry in _context.ChangeTracker.Entries<IAuditableEntity>())
+        foreach (var entry in _context.ChangeTracker.Entries<AuditableEntity>())
         {
             switch (entry.State)
             {
@@ -201,7 +201,7 @@ public class UnitOfWork : CoreCommon.IUnitOfWork
 /// <summary>
 /// Transaction scope implementation.
 /// </summary>
-public class TransactionScope : CoreCommon.ITransactionScope
+public class TransactionScopeImpl : CoreCommon.TransactionScope
 {
     private readonly IDbContextTransaction _transaction;
     private readonly UnitOfWork _unitOfWork;
@@ -282,13 +282,13 @@ public class UnitOfWorkFactory : CoreCommon.UnitOfWorkFactory
         _contextFactory = contextFactory;
     }
 
-    public CoreCommon.IUnitOfWork Create()
+    public CoreCommon.UnitOfWork Create()
     {
         var context = _contextFactory.CreateDbContext();
         return new UnitOfWork(context, _serviceProvider);
     }
 
-    public async Task<CoreCommon.IUnitOfWork> CreateWithTransactionAsync(CancellationToken cancellationToken = default)
+    public async Task<CoreCommon.UnitOfWork> CreateWithTransactionAsync(CancellationToken cancellationToken = default)
     {
         var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
         var uow = new UnitOfWork(context, _serviceProvider);

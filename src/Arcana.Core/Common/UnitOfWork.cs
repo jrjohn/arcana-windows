@@ -3,7 +3,7 @@ namespace Arcana.Core.Common;
 /// <summary>
 /// Unit of Work pattern interface for managing transactions.
 /// </summary>
-public interface IUnitOfWork : IDisposable, IAsyncDisposable
+public interface UnitOfWork : IDisposable, IAsyncDisposable
 {
     /// <summary>
     /// Gets whether changes have been made in this unit of work.
@@ -43,13 +43,13 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     /// <summary>
     /// Begins a new transaction scope.
     /// </summary>
-    Task<ITransactionScope> BeginTransactionAsync(CancellationToken cancellationToken = default);
+    Task<TransactionScope> BeginTransactionAsync(CancellationToken cancellationToken = default);
 }
 
 /// <summary>
 /// Transaction scope for explicit transaction management.
 /// </summary>
-public interface ITransactionScope : IDisposable, IAsyncDisposable
+public interface TransactionScope : IDisposable, IAsyncDisposable
 {
     /// <summary>
     /// Gets the transaction ID.
@@ -80,12 +80,12 @@ public interface UnitOfWorkFactory
     /// <summary>
     /// Creates a new unit of work.
     /// </summary>
-    IUnitOfWork Create();
+    UnitOfWork Create();
 
     /// <summary>
     /// Creates a new unit of work with an explicit transaction.
     /// </summary>
-    Task<IUnitOfWork> CreateWithTransactionAsync(CancellationToken cancellationToken = default);
+    Task<UnitOfWork> CreateWithTransactionAsync(CancellationToken cancellationToken = default);
 }
 
 /// <summary>

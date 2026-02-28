@@ -6,7 +6,7 @@ namespace Arcana.Plugins.Data;
 /// <summary>
 /// Repository for plugin version history using SQLite.
 /// </summary>
-public class PluginVersionRepository : IPluginVersionRepository
+public class PluginVersionRepositoryImpl : PluginVersionRepository
 {
     private readonly PluginDbContext _context;
 
@@ -242,7 +242,7 @@ public class PluginVersionRepository : IPluginVersionRepository
 /// <summary>
 /// Interface for plugin version repository.
 /// </summary>
-public interface IPluginVersionRepository
+public interface PluginVersionRepository
 {
     Task<IReadOnlyList<PluginVersionInfo>> GetVersionsAsync(string pluginId, CancellationToken cancellationToken = default);
     Task<PluginVersionInfo?> GetVersionAsync(string pluginId, string version, CancellationToken cancellationToken = default);

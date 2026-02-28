@@ -78,7 +78,7 @@ public class RepositoryImpl<TEntity, TKey> : CoreCommon.Repository<TEntity, TKey
     public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         // Mark for sync if syncable
-        if (entity is ISyncable syncable)
+        if (entity is Syncable syncable)
         {
             syncable.IsPendingSync = true;
         }
@@ -92,7 +92,7 @@ public class RepositoryImpl<TEntity, TKey> : CoreCommon.Repository<TEntity, TKey
     {
         foreach (var entity in entities)
         {
-            if (entity is ISyncable syncable)
+            if (entity is Syncable syncable)
             {
                 syncable.IsPendingSync = true;
             }
@@ -104,7 +104,7 @@ public class RepositoryImpl<TEntity, TKey> : CoreCommon.Repository<TEntity, TKey
 
     public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        if (entity is ISyncable syncable)
+        if (entity is Syncable syncable)
         {
             syncable.IsPendingSync = true;
         }
@@ -116,12 +116,12 @@ public class RepositoryImpl<TEntity, TKey> : CoreCommon.Repository<TEntity, TKey
     public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         // Soft delete if supported
-        if (entity is ISoftDeletable softDeletable)
+        if (entity is SoftDeletable softDeletable)
         {
             softDeletable.IsDeleted = true;
             softDeletable.DeletedAt = DateTime.UtcNow;
 
-            if (entity is ISyncable syncable)
+            if (entity is Syncable syncable)
             {
                 syncable.IsPendingSync = true;
             }

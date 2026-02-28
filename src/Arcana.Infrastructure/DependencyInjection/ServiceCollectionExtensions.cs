@@ -156,7 +156,7 @@ public static class ServiceCollectionExtensions
         {
             options.UseSqlite($"Data Source={dbPath}");
         });
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<UnitOfWork, UnitOfWorkImpl>();
         services.AddSingleton<UnitOfWorkFactory, UnitOfWorkFactory>();
 
         return services;

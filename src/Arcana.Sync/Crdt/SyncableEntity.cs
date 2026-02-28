@@ -3,7 +3,7 @@ namespace Arcana.Sync.Crdt;
 /// <summary>
 /// Interface for entities that support CRDT-based synchronization.
 /// </summary>
-public interface ISyncableEntity
+public interface SyncableEntity
 {
     /// <summary>
     /// Gets or sets the entity ID.
@@ -39,7 +39,7 @@ public interface ISyncableEntity
 /// <summary>
 /// Base implementation for syncable entities.
 /// </summary>
-public abstract class SyncableEntityBase : ISyncableEntity
+public abstract class SyncableEntityBase : SyncableEntity
 {
     public abstract string SyncId { get; }
 

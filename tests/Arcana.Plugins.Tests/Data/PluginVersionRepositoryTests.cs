@@ -21,7 +21,7 @@ public class PluginVersionRepositoryTests : IDisposable
             .Options;
 
         _context = new PluginDbContext(options);
-        _repository = new PluginVersionRepository(_context);
+        _repository = new PluginVersionRepositoryImpl(_context);
     }
 
     public void Dispose()
