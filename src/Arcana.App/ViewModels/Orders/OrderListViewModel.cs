@@ -24,7 +24,7 @@ public partial class OrderListViewModel : ReactiveViewModelBase
     // ============ Dependencies ============
     private readonly OrderService _orderService;
     private readonly NavGraph _nav;
-    private readonly IWindowService _windowService;
+    private readonly WindowService _windowService;
 
     // ============ Private State ============
 
@@ -85,7 +85,7 @@ public partial class OrderListViewModel : ReactiveViewModelBase
     public OrderListViewModel(
         OrderService orderService,
         NavGraph nav,
-        IWindowService windowService)
+        WindowService windowService)
     {
         _orderService = orderService;
         _nav = nav;

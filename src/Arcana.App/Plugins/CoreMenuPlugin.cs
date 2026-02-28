@@ -361,10 +361,10 @@ public class CoreMenuPlugin : PluginBase
 
 internal class CultureChangeSubscription : IDisposable
 {
-    private readonly ILocalizationService _localization;
+    private readonly LocalizationService _localization;
     private readonly EventHandler<CultureChangedEventArgs> _handler;
 
-    public CultureChangeSubscription(ILocalizationService localization, EventHandler<CultureChangedEventArgs> handler)
+    public CultureChangeSubscription(LocalizationService localization, EventHandler<CultureChangedEventArgs> handler)
     {
         _localization = localization;
         _handler = handler;

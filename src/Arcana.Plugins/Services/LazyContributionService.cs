@@ -11,12 +11,12 @@ namespace Arcana.Plugins.Services;
 /// </summary>
 public class LazyContributionService
 {
-    private readonly IManifestService _manifestService;
+    private readonly ManifestService _manifestService;
     private readonly IMenuRegistry _menuRegistry;
     private readonly IViewRegistry _viewRegistry;
-    private readonly ICommandService _commandService;
+    private readonly CommandService _commandService;
     private readonly ActivationEventService _activationEventService;
-    private readonly ILocalizationService _localizationService;
+    private readonly LocalizationService _localizationService;
     private readonly ILogger<LazyContributionService> _logger;
 
     // Track which contributions came from manifests (for lazy activation)
@@ -28,12 +28,12 @@ public class LazyContributionService
     private readonly Dictionary<string, List<IDisposable>> _pluginDisposables = new();
 
     public LazyContributionService(
-        IManifestService manifestService,
+        ManifestService manifestService,
         IMenuRegistry menuRegistry,
         IViewRegistry viewRegistry,
-        ICommandService commandService,
+        CommandService commandService,
         ActivationEventService activationEventService,
-        ILocalizationService localizationService,
+        LocalizationService localizationService,
         ILogger<LazyContributionService> logger)
     {
         _manifestService = manifestService;

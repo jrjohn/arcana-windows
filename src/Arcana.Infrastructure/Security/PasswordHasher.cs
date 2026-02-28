@@ -6,7 +6,7 @@ namespace Arcana.Infrastructure.Security;
 /// <summary>
 /// PBKDF2-based password hasher.
 /// </summary>
-public class PasswordHasher : IPasswordHasher
+public class PasswordHasher : PasswordHasher
 {
     private const int SaltSize = 16; // 128 bits
     private const int HashSize = 32; // 256 bits

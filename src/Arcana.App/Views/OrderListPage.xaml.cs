@@ -14,14 +14,14 @@ namespace Arcana.App.Views;
 public sealed partial class OrderListPage : Page
 {
     private OrderListViewModel ViewModel { get; }
-    private readonly ILocalizationService _localization;
+    private readonly LocalizationService _localization;
     private readonly INavigationService _navigationService;
 
     public OrderListPage()
     {
         this.InitializeComponent();
         ViewModel = App.Services.GetRequiredService<OrderListViewModel>();
-        _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _localization = App.Services.GetRequiredService<LocalizationService>();
         _navigationService = App.Services.GetRequiredService<INavigationService>();
         _localization.CultureChanged += OnCultureChanged;
         DataContext = ViewModel;

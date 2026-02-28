@@ -16,11 +16,11 @@ namespace Arcana.App;
 public sealed partial class MainWindow : Window
 {
     private readonly INavigationService _navigationService;
-    private readonly INetworkMonitor _networkMonitor;
-    private readonly ISyncService _syncService;
+    private readonly NetworkMonitor _networkMonitor;
+    private readonly SyncService _syncService;
     private readonly IMenuRegistry _menuRegistry;
-    private readonly ICommandService _commandService;
-    private readonly ILocalizationService _localization;
+    private readonly CommandService _commandService;
+    private readonly LocalizationService _localization;
     private readonly IViewRegistry _viewRegistry;
     private readonly ThemeService _themeService;
     private readonly DispatcherTimer _timer;
@@ -35,11 +35,11 @@ public sealed partial class MainWindow : Window
 
         // Get services
         _navigationService = App.Services.GetRequiredService<INavigationService>();
-        _networkMonitor = App.Services.GetRequiredService<INetworkMonitor>();
-        _syncService = App.Services.GetRequiredService<ISyncService>();
+        _networkMonitor = App.Services.GetRequiredService<NetworkMonitor>();
+        _syncService = App.Services.GetRequiredService<SyncService>();
         _menuRegistry = App.Services.GetRequiredService<IMenuRegistry>();
-        _commandService = App.Services.GetRequiredService<ICommandService>();
-        _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _commandService = App.Services.GetRequiredService<CommandService>();
+        _localization = App.Services.GetRequiredService<LocalizationService>();
         _viewRegistry = App.Services.GetRequiredService<IViewRegistry>();
         _themeService = App.Services.GetRequiredService<ThemeService>();
 
@@ -1102,7 +1102,7 @@ public sealed partial class MainWindow : Window
         {
             try
             {
-                // Execute the command through ICommandService
+                // Execute the command through CommandService
                 await _commandService.ExecuteAsync(commandId);
             }
             catch (InvalidOperationException ex)

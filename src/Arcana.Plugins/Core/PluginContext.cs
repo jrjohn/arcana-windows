@@ -15,8 +15,8 @@ public class PluginContext : IPluginContext
     public string PluginPath { get; }
     public string DataPath { get; }
     public ILogger Logger { get; }
-    public ICommandService Commands { get; }
-    public IWindowService Window { get; }
+    public CommandService Commands { get; }
+    public WindowService Window { get; }
     public IMessageBus MessageBus { get; }
     public IEventAggregator Events { get; }
     public ISharedStateStore SharedState { get; }
@@ -24,7 +24,7 @@ public class PluginContext : IPluginContext
     public IViewRegistry Views { get; }
     public INavigationService Navigation { get; }
     public INavGraph NavGraph { get; }
-    public ILocalizationService Localization { get; }
+    public LocalizationService Localization { get; }
     public IList<IDisposable> Subscriptions { get; } = new List<IDisposable>();
 
     public PluginContext(
@@ -41,8 +41,8 @@ public class PluginContext : IPluginContext
         var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
         Logger = loggerFactory.CreateLogger($"Plugin.{pluginId}");
 
-        Commands = serviceProvider.GetRequiredService<ICommandService>();
-        Window = serviceProvider.GetRequiredService<IWindowService>();
+        Commands = serviceProvider.GetRequiredService<CommandService>();
+        Window = serviceProvider.GetRequiredService<WindowService>();
         MessageBus = serviceProvider.GetRequiredService<IMessageBus>();
         Events = serviceProvider.GetRequiredService<IEventAggregator>();
         SharedState = serviceProvider.GetRequiredService<ISharedStateStore>();
@@ -50,7 +50,7 @@ public class PluginContext : IPluginContext
         Views = serviceProvider.GetRequiredService<IViewRegistry>();
         Navigation = serviceProvider.GetRequiredService<INavigationService>();
         NavGraph = serviceProvider.GetRequiredService<INavGraph>();
-        Localization = serviceProvider.GetRequiredService<ILocalizationService>();
+        Localization = serviceProvider.GetRequiredService<LocalizationService>();
     }
 
     public T? GetService<T>() where T : class

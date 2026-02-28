@@ -5,7 +5,7 @@ namespace Arcana.Infrastructure.Security;
 /// <summary>
 /// Thread-safe current user service for desktop application.
 /// </summary>
-public class CurrentUserService : ICurrentUserService
+public class CurrentUserService : CurrentUserService
 {
     private readonly object _lock = new();
     private AuthenticatedUser? _currentUser;

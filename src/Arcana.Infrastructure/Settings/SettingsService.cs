@@ -1,129 +1,73 @@
-using System.Collections.Concurrent;
-using System.Text.Json;
-
 namespace Arcana.Infrastructure.Settings;
 
 /// <summary>
-/// Settings service implementation using JSON file storage.
+/// Settings service interface.
 /// </summary>
-public class SettingsService : ISettingsService
+public interface SettingsService
 {
-    private readonly string _settingsPath;
-    private readonly ConcurrentDictionary<string, object?> _settings = new();
-    private readonly SemaphoreSlim _saveLock = new(1, 1);
+    /// <summary>
+    /// Gets a setting value.
+    /// </summary>
+    T? Get<T>(string key, T? defaultValue = default);
 
-    public event EventHandler<SettingChangedEventArgs>? SettingChanged;
+    /// <summary>
+    /// Sets a setting value.
+    /// </summary>
+    Task SetAsync<T>(string key, T value);
 
-    public SettingsService()
+    /// <summary>
+    /// Removes a setting.
+    /// </summary>
+    Task RemoveAsync(string key);
+
+    /// <summary>
+    /// Checks if a setting exists.
+    /// </summary>
+    bool Contains(string key);
+
+    /// <summary>
+    /// Gets all settings.
+    /// </summary>
+    IReadOnlyDictionary<string, object?> GetAll();
+
+    /// <summary>
+    /// Event raised when a setting changes.
+    /// </summary>
+    event EventHandler<SettingChangedEventArgs>? SettingChanged;
+}
+
+/// <summary>
+/// Event args for setting changes.
+/// </summary>
+public class SettingChangedEventArgs : EventArgs
+{
+    public string Key { get; }
+    public object? OldValue { get; }
+    public object? NewValue { get; }
+
+    public SettingChangedEventArgs(string key, object? oldValue, object? newValue)
     {
-        _settingsPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "Arcana",
-            "settings.json");
-
-        LoadSettings();
+        Key = key;
+        OldValue = oldValue;
+        NewValue = newValue;
     }
+}
 
-    public T? Get<T>(string key, T? defaultValue = default)
-    {
-        if (_settings.TryGetValue(key, out var value))
-        {
-            if (value is T typedValue)
-            {
-                return typedValue;
-            }
-
-            // Try to convert from JsonElement
-            if (value is JsonElement element)
-            {
-                try
-                {
-                    return element.Deserialize<T>();
-                }
-                catch
-                {
-                    return defaultValue;
-                }
-            }
-        }
-
-        return defaultValue;
-    }
-
-    public async Task SetAsync<T>(string key, T value)
-    {
-        var oldValue = _settings.TryGetValue(key, out var existing) ? existing : default;
-        _settings[key] = value;
-
-        await SaveSettingsAsync();
-
-        SettingChanged?.Invoke(this, new SettingChangedEventArgs(key, oldValue, value));
-    }
-
-    public async Task RemoveAsync(string key)
-    {
-        if (_settings.TryRemove(key, out var oldValue))
-        {
-            await SaveSettingsAsync();
-            SettingChanged?.Invoke(this, new SettingChangedEventArgs(key, oldValue, null));
-        }
-    }
-
-    public bool Contains(string key)
-    {
-        return _settings.ContainsKey(key);
-    }
-
-    public IReadOnlyDictionary<string, object?> GetAll()
-    {
-        return new Dictionary<string, object?>(_settings);
-    }
-
-    private void LoadSettings()
-    {
-        try
-        {
-            if (File.Exists(_settingsPath))
-            {
-                var json = File.ReadAllText(_settingsPath);
-                var settings = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
-
-                if (settings != null)
-                {
-                    foreach (var kvp in settings)
-                    {
-                        _settings[kvp.Key] = kvp.Value;
-                    }
-                }
-            }
-        }
-        catch
-        {
-            // Ignore load errors, use defaults
-        }
-    }
-
-    private async Task SaveSettingsAsync()
-    {
-        await _saveLock.WaitAsync();
-        try
-        {
-            var directory = Path.GetDirectoryName(_settingsPath);
-            if (!string.IsNullOrEmpty(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            var json = JsonSerializer.Serialize(_settings, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
-
-            await File.WriteAllTextAsync(_settingsPath, json);
-        }
-        finally
-        {
-            _saveLock.Release();
-        }
-    }
+/// <summary>
+/// Application settings keys.
+/// </summary>
+public static class SettingKeys
+{
+    public const string Theme = "app.theme";
+    public const string Language = "app.language";
+    public const string SyncEnabled = "sync.enabled";
+    public const string SyncInterval = "sync.interval";
+    public const string LastSyncTime = "sync.lastTime";
+    public const string WindowWidth = "window.width";
+    public const string WindowHeight = "window.height";
+    public const string WindowX = "window.x";
+    public const string WindowY = "window.y";
+    public const string IsMaximized = "window.maximized";
+    public const string SidebarWidth = "sidebar.width";
+    public const string RecentFiles = "recent.files";
 }

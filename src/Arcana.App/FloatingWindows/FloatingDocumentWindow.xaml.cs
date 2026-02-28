@@ -13,8 +13,8 @@ namespace Arcana.App.FloatingWindows;
 /// </summary>
 public sealed partial class FloatingDocumentWindow : Window
 {
-    private readonly ILocalizationService _localization;
-    private readonly IDocumentManager _documentManager;
+    private readonly LocalizationService _localization;
+    private readonly DocumentManager _documentManager;
     private readonly ThemeService _themeService;
 
     public string WindowId { get; }
@@ -31,8 +31,8 @@ public sealed partial class FloatingDocumentWindow : Window
         ModuleId = moduleId;
         Document = document;
 
-        _localization = App.Services.GetRequiredService<ILocalizationService>();
-        _documentManager = App.Services.GetRequiredService<IDocumentManager>();
+        _localization = App.Services.GetRequiredService<LocalizationService>();
+        _documentManager = App.Services.GetRequiredService<DocumentManager>();
         _themeService = App.Services.GetRequiredService<ThemeService>();
 
         // Set window properties

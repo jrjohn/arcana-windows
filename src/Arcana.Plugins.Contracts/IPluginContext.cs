@@ -30,12 +30,12 @@ public interface IPluginContext
     /// <summary>
     /// Access to the command service.
     /// </summary>
-    ICommandService Commands { get; }
+    CommandService Commands { get; }
 
     /// <summary>
     /// Access to the window service.
     /// </summary>
-    IWindowService Window { get; }
+    WindowService Window { get; }
 
     /// <summary>
     /// Access to the message bus for plugin-to-plugin communication.
@@ -76,7 +76,7 @@ public interface IPluginContext
     /// <summary>
     /// Access to the localization service.
     /// </summary>
-    ILocalizationService Localization { get; }
+    LocalizationService Localization { get; }
 
     /// <summary>
     /// Disposables that will be cleaned up when the plugin is deactivated.

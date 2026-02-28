@@ -25,7 +25,7 @@ public class ThemeItem
 /// </summary>
 public sealed partial class SettingsPage : Page
 {
-    private readonly ILocalizationService _localization;
+    private readonly LocalizationService _localization;
     private readonly ThemeService _themeService;
     private readonly AppSettingsService _settingsService;
     private bool _isInitializing = true;
@@ -35,7 +35,7 @@ public sealed partial class SettingsPage : Page
     public SettingsPage()
     {
         this.InitializeComponent();
-        _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _localization = App.Services.GetRequiredService<LocalizationService>();
         _themeService = App.Services.GetRequiredService<ThemeService>();
         _settingsService = App.Services.GetRequiredService<AppSettingsService>();
 

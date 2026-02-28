@@ -10,7 +10,7 @@ namespace Arcana.Plugins.Services;
 /// </summary>
 public class ActivationEventService : IActivationEventService
 {
-    private readonly IManifestService _manifestService;
+    private readonly ManifestService _manifestService;
     private readonly ILogger<ActivationEventService> _logger;
 
     // Plugins waiting for activation (not yet loaded)
@@ -25,7 +25,7 @@ public class ActivationEventService : IActivationEventService
     public event EventHandler<PluginActivatedEventArgs>? PluginActivated;
 
     public ActivationEventService(
-        IManifestService manifestService,
+        ManifestService manifestService,
         ILogger<ActivationEventService> logger)
     {
         _manifestService = manifestService;

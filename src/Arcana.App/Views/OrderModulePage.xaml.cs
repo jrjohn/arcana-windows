@@ -18,22 +18,22 @@ public sealed partial class OrderModulePage : Page
 {
     private const string ModuleId = "OrderModule";
 
-    private readonly ILocalizationService _localization;
-    private readonly IDocumentManager _documentManager;
+    private readonly LocalizationService _localization;
+    private readonly DocumentManager _documentManager;
     private readonly IMenuRegistry _menuRegistry;
     private readonly IViewRegistry _viewRegistry;
-    private readonly ICommandService _commandService;
+    private readonly CommandService _commandService;
     private readonly ThemeService _themeService;
     private readonly List<FloatingDocumentWindow> _floatingWindows = [];
 
     public OrderModulePage()
     {
         this.InitializeComponent();
-        _localization = App.Services.GetRequiredService<ILocalizationService>();
-        _documentManager = App.Services.GetRequiredService<IDocumentManager>();
+        _localization = App.Services.GetRequiredService<LocalizationService>();
+        _documentManager = App.Services.GetRequiredService<DocumentManager>();
         _menuRegistry = App.Services.GetRequiredService<IMenuRegistry>();
         _viewRegistry = App.Services.GetRequiredService<IViewRegistry>();
-        _commandService = App.Services.GetRequiredService<ICommandService>();
+        _commandService = App.Services.GetRequiredService<CommandService>();
         _themeService = App.Services.GetRequiredService<ThemeService>();
 
         _localization.CultureChanged += OnCultureChanged;

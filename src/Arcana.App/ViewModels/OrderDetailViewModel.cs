@@ -19,7 +19,7 @@ public partial class OrderDetailViewModel : ReactiveViewModelBase
     private readonly CustomerService _customerService;
     private readonly ProductService _productService;
     private readonly NavGraph _nav;
-    private readonly IWindowService _windowService;
+    private readonly WindowService _windowService;
 
     // ============ Private State ============
 
@@ -77,7 +77,7 @@ public partial class OrderDetailViewModel : ReactiveViewModelBase
         CustomerService customerService,
         ProductService productService,
         NavGraph nav,
-        IWindowService windowService)
+        WindowService windowService)
     {
         _orderService = orderService;
         _customerService = customerService;

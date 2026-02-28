@@ -82,9 +82,9 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddCoreServices(this IServiceCollection services)
     {
-        services.AddSingleton<INetworkMonitor, NetworkMonitor>();
-        services.AddSingleton<ISettingsService, SettingsService>();
-        services.AddSingleton<ILocalizationService, LocalizationService>();
+        services.AddSingleton<NetworkMonitor, NetworkMonitor>();
+        services.AddSingleton<SettingsService, SettingsService>();
+        services.AddSingleton<LocalizationService, LocalizationService>();
 
         return services;
     }
@@ -95,10 +95,10 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Password hasher
-        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<PasswordHasher, PasswordHasher>();
 
         // Token service with configuration
-        services.AddSingleton<ITokenService>(sp =>
+        services.AddSingleton<TokenService>(sp =>
         {
             var options = new TokenServiceOptions();
             configuration.GetSection("Security:Token").Bind(options);
@@ -106,13 +106,13 @@ public static class ServiceCollectionExtensions
         });
 
         // Current user service (singleton for desktop app)
-        services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<CurrentUserService, CurrentUserService>();
 
         // Auth service (scoped to use DbContext)
-        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<AuthService, AuthService>();
 
         // Authorization service
-        services.AddScoped<IAuthorizationService, AuthorizationService>();
+        services.AddScoped<AuthorizationService, AuthorizationService>();
 
         return services;
     }
@@ -157,7 +157,7 @@ public static class ServiceCollectionExtensions
             options.UseSqlite($"Data Source={dbPath}");
         });
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
+        services.AddSingleton<UnitOfWorkFactory, UnitOfWorkFactory>();
 
         return services;
     }
@@ -187,7 +187,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IMessageBus, MessageBus>();
         services.AddSingleton<IEventAggregator, EventAggregator>();
         services.AddSingleton<ISharedStateStore, SharedStateStore>();
-        services.AddSingleton<ICommandService, CommandService>();
+        services.AddSingleton<CommandService, CommandService>();
         services.AddSingleton<IMenuRegistry, MenuRegistry>();
         services.AddSingleton<IViewRegistry, ViewRegistry>();
 
@@ -195,7 +195,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<PluginHealthMonitor>();
 
         // Manifest and lazy loading services
-        services.AddSingleton<IManifestService, ManifestService>();
+        services.AddSingleton<ManifestService, ManifestService>();
         services.AddSingleton<ActivationEventService>();
         services.AddSingleton<IActivationEventService>(sp =>
             sp.GetRequiredService<ActivationEventService>());
@@ -209,7 +209,7 @@ public static class ServiceCollectionExtensions
             var manager = new PluginManager(sp, logger, pluginsPath);
 
             // Initialize lazy loading
-            var manifestService = sp.GetRequiredService<IManifestService>();
+            var manifestService = sp.GetRequiredService<ManifestService>();
             var activationService = sp.GetRequiredService<ActivationEventService>();
             var lazyContribService = sp.GetRequiredService<LazyContributionService>();
             manager.InitializeLazyLoading(manifestService, activationService, lazyContribService);
@@ -235,7 +235,7 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddSyncServices(this IServiceCollection services)
     {
-        services.AddSingleton<ISyncService, SyncService>();
+        services.AddSingleton<SyncService, SyncService>();
 
         return services;
     }

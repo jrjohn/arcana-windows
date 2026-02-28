@@ -11,12 +11,12 @@ namespace Arcana.Infrastructure.Security;
 /// <summary>
 /// Authentication service implementation.
 /// </summary>
-public class AuthService : IAuthService
+public class AuthService : AuthService
 {
     private readonly AppDbContext _context;
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly ITokenService _tokenService;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly PasswordHasher _passwordHasher;
+    private readonly TokenService _tokenService;
+    private readonly CurrentUserService _currentUserService;
     private readonly ILogger<AuthService> _logger;
 
     private const int MaxFailedAttempts = 5;
@@ -24,9 +24,9 @@ public class AuthService : IAuthService
 
     public AuthService(
         AppDbContext context,
-        IPasswordHasher passwordHasher,
-        ITokenService tokenService,
-        ICurrentUserService currentUserService,
+        PasswordHasher passwordHasher,
+        TokenService tokenService,
+        CurrentUserService currentUserService,
         ILogger<AuthService> logger)
     {
         _context = context;

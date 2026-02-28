@@ -5,7 +5,7 @@ namespace Arcana.Core.Security;
 /// <summary>
 /// Authorization service for checking permissions.
 /// </summary>
-public interface IAuthorizationService
+public interface AuthorizationService
 {
     /// <summary>
     /// Check if a user has a specific permission.

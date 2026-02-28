@@ -10,7 +10,7 @@ namespace Arcana.Infrastructure.Security;
 /// <summary>
 /// Authorization service implementation.
 /// </summary>
-public class AuthorizationService : IAuthorizationService
+public class AuthorizationService : AuthorizationService
 {
     private readonly AppDbContext _context;
     private readonly ILogger<AuthorizationService> _logger;

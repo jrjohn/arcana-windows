@@ -5,7 +5,7 @@ namespace Arcana.Core.Security;
 /// <summary>
 /// Authentication service interface.
 /// </summary>
-public interface IAuthService
+public interface AuthService
 {
     /// <summary>
     /// Authenticate user with username and password.

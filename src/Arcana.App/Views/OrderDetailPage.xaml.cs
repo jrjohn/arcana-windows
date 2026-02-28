@@ -14,13 +14,13 @@ namespace Arcana.App.Views;
 public sealed partial class OrderDetailPage : Page
 {
     private OrderDetailViewModel ViewModel { get; }
-    private readonly ILocalizationService _localization;
+    private readonly LocalizationService _localization;
 
     public OrderDetailPage()
     {
         this.InitializeComponent();
         ViewModel = App.Services.GetRequiredService<OrderDetailViewModel>();
-        _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _localization = App.Services.GetRequiredService<LocalizationService>();
         _localization.CultureChanged += OnCultureChanged;
         DataContext = ViewModel;
     }
@@ -210,7 +210,7 @@ public sealed partial class OrderDetailPage : Page
         // If dirty, ask for confirmation
         if (ViewModel.Out.IsDirty)
         {
-            var windowService = App.Services.GetRequiredService<IWindowService>();
+            var windowService = App.Services.GetRequiredService<WindowService>();
             var confirmed = await windowService.ShowConfirmAsync(
                 _localization.Get("common.discardChanges"),
                 _localization.Get("common.discardChangesMessage"));

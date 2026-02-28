@@ -75,7 +75,7 @@ public interface ITransactionScope : IDisposable, IAsyncDisposable
 /// <summary>
 /// Factory for creating unit of work instances.
 /// </summary>
-public interface IUnitOfWorkFactory
+public interface UnitOfWorkFactory
 {
     /// <summary>
     /// Creates a new unit of work.

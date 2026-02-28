@@ -12,8 +12,8 @@ namespace Arcana.App.Controls;
 /// </summary>
 public sealed partial class DocumentTabHost : UserControl
 {
-    private readonly ILocalizationService _localization;
-    private readonly IDocumentManager _documentManager;
+    private readonly LocalizationService _localization;
+    private readonly DocumentManager _documentManager;
 
     public event EventHandler<DocumentEventArgs>? DocumentOpened;
     public event EventHandler<DocumentEventArgs>? DocumentClosed;
@@ -54,8 +54,8 @@ public sealed partial class DocumentTabHost : UserControl
     public DocumentTabHost()
     {
         this.InitializeComponent();
-        _localization = App.Services.GetRequiredService<ILocalizationService>();
-        _documentManager = App.Services.GetRequiredService<IDocumentManager>();
+        _localization = App.Services.GetRequiredService<LocalizationService>();
+        _documentManager = App.Services.GetRequiredService<DocumentManager>();
         _localization.CultureChanged += OnCultureChanged;
 
         Loaded += OnLoaded;

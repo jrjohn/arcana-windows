@@ -52,12 +52,12 @@ public partial class App : Application
                 services.AddSingleton<INavigationService, DynamicNavigationService>();
 
                 // Register Window Service
-                services.AddSingleton<IWindowService, WindowService>();
+                services.AddSingleton<WindowService, WindowService>();
 
                 // Register App Services
                 services.AddSingleton<ThemeService>();
                 services.AddSingleton<AppSettingsService>();
-                services.AddSingleton<IDocumentManager, DocumentManager>();
+                services.AddSingleton<DocumentManager, DocumentManager>();
 
                 // Register NavGraph (both as concrete type and interface for plugins)
                 services.AddSingleton<NavGraph>();
@@ -97,7 +97,7 @@ public partial class App : Application
     private void ApplyLanguageSettings()
     {
         var settingsService = Services.GetRequiredService<AppSettingsService>();
-        var localizationService = Services.GetRequiredService<ILocalizationService>();
+        var localizationService = Services.GetRequiredService<LocalizationService>();
 
         var savedLanguage = settingsService.LanguageCode;
         if (!string.IsNullOrEmpty(savedLanguage))

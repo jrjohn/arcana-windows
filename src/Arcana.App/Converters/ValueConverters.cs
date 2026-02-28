@@ -202,8 +202,8 @@ public class StatusLocalizationConverter : IValueConverter
 
         try
         {
-            var localization = App.Services.GetService(typeof(Arcana.Plugins.Contracts.ILocalizationService))
-                as Arcana.Plugins.Contracts.ILocalizationService;
+            var localization = App.Services.GetService(typeof(Arcana.Plugins.Contracts.LocalizationService))
+                as Arcana.Plugins.Contracts.LocalizationService;
 
             if (localization != null)
             {

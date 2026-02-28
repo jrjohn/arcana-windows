@@ -3,7 +3,7 @@ namespace Arcana.Plugins.Contracts;
 /// <summary>
 /// Window service for UI interactions.
 /// </summary>
-public interface IWindowService
+public interface WindowService
 {
     /// <summary>
     /// Shows an information message.

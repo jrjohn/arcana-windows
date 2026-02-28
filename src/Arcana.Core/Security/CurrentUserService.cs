@@ -3,7 +3,7 @@ namespace Arcana.Core.Security;
 /// <summary>
 /// Service to access the current authenticated user.
 /// </summary>
-public interface ICurrentUserService
+public interface CurrentUserService
 {
     /// <summary>
     /// Whether a user is currently authenticated.

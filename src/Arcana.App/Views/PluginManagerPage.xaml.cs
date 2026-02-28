@@ -12,7 +12,7 @@ namespace Arcana.App.Views;
 public sealed partial class PluginManagerPage : Page
 {
     public PluginManagerViewModel ViewModel { get; }
-    private readonly IWindowService _windowService;
+    private readonly WindowService _windowService;
     private IDisposable? _installSubscription;
     private IDisposable? _upgradeSubscription;
 
@@ -20,7 +20,7 @@ public sealed partial class PluginManagerPage : Page
     {
         this.InitializeComponent();
         ViewModel = App.Services.GetRequiredService<PluginManagerViewModel>();
-        _windowService = App.Services.GetRequiredService<IWindowService>();
+        _windowService = App.Services.GetRequiredService<WindowService>();
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
     }

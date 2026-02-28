@@ -271,7 +271,7 @@ public class TransactionScope : CoreCommon.ITransactionScope
 /// <summary>
 /// Factory for creating unit of work instances.
 /// </summary>
-public class UnitOfWorkFactory : CoreCommon.IUnitOfWorkFactory
+public class UnitOfWorkFactory : CoreCommon.UnitOfWorkFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly IDbContextFactory<AppDbContext> _contextFactory;

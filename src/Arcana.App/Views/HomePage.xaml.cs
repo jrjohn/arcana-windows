@@ -10,12 +10,12 @@ namespace Arcana.App.Views;
 /// </summary>
 public sealed partial class HomePage : Page
 {
-    private readonly ILocalizationService _localization;
+    private readonly LocalizationService _localization;
 
     public HomePage()
     {
         this.InitializeComponent();
-        _localization = App.Services.GetRequiredService<ILocalizationService>();
+        _localization = App.Services.GetRequiredService<LocalizationService>();
         _localization.CultureChanged += OnCultureChanged;
 
         Loaded += OnLoaded;

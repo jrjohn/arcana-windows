@@ -3,7 +3,7 @@ namespace Arcana.Plugins.Contracts;
 /// <summary>
 /// Command service for registering and executing commands.
 /// </summary>
-public interface ICommandService
+public interface CommandService
 {
     /// <summary>
     /// Registers a command.

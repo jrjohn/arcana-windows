@@ -9,7 +9,7 @@ namespace Arcana.Infrastructure.Localization;
 /// <summary>
 /// Localization service implementation.
 /// </summary>
-public class LocalizationService : ILocalizationService
+public class LocalizationService : LocalizationService
 {
     private readonly ILogger<LocalizationService> _logger;
     private readonly string _resourcesPath;

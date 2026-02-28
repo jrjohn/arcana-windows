@@ -23,7 +23,7 @@ public class PluginManager : IAsyncDisposable
     private readonly PluginLoadContextManager _contextManager = new();
 
     // Lazy loading services
-    private IManifestService? _manifestService;
+    private ManifestService? _manifestService;
     private ActivationEventService? _activationEventService;
     private LazyContributionService? _lazyContributionService;
 
@@ -51,7 +51,7 @@ public class PluginManager : IAsyncDisposable
     /// Call this before discovering plugins.
     /// </summary>
     public void InitializeLazyLoading(
-        IManifestService manifestService,
+        ManifestService manifestService,
         ActivationEventService activationEventService,
         LazyContributionService lazyContributionService)
     {

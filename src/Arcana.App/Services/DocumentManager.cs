@@ -1,103 +1,114 @@
 using Arcana.App.Controls;
-using System.Collections.Concurrent;
 
 namespace Arcana.App.Services;
 
 /// <summary>
-/// Implementation of IDocumentManager that tracks documents across modules and floating windows.
+/// Manages documents across modules and floating windows.
+/// Tracks open documents, floating windows, and supports dock/undock operations.
 /// </summary>
-public class DocumentManager : IDocumentManager
+public interface DocumentManager
 {
-    private readonly ConcurrentDictionary<string, Dictionary<string, DocumentInfo>> _moduleDocuments = new();
-    private readonly ConcurrentDictionary<string, FloatingWindowInfo> _floatingWindows = new();
+    /// <summary>
+    /// Registers a document as open within a module
+    /// </summary>
+    void RegisterDocument(string moduleId, DocumentInfo document);
 
-    public event EventHandler<DocumentManagerEventArgs>? DocumentOpened;
-    public event EventHandler<DocumentManagerEventArgs>? DocumentClosed;
-    public event EventHandler<FloatingWindowEventArgs>? FloatingWindowCreated;
-    public event EventHandler<FloatingWindowEventArgs>? FloatingWindowClosed;
+    /// <summary>
+    /// Unregisters a document when closed
+    /// </summary>
+    void UnregisterDocument(string moduleId, string documentId);
 
-    public void RegisterDocument(string moduleId, DocumentInfo document)
+    /// <summary>
+    /// Gets all open documents for a module
+    /// </summary>
+    IEnumerable<DocumentInfo> GetDocuments(string moduleId);
+
+    /// <summary>
+    /// Gets all open documents across all modules
+    /// </summary>
+    IEnumerable<(string ModuleId, DocumentInfo Document)> GetAllDocuments();
+
+    /// <summary>
+    /// Checks if a document is open in any module or floating window
+    /// </summary>
+    bool IsDocumentOpen(string documentId);
+
+    /// <summary>
+    /// Gets the module ID where a document is open
+    /// </summary>
+    string? GetDocumentModule(string documentId);
+
+    /// <summary>
+    /// Registers a floating window
+    /// </summary>
+    void RegisterFloatingWindow(FloatingWindowInfo window);
+
+    /// <summary>
+    /// Unregisters a floating window when closed
+    /// </summary>
+    void UnregisterFloatingWindow(string windowId);
+
+    /// <summary>
+    /// Gets all floating windows
+    /// </summary>
+    IEnumerable<FloatingWindowInfo> GetFloatingWindows();
+
+    /// <summary>
+    /// Event raised when a document is opened
+    /// </summary>
+    event EventHandler<DocumentManagerEventArgs>? DocumentOpened;
+
+    /// <summary>
+    /// Event raised when a document is closed
+    /// </summary>
+    event EventHandler<DocumentManagerEventArgs>? DocumentClosed;
+
+    /// <summary>
+    /// Event raised when a floating window is created
+    /// </summary>
+    event EventHandler<FloatingWindowEventArgs>? FloatingWindowCreated;
+
+    /// <summary>
+    /// Event raised when a floating window is closed
+    /// </summary>
+    event EventHandler<FloatingWindowEventArgs>? FloatingWindowClosed;
+}
+
+/// <summary>
+/// Information about a floating window
+/// </summary>
+public class FloatingWindowInfo
+{
+    public string Id { get; set; } = string.Empty;
+    public string ModuleId { get; set; } = string.Empty;
+    public DocumentInfo Document { get; set; } = new();
+    public object? WindowReference { get; set; }
+}
+
+/// <summary>
+/// Event args for document manager events
+/// </summary>
+public class DocumentManagerEventArgs : EventArgs
+{
+    public string ModuleId { get; }
+    public DocumentInfo Document { get; }
+
+    public DocumentManagerEventArgs(string moduleId, DocumentInfo document)
     {
-        var documents = _moduleDocuments.GetOrAdd(moduleId, _ => new Dictionary<string, DocumentInfo>());
-        documents[document.Id] = document;
-        DocumentOpened?.Invoke(this, new DocumentManagerEventArgs(moduleId, document));
+        ModuleId = moduleId;
+        Document = document;
     }
+}
 
-    public void UnregisterDocument(string moduleId, string documentId)
+/// <summary>
+/// Event args for floating window events
+/// </summary>
+public class FloatingWindowEventArgs : EventArgs
+{
+    public FloatingWindowInfo Window { get; }
+
+    public FloatingWindowEventArgs(FloatingWindowInfo window)
     {
-        if (_moduleDocuments.TryGetValue(moduleId, out var documents))
-        {
-            if (documents.TryGetValue(documentId, out var document))
-            {
-                documents.Remove(documentId);
-                DocumentClosed?.Invoke(this, new DocumentManagerEventArgs(moduleId, document));
-            }
-        }
-    }
-
-    public IEnumerable<DocumentInfo> GetDocuments(string moduleId)
-    {
-        if (_moduleDocuments.TryGetValue(moduleId, out var documents))
-        {
-            return documents.Values.ToList();
-        }
-        return Enumerable.Empty<DocumentInfo>();
-    }
-
-    public IEnumerable<(string ModuleId, DocumentInfo Document)> GetAllDocuments()
-    {
-        foreach (var module in _moduleDocuments)
-        {
-            foreach (var doc in module.Value.Values)
-            {
-                yield return (module.Key, doc);
-            }
-        }
-    }
-
-    public bool IsDocumentOpen(string documentId)
-    {
-        // Check in module documents
-        foreach (var module in _moduleDocuments.Values)
-        {
-            if (module.ContainsKey(documentId))
-            {
-                return true;
-            }
-        }
-
-        // Check in floating windows
-        return _floatingWindows.Values.Any(w => w.Document.Id == documentId);
-    }
-
-    public string? GetDocumentModule(string documentId)
-    {
-        foreach (var module in _moduleDocuments)
-        {
-            if (module.Value.ContainsKey(documentId))
-            {
-                return module.Key;
-            }
-        }
-        return null;
-    }
-
-    public void RegisterFloatingWindow(FloatingWindowInfo window)
-    {
-        _floatingWindows[window.Id] = window;
-        FloatingWindowCreated?.Invoke(this, new FloatingWindowEventArgs(window));
-    }
-
-    public void UnregisterFloatingWindow(string windowId)
-    {
-        if (_floatingWindows.TryRemove(windowId, out var window))
-        {
-            FloatingWindowClosed?.Invoke(this, new FloatingWindowEventArgs(window));
-        }
-    }
-
-    public IEnumerable<FloatingWindowInfo> GetFloatingWindows()
-    {
-        return _floatingWindows.Values.ToList();
+        Window = window;
     }
 }
