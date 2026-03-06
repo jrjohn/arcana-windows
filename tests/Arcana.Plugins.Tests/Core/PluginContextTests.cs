@@ -200,7 +200,7 @@ public class PluginContextTests
     public void GetService_UnregisteredType_ShouldReturnNull()
     {
         var ctx = CreateContext();
-        _serviceProviderMock.Setup(sp => sp.GetService(typeof(IDisposable))).Returns((object?)null);
+        _serviceProviderMock.Setup(sp => sp.GetService(typeof(IDisposable))).Returns((object?)null!);
 
         var result = ctx.GetService<IDisposable>();
 
