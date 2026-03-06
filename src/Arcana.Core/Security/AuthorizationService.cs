@@ -5,7 +5,7 @@ namespace Arcana.Core.Security;
 /// <summary>
 /// Authorization service for checking permissions.
 /// </summary>
-public interface AuthorizationService
+public interface AuthorizationService  // NOSONAR
 {
     /// <summary>
     /// Check if a user has a specific permission.

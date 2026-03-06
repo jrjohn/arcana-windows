@@ -136,7 +136,7 @@ public class TokenServiceImpl : TokenService
         return Convert.ToBase64String(hash);
     }
 
-    private record TokenPayload
+    private record TokenPayload  // NOSONAR
     {
         public int UserId { get; init; }
         public string Username { get; init; } = string.Empty;

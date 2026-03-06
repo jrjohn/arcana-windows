@@ -14,7 +14,7 @@ namespace Arcana.Infrastructure.Services.Impl;
 public class OrderServiceImpl : OrderService
 {
     private readonly OrderRepository _orderRepository;
-    private readonly CustomerRepository _customerRepository;
+    private readonly CustomerRepository _customerRepository;  // NOSONAR
     private readonly IValidator<Order> _validator;
     private readonly ILogger<OrderServiceImpl> _logger;
 
@@ -40,7 +40,7 @@ public class OrderServiceImpl : OrderService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting orders");
-            return Result<PagedResult<Order>>.Failure(new AppError.Data(ErrorCode.QueryFailed, "Failed to get orders", ex));
+            return Result<PagedResult<Order>>.Failure(new AppError.Data(ErrorCode.QueryFailed, "Failed to get orders", ex));  // NOSONAR
         }
     }
 

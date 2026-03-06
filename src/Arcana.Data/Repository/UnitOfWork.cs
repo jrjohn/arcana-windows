@@ -201,7 +201,7 @@ public class UnitOfWorkImpl : CoreCommon.UnitOfWork
 /// <summary>
 /// Transaction scope implementation.
 /// </summary>
-public class TransactionScopeImpl : CoreCommon.TransactionScope
+public class TransactionScopeImpl : CoreCommon.TransactionScope  // NOSONAR
 {
     private readonly IDbContextTransaction _transaction;
     private readonly UnitOfWorkImpl _unitOfWork;

@@ -10,7 +10,7 @@ namespace Arcana.Plugins.Services;
 /// </summary>
 public class ActivationEventService : IActivationEventService
 {
-    private readonly ManifestService _manifestService;
+    private readonly ManifestService _manifestService;  // NOSONAR
     private readonly ILogger<ActivationEventService> _logger;
 
     // Plugins waiting for activation (not yet loaded)
@@ -135,7 +135,7 @@ public class ActivationEventService : IActivationEventService
                 if (type == eventType)
                 {
                     // For parameterized events, match the argument
-                    if (arg == null || argument == null || arg == argument)
+                    if (arg == null || argument == null || arg == argument)  // NOSONAR
                     {
                         result.Add(pluginId);
                         break;

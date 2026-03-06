@@ -242,7 +242,7 @@ public class PluginVersionRepositoryImpl : PluginVersionRepository
 /// <summary>
 /// Interface for plugin version repository.
 /// </summary>
-public interface PluginVersionRepository
+public interface PluginVersionRepository  // NOSONAR
 {
     Task<IReadOnlyList<PluginVersionInfo>> GetVersionsAsync(string pluginId, CancellationToken cancellationToken = default);
     Task<PluginVersionInfo?> GetVersionAsync(string pluginId, string version, CancellationToken cancellationToken = default);

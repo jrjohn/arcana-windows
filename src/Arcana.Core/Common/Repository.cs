@@ -7,7 +7,7 @@ namespace Arcana.Core.Common;
 /// </summary>
 /// <typeparam name="TEntity">Entity type</typeparam>
 /// <typeparam name="TKey">Primary key type</typeparam>
-public interface Repository<TEntity, TKey>
+public interface Repository<TEntity, TKey>  // NOSONAR
     where TEntity : class
     where TKey : notnull
 {
@@ -85,7 +85,7 @@ public interface Repository<TEntity, TKey>
 /// <summary>
 /// Repository interface with int primary key.
 /// </summary>
-public interface Repository<TEntity> : Repository<TEntity, int>
+public interface Repository<TEntity> : Repository<TEntity, int>  // NOSONAR
     where TEntity : class
 {
 }

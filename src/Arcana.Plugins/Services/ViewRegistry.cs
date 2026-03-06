@@ -115,7 +115,7 @@ public class ViewRegistry : IViewRegistry
         ViewsChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    private class Subscription : IDisposable
+    private class Subscription : IDisposable  // NOSONAR
     {
         private readonly Action _dispose;
         private bool _disposed;

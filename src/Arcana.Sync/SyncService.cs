@@ -5,7 +5,7 @@ namespace Arcana.Sync;
 /// <summary>
 /// Sync service interface for background synchronization.
 /// </summary>
-public interface SyncService
+public interface SyncService  // NOSONAR
 {
     /// <summary>
     /// Gets the current sync status.

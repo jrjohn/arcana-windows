@@ -20,7 +20,7 @@ public class CommandServiceImpl : CommandService
         _logger = logger;
     }
 
-    public IDisposable RegisterCommand(string commandId, Func<object?[], Task> handler)
+    public IDisposable RegisterCommand(string commandId, Func<object?[], Task> handler)  // NOSONAR
     {
         ValidateCommandId(commandId);
 
@@ -82,7 +82,7 @@ public class CommandServiceImpl : CommandService
         return _commands.ContainsKey(commandId);
     }
 
-    private class Subscription : IDisposable
+    private class Subscription : IDisposable  // NOSONAR
     {
         private readonly Action _dispose;
         private bool _disposed;

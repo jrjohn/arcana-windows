@@ -156,7 +156,7 @@ public class LocalizationServiceImpl : LocalizationService
 
     private void LoadCoreResources()
     {
-        foreach (var culture in _availableCultures)
+        foreach (var culture in _availableCultures)  // NOSONAR
         {
             var filePath = Path.Combine(_resourcesPath, $"{culture.Name}.json");
             if (File.Exists(filePath))

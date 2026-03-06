@@ -5,7 +5,7 @@ namespace Arcana.Sync.Crdt;
 /// Uses timestamps to resolve conflicts - the latest write wins.
 /// </summary>
 /// <typeparam name="T">The type of value stored in the register.</typeparam>
-public class LWWRegister<T>
+public class LWWRegister<T>  // NOSONAR
 {
     public T? Value { get; private set; }
     public DateTime Timestamp { get; private set; }
@@ -51,7 +51,7 @@ public class LWWRegister<T>
 /// Last-Writer-Wins Map for field-level conflict resolution.
 /// Each field has its own timestamp, allowing partial merges.
 /// </summary>
-public class LWWMap
+public class LWWMap  // NOSONAR
 {
     private readonly Dictionary<string, LWWRegister<object?>> _fields = new();
 

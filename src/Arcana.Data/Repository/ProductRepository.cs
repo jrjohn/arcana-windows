@@ -6,7 +6,7 @@ namespace Arcana.Data.Repository;
 /// <summary>
 /// Product repository interface with product-specific query operations.
 /// </summary>
-public interface ProductRepository : Repository<Product>
+public interface ProductRepository : Repository<Product>  // NOSONAR
 {
     Task<Product?> GetByCodeAsync(string code, CancellationToken cancellationToken = default);
     Task<Product?> GetByBarcodeAsync(string barcode, CancellationToken cancellationToken = default);

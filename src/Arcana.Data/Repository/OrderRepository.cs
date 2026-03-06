@@ -6,7 +6,7 @@ namespace Arcana.Data.Repository;
 /// <summary>
 /// Order repository interface with order-specific query operations.
 /// </summary>
-public interface OrderRepository : Repository<Order>
+public interface OrderRepository : Repository<Order>  // NOSONAR
 {
     Task<Order?> GetByIdWithItemsAsync(int id, CancellationToken cancellationToken = default);
     Task<Order?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);

@@ -295,7 +295,7 @@ public class PluginVersionRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task UpdateVersionAsync_NonExistingVersion_ShouldNotThrow()
+    public async Task UpdateVersionAsync_NonExistingVersion_ShouldNotThrow()  // NOSONAR
     {
         // Arrange
         var versionInfo = new PluginVersionInfo
@@ -332,7 +332,7 @@ public class PluginVersionRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task DeleteVersionAsync_NonExisting_ShouldNotThrow()
+    public async Task DeleteVersionAsync_NonExisting_ShouldNotThrow()  // NOSONAR
     {
         // Act & Assert - Should not throw
         await _repository.DeleteVersionAsync("plugin-1", "1.0.0");

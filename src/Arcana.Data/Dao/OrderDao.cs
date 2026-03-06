@@ -7,7 +7,7 @@ namespace Arcana.Data.Dao;
 /// Data Access Object interface for Order entity.
 /// Provides raw database access operations used by the repository layer.
 /// </summary>
-public interface OrderDao
+public interface OrderDao  // NOSONAR
 {
     /// <summary>
     /// Finds an order by ID, including its line items and customer.

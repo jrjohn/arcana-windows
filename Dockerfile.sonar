@@ -5,13 +5,11 @@
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0
 
-# Install Java 17 (required by dotnet-sonarscanner)
+# Install Java 17 and dotnet-sonarscanner
 RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-17-jre-headless \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install dotnet-sonarscanner globally
-RUN dotnet tool install --global dotnet-sonarscanner
+    && rm -rf /var/lib/apt/lists/* \
+    && dotnet tool install --global dotnet-sonarscanner
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 WORKDIR /app
@@ -26,4 +24,6 @@ RUN dotnet sln remove src/Arcana.App/Arcana.App.csproj 2>/dev/null || true \
 COPY sonar-entrypoint.sh /sonar-entrypoint.sh
 RUN chmod +x /sonar-entrypoint.sh
 
+RUN adduser --disabled-password --gecos "" appuser && chown -R appuser:appuser /app /root/.dotnet
+USER appuser
 CMD ["/sonar-entrypoint.sh"]

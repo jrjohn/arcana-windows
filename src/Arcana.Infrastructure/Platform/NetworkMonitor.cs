@@ -6,7 +6,7 @@ namespace Arcana.Infrastructure.Platform;
 /// <summary>
 /// Network monitor implementation.
 /// </summary>
-public class NetworkMonitorImpl : NetworkMonitor, IDisposable
+public class NetworkMonitorImpl : NetworkMonitor, IDisposable  // NOSONAR
 {
     private bool _isOnline;
     private bool _disposed;

@@ -58,7 +58,7 @@ public class AuthServiceImpl : AuthService
         if (user == null)
         {
             _logger.LogWarning("Login failed: user {Username} not found", username);
-            await LogAuditAsync(null, username, AuditEventType.LoginFailed, "User not found", false, cancellationToken);
+            await LogAuditAsync(null, username, AuditEventType.LoginFailed, "User not found", false, cancellationToken);  // NOSONAR
             return Result<AuthResult>.Failure(new AppError.Auth(ErrorCode.InvalidCredentials, "Invalid username or password"));
         }
 

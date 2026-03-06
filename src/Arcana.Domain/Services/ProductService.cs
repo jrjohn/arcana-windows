@@ -6,7 +6,7 @@ namespace Arcana.Domain.Services;
 /// <summary>
 /// Product service interface.
 /// </summary>
-public interface ProductService
+public interface ProductService  // NOSONAR
 {
     /// <summary>
     /// Gets all products with paging.

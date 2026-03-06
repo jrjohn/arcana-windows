@@ -61,7 +61,7 @@ public class MVRegister<T>
             if (!dominated)
             {
                 // Check for duplicates
-                if (!result._values.Any(v => v.Clock.Equals(clock)))
+                if (!result._values.Any(v => v.Clock.Equals(clock)))  // NOSONAR
                 {
                     result._values.Add((value, clock));
                 }

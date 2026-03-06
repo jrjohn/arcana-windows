@@ -12,14 +12,12 @@ WORKDIR /app
 # Copy everything
 COPY . .
 
-# Remove Windows-only projects from solution
+# Remove Windows-only projects, restore, and build
 RUN dotnet sln remove src/Arcana.App/Arcana.App.csproj 2>/dev/null || true \
-    && dotnet sln remove plugins/FlowChartModule/Arcana.Plugin.FlowChart.csproj 2>/dev/null || true
+    && dotnet sln remove plugins/FlowChartModule/Arcana.Plugin.FlowChart.csproj 2>/dev/null || true \
+    && dotnet restore \
+    && dotnet build -c Release --no-restore
 
-# Restore
-RUN dotnet restore
-
-# Build
-RUN dotnet build -c Release --no-restore
-
+RUN adduser --disabled-password --gecos "" appuser
+USER appuser
 CMD ["echo", "Build completed successfully"]

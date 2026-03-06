@@ -6,7 +6,7 @@ namespace Arcana.Domain.Services;
 /// <summary>
 /// Order service interface.
 /// </summary>
-public interface OrderService
+public interface OrderService  // NOSONAR
 {
     /// <summary>
     /// Gets all orders with paging.

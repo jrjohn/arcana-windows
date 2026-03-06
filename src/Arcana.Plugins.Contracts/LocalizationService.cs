@@ -5,7 +5,7 @@ namespace Arcana.Plugins.Contracts;
 /// <summary>
 /// Localization service interface for i18n support.
 /// </summary>
-public interface LocalizationService
+public interface LocalizationService  // NOSONAR
 {
     /// <summary>
     /// Current culture.

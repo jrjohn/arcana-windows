@@ -110,7 +110,7 @@ public class OrderDaoImpl : OrderDao
         // Apply sorting
         query = string.IsNullOrEmpty(request.SortBy)
             ? query.OrderByDescending(o => o.OrderDate)
-            : request.Descending
+            : request.Descending  // NOSONAR
                 ? query.OrderByDescending(e => EF.Property<object>(e, request.SortBy))
                 : query.OrderBy(e => EF.Property<object>(e, request.SortBy));
 

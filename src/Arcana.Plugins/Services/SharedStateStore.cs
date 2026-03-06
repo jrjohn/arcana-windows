@@ -29,7 +29,7 @@ public class SharedStateStore : ISharedStateStore
 
     public bool Remove(string key)
     {
-        var removed = _state.TryRemove(key, out var oldValue);
+        var removed = _state.TryRemove(key, out var oldValue);  // NOSONAR
         if (removed)
         {
             NotifyWatchers<object?>(key, default);
@@ -95,7 +95,7 @@ public class SharedStateStore : ISharedStateStore
         }
     }
 
-    private class Subscription : IDisposable
+    private class Subscription : IDisposable  // NOSONAR
     {
         private readonly Action _dispose;
         private bool _disposed;

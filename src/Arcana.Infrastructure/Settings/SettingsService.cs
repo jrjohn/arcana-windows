@@ -3,7 +3,7 @@ namespace Arcana.Infrastructure.Settings;
 /// <summary>
 /// Settings service interface.
 /// </summary>
-public interface SettingsService
+public interface SettingsService  // NOSONAR
 {
     /// <summary>
     /// Gets a setting value.

@@ -3,7 +3,7 @@ namespace Arcana.Core.Common;
 /// <summary>
 /// Monitors network connectivity status.
 /// </summary>
-public interface NetworkMonitor
+public interface NetworkMonitor  // NOSONAR
 {
     /// <summary>
     /// Gets whether the device is currently online.

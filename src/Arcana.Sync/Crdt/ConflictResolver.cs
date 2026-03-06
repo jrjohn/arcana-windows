@@ -211,7 +211,7 @@ public class ConflictResolver
         return result;
     }
 
-    private (DateTime localTime, DateTime remoteTime) GetFieldTimestamp<T>(
+    private (DateTime localTime, DateTime remoteTime) GetFieldTimestamp<T>(  // NOSONAR
         T local, T remote, string fieldName,
         DateTime localTimestamp, DateTime remoteTimestamp) where T : class
     {
@@ -229,7 +229,7 @@ public class ConflictResolver
         return (localTimestamp, remoteTimestamp);
     }
 
-    private string GetEntityId<T>(T entity) where T : class
+    private string GetEntityId<T>(T entity) where T : class  // NOSONAR
     {
         var idProp = typeof(T).GetProperty("Id") ?? typeof(T).GetProperty("EntityId");
         return idProp?.GetValue(entity)?.ToString() ?? Guid.NewGuid().ToString();

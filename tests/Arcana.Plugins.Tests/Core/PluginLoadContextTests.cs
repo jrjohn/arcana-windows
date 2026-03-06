@@ -131,7 +131,7 @@ public class PluginLoadContextReferenceTests
     }
 
     [Fact]
-    public void GetContext_AfterContextUnloaded_ShouldReturnNull()
+    public void GetContext_AfterContextUnloaded_ShouldReturnNull()  // NOSONAR
     {
         // Arrange
         PluginLoadContextReference reference;

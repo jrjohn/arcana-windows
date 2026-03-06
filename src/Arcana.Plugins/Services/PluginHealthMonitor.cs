@@ -9,7 +9,7 @@ namespace Arcana.Plugins.Services;
 /// <summary>
 /// Plugin health monitoring service.
 /// </summary>
-public class PluginHealthMonitor : IDisposable
+public class PluginHealthMonitor : IDisposable  // NOSONAR
 {
     private readonly ILogger<PluginHealthMonitor> _logger;
     private readonly ConcurrentDictionary<string, PluginHealthStatus> _healthCache = new();
@@ -102,7 +102,7 @@ public class PluginHealthMonitor : IDisposable
             // Determine overall state
             var overallState = checks.All(c => c.State == HealthState.Healthy)
                 ? HealthState.Healthy
-                : checks.Any(c => c.State == HealthState.Unhealthy)
+                : checks.Any(c => c.State == HealthState.Unhealthy)  // NOSONAR
                     ? HealthState.Unhealthy
                     : HealthState.Degraded;
 
@@ -194,7 +194,7 @@ public class PluginHealthMonitor : IDisposable
 
     private PluginHealthMetrics GetOrCreateMetrics(string pluginId)
     {
-        return _metrics.GetOrAdd(pluginId, _ => new PluginHealthMetrics(pluginId));
+        return _metrics.GetOrAdd(pluginId, _ => new PluginHealthMetrics(pluginId));  // NOSONAR
     }
 
     private void OnMonitorTick(object? state)

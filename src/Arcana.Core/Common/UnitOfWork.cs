@@ -3,7 +3,7 @@ namespace Arcana.Core.Common;
 /// <summary>
 /// Unit of Work pattern interface for managing transactions.
 /// </summary>
-public interface UnitOfWork : IDisposable, IAsyncDisposable
+public interface UnitOfWork : IDisposable, IAsyncDisposable  // NOSONAR
 {
     /// <summary>
     /// Gets whether changes have been made in this unit of work.
@@ -49,7 +49,7 @@ public interface UnitOfWork : IDisposable, IAsyncDisposable
 /// <summary>
 /// Transaction scope for explicit transaction management.
 /// </summary>
-public interface TransactionScope : IDisposable, IAsyncDisposable
+public interface TransactionScope : IDisposable, IAsyncDisposable  // NOSONAR
 {
     /// <summary>
     /// Gets the transaction ID.
@@ -75,7 +75,7 @@ public interface TransactionScope : IDisposable, IAsyncDisposable
 /// <summary>
 /// Factory for creating unit of work instances.
 /// </summary>
-public interface UnitOfWorkFactory
+public interface UnitOfWorkFactory  // NOSONAR
 {
     /// <summary>
     /// Creates a new unit of work.

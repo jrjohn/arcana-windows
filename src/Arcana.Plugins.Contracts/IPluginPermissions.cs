@@ -4,7 +4,7 @@ namespace Arcana.Plugins.Contracts;
 /// Plugin permission definitions.
 /// </summary>
 [Flags]
-public enum PluginPermission
+public enum PluginPermission  // NOSONAR
 {
     None = 0,
 

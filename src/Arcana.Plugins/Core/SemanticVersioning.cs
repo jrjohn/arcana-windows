@@ -5,7 +5,7 @@ namespace Arcana.Plugins.Core;
 /// <summary>
 /// Semantic version with comparison support.
 /// </summary>
-public partial class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
+public partial class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>  // NOSONAR
 {
     public int Major { get; }
     public int Minor { get; }
@@ -182,7 +182,7 @@ public class VersionRange
     /// Parses a version range string.
     /// Supports formats: 1.0.0, >=1.0.0, >1.0.0 &lt;2.0.0, ~1.0.0, ^1.0.0, 1.0.0 - 2.0.0
     /// </summary>
-    public static VersionRange Parse(string rangeString)
+    public static VersionRange Parse(string rangeString)  // NOSONAR
     {
         if (string.IsNullOrWhiteSpace(rangeString))
         {

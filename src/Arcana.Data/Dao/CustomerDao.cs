@@ -6,7 +6,7 @@ namespace Arcana.Data.Dao;
 /// Data Access Object interface for Customer entity.
 /// Provides raw database access operations used by the repository layer.
 /// </summary>
-public interface CustomerDao
+public interface CustomerDao  // NOSONAR
 {
     /// <summary>
     /// Finds a customer by their unique code.

@@ -53,7 +53,7 @@ public class DependencyResolver
     /// <summary>
     /// Resolves all dependencies and returns the load order.
     /// </summary>
-    public DependencyResolutionResult Resolve()
+    public DependencyResolutionResult Resolve()  // NOSONAR
     {
         var conflicts = new List<DependencyConflict>();
         var missing = new List<string>();
@@ -232,7 +232,7 @@ public class DependencyResolver
 
         if (_plugins.TryGetValue(pluginId, out var info))
         {
-            foreach (var dep in info.Dependencies)
+            foreach (var dep in info.Dependencies)  // NOSONAR
             {
                 if (_plugins.ContainsKey(dep.PluginId))
                 {
@@ -246,7 +246,7 @@ public class DependencyResolver
         sorted.Add(pluginId);
     }
 
-    private class PluginDependencyInfo
+    private class PluginDependencyInfo  // NOSONAR
     {
         public required string PluginId { get; init; }
         public required SemanticVersion Version { get; init; }

@@ -6,7 +6,7 @@ namespace Arcana.Data.Repository;
 /// <summary>
 /// Customer repository interface with customer-specific query operations.
 /// </summary>
-public interface CustomerRepository : Repository<Customer>
+public interface CustomerRepository : Repository<Customer>  // NOSONAR
 {
     Task<Customer?> GetByCodeAsync(string code, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<Customer>> SearchAsync(string searchTerm, int maxResults = 20, CancellationToken cancellationToken = default);

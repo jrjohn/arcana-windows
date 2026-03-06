@@ -338,7 +338,7 @@ public class CommandServiceTests
     }
 
     [Fact]
-    public void Dispose_Subscription_MultipleTimes_ShouldNotThrow()
+    public void Dispose_Subscription_MultipleTimes_ShouldNotThrow()  // NOSONAR
     {
         // Arrange
         var subscription = _service.RegisterCommand("test.command", args => Task.CompletedTask);

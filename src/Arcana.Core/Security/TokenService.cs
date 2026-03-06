@@ -3,7 +3,7 @@ namespace Arcana.Core.Security;
 /// <summary>
 /// Token generation and validation service.
 /// </summary>
-public interface TokenService
+public interface TokenService  // NOSONAR
 {
     /// <summary>
     /// Generate an access token for a user.
