@@ -308,7 +308,8 @@ public class PluginVersionRepositoryTests : IDisposable
         };
 
         // Act & Assert - Should not throw
-        await _repository.UpdateVersionAsync(versionInfo);
+        var ex = await Record.ExceptionAsync(() => _repository.UpdateVersionAsync(versionInfo));
+        Assert.Null(ex);
     }
 
     #endregion
@@ -335,7 +336,8 @@ public class PluginVersionRepositoryTests : IDisposable
     public async Task DeleteVersionAsync_NonExisting_ShouldNotThrow()  // NOSONAR
     {
         // Act & Assert - Should not throw
-        await _repository.DeleteVersionAsync("plugin-1", "1.0.0");
+        var ex = await Record.ExceptionAsync(() => _repository.DeleteVersionAsync("plugin-1", "1.0.0"));
+        Assert.Null(ex);
     }
 
     #endregion

@@ -344,8 +344,8 @@ public class CommandServiceTests
         var subscription = _service.RegisterCommand("test.command", args => Task.CompletedTask);
 
         // Act & Assert - Should not throw
-        subscription.Dispose();
-        subscription.Dispose(); // Second dispose should be safe
+        var ex = Record.Exception(() => { subscription.Dispose(); subscription.Dispose(); });
+        Assert.Null(ex);
     }
 
     #endregion

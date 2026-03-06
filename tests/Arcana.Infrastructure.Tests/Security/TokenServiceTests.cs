@@ -135,7 +135,7 @@ public class TokenServiceTests
     }
 
     [Fact]
-    public void ValidateAccessToken_ExpiredToken_ShouldReturnInvalid()
+    public async Task ValidateAccessToken_ExpiredToken_ShouldReturnInvalid()
     {
         var shortLivedOptions = new TokenServiceOptions
         {
@@ -144,7 +144,7 @@ public class TokenServiceTests
         var shortLivedService = new TokenServiceImpl(shortLivedOptions);
 
         var token = shortLivedService.GenerateAccessToken(_testUser);
-        System.Threading.Thread.Sleep(50); // wait for expiry
+        await Task.Delay(50); // wait for expiry
 
         var validation = shortLivedService.ValidateAccessToken(token.Token);
         validation.IsValid.Should().BeFalse();

@@ -16,8 +16,6 @@ COPY . .
 RUN dotnet sln remove src/Arcana.App/Arcana.App.csproj 2>/dev/null || true \
     && dotnet sln remove plugins/FlowChartModule/Arcana.Plugin.FlowChart.csproj 2>/dev/null || true \
     && dotnet restore \
-    && dotnet build -c Release --no-restore
-
-RUN useradd -m appuser
-USER appuser
+    && dotnet build -c Release --no-restore \
+    && useradd -m appuser
 CMD ["echo", "Build completed successfully"]
