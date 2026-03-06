@@ -16,17 +16,21 @@ dotnet sonarscanner begin \
   /d:sonar.token="${SONAR_TOKEN}" \
   /d:sonar.exclusions="**/bin/**,**/obj/**,**/TestResults/**" \
   /d:sonar.coverage.exclusions="**/tests/**,**/Tests/**" \
-  /d:sonar.cs.opencover.reportsPaths="/app/coverage/**/coverage.opencover.xml"
+  /d:sonar.cs.opencover.reportsPaths="/app/**/coverage.opencover.xml"
 
 echo "=== Build ==="
 dotnet build -c Release --no-restore
 
 echo "=== Unit Tests + Coverage ==="
+# --results-directory must come BEFORE -- to be handled by dotnet test, not the test host
 dotnet test -c Release --no-build \
   --collect:"XPlat Code Coverage" \
-  -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover \
   --results-directory /app/coverage \
+  -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover \
   || true  # 測試失敗不中斷 sonar end
+
+echo "=== Coverage files found ==="
+find /app -name "coverage.opencover.xml" 2>/dev/null || echo "No coverage files found"
 
 echo "=== SonarQube End ==="
 dotnet sonarscanner end \
