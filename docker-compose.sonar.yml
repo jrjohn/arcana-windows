@@ -1,0 +1,21 @@
+services:
+  sonar:
+    build:
+      context: .
+      dockerfile: Dockerfile.sonar
+    environment:
+      - SONAR_HOST_URL=${SONAR_HOST_URL:-http://sonarqube:9000/sonarqube}
+      - SONAR_TOKEN=${SONAR_TOKEN}
+      - SONAR_PROJECT_KEY=${SONAR_PROJECT_KEY:-dotnet-app}
+      - SONAR_PROJECT_NAME=${SONAR_PROJECT_NAME:-Dotnet App}
+    networks:
+      - devops_default
+    volumes:
+      - sonar-results:/app/coverage
+
+networks:
+  devops_default:
+    external: true
+
+volumes:
+  sonar-results:

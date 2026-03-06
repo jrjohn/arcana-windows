@@ -1,0 +1,29 @@
+# ============================================
+# Arcana Windows - SonarQube Analysis
+# .NET SDK + Java + dotnet-sonarscanner
+# ============================================
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0
+
+# Install Java 17 (required by dotnet-sonarscanner)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openjdk-17-jre-headless \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install dotnet-sonarscanner globally
+RUN dotnet tool install --global dotnet-sonarscanner
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+WORKDIR /app
+
+# Copy and setup solution
+COPY . .
+RUN dotnet sln remove src/Arcana.App/Arcana.App.csproj 2>/dev/null || true \
+    && dotnet sln remove plugins/FlowChartModule/Arcana.Plugin.FlowChart.csproj 2>/dev/null || true \
+    && dotnet restore
+
+# Entrypoint
+COPY sonar-entrypoint.sh /sonar-entrypoint.sh
+RUN chmod +x /sonar-entrypoint.sh
+
+CMD ["/sonar-entrypoint.sh"]
