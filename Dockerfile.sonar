@@ -24,6 +24,4 @@ RUN dotnet sln remove src/Arcana.App/Arcana.App.csproj 2>/dev/null || true \
 COPY sonar-entrypoint.sh /sonar-entrypoint.sh
 RUN chmod +x /sonar-entrypoint.sh
 
-RUN adduser --disabled-password --gecos "" appuser && chown -R appuser:appuser /app /root/.dotnet
-USER appuser
 CMD ["/sonar-entrypoint.sh"]

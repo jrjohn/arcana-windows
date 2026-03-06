@@ -18,6 +18,6 @@ RUN dotnet sln remove src/Arcana.App/Arcana.App.csproj 2>/dev/null || true \
     && dotnet restore \
     && dotnet build -c Release --no-restore
 
-RUN adduser --disabled-password --gecos "" appuser
+RUN useradd -m appuser
 USER appuser
 CMD ["echo", "Build completed successfully"]
