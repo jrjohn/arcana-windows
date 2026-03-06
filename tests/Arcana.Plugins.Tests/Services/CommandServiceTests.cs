@@ -9,13 +9,13 @@ namespace Arcana.Plugins.Tests.Services;
 
 public class CommandServiceTests
 {
-    private readonly Mock<ILogger<CommandService>> _loggerMock;
+    private readonly Mock<ILogger<CommandServiceImpl>> _loggerMock;
     private readonly CommandService _service;
 
     public CommandServiceTests()
     {
-        _loggerMock = new Mock<ILogger<CommandService>>();
-        _service = new CommandService(_loggerMock.Object);
+        _loggerMock = new Mock<ILogger<CommandServiceImpl>>();
+        _service = new CommandServiceImpl(_loggerMock.Object);
     }
 
     #region RegisterCommand Tests
@@ -355,7 +355,7 @@ public class CommandServiceTests
     public void Constructor_WithoutLogger_ShouldWork()
     {
         // Act
-        var service = new CommandService();
+        var service = new CommandServiceImpl();
 
         // Assert
         service.Should().NotBeNull();
@@ -365,10 +365,10 @@ public class CommandServiceTests
     public void Constructor_WithLogger_ShouldWork()
     {
         // Arrange
-        var logger = new Mock<ILogger<CommandService>>().Object;
+        var logger = new Mock<ILogger<CommandServiceImpl>>().Object;
 
         // Act
-        var service = new CommandService(logger);
+        var service = new CommandServiceImpl(logger);
 
         // Assert
         service.Should().NotBeNull();
@@ -382,7 +382,7 @@ public class CommandServiceTests
     public async Task ConcurrentRegistration_ShouldBeThreadSafe()
     {
         // Arrange
-        var service = new CommandService();
+        var service = new CommandServiceImpl();
         var tasks = new List<Task>();
 
         // Act - Register 100 commands concurrently

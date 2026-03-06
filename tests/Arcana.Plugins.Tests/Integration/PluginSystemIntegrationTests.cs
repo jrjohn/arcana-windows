@@ -47,7 +47,7 @@ public class PluginSystemIntegrationTests : IDisposable
                 sp.GetRequiredService<ILogger<PluginPermissionManager>>(),
                 _testDataPath));
 
-        services.AddScoped<PluginVersionRepository, PluginVersionRepository>();
+        services.AddScoped<PluginVersionRepository, PluginVersionRepositoryImpl>();
         services.AddSingleton<PluginLoadContextManager>();
 
         _serviceProvider = services.BuildServiceProvider();

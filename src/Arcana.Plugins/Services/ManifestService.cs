@@ -8,9 +8,9 @@ namespace Arcana.Plugins.Services;
 /// <summary>
 /// Service for parsing and managing plugin manifests.
 /// </summary>
-public class ManifestService : ManifestService
+public class ManifestServiceImpl : ManifestService
 {
-    private readonly ILogger<ManifestService> _logger;
+    private readonly ILogger<ManifestServiceImpl> _logger;
     private readonly Dictionary<string, PluginManifest> _manifests = new();
     private readonly Dictionary<string, string> _manifestPaths = new();
 
@@ -21,7 +21,7 @@ public class ManifestService : ManifestService
         AllowTrailingCommas = true
     };
 
-    public ManifestService(ILogger<ManifestService> logger)
+    public ManifestServiceImpl(ILogger<ManifestServiceImpl> logger)
     {
         _logger = logger;
     }

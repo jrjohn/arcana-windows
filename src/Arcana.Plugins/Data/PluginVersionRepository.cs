@@ -10,7 +10,7 @@ public class PluginVersionRepositoryImpl : PluginVersionRepository
 {
     private readonly PluginDbContext _context;
 
-    public PluginVersionRepository(PluginDbContext context)
+    public PluginVersionRepositoryImpl(PluginDbContext context)
     {
         _context = context;
     }

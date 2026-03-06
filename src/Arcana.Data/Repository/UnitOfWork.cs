@@ -22,7 +22,7 @@ public class UnitOfWorkImpl : CoreCommon.UnitOfWork
     public bool IsCommitted { get; private set; }
     public bool IsRolledBack { get; private set; }
 
-    public UnitOfWork(AppDbContext context, IServiceProvider serviceProvider)
+    public UnitOfWorkImpl(AppDbContext context, IServiceProvider serviceProvider)
     {
         _context = context;
         _serviceProvider = serviceProvider;
@@ -77,7 +77,7 @@ public class UnitOfWorkImpl : CoreCommon.UnitOfWork
         }
 
         _transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-        return new TransactionScope(_transaction, this);
+        return new TransactionScopeImpl(_transaction, this);
     }
 
     public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
@@ -210,7 +210,7 @@ public class TransactionScopeImpl : CoreCommon.TransactionScope
     public Guid TransactionId => _transaction.TransactionId;
     public bool IsActive { get; private set; } = true;
 
-    internal TransactionScope(IDbContextTransaction transaction, UnitOfWork unitOfWork)
+    internal TransactionScopeImpl(IDbContextTransaction transaction, UnitOfWork unitOfWork)
     {
         _transaction = transaction;
         _unitOfWork = unitOfWork;
@@ -285,13 +285,13 @@ public class UnitOfWorkFactory : CoreCommon.UnitOfWorkFactory
     public CoreCommon.UnitOfWork Create()
     {
         var context = _contextFactory.CreateDbContext();
-        return new UnitOfWork(context, _serviceProvider);
+        return new UnitOfWorkImpl(context, _serviceProvider);
     }
 
     public async Task<CoreCommon.UnitOfWork> CreateWithTransactionAsync(CancellationToken cancellationToken = default)
     {
         var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
-        var uow = new UnitOfWork(context, _serviceProvider);
+        var uow = new UnitOfWorkImpl(context, _serviceProvider);
         await uow.BeginTransactionAsync(cancellationToken);
         return uow;
     }

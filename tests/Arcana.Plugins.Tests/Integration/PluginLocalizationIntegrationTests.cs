@@ -26,7 +26,7 @@ public class PluginLocalizationIntegrationTests : IDisposable
         var services = new ServiceCollection();
         services.AddLogging(builder => builder.AddDebug());
         services.AddSingleton<ILocalizationService, TestLocalizationService>();
-        services.AddSingleton<ICommandService, CommandService>();
+        services.AddSingleton<CommandService, CommandServiceImpl>();
         services.AddSingleton<IMenuRegistry, MenuRegistry>();
         services.AddSingleton<IViewRegistry, ViewRegistry>();
 
@@ -109,7 +109,7 @@ public class PluginLocalizationIntegrationTests : IDisposable
         // Assert
         var menuRegistry = _serviceProvider.GetRequiredService<IMenuRegistry>();
         var viewRegistry = _serviceProvider.GetRequiredService<IViewRegistry>();
-        var commandService = _serviceProvider.GetRequiredService<ICommandService>();
+        var commandService = _serviceProvider.GetRequiredService<CommandService>();
 
         menuRegistry.GetAllMenuItems().Should().HaveCount(1);
         viewRegistry.GetAllViews().Should().HaveCount(1);
@@ -191,7 +191,7 @@ public class PluginLocalizationIntegrationTests : IDisposable
         contextMock.Setup(c => c.Subscriptions).Returns(new List<IDisposable>());
         contextMock.Setup(c => c.Menus).Returns(_serviceProvider.GetRequiredService<IMenuRegistry>());
         contextMock.Setup(c => c.Views).Returns(_serviceProvider.GetRequiredService<IViewRegistry>());
-        contextMock.Setup(c => c.Commands).Returns(_serviceProvider.GetRequiredService<ICommandService>());
+        contextMock.Setup(c => c.Commands).Returns(_serviceProvider.GetRequiredService<CommandService>());
 
         return contextMock.Object;
     }
@@ -396,7 +396,7 @@ public class ContributionValidationIntegrationTests
         // Arrange
         var menuRegistry = new MenuRegistry();
         var viewRegistry = new ViewRegistry();
-        var commandService = new CommandService();
+        var commandService = new CommandServiceImpl();
 
         // Act & Assert - Menu
         var menuException = Assert.Throws<ContributionValidationException>(() =>
@@ -435,7 +435,7 @@ public class ContributionValidationIntegrationTests
 
         // Arrange
         var menuRegistry = new MenuRegistry();
-        var commandService = new CommandService();
+        var commandService = new CommandServiceImpl();
 
         // Act - Register menu item with command that doesn't exist yet
         menuRegistry.RegisterMenuItem(new MenuItemDefinition

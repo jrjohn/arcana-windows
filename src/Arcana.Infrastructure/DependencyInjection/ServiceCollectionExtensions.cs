@@ -187,7 +187,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IMessageBus, MessageBus>();
         services.AddSingleton<IEventAggregator, EventAggregator>();
         services.AddSingleton<ISharedStateStore, SharedStateStore>();
-        services.AddSingleton<CommandService, CommandService>();
+        services.AddSingleton<CommandService, CommandServiceImpl>();
         services.AddSingleton<IMenuRegistry, MenuRegistry>();
         services.AddSingleton<IViewRegistry, ViewRegistry>();
 
@@ -195,7 +195,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<PluginHealthMonitor>();
 
         // Manifest and lazy loading services
-        services.AddSingleton<ManifestService, ManifestService>();
+        services.AddSingleton<ManifestService, ManifestServiceImpl>();
         services.AddSingleton<ActivationEventService>();
         services.AddSingleton<IActivationEventService>(sp =>
             sp.GetRequiredService<ActivationEventService>());

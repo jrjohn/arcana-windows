@@ -8,14 +8,14 @@ namespace Arcana.Plugins.Services;
 /// <summary>
 /// Command service implementation.
 /// </summary>
-public class CommandService : CommandService
+public class CommandServiceImpl : CommandService
 {
     private readonly ConcurrentDictionary<string, Func<object?[], Task>> _commands = new();
-    private readonly ILogger<CommandService>? _logger;
+    private readonly ILogger<CommandServiceImpl>? _logger;
 
-    public CommandService() { }
+    public CommandServiceImpl() { }
 
-    public CommandService(ILogger<CommandService> logger)
+    public CommandServiceImpl(ILogger<CommandServiceImpl> logger)
     {
         _logger = logger;
     }
