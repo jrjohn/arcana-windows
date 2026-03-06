@@ -411,5 +411,5 @@ public class PluginBaseTests
 
     private class TestMessage { }
 
-    private class TestEvent : IApplicationEvent { }
+    private record TestEvent : ApplicationEventBase { }
 }
