@@ -271,12 +271,12 @@ public class TransactionScopeImpl : CoreCommon.TransactionScope
 /// <summary>
 /// Factory for creating unit of work instances.
 /// </summary>
-public class UnitOfWorkFactory : CoreCommon.UnitOfWorkFactory
+public class UnitOfWorkFactoryImpl : CoreCommon.UnitOfWorkFactory
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly IDbContextFactory<AppDbContext> _contextFactory;
 
-    public UnitOfWorkFactory(IServiceProvider serviceProvider, IDbContextFactory<AppDbContext> contextFactory)
+    public UnitOfWorkFactoryImpl(IServiceProvider serviceProvider, IDbContextFactory<AppDbContext> contextFactory)
     {
         _serviceProvider = serviceProvider;
         _contextFactory = contextFactory;
