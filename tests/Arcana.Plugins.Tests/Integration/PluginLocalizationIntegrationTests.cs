@@ -16,7 +16,7 @@ public class PluginLocalizationIntegrationTests : IDisposable
 {
     private readonly string _tempPath;
     private readonly ServiceProvider _serviceProvider;
-    private readonly ILocalizationService _localizationService;
+    private readonly LocalizationService _localizationService;
 
     public PluginLocalizationIntegrationTests()
     {
@@ -25,13 +25,13 @@ public class PluginLocalizationIntegrationTests : IDisposable
 
         var services = new ServiceCollection();
         services.AddLogging(builder => builder.AddDebug());
-        services.AddSingleton<ILocalizationService, TestLocalizationService>();
+        services.AddSingleton<LocalizationService, TestLocalizationService>();
         services.AddSingleton<CommandService, CommandServiceImpl>();
         services.AddSingleton<IMenuRegistry, MenuRegistry>();
         services.AddSingleton<IViewRegistry, ViewRegistry>();
 
         _serviceProvider = services.BuildServiceProvider();
-        _localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
+        _localizationService = _serviceProvider.GetRequiredService<LocalizationService>();
     }
 
     public void Dispose()
@@ -272,7 +272,7 @@ public class PluginLocalizationIntegrationTests : IDisposable
         }
     }
 
-    private class TestLocalizationService : ILocalizationService
+    private class TestLocalizationService : LocalizationService
     {
         private readonly Dictionary<string, Dictionary<string, Dictionary<string, string>>> _resources = new();
         private CultureInfo _currentCulture = new("en-US");

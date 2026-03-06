@@ -9,9 +9,9 @@ namespace Arcana.Infrastructure.Localization;
 /// <summary>
 /// Localization service implementation.
 /// </summary>
-public class LocalizationService : LocalizationService
+public class LocalizationServiceImpl : LocalizationService
 {
-    private readonly ILogger<LocalizationService> _logger;
+    private readonly ILogger<LocalizationServiceImpl> _logger;
     private readonly string _resourcesPath;
     private readonly ConcurrentDictionary<string, Dictionary<string, string>> _coreResources = new();
     private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, Dictionary<string, string>>> _pluginResources = new();
@@ -23,7 +23,7 @@ public class LocalizationService : LocalizationService
 
     public event EventHandler<CultureChangedEventArgs>? CultureChanged;
 
-    public LocalizationService(ILogger<LocalizationService> logger, string? resourcesPath = null)
+    public LocalizationServiceImpl(ILogger<LocalizationServiceImpl> logger, string? resourcesPath = null)
     {
         _logger = logger;
         _resourcesPath = resourcesPath ?? Path.Combine(AppContext.BaseDirectory, "Resources", "Strings");

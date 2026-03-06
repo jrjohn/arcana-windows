@@ -6,7 +6,7 @@ namespace Arcana.Infrastructure.Platform;
 /// <summary>
 /// Network monitor implementation.
 /// </summary>
-public class NetworkMonitor : NetworkMonitor, IDisposable
+public class NetworkMonitorImpl : NetworkMonitor, IDisposable
 {
     private bool _isOnline;
     private bool _disposed;
@@ -15,7 +15,7 @@ public class NetworkMonitor : NetworkMonitor, IDisposable
 
     public event EventHandler<NetworkStatusChangedEventArgs>? StatusChanged;
 
-    public NetworkMonitor()
+    public NetworkMonitorImpl()
     {
         _isOnline = CheckNetworkAvailability();
         NetworkChange.NetworkAvailabilityChanged += OnNetworkAvailabilityChanged;

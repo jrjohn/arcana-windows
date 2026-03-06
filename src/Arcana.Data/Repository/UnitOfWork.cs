@@ -204,13 +204,13 @@ public class UnitOfWorkImpl : CoreCommon.UnitOfWork
 public class TransactionScopeImpl : CoreCommon.TransactionScope
 {
     private readonly IDbContextTransaction _transaction;
-    private readonly UnitOfWork _unitOfWork;
+    private readonly UnitOfWorkImpl _unitOfWork;
     private bool _disposed;
 
     public Guid TransactionId => _transaction.TransactionId;
     public bool IsActive { get; private set; } = true;
 
-    internal TransactionScopeImpl(IDbContextTransaction transaction, UnitOfWork unitOfWork)
+    internal TransactionScopeImpl(IDbContextTransaction transaction, UnitOfWorkImpl unitOfWork)
     {
         _transaction = transaction;
         _unitOfWork = unitOfWork;

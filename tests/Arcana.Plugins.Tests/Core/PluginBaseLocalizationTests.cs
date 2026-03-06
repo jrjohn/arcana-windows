@@ -12,7 +12,7 @@ public class PluginBaseLocalizationTests : IDisposable
 {
     private readonly string _tempPath;
     private readonly Mock<IPluginContext> _contextMock;
-    private readonly Mock<ILocalizationService> _localizationMock;
+    private readonly Mock<LocalizationService> _localizationMock;
     private readonly Mock<ILogger> _loggerMock;
     private readonly TestPlugin _plugin;
 
@@ -21,7 +21,7 @@ public class PluginBaseLocalizationTests : IDisposable
         _tempPath = Path.Combine(Path.GetTempPath(), $"plugin_locale_tests_{Guid.NewGuid()}");
         Directory.CreateDirectory(_tempPath);
 
-        _localizationMock = new Mock<ILocalizationService>();
+        _localizationMock = new Mock<LocalizationService>();
         _loggerMock = new Mock<ILogger>();
 
         _contextMock = new Mock<IPluginContext>();

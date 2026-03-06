@@ -82,9 +82,9 @@ public static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddCoreServices(this IServiceCollection services)
     {
-        services.AddSingleton<NetworkMonitor, NetworkMonitor>();
+        services.AddSingleton<NetworkMonitor, NetworkMonitorImpl>();
         services.AddSingleton<SettingsService, SettingsService>();
-        services.AddSingleton<LocalizationService, LocalizationService>();
+        services.AddSingleton<LocalizationService, LocalizationServiceImpl>();
 
         return services;
     }
@@ -95,24 +95,24 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSecurityServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Password hasher
-        services.AddSingleton<PasswordHasher, PasswordHasher>();
+        services.AddSingleton<PasswordHasher, PasswordHasherImpl>();
 
         // Token service with configuration
         services.AddSingleton<TokenService>(sp =>
         {
             var options = new TokenServiceOptions();
             configuration.GetSection("Security:Token").Bind(options);
-            return new TokenService(options);
+            return new TokenServiceImpl(options);
         });
 
         // Current user service (singleton for desktop app)
-        services.AddSingleton<CurrentUserService, CurrentUserService>();
+        services.AddSingleton<CurrentUserService, CurrentUserServiceImpl>();
 
         // Auth service (scoped to use DbContext)
-        services.AddScoped<AuthService, AuthService>();
+        services.AddScoped<AuthService, AuthServiceImpl>();
 
         // Authorization service
-        services.AddScoped<AuthorizationService, AuthorizationService>();
+        services.AddScoped<AuthorizationService, AuthorizationServiceImpl>();
 
         return services;
     }

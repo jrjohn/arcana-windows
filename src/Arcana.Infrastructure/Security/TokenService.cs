@@ -8,13 +8,13 @@ namespace Arcana.Infrastructure.Security;
 /// <summary>
 /// Simple token service using HMAC-SHA256 for local desktop app.
 /// </summary>
-public class TokenService : TokenService
+public class TokenServiceImpl : TokenService
 {
     private readonly byte[] _secretKey;
     private readonly TimeSpan _accessTokenLifetime;
     private readonly TimeSpan _refreshTokenLifetime;
 
-    public TokenService(TokenServiceOptions? options = null)
+    public TokenServiceImpl(TokenServiceOptions? options = null)
     {
         options ??= new TokenServiceOptions();
 
