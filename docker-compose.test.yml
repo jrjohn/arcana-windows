@@ -4,4 +4,9 @@ services:
     working_dir: /app
     volumes:
       - ./test-results:/output
-    command: sh -c "dotnet test -c Release --no-build --collect:\"XPlat Code Coverage\" --results-directory /app/results 2>&1; cp -r /app/results/* /output/ 2>/dev/null || true"
+    command: >
+      sh -c "dotnet test -c Release --no-build
+        --collect:'XPlat Code Coverage'
+        -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        --results-directory /app/results 2>&1;
+        find /app/results -name 'coverage.opencover.xml' -exec cp {} /output/ \; 2>/dev/null || true"
