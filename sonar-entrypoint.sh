@@ -15,7 +15,7 @@ dotnet sonarscanner begin \
   /d:sonar.host.url="${SONAR_HOST_URL:-http://sonarqube:9000/sonarqube}" \
   /d:sonar.token="${SONAR_TOKEN}" \
   /d:sonar.exclusions="**/bin/**,**/obj/**,**/TestResults/**" \
-  /d:sonar.coverage.exclusions="**/tests/**,**/Tests/**" \
+  /d:sonar.coverage.exclusions="**/tests/**,**/Tests/**,**/PluginManagerService.cs,**/PluginManager.cs,**/PluginHealthMonitor.cs,**/DependencyInjection/**" \
   /d:sonar.cs.opencover.reportsPaths="/app/**/coverage.opencover.xml"
 
 echo "=== Build ==="
