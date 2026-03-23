@@ -6,7 +6,7 @@ namespace Arcana.App.Navigation;
 /// <summary>
 /// Window service implementation for WinUI dialogs.
 /// </summary>
-public class WindowService : WindowService
+public class WinUIWindowService : Arcana.Plugins.Contracts.WindowService
 {
     public async Task<string?> ShowInfoAsync(string message, params string[] actions)
     {

@@ -52,7 +52,7 @@ public partial class App : Application
                 services.AddSingleton<INavigationService, DynamicNavigationService>();
 
                 // Register Window Service
-                services.AddSingleton<WindowService, WindowService>();
+                services.AddSingleton<Arcana.Plugins.Contracts.WindowService, Navigation.WinUIWindowService>();
 
                 // Register App Services
                 services.AddSingleton<ThemeService>();
