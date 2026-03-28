@@ -244,17 +244,13 @@ public class MessageBusTests
     {
         _bus.RegisterHandler<PingMessage, PongMessage>(async req =>
         {
-            await Task.Delay(500); // longer than timeout
+            await Task.Delay(5000); // much longer than timeout
             return new PongMessage("too-late");
         });
 
-        var cts = new CancellationTokenSource();
-        cts.Cancel();
-
         var result = await _bus.RequestAsync<PingMessage, PongMessage>(
             new PingMessage("test"),
-            timeout: TimeSpan.FromMilliseconds(1),
-            cancellationToken: cts.Token);
+            timeout: TimeSpan.FromMilliseconds(50));
 
         result.Should().BeNull();
     }

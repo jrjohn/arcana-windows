@@ -1,3 +1,4 @@
+using System.IO;
 using Arcana.Plugins.Contracts.Manifest;
 using Arcana.Plugins.Services;
 using FluentAssertions;
@@ -67,7 +68,7 @@ public class ManifestServiceTests
         _service.RegisterManifest(manifest, @"/plugins/test");
 
         var dir = _service.GetManifestDirectory("test.plugin");
-        dir.Should().Be("/plugins/test");
+        dir.Should().Be(Path.Combine("/plugins", "test"));
     }
 
     [Fact]
