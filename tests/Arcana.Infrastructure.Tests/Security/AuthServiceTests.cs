@@ -323,9 +323,9 @@ public class AuthServiceTests : IDisposable
     {
         var user = await CreateUserAsync();
         _passwordHasherMock.Setup(p => p.VerifyPassword("oldpass", user.PasswordHash)).Returns(true);
-        _passwordHasherMock.Setup(p => p.HashPassword("newpass")).Returns("new-hash");
+        _passwordHasherMock.Setup(p => p.HashPassword("newpass12")).Returns("new-hash");
 
-        var result = await _service.ChangePasswordAsync(user.Id, "oldpass", "newpass");
+        var result = await _service.ChangePasswordAsync(user.Id, "oldpass", "newpass12");
 
         result.IsSuccess.Should().BeTrue();
         var updatedUser = await _context.Users.FindAsync(user.Id);

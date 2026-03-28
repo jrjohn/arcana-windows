@@ -104,7 +104,7 @@ public class MessageBus : IMessageBus
 
         try
         {
-            return await typedHandler(request);
+            return await typedHandler(request).WaitAsync(cts.Token);
         }
         catch (OperationCanceledException)
         {
