@@ -68,7 +68,8 @@ public class ManifestServiceTests
         _service.RegisterManifest(manifest, @"/plugins/test");
 
         var dir = _service.GetManifestDirectory("test.plugin");
-        dir.Should().Be(Path.Combine("/plugins", "test"));
+        // Normalize both paths for cross-platform comparison
+        Path.GetFullPath(dir!).Should().Be(Path.GetFullPath(Path.Combine("/plugins", "test")));
     }
 
     [Fact]
