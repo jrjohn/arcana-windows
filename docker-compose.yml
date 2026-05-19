@@ -1,4 +1,8 @@
 services:
   dotnet-build:
-    build: .
+    build:
+      context: .
+      tags:
+        - localhost:5000/arcana/dotnet-app:${VERSION:-0.2.0}
+        - localhost:5000/arcana/dotnet-app:build-${BUILD_NUMBER:-local}
     image: localhost:5000/arcana/dotnet-app:${VERSION:-0.2.0}
