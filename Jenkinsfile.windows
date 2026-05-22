@@ -1,0 +1,105 @@
+// Jenkinsfile.windows — multibranch pipeline for arcana-windows (WinUI 3 desktop build)
+// Adapted from legacy windows-app-pipeline single-branch job.
+//
+// Key differences from the legacy XML-embedded script:
+//   * `checkout scm` replaces manual bat git clone — multibranch handles auth
+//   * `pollSCM` trigger removed                   — multibranch + GitHub webhook drive triggers
+//   * `dir("${env.PROJECTS_DIR}/arcana-windows")` removed — multibranch uses workspace root
+//   * Arch Qube + Metrics gated `when { branch 'main' }` — main-only post-processing
+//   * Post-build messages include branch/PR context
+//
+// Requires a Jenkins agent labelled `windows` (WinUI 3 build needs MSBuild on Windows).
+
+pipeline {
+    agent { label 'windows' }
+
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '1'))
+        disableConcurrentBuilds()
+        timestamps()
+    }
+
+    environment {
+        APP_NAME = 'arcana-windows'
+        VERSION  = '0.1.0'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                bat 'git log -1 --oneline'
+                script {
+                    echo "Branch: ${env.BRANCH_NAME ?: 'unknown'}"
+                    echo "PR: ${env.CHANGE_ID ?: 'no'} (target: ${env.CHANGE_TARGET ?: 'n/a'})"
+                }
+            }
+        }
+
+        stage('Restore') {
+            steps { bat "dotnet restore Arcana.Windows.sln --force-evaluate" }
+        }
+
+        stage('Build') {
+            steps { bat "dotnet build src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -maxcpucount:1" }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                bat "if exist TestResults rmdir /s /q TestResults"
+                bat "dotnet test -c Release -p:Platform=x64 --logger trx --results-directory TestResults || exit 0"
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps { echo "Windows remote agent requires dotnet-sonarscanner -- skipping" }
+        }
+
+        stage('Publish EXE') {
+            steps {
+                bat "if exist artifacts\\exe rmdir /s /q artifacts\\exe"
+                bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=None --self-contained -r win-x64 -o artifacts\\exe -maxcpucount:1"
+                archiveArtifacts artifacts: 'artifacts/exe/Arcana.App.exe', fingerprint: true
+            }
+        }
+
+        stage('MSIX Package') {
+            steps {
+                bat "if exist artifacts\\msix rmdir /s /q artifacts\\msix"
+                bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=MSIX -p:AppxPackageSigningEnabled=false -p:GenerateAppxPackageOnBuild=true -maxcpucount:1"
+                bat "mkdir artifacts\\msix 2>NUL & copy /Y src\\Arcana.App\\obj\\x64\\Release\\net10.0-windows10.0.19041.0\\win-x64\\MsixContent\\MSIX\\*.msix artifacts\\msix\\ 2>NUL & echo MSIX collected"
+                archiveArtifacts artifacts: 'artifacts/msix/*.msix', fingerprint: true, allowEmptyArchive: true
+            }
+        }
+
+        stage('Architecture Qube') {
+            when { branch 'main' }
+            agent { label 'built-in' }
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    sh """
+                        mkdir -p arch-qube-reports
+                        docker run --rm --network devops_default -v \$(pwd):/project -v \$(pwd)/arch-qube-reports:/output arcana.boo/arcana/arch-qube:latest scan /project --framework windows --no-ai --ci --format json,markdown -o /output --threshold 90 || true
+                    """
+                }
+            }
+        }
+
+        stage('Arch Qube Metrics') {
+            when { branch 'main' }
+            agent { label 'built-in' }
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                    sh "bash /data/projects/_scripts/arch-qube-metrics.sh \$(pwd) arcana-windows || true"
+                }
+            }
+        }
+    }
+
+    post {
+        success { echo "Pipeline SUCCESS - branch=${env.BRANCH_NAME ?: '?'} pr=${env.CHANGE_ID ?: 'no'}" }
+        failure { echo "Pipeline FAILED - branch=${env.BRANCH_NAME ?: '?'} pr=${env.CHANGE_ID ?: 'no'}" }
+        always  { echo "Build ${BUILD_NUMBER} done" }
+    }
+}

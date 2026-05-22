@@ -1,0 +1,91 @@
+// Jenkinsfile.dotnet — multibranch pipeline for arcana-windows (.NET cross-platform build)
+// Adapted from legacy dotnet-app-pipeline single-branch job.
+//
+// Key differences from the legacy XML-embedded script:
+//   * `checkout scm` (no hardcoded branch=main)        — supports every branch + every PR
+//   * `pollSCM` trigger removed                        — multibranch + GitHub webhook drive triggers
+//   * `dir("${env.PROJECTS_DIR}/arcana-windows")` removed — multibranch uses workspace root
+//   * "Push to Registry" gated `when { branch 'main' }` — PR builds skip push
+//   * SonarQube gets pullrequest.* params on PRs        — PR-decoration in Sonar UI
+//   * Post-build messages include branch/PR context
+
+pipeline {
+    agent any
+
+    options {
+        timeout(time: 15, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '1'))
+        disableConcurrentBuilds()
+        timestamps()
+    }
+
+    environment {
+        APP_NAME  = 'dotnet-app'
+        REGISTRY  = 'localhost:5000/arcana'
+        IMAGE_TAG = "${REGISTRY}/${APP_NAME}"
+        VERSION   = '0.2.0'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh 'git log -1 --oneline'
+                script {
+                    echo "Branch: ${env.BRANCH_NAME ?: 'unknown'}"
+                    echo "PR: ${env.CHANGE_ID ?: 'no'} (target: ${env.CHANGE_TARGET ?: 'n/a'})"
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh "VERSION=${VERSION} docker compose build"
+                sh "docker tag ${IMAGE_TAG}:${VERSION} ${IMAGE_TAG}:build-${BUILD_NUMBER}"
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    sh "docker compose -f docker-compose.test.yml run --rm --build test"
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    script {
+                        // PR builds get PR-decoration params so SonarQube
+                        // attaches the report to the GitHub PR instead of
+                        // overwriting the long-lived main branch report.
+                        def prEnv = env.CHANGE_ID ? " SONAR_PULLREQUEST_KEY=${env.CHANGE_ID} SONAR_PULLREQUEST_BRANCH=${env.BRANCH_NAME} SONAR_PULLREQUEST_BASE=${env.CHANGE_TARGET}" : ''
+                        sh """SONAR_TOKEN=squ_5ce2319b9d8ca2b1db4e0f5bdf36b34249561f18 SONAR_HOST_URL=http://sonarqube:9000/sonarqube SONAR_PROJECT_KEY=dotnet-app SONAR_PROJECT_NAME='Dotnet App'${prEnv} docker compose -f docker-compose.sonar.yml run --rm --build sonar"""
+                    }
+                }
+            }
+        }
+
+        stage('Image Info') {
+            steps {
+                sh "docker images --format 'table {{.Repository}}:{{.Tag}}\\t{{.Size}}' ${IMAGE_TAG}:${VERSION}"
+            }
+        }
+
+        stage('Push to Registry') {
+            // Only push from main branch builds. PR builds keep the image local.
+            when { branch 'main' }
+            steps {
+                sh "docker push ${IMAGE_TAG}:${VERSION}"
+                sh "docker push ${IMAGE_TAG}:build-${BUILD_NUMBER}"
+            }
+        }
+    }
+
+    post {
+        success { echo "Pipeline SUCCESS - arcana-windows .NET ${APP_NAME}:${VERSION} branch=${env.BRANCH_NAME ?: '?'} pr=${env.CHANGE_ID ?: 'no'}" }
+        failure { echo "Pipeline FAILED - branch=${env.BRANCH_NAME ?: '?'} pr=${env.CHANGE_ID ?: 'no'}" }
+        always  { echo "Build number ${BUILD_NUMBER} done" }
+    }
+}
