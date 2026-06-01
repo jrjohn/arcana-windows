@@ -48,7 +48,7 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 bat "if exist TestResults rmdir /s /q TestResults"
-                bat "dotnet test -c Release -p:Platform=x64 --logger trx --results-directory TestResults || exit 0"
+                bat "dotnet test -c Release -p:Platform=x64 --logger trx --results-directory TestResults"
             }
         }
 
@@ -77,12 +77,17 @@ pipeline {
             when { branch 'main' }
             agent { label 'built-in' }
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                    sh """
-                        mkdir -p arch-qube-reports
-                        docker run --rm --network devops_default -v \$(pwd):/project -v \$(pwd)/arch-qube-reports:/output arcana.boo/arcana/arch-qube:latest scan /project --framework windows --no-ai --ci --format json,markdown -o /output --threshold 90 || true
-                    """
-                }
+                sh '''
+                    set +e
+                    rm -rf arch-qube-reports && mkdir -p arch-qube-reports
+                    c=$(docker create --network devops_default -v /src -v /output arcana.boo/arcana/arch-qube:latest scan /src --framework windows --no-ai --ci --format json,markdown -o /output --threshold 90)
+                    tar --exclude=./.git -C . -cf - . | docker cp - "$c":/src
+                    docker start -a "$c"
+                    rc=$?
+                    docker cp "$c":/output/. arch-qube-reports/
+                    docker rm -f "$c" >/dev/null 2>&1
+                    exit $rc
+                '''
             }
         }
 
