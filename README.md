@@ -1,8 +1,3 @@
-<!-- agent-managed badges START -->
-[![Quality Gate](https://arcana.boo/sonarqube/api/project_badges/quality_gate?project=dotnet-app)](https://arcana.boo/sonarqube/dashboard?id=dotnet-app)
-[![Build](https://arcana.boo/jenkins/buildStatus/icon?job=dotnet-app-pipeline)](https://arcana.boo/jenkins/job/dotnet-app-pipeline/)
-**Rank**: Quality Gate `OK` · Build `blue` · Sonar coverage `80.7%`
-<!-- agent-managed badges END -->
 
 # Arcana Windows
 
@@ -24,6 +19,13 @@ A **Local-First, Plugin-Everything** Windows desktop application built with WinU
 **Production-Ready, Enterprise-Level Architecture**
 
 </div>
+
+<!-- agent-managed badges START -->
+<p align="center">
+  <a href="https://arcana.boo/sonarqube/dashboard?id=dotnet-app"><img src="https://img.shields.io/badge/Quality_Gate-OK-brightgreen?style=for-the-badge" alt="Quality Gate"></a>
+  <a href="https://arcana.boo/jenkins/job/windows-app-pipeline-mb/job/main/"><img src="https://img.shields.io/badge/Build-building-blue?style=for-the-badge" alt="Build"></a>
+</p>
+<!-- agent-managed badges END -->
 
 ---
 
