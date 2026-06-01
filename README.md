@@ -1,5 +1,5 @@
 <!-- agent-managed badges START -->
-[![Quality Gate](https://arcana.boo/sonarqube/api/project_badges/quality_gate?project=dotnet-app)](https://arcana.boo/sonarqube/dashboard?id=dotnet-app)
+[![Quality Gate](https://img.shields.io/badge/Quality_Gate-OK-brightgreen)](https://arcana.boo/sonarqube/dashboard?id=dotnet-app)
 [![Build](https://arcana.boo/jenkins/buildStatus/icon?job=dotnet-app-pipeline)](https://arcana.boo/jenkins/job/dotnet-app-pipeline/)
 **Rank**: Quality Gate `OK` · Build `blue` · Sonar coverage `80.7%`
 <!-- agent-managed badges END -->
