@@ -61,7 +61,7 @@ pipeline {
                         // attaches the report to the GitHub PR instead of
                         // overwriting the long-lived main branch report.
                         def prEnv = env.CHANGE_ID ? " SONAR_PULLREQUEST_KEY=${env.CHANGE_ID} SONAR_PULLREQUEST_BRANCH=${env.BRANCH_NAME} SONAR_PULLREQUEST_BASE=${env.CHANGE_TARGET}" : ''
-                        sh """SONAR_TOKEN=squ_5ce2319b9d8ca2b1db4e0f5bdf36b34249561f18 SONAR_HOST_URL=http://sonarqube:9000/sonarqube SONAR_PROJECT_KEY=dotnet-app SONAR_PROJECT_NAME='Dotnet App'${prEnv} docker compose -f docker-compose.sonar.yml run --rm --build sonar"""
+                        sh """SONAR_TOKEN=\${SONAR_TOKEN} SONAR_HOST_URL=http://sonarqube:9000/sonarqube SONAR_PROJECT_KEY=dotnet-app SONAR_PROJECT_NAME='Dotnet App'${prEnv} docker compose -f docker-compose.sonar.yml run --rm --build sonar"""
                     }
                 }
             }
