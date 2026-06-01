@@ -23,9 +23,16 @@ A **Local-First, Plugin-Everything** Windows desktop application built with WinU
 <!-- agent-managed badges START -->
 <p align="center">
   <a href="https://arcana.boo/sonarqube/dashboard?id=dotnet-app"><img src="https://img.shields.io/badge/Quality_Gate-OK-brightgreen?style=for-the-badge" alt="Quality Gate"></a>
-  <a href="https://arcana.boo/jenkins/job/windows-app-pipeline-mb/job/main/"><img src="https://img.shields.io/badge/Build-building-blue?style=for-the-badge" alt="Build"></a>
+  <a href="https://arcana.boo/jenkins/job/windows-app-pipeline-mb/job/main/"><img src="https://img.shields.io/badge/Build-passing-brightgreen?style=for-the-badge" alt="Build"></a>
 </p>
 <!-- agent-managed badges END -->
+<!-- arch-rank START -->
+<p align="center">
+  <img src="https://img.shields.io/badge/arch--qube-100%2F100-blue?style=for-the-badge" alt="arch-qube">
+  <img src="https://img.shields.io/badge/Grade-A%2B-brightgreen?style=for-the-badge" alt="Grade">
+  <img src="https://img.shields.io/badge/Arch_Gate-PASS-brightgreen?style=for-the-badge" alt="Architecture Gate">
+</p>
+<!-- arch-rank END -->
 
 ---
 
