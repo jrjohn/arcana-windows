@@ -74,7 +74,10 @@ pipeline {
         }
 
         stage('Architecture Qube') {
-            when { branch 'main' }
+            when {
+                beforeAgent true
+                branch 'main'
+            }
             agent { label 'built-in' }
             steps {
                 sh '''
@@ -92,7 +95,10 @@ pipeline {
         }
 
         stage('Arch Qube Metrics') {
-            when { branch 'main' }
+            when {
+                beforeAgent true
+                branch 'main'
+            }
             agent { label 'built-in' }
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
