@@ -1052,13 +1052,13 @@ arcana-windows/                         # 125 C# source files, 8 projects
 | **Runtime** | .NET | 10.0 |
 | **Language** | C# | 14.0 |
 | **UI Framework** | WinUI 3 | Windows App SDK 1.5 |
-| **MVVM** | CommunityToolkit.Mvvm | 8.2.2 |
+| **MVVM** | CommunityToolkit.Mvvm | 8.4.2 |
 | **Database** | SQLite via EF Core | 10.0 |
-| **Validation** | FluentValidation | 11.9 |
+| **Validation** | FluentValidation | 11.12 |
 | **Logging** | Serilog | 4.2 |
-| **Testing** | xUnit | 2.7.0 |
-| **Assertions** | FluentAssertions | 6.12.0 |
-| **Mocking** | Moq | 4.20.70 |
+| **Testing** | xUnit | 2.9.3 |
+| **Assertions** | FluentAssertions | 6.12.2 |
+| **Mocking** | Moq | 4.20.72 |
 
 ---
 
