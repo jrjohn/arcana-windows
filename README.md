@@ -1051,7 +1051,7 @@ arcana-windows/                         # 125 C# source files, 8 projects
 |-------|------------|---------|
 | **Runtime** | .NET | 10.0 |
 | **Language** | C# | 14.0 |
-| **UI Framework** | WinUI 3 | Windows App SDK 1.5 |
+| **UI Framework** | WinUI 3 | Windows App SDK 2.2 |
 | **MVVM** | CommunityToolkit.Mvvm | 8.4.2 |
 | **Database** | SQLite via EF Core | 10.0 |
 | **Validation** | FluentValidation | 12.1.1 |
