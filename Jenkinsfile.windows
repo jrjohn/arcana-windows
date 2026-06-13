@@ -68,7 +68,7 @@ pipeline {
             steps {
                 bat "if exist artifacts\\msix rmdir /s /q artifacts\\msix"
                 bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=MSIX -p:AppxPackageSigningEnabled=false -p:GenerateAppxPackageOnBuild=true -maxcpucount:1"
-                bat "mkdir artifacts\\msix 2>NUL & copy /Y src\\Arcana.App\\obj\\x64\\Release\\net10.0-windows10.0.19041.0\\win-x64\\MsixContent\\MSIX\\*.msix artifacts\\msix\\ 2>NUL & echo MSIX collected"
+                bat "mkdir artifacts\\msix 2>NUL & for /r \"src\\Arcana.App\\AppPackages\" %%f in (*.msix) do @copy /Y \"%%f\" artifacts\\msix\\ & echo MSIX collected & exit /b 0"
                 archiveArtifacts artifacts: 'artifacts/msix/*.msix', fingerprint: true, allowEmptyArchive: true
             }
         }
