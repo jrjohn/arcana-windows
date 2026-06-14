@@ -11,7 +11,7 @@ A **Local-First, Plugin-Everything** Windows desktop application built with WinU
 [![C#](https://img.shields.io/badge/C%23-14.0-239120)](https://docs.microsoft.com/dotnet/csharp/)
 [![Visual Studio](https://img.shields.io/badge/VS-2026-5C2D91)](https://visualstudio.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-507%20Passing-brightgreen)]()
+[![Tests](https://img.shields.io/badge/Tests-1030%20Passing-brightgreen)]()
 [![Architecture](https://img.shields.io/badge/Architecture-A-brightgreen)]()
 [![Grade](https://img.shields.io/badge/Grade-9.0%2F10-blue)]()
 [![Production](https://img.shields.io/badge/Production-Ready-success)]()
