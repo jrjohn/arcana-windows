@@ -6,8 +6,12 @@
 //   * `pollSCM` trigger removed                        — multibranch + GitHub webhook drive triggers
 //   * `dir("${env.PROJECTS_DIR}/arcana-windows")` removed — multibranch uses workspace root
 //   * "Push to Registry" gated `when { branch 'main' }` — PR builds skip push
-//   * SonarQube gets pullrequest.* params on PRs        — PR-decoration in Sonar UI
 //   * Post-build messages include branch/PR context
+//   * Unit Tests / SonarQube stages are BLOCKING — no catchError swallow. The
+//     underlying exit-code paths (docker-compose.test.yml, sonar-entrypoint.sh)
+//     were also fixed so a real failure actually propagates (see those files).
+//     No sonar.pullrequest.* params: this is SonarQube Community Build, which
+//     rejects them ("Developer Edition or above is required") and fails the scan.
 
 pipeline {
     agent any
@@ -38,6 +42,22 @@ pipeline {
             }
         }
 
+        stage("Cleanup Old Images") {
+            steps {
+                sh '''
+                    # keep only the previous build image (layer cache); the
+                    # registry holds every build-N tag durably
+                    docker images --format '{{.Repository}}:{{.Tag}}' \
+                        | grep -E "^${IMAGE_TAG}:build-[0-9]+$" \
+                        | sed 's/.*:build-//' | sort -rn | tail -n +2 \
+                        | sed "s|^|${IMAGE_TAG}:build-|" \
+                        | xargs -r docker rmi 2>/dev/null || true
+                    docker compose -f docker-compose.test.yml down --remove-orphans 2>/dev/null || true
+                    docker compose -f docker-compose.sonar.yml down --remove-orphans 2>/dev/null || true
+                '''
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh "VERSION=${VERSION} docker compose build"
@@ -46,24 +66,19 @@ pipeline {
         }
 
         stage('Unit Tests') {
+            // Blocking: docker-compose.test.yml now propagates dotnet test's real
+            // exit code instead of always exiting 0 via a trailing `|| true`.
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                    sh "docker compose -f docker-compose.test.yml run --rm --build test"
-                }
+                sh "docker compose -f docker-compose.test.yml run --rm --build test"
             }
         }
 
         stage('SonarQube Analysis') {
+            // Blocking quality gate: sonar-entrypoint.sh polls the compute-engine
+            // task + quality gate via curl and exits non-zero if not OK (or if the
+            // unit tests inside it failed).
             steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
-                    script {
-                        // PR builds get PR-decoration params so SonarQube
-                        // attaches the report to the GitHub PR instead of
-                        // overwriting the long-lived main branch report.
-                        def prEnv = env.CHANGE_ID ? " SONAR_PULLREQUEST_KEY=${env.CHANGE_ID} SONAR_PULLREQUEST_BRANCH=${env.BRANCH_NAME} SONAR_PULLREQUEST_BASE=${env.CHANGE_TARGET}" : ''
-                        sh """SONAR_TOKEN=\${SONAR_TOKEN} SONAR_HOST_URL=http://sonarqube:9000/sonarqube SONAR_PROJECT_KEY=dotnet-app SONAR_PROJECT_NAME='Dotnet App'${prEnv} docker compose -f docker-compose.sonar.yml run --rm --build sonar"""
-                    }
-                }
+                sh "SONAR_TOKEN=\${SONAR_TOKEN} SONAR_HOST_URL=http://sonarqube:9000/sonarqube SONAR_PROJECT_KEY=dotnet-app SONAR_PROJECT_NAME='Dotnet App' docker compose -f docker-compose.sonar.yml run --rm --build sonar"
             }
         }
 

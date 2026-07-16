@@ -5,9 +5,10 @@
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0
 
-# Install Java 17 and dotnet-sonarscanner
+# Install Java 17, curl (quality-gate polling) and dotnet-sonarscanner
 RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-17-jre-headless \
+    curl \
     && rm -rf /var/lib/apt/lists/* \
     && dotnet tool install --global dotnet-sonarscanner
 ENV PATH="$PATH:/root/.dotnet/tools"

@@ -9,4 +9,6 @@ services:
         --collect:'XPlat Code Coverage'
         -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         --results-directory /app/results 2>&1;
-        find /app/results -name 'coverage.opencover.xml' -exec cp {} /output/ \; 2>/dev/null || true"
+        RC=$$?;
+        find /app/results -name 'coverage.opencover.xml' -exec cp {} /output/ \; 2>/dev/null;
+        exit $$RC"
