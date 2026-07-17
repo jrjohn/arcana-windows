@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/jrjohn/arcana-windows/compare/v1.1.0...v1.1.1) (2026-07-17)
+
+
+### Bug Fixes
+
+* **ci:** harden Jenkinsfile.dotnet gates - stop swallowing test/sonar failures ([bc152bf](https://github.com/jrjohn/arcana-windows/commit/bc152bfa7fb3821fbc74aff5e8bac34da6378eb7))
+
 ## [1.1.0](https://github.com/jrjohn/arcana-windows/compare/v1.0.0...v1.1.0) (2026-06-11)
 
 
