@@ -6,9 +6,9 @@
 A **Local-First, Plugin-Everything** Windows desktop application built with WinUI 3 and .NET 10.0. Designed for offline-capable business operations with CRDT-based synchronization and a comprehensive plugin architecture.
 
 [![Architecture Rating](https://img.shields.io/badge/Architecture%20Rating-⭐⭐⭐⭐⭐%209.0%2F10-gold.svg)](#-architecture-evaluation)
-[![.NET](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/jrjohn/arcana-windows/main/src/Arcana.Core/Arcana.Core.csproj&query=%2F%2FTargetFramework&label=.NET&color=512BD4)](https://dotnet.microsoft.com/)
 [![WinUI](https://img.shields.io/badge/WinUI-3.0-0078D4)](https://microsoft.github.io/microsoft-ui-xaml/)
-[![C#](https://img.shields.io/badge/C%23-14.0-239120)](https://docs.microsoft.com/dotnet/csharp/)
+[![C#](https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/jrjohn/arcana-windows/main/src/Arcana.Core/Arcana.Core.csproj&query=%2F%2FPropertyGroup%2FLangVersion&label=C%23&color=239120)](https://docs.microsoft.com/dotnet/csharp/)
 [![Visual Studio](https://img.shields.io/badge/VS-2026-5C2D91)](https://visualstudio.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/Tests-1030%20Passing-brightgreen)]()
