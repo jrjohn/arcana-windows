@@ -3,7 +3,7 @@
 # .NET SDK + Java + dotnet-sonarscanner
 # ============================================
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0
+FROM mcr.microsoft.com/dotnet/sdk:11.0
 
 # Install Java 17, curl (quality-gate polling) and dotnet-sonarscanner
 RUN apt-get update && apt-get install -y --no-install-recommends \
