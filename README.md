@@ -1057,7 +1057,7 @@ arcana-windows/                         # 125 C# source files, 8 projects
 | **Validation** | FluentValidation | 12.1.1 |
 | **Logging** | Serilog | 4.4.0 |
 | **Testing** | xUnit | 2.9.3 |
-| **Assertions** | FluentAssertions | 8.10.0 |
+| **Assertions** | FluentAssertions | 8.11.0 |
 | **Mocking** | Moq | 4.20.72 |
 
 ---
