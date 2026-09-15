@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/jrjohn/arcana-windows/compare/v1.1.1...v1.1.2) (2026-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency fluentassertions to 8.11.0 ([#50](https://github.com/jrjohn/arcana-windows/issues/50)) ([66603ba](https://github.com/jrjohn/arcana-windows/commit/66603ba724fe3869471a5487f7069d0582ee18eb))
+
 ## [1.1.1](https://github.com/jrjohn/arcana-windows/compare/v1.1.0...v1.1.1) (2026-07-17)
 
 
