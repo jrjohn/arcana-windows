@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/jrjohn/arcana-windows/compare/v1.1.2...v1.1.3) (2026-09-15)
+
+
+### Bug Fixes
+
+* **deps:** update mcr.microsoft.com/dotnet/sdk docker tag to v11 ([#47](https://github.com/jrjohn/arcana-windows/issues/47)) ([b2a5da2](https://github.com/jrjohn/arcana-windows/commit/b2a5da29fd56d9d62bb9581a3e2ef7ee68a920b0))
+
 ## [1.1.2](https://github.com/jrjohn/arcana-windows/compare/v1.1.1...v1.1.2) (2026-09-14)
 
 
