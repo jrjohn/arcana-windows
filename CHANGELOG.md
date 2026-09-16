@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/jrjohn/arcana-windows/compare/v1.1.4...v1.1.5) (2026-09-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency microsoft.windowsappsdk to 2.5.1 ([#55](https://github.com/jrjohn/arcana-windows/issues/55)) ([6c01a2b](https://github.com/jrjohn/arcana-windows/commit/6c01a2bf7d56a57e7003130c0dbca55320c4e161))
+
 ## [1.1.4](https://github.com/jrjohn/arcana-windows/compare/v1.1.3...v1.1.4) (2026-09-15)
 
 
