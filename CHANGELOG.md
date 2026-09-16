@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/jrjohn/arcana-windows/compare/v1.1.3...v1.1.4) (2026-09-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency microsoft.net.test.sdk to 18.10.1 ([#53](https://github.com/jrjohn/arcana-windows/issues/53)) ([9f9cbe7](https://github.com/jrjohn/arcana-windows/commit/9f9cbe7d087fa8838995b3c56e94d3e753400f89))
+
 ## [1.1.3](https://github.com/jrjohn/arcana-windows/compare/v1.1.2...v1.1.3) (2026-09-15)
 
 
