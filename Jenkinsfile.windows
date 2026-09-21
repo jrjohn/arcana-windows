@@ -11,10 +11,19 @@
 // Requires a Jenkins agent labelled `windows` (WinUI 3 build needs MSBuild on Windows).
 
 pipeline {
-    agent { label 'windows' }
+    // agent none at the top: the Windows box is held only by the "Windows CI" wrapper
+    // stage below. With `agent { label 'windows' }` here, the executor stayed occupied
+    // while the main-only Architecture Qube stages waited in the LINUX queue — main #127
+    // to #130 each finished all Windows work in ~7 min and then sat 23 min in
+    // "Waiting for next available executor on 'Jenkins'" until the 30 min timeout
+    // aborted them.
+    agent none
 
     options {
-        timeout(time: 30, unit: 'MINUTES')
+        // Raised 30 -> 120: the pipeline-level timeout also covers time spent waiting
+        // for the Linux executor of the main-only Arch Qube stages. Per-stage timeouts
+        // below keep a genuinely hung Windows step from burning the whole budget.
+        timeout(time: 120, unit: 'MINUTES')
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '1'))
         disableConcurrentBuilds()
         timestamps()
@@ -23,9 +32,20 @@ pipeline {
     environment {
         APP_NAME = 'arcana-windows'
         VERSION  = '0.1.0'
+        // MSBuild keeps worker nodes alive for ~15 min after a build and Roslyn keeps a
+        // VBCSCompiler server; on a shared desktop these pile up between builds and keep
+        // eating CPU/RAM long after Jenkins thinks the build is over.
+        MSBUILDDISABLENODEREUSE   = '1'
+        DOTNET_CLI_TELEMETRY_OPTOUT = '1'
     }
 
     stages {
+      stage('Windows CI') {
+        agent { label 'windows' }
+        // 45 min covers a cold restore + full build/test/publish/MSIX (a healthy run is
+        // ~7 min) without letting a hung dotnet step hold the box for two hours.
+        options { timeout(time: 45, unit: 'MINUTES') }
+        stages {
         stage('Checkout') {
             steps {
                 checkout scm
@@ -38,17 +58,17 @@ pipeline {
         }
 
         stage('Restore') {
-            steps { bat "dotnet restore Arcana.Windows.sln --force-evaluate" }
+            steps { bat "dotnet restore Arcana.Windows.sln --force-evaluate --disable-parallel -maxcpucount:1 -nodeReuse:false" }
         }
 
         stage('Build') {
-            steps { bat "dotnet build src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -maxcpucount:1" }
+            steps { bat "dotnet build src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false" }
         }
 
         stage('Unit Tests') {
             steps {
                 bat "if exist TestResults rmdir /s /q TestResults"
-                bat "dotnet test -c Release -p:Platform=x64 --logger trx --results-directory TestResults"
+                bat "dotnet test -c Release -p:Platform=x64 --logger trx --results-directory TestResults --settings tests.runsettings -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false"
             }
         }
 
@@ -59,7 +79,7 @@ pipeline {
         stage('Publish EXE') {
             steps {
                 bat "if exist artifacts\\exe rmdir /s /q artifacts\\exe"
-                bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=None --self-contained -r win-x64 -o artifacts\\exe -maxcpucount:1"
+                bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=None --self-contained -r win-x64 -o artifacts\\exe -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false"
                 archiveArtifacts artifacts: 'artifacts/exe/Arcana.App.exe', fingerprint: true
             }
         }
@@ -67,11 +87,14 @@ pipeline {
         stage('MSIX Package') {
             steps {
                 bat "if exist artifacts\\msix rmdir /s /q artifacts\\msix"
-                bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=MSIX -p:AppxPackageSigningEnabled=false -p:GenerateAppxPackageOnBuild=true -maxcpucount:1"
+                bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=MSIX -p:AppxPackageSigningEnabled=false -p:GenerateAppxPackageOnBuild=true -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false"
                 bat "mkdir artifacts\\msix 2>NUL & for /r \"src\\Arcana.App\\AppPackages\" %%f in (*.msix) do @copy /Y \"%%f\" artifacts\\msix\\ & echo MSIX collected & exit /b 0"
                 archiveArtifacts artifacts: 'artifacts/msix/*.msix', fingerprint: true, allowEmptyArchive: true
             }
         }
+
+        }
+      }
 
         stage('Architecture Qube') {
             when {
