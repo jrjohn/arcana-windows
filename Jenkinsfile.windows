@@ -80,7 +80,19 @@ pipeline {
             steps {
                 bat "if exist artifacts\\exe rmdir /s /q artifacts\\exe"
                 bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=None --self-contained -r win-x64 -o artifacts\\exe -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false"
-                archiveArtifacts artifacts: 'artifacts/exe/Arcana.App.exe', fingerprint: true
+                // main only: uploading the self-contained EXE and the MSIX back to Jenkins
+                // pushes hundreds of MB over the agent's WebSocket. On 2026-09-21 PR-57 #1
+                // built and packaged everything fine and then died in exactly that upload
+                // ("Failed to extract .../transfer of 1 files", WebSocket error) and the
+                // 7.7 GB machine dropped off the network entirely. PR builds still compile
+                // and package — they just do not ship the bytes anywhere.
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        archiveArtifacts artifacts: 'artifacts/exe/Arcana.App.exe', fingerprint: true
+                    } else {
+                        echo 'PR build: EXE built, archive skipped (main only)'
+                    }
+                }
             }
         }
 
@@ -89,7 +101,13 @@ pipeline {
                 bat "if exist artifacts\\msix rmdir /s /q artifacts\\msix"
                 bat "dotnet publish src\\Arcana.App\\Arcana.App.csproj -c Release -p:Platform=x64 -p:WindowsPackageType=MSIX -p:AppxPackageSigningEnabled=false -p:GenerateAppxPackageOnBuild=true -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false"
                 bat "mkdir artifacts\\msix 2>NUL & for /r \"src\\Arcana.App\\AppPackages\" %%f in (*.msix) do @copy /Y \"%%f\" artifacts\\msix\\ & echo MSIX collected & exit /b 0"
-                archiveArtifacts artifacts: 'artifacts/msix/*.msix', fingerprint: true, allowEmptyArchive: true
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        archiveArtifacts artifacts: 'artifacts/msix/*.msix', fingerprint: true, allowEmptyArchive: true
+                    } else {
+                        echo 'PR build: MSIX packaged, archive skipped (main only)'
+                    }
+                }
             }
         }
 
