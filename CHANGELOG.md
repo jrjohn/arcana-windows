@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/jrjohn/arcana-windows/compare/v1.1.5...v1.1.6) (2026-09-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency moq to 4.21.0 ([#58](https://github.com/jrjohn/arcana-windows/issues/58)) ([2562582](https://github.com/jrjohn/arcana-windows/commit/25625826c439bf0cca2e7473a5209a0ef4cbbe92))
+
 ## [1.1.5](https://github.com/jrjohn/arcana-windows/compare/v1.1.4...v1.1.5) (2026-09-16)
 
 
