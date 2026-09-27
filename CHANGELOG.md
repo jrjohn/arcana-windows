@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.7](https://github.com/jrjohn/arcana-windows/compare/v1.1.6...v1.1.7) (2026-09-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency coverlet.collector to 10.1.0 ([#60](https://github.com/jrjohn/arcana-windows/issues/60)) ([6abcd39](https://github.com/jrjohn/arcana-windows/commit/6abcd399ba8ea17cfb5b5e8b243f428a1b5a16c4))
+
 ## [1.1.6](https://github.com/jrjohn/arcana-windows/compare/v1.1.5...v1.1.6) (2026-09-24)
 
 
