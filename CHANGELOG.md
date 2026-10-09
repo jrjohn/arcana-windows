@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.8](https://github.com/jrjohn/arcana-windows/compare/v1.1.7...v1.1.8) (2026-10-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency xunit.runner.visualstudio to 4.0.1 ([#62](https://github.com/jrjohn/arcana-windows/issues/62)) ([9e806ea](https://github.com/jrjohn/arcana-windows/commit/9e806eae7723131f6fb4dddd9f066c942ee41a7e))
+
 ## [1.1.7](https://github.com/jrjohn/arcana-windows/compare/v1.1.6...v1.1.7) (2026-09-27)
 
 
