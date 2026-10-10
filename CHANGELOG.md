@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.9](https://github.com/jrjohn/arcana-windows/compare/v1.1.8...v1.1.9) (2026-10-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency fluentvalidation to 12.2.0 ([#64](https://github.com/jrjohn/arcana-windows/issues/64)) ([2a1e090](https://github.com/jrjohn/arcana-windows/commit/2a1e09005821d5a3876219b4e63e2cb6cf5255d2))
+
 ## [1.1.8](https://github.com/jrjohn/arcana-windows/compare/v1.1.7...v1.1.8) (2026-10-09)
 
 
