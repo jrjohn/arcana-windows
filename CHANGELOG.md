@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.10](https://github.com/jrjohn/arcana-windows/compare/v1.1.9...v1.1.10) (2026-10-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency fluentvalidation.dependencyinjectionextensions to 12.2.0 ([#65](https://github.com/jrjohn/arcana-windows/issues/65)) ([2b1aa1a](https://github.com/jrjohn/arcana-windows/commit/2b1aa1a3af1471e7d8f9855cf65399488914b154))
+
 ## [1.1.9](https://github.com/jrjohn/arcana-windows/compare/v1.1.8...v1.1.9) (2026-10-10)
 
 
