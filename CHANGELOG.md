@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.11](https://github.com/jrjohn/arcana-windows/compare/v1.1.10...v1.1.11) (2026-10-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency microsoft.net.test.sdk to 18.11.0 ([#69](https://github.com/jrjohn/arcana-windows/issues/69)) ([d31cd1e](https://github.com/jrjohn/arcana-windows/commit/d31cd1e6d62f9641e2cfa4a80dde3f39eb170d29))
+* **deps:** update dotnet monorepo to 10.0.13 ([#68](https://github.com/jrjohn/arcana-windows/issues/68)) ([fffb266](https://github.com/jrjohn/arcana-windows/commit/fffb2666b28f0a92096a6e45c4938a1502704653))
+
 ## [1.1.10](https://github.com/jrjohn/arcana-windows/compare/v1.1.9...v1.1.10) (2026-10-11)
 
 
