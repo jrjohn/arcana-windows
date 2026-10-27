@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.13](https://github.com/jrjohn/arcana-windows/compare/v1.1.12...v1.1.13) (2026-10-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency microsoft.windowsappsdk to 2.6.4 ([#73](https://github.com/jrjohn/arcana-windows/issues/73)) ([7b1978a](https://github.com/jrjohn/arcana-windows/commit/7b1978afcc5c729c56efb32f65d1d4f6d57357ac))
+
 ## [1.1.12](https://github.com/jrjohn/arcana-windows/compare/v1.1.11...v1.1.12) (2026-10-25)
 
 
