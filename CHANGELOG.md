@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.14](https://github.com/jrjohn/arcana-windows/compare/v1.1.13...v1.1.14) (2026-10-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency microsoft.windows.sdk.buildtools to 10.0.28000.2957 ([#75](https://github.com/jrjohn/arcana-windows/issues/75)) ([df6f6d3](https://github.com/jrjohn/arcana-windows/commit/df6f6d3bec03f660bef047073a1dcf04c072556b))
+
 ## [1.1.13](https://github.com/jrjohn/arcana-windows/compare/v1.1.12...v1.1.13) (2026-10-27)
 
 
