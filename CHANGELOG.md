@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.17](https://github.com/jrjohn/arcana-windows/compare/v1.1.16...v1.1.17) (2026-11-11)
+
+
+### Bug Fixes
+
+* **deps:** update dotnet monorepo to 10.0.15 ([#83](https://github.com/jrjohn/arcana-windows/issues/83)) ([de67fb2](https://github.com/jrjohn/arcana-windows/commit/de67fb23f19cb64bdf583180cebd4bee0f502be3))
+
 ## [1.1.16](https://github.com/jrjohn/arcana-windows/compare/v1.1.15...v1.1.16) (2026-11-10)
 
 
