@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.21](https://github.com/jrjohn/arcana-windows/compare/v1.1.20...v1.1.21) (2026-11-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency serilog.settings.configuration to v11 ([#92](https://github.com/jrjohn/arcana-windows/issues/92)) ([0581b17](https://github.com/jrjohn/arcana-windows/commit/0581b17a7de122226e49996e97da1ea5d2c8e38f))
+
 ## [1.1.20](https://github.com/jrjohn/arcana-windows/compare/v1.1.19...v1.1.20) (2026-11-17)
 
 
