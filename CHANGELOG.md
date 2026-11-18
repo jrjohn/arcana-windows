@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.22](https://github.com/jrjohn/arcana-windows/compare/v1.1.21...v1.1.22) (2026-11-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency serilog.extensions.logging to v11 ([#91](https://github.com/jrjohn/arcana-windows/issues/91)) ([03d4ee1](https://github.com/jrjohn/arcana-windows/commit/03d4ee11334b7aa89a9ac2506d9af1f14228ff6b))
+
 ## [1.1.21](https://github.com/jrjohn/arcana-windows/compare/v1.1.20...v1.1.21) (2026-11-18)
 
 
