@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/jrjohn/arcana-windows/compare/v1.1.22...v1.2.0) (2026-11-24)
+
+
+### Features
+
+* make arcana-windows self-explaining to AI agents (AGENTS.md, scaffolds, hook, arch-qube gate) ([#95](https://github.com/jrjohn/arcana-windows/issues/95)) ([059794f](https://github.com/jrjohn/arcana-windows/commit/059794fc25aed1b81fc02689fecaea3d6a42a193))
+
 ## [1.1.22](https://github.com/jrjohn/arcana-windows/compare/v1.1.21...v1.1.22) (2026-11-18)
 
 
