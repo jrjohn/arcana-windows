@@ -5,7 +5,8 @@
 //   * `checkout scm` replaces manual bat git clone — multibranch handles auth
 //   * `pollSCM` trigger removed                   — multibranch + GitHub webhook drive triggers
 //   * `dir("${env.PROJECTS_DIR}/arcana-windows")` removed — multibranch uses workspace root
-//   * Arch Qube + Metrics gated `when { branch 'main' }` — main-only post-processing
+//   * Architecture Qube runs on every branch/PR on the Linux `built-in` node (pinned image,
+//     tools/arch-qube.version); only Arch Qube Metrics is main-only
 //   * Post-build messages include branch/PR context
 //
 // Requires a Jenkins agent labelled `windows` (WinUI 3 build needs MSBuild on Windows).
@@ -115,23 +116,47 @@ pipeline {
       }
 
         stage('Architecture Qube') {
-            when {
-                beforeAgent true
-                branch 'main'
-            }
+            // Blocking on EVERY branch and PR (was main-only + unpinned :latest): arch-qube exits
+            // non-zero if the score is < --threshold 90 or a critical rule has a violation.
+            // Runs on the Linux `built-in` node (docker), never on the `windows` label agent (a
+            // laptop without docker). Same scan as tools/arch-check.sh (AGENTS.md section 4).
+            // DinD-safe: source is copied IN with a tar stream and the report copied OUT through
+            // anonymous volumes (/src, /output); bind mounts would resolve on the host daemon.
             agent { label 'built-in' }
             steps {
                 sh '''
-                    set +e
+                    # Branch in the name: BUILD_NUMBER restarts at 1 on every branch, so a static or
+                    # number-only name lets two branches `docker rm -f` each other's container.
+                    AQ="arcana-arch-qube-windows-$(printf '%s' "${BRANCH_NAME}-${BUILD_NUMBER}" | tr -c 'A-Za-z0-9_.-' '-')"
+                    docker rm -f "$AQ" 2>/dev/null || true
+                    # Version pinned in tools/arch-qube.version (shared with tools/arch-check.sh).
+                    # ghcr.io first (public, multi-arch), then arcana.boo. NO :latest fallback:
+                    # an unpinned image changes the verdict without a commit in this repo.
+                    AQ_VER="$(tr -d '[:space:]' < tools/arch-qube.version)"
+                    AQ_IMG=""
+                    for c in "ghcr.io/jrjohn/arch-qube:$AQ_VER" "arcana.boo/arcana/arch-qube:$AQ_VER"; do
+                        if docker image inspect "$c" >/dev/null 2>&1 || docker pull -q "$c" >/dev/null 2>&1; then AQ_IMG="$c"; break; fi
+                    done
+                    [ -n "$AQ_IMG" ] || { echo "arch-qube $AQ_VER image not pullable from ghcr.io or arcana.boo - NOT a pass"; exit 1; }
+                    docker create --name "$AQ" --network devops_default \\
+                        -v /src -v /output \\
+                        "$AQ_IMG" \\
+                        scan /src --framework windows --no-ai --ci \\
+                        --format json,markdown -o /output --threshold 90 || exit 1
+                    tar --exclude=./.git --exclude='*/bin' --exclude='*/obj' --exclude=./TestResults \\
+                        --exclude=./test-results --exclude=./.scannerwork \\
+                        --exclude=./arch-qube-reports -C . -cf - . \\
+                        | docker cp - "$AQ":/src || exit 1
+                    docker start -a "$AQ"
+                    AQ_RC=$?
                     rm -rf arch-qube-reports && mkdir -p arch-qube-reports
-                    c=$(docker create --network devops_default -v /src -v /output arcana.boo/arcana/arch-qube:latest scan /src --framework windows --no-ai --ci --format json,markdown -o /output --threshold 90)
-                    tar --exclude=./.git -C . -cf - . | docker cp - "$c":/src
-                    docker start -a "$c"
-                    rc=$?
-                    docker cp "$c":/output/. arch-qube-reports/
-                    docker rm -f "$c" >/dev/null 2>&1
-                    exit $rc
+                    docker cp "$AQ":/output/. arch-qube-reports/ 2>/dev/null || true
+                    docker rm -f "$AQ" 2>/dev/null || true
+                    exit $AQ_RC
                 '''
+            }
+            post {
+                always { archiveArtifacts artifacts: 'arch-qube-reports/**', allowEmptyArchive: true }
             }
         }
 

@@ -25,6 +25,9 @@ echo "=== Unit Tests + Coverage ==="
 # --results-directory must come BEFORE -- to be handled by dotnet test, not the test host
 # Test failure doesn't abort immediately -- sonar end still runs so the (partial)
 # report reaches SonarQube -- but TEST_RC is checked below and fails the build.
+# vstest (.NET 10) exits 1 when its session-artifact dir is readable by other users, even if
+# every test passed (seen in docker-compose.test.yml); a private umask makes it 0700.
+umask 077
 TEST_RC=0
 dotnet test -c Release --no-build \
   --collect:"XPlat Code Coverage" \
