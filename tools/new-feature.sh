@@ -57,7 +57,7 @@ need "$NAV"     "public const string CustomerDetail = \"CustomerDetailPage\";"
 need "$NAV"     "    #region Customers"
 need "$MAINWIN" "\"CustomerListPage\" => typeof(CustomerListPage),"
 need "$MAINWIN" "\"CustomerListPage\" => _localization.Get(\"customer.list\"),"
-need "$MAINWIN" "\"CustomerListPage\" => \"\\uE716\","
+need "$MAINWIN" "\"CustomerListPage\" => \"\\uE716\",   // Contact"
 for l in en-US zh-TW ja-JP; do need "$STRINGS/$l.json" '  "customer.list": '; done
 grep -qF "DbSet<$NAME> " "$DBCTX" && die "$NAME already exists (DbSet<$NAME> in AppDbContext)"
 
@@ -809,7 +809,7 @@ ins_before "$NAV" "    #region Customers" "    #region $PLURAL
 "
 ins_after "$MAINWIN" "\"CustomerListPage\" => typeof(CustomerListPage)," "            \"${NAME}ListPage\" => typeof(${NAME}ListPage),"
 ins_after "$MAINWIN" "\"CustomerListPage\" => _localization.Get(\"customer.list\")," "            \"${NAME}ListPage\" => _localization.Get(\"${KEY}.list\"),"
-ins_after "$MAINWIN" "\"CustomerListPage\" => \"\\uE716\"," "            \"${NAME}ListPage\" => \"\\uE8A5\",    // Document"
+ins_after "$MAINWIN" "\"CustomerListPage\" => \"\\uE716\",   // Contact" "            \"${NAME}ListPage\" => \"\\uE8A5\",    // Document"
 for l in en-US zh-TW ja-JP; do
     ins_before "$STRINGS/$l.json" '  "customer.list": ' "  \"${KEY}.list\": \"${PLURAL}\","
 done
