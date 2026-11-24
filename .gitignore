@@ -4,3 +4,6 @@
 /.vs
 .gitignore.swp
 .DS_Store
+arch-qube-reports/
+TestResults/
+test-results/

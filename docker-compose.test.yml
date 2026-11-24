@@ -4,11 +4,22 @@ services:
     working_dir: /app
     volumes:
       - ./test-results:/output
-    command: >
-      sh -c "dotnet test -c Release --no-build
-        --collect:'XPlat Code Coverage'
-        -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-        --results-directory /app/results 2>&1;
-        RC=$$?;
-        find /app/results -name 'coverage.opencover.xml' -exec cp {} /output/ \; 2>/dev/null;
-        exit $$RC"
+    # Exit code = dotnet test's exit code. A literal block (`|`), not the folded `>` this used
+    # to be: in a folded scalar the more-indented continuation lines keep their newlines, so
+    # `--collect…` / `--` ran as separate shell commands and the step exited 127 whether the
+    # tests passed or failed. --results-directory must come BEFORE `--` (after it, the test
+    # host receives it as a run-settings argument).
+    command:
+      - sh
+      - -c
+      - |
+        # vstest (.NET 10) refuses to save session artifacts into a directory other users can read
+        # and then exits 1 although every test passed; a private umask makes the dir 0700.
+        umask 077
+        dotnet test -c Release --no-build \
+          --collect:'XPlat Code Coverage' \
+          --results-directory /app/results \
+          -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        RC=$$?
+        find /app/results -name 'coverage.opencover.xml' -exec cp {} /output/ ';' 2>/dev/null
+        exit $$RC

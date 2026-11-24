@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Fast layering check on every commit (no docker, no dotnet). The full scan is
+# tools/arch-check.sh and the Jenkins stage "Architecture Qube". Rules: AGENTS.md §3.
+#
+# Regex, not `case` globs: in a case pattern `*` also matches `/`, so `src/*.cs` would match
+# every correctly layered file too (this exact bug false-blocked good files in an earlier
+# version of this hook in another template). Only ADDED files / ADDED lines are judged, so
+# editing a legacy file never fails on old code. The solution prefix is matched generically
+# (`[A-Z][A-Za-z0-9]*`), so the hook keeps working after tools/new-app.sh renames `Arcana`.
+set -euo pipefail
+
+P='[A-Z][A-Za-z0-9]*'        # solution prefix (Arcana, or the product name)
+SEG='[A-Z][A-Za-z0-9]*'      # one PascalCase folder (feature / module)
+
+# Directories a NEW .cs file may live in (AGENTS.md §2).
+LAYER_RE="^(src/${P}\.Core/(Common|Extensions|Security)/"
+LAYER_RE+="|src/${P}\.Domain/(Entities|Entities/${SEG}|Services|Validation)/"
+LAYER_RE+="|src/${P}\.Data/(Dao|Dao/impl|Repository|Repository/impl|Local)/"
+LAYER_RE+="|src/${P}\.Infrastructure/(Services/impl|Security|Settings|Platform|Localization|DependencyInjection)/"
+LAYER_RE+="|src/${P}\.Sync/(Crdt/)?"
+LAYER_RE+="|src/${P}\.Plugins\.Contracts/((Manifest|Mvvm|Validation)/)?"
+LAYER_RE+="|src/${P}\.Plugins/(Core|Data|Services)/"
+LAYER_RE+="|src/${P}\.App/(ViewModels|ViewModels/${SEG}|Views|Views/${SEG}|Navigation|Services|Controls|Converters|FloatingWindows|Plugins|Plugins/${SEG})/"
+LAYER_RE+="|tests/${P}(\.${SEG})*\.Tests/(${SEG}/)*"
+LAYER_RE+="|plugins/${SEG}/(Controls|Models|Navigation|Services|ViewModels|Views|Tests|TestHost)/"
+LAYER_RE+=")[^/]+\.cs$"
+PLUGIN_ROOT_RE="^plugins/${SEG}/[A-Za-z0-9]+Plugin\.cs$"
+
+# Composition roots: the only files that may name a concrete *Impl type (AGENTS.md R2).
+DI_RE="^(src/${P}\.Infrastructure/DependencyInjection/[^/]+\.cs|src/${P}\.App/App\.xaml\.cs)$"
+
+fail=0
+
+# R7 — no NEW .cs file outside the layer directories.
+while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    [[ "$f" =~ \.cs$ ]] || continue
+    [[ "$f" =~ ^(src|tests|plugins)/ ]] || continue
+    [[ "$f" =~ /(bin|obj)/ ]] && continue
+    if [[ "$f" =~ $LAYER_RE ]] || [[ "$f" =~ $PLUGIN_ROOT_RE ]]; then continue; fi
+    echo "pre-commit: $f — new .cs file outside the layer directories (AGENTS.md §2 table). Move it into a layer folder or run tools/new-feature.sh" >&2
+    fail=1
+done <<< "$(git diff --cached --name-only --diff-filter=AR)"
+
+# R2 — a concrete *Impl type is named only by the DI composition roots, by tests, and by a
+# file that itself declares an *Impl class (impl code: its own constructor, ILogger<XImpl>,
+# a base RepositoryImpl<T>).
+while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    [[ "$f" =~ ^(src|plugins)/.*\.cs$ ]] || continue
+    [[ "$f" =~ $DI_RE ]] && continue
+    [[ "$f" =~ /(Tests|TestHost)/ ]] && continue
+    if git show ":$f" 2>/dev/null | grep -qE '\bclass[[:space:]]+[A-Z][A-Za-z0-9]*Impl\b'; then continue; fi
+    added="$(git diff --cached -U0 -- "$f" | grep -E '^\+[^+]' | sed 's/^+//' | grep -vE '^[[:space:]]*(//|\*|/\*)' || true)"
+    hits="$(printf '%s\n' "$added" | grep -E '\b[A-Z][A-Za-z0-9]*Impl\b|^[[:space:]]*using[[:space:]]+[A-Za-z0-9.]+\.Impl;' || true)"
+    [ -n "$hits" ] || continue
+    echo "pre-commit: $f names a concrete *Impl type — depend on the interface and let DI inject it; only src/*.Infrastructure/DependencyInjection/ and src/*.App/App.xaml.cs bind Impl types (AGENTS.md R2):" >&2
+    printf '    %s\n' "$hits" >&2
+    fail=1
+done <<< "$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if [ "$fail" -ne 0 ]; then
+    echo "pre-commit: blocked. Full check: tools/arch-check.sh" >&2
+    exit 1
+fi

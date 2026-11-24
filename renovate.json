@@ -1,4 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>jrjohn/renovate-config"]
+  "extends": ["github>jrjohn/renovate-config"],
+  "packageRules": [
+    {
+      "description": "The SDK image major must equal the projects' TargetFramework (net10.0): sdk:11 has no .NET 10 runtime, every testhost fails to start and the Linux test lane goes red (#47). Bump the image together with the TFMs.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["mcr.microsoft.com/dotnet/sdk"],
+      "allowedVersions": "<11"
+    }
+  ]
 }
