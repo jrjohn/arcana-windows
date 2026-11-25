@@ -45,7 +45,7 @@ A **Local-First, Plugin-Everything** Windows desktop application built with WinU
 | New feature | `tools/new-feature.sh <FeatureName>` |
 | Fresh clone of this repo | Run `tools/install-hooks.sh` once (git does not install hooks on clone). |
 | Architecture check | `tools/arch-check.sh` — needs Docker only; pulls the pinned arch-qube image (version in `tools/arch-qube.version`, kept current by Renovate) from public ghcr.io, no login. No Docker: use the `pipx` command in `AGENTS.md`. |
-| CI | Keep the Jenkins **Architecture Qube** stage connected in products — it is the last gate. |
+| No CI server needed | Run `tools/arch-check.sh` before every commit/PR (AI agents must run it before reporting done). If you do have CI, wire the same script in. |
 
 ## 📸 Screenshots
 
