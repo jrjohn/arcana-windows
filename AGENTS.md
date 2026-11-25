@@ -95,6 +95,17 @@ https://github.com/jrjohn/arcana-skills/tree/main/arch-qube-skill. The version i
 - False positive: open an issue on arcana-arch-qube with the report attached. Never lower
   `--threshold`, add exclusions, or move code to dodge a rule.
 
+### What enforces the check locally (there is no CI server)
+
+| Trigger | Mechanism | Blocks when |
+|---|---|---|
+| Claude Code finishes a turn | `.claude/settings.json` Stop hook → `tools/claude-stop-arch-check.sh` | source under `src/`, `plugins/`, `tests/` changed and `tools/arch-check.sh` fails (gives up after 3 blocks, saying the work is NOT done) |
+| `git push` | `tools/githooks/pre-push` | pushed commits touch `src/`, `plugins/`, `tests/` and the check fails or cannot run |
+| `git commit` | `tools/githooks/pre-commit` | fast layering checks (no Docker) |
+
+Claude Code asks once whether to trust this project's settings: answer yes, or the Stop hook never runs.
+Git hooks run only after `tools/install-hooks.sh`.
+
 ## 5. Before you say "done"
 
 Run these, in this order, and paste the last line of each into your summary:
