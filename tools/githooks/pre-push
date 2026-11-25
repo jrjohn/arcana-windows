@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Full architecture check before a push (there is no CI server to catch it later).
+# Runs tools/arch-check.sh when the pushed commits touch source paths; pure-docs pushes skip.
+# Installed by tools/install-hooks.sh (core.hooksPath=tools/githooks).
+# Note: arch-check scans the working tree — commit or stash unrelated edits before pushing.
+set -u
+
+SOURCE_RE='^(src|plugins|tests)/'   # keep equal to tools/claude-stop-arch-check.sh
+REMOTE="${1:-origin}"
+ZERO='0000000000000000000000000000000000000000'
+ROOT="$(git rev-parse --show-toplevel)"
+
+touched=""
+while read -r local_ref local_sha remote_ref remote_sha; do
+    [ -n "${local_sha:-}" ] || continue
+    case "$local_sha" in "$ZERO"|0000000*) continue ;; esac   # branch deletion
+    case "$remote_sha" in
+        "$ZERO"|0000000*) files="$(git log --name-only --format= "$local_sha" --not --remotes="$REMOTE" 2>/dev/null)" ;;
+        *) files="$(git diff --name-only "$remote_sha" "$local_sha" 2>/dev/null || git log --name-only --format= "$local_sha" --not --remotes="$REMOTE")" ;;
+    esac
+    if printf '%s\n' "$files" | grep -qE "$SOURCE_RE"; then touched=1; fi
+done
+[ -n "$touched" ] || exit 0
+
+echo "pre-push: source changed — running tools/arch-check.sh (AGENTS.md)" >&2
+"$ROOT/tools/arch-check.sh" >&2
+RC=$?
+[ "$RC" -eq 0 ] && exit 0
+
+if [ "$RC" -eq 2 ]; then
+    echo "pre-push: BLOCKED — architecture NOT checked (no Docker / no arch-qube image). Start Docker, or use the pipx command in AGENTS.md." >&2
+else
+    echo "pre-push: BLOCKED — architecture check FAILED. Read arch-qube-reports/arch-qube.md and fix the code per AGENTS.md; do not lower the threshold or add exclusions." >&2
+fi
+echo "pre-push: 'git push --no-verify' bypasses this check at your own risk." >&2
+exit 1
