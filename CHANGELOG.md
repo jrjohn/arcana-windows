@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/jrjohn/arcana-windows/compare/v1.2.0...v1.3.0) (2026-11-25)
+
+
+### Features
+
+* enforce arch-check locally (Claude Code Stop hook + pre-push) ([#99](https://github.com/jrjohn/arcana-windows/issues/99)) ([a624525](https://github.com/jrjohn/arcana-windows/commit/a6245251cc374d2dafe1f8e70c6a7d88813d7203))
+
 ## [1.2.0](https://github.com/jrjohn/arcana-windows/compare/v1.1.22...v1.2.0) (2026-11-24)
 
 
