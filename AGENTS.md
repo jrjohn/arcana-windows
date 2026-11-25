@@ -71,7 +71,9 @@ Windows; every other project targets `net10.0` and builds anywhere.
 arch-qube (https://github.com/jrjohn/arcana-arch-qube) scans the source for layer-direction,
 DI, MVVM and naming violations and scores it; usage guide:
 https://github.com/jrjohn/arcana-skills/tree/main/arch-qube-skill. The version is pinned in
-`tools/arch-qube.version` (0.5.7), read by both `tools/arch-check.sh` and the Jenkinsfiles.
+`tools/arch-qube.version`, read by both `tools/arch-check.sh` and the Jenkinsfiles.
+
+`tools/arch-qube.version` is bumped automatically by Renovate when arch-qube releases; do not edit the version anywhere else.
 
 - Run: `tools/arch-check.sh`. It uses `ghcr.io/jrjohn/arch-qube:<version>` (public,
   multi-arch), then `arcana.boo/arcana/arch-qube:<version>`, with the same
@@ -79,7 +81,7 @@ https://github.com/jrjohn/arcana-skills/tree/main/arch-qube-skill. The version i
   Jenkins stage "Architecture Qube". Exit 0 = pass, 1 = fail, 2 = could not run (no Docker /
   neither image pullable) — 2 is **not** a pass. There is no `:latest` fallback on purpose.
 - Without Docker: on a tree without `bin/` and `obj/` folders, run
-  `pipx run --spec git+https://github.com/jrjohn/arcana-arch-qube.git@v0.5.7 arch-qube scan . --framework windows --no-ai --ci --format json,markdown -o arch-qube-reports --threshold 90`.
+  `pipx run --spec "git+https://github.com/jrjohn/arcana-arch-qube.git@v$(cat tools/arch-qube.version)" arch-qube scan . --framework windows --no-ai --ci --format json,markdown -o arch-qube-reports --threshold 90`.
 - Report: `arch-qube-reports/arch-qube.md` (summary) and `arch-qube.json` (per rule:
   `files_checked`, violations). PASS needs the score ≥ threshold **and** zero violations in
   every critical rule — a 99.5 can still FAIL. Read it rule by rule:
