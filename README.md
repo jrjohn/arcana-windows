@@ -5,16 +5,16 @@
 
 A **Local-First, Plugin-Everything** Windows desktop application built with WinUI 3 and .NET 10.0. Designed for offline-capable business operations with CRDT-based synchronization and a comprehensive plugin architecture.
 
-[![Architecture Rating](https://img.shields.io/badge/Architecture%20Rating-⭐⭐⭐⭐⭐%209.0%2F10-gold.svg)](#-architecture-evaluation)
-[![.NET](https://img.shields.io/badge/.NET-net10.0-512BD4)](https://dotnet.microsoft.com/)
-[![WinUI](https://img.shields.io/badge/WinUI-3.0-0078D4)](https://microsoft.github.io/microsoft-ui-xaml/)
-[![C#](https://img.shields.io/badge/C%23-14.0-239120)](https://docs.microsoft.com/dotnet/csharp/)
-[![Visual Studio](https://img.shields.io/badge/VS-2026-5C2D91)](https://visualstudio.microsoft.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-1030%20Passing-brightgreen)]()
-[![Architecture](https://img.shields.io/badge/Architecture-A-brightgreen)]()
-[![Grade](https://img.shields.io/badge/Grade-9.0%2F10-blue)]()
-[![Production](https://img.shields.io/badge/Production-Ready-success)]()
+[![Architecture Rating](.github/badges/architecture-rating-9-0-10-gold-svg-760e3f8d.svg)](#-architecture-evaluation)
+[![.NET](.github/badges/net-net10-0-512bd4-f3c62bae.svg)](https://dotnet.microsoft.com/)
+[![WinUI](.github/badges/winui-3-0-0078d4-80579d95.svg)](https://microsoft.github.io/microsoft-ui-xaml/)
+[![C#](.github/badges/c-14-0-239120-7f215189.svg)](https://docs.microsoft.com/dotnet/csharp/)
+[![Visual Studio](.github/badges/vs-2026-5c2d91-0e16ac15.svg)](https://visualstudio.microsoft.com/)
+[![License](.github/badges/license-mit-green-svg-8fe252f7.svg)](LICENSE)
+[![Tests](.github/badges/tests-1030-passing-brightgreen-5600a241.svg)]()
+[![Architecture](.github/badges/architecture-a-brightgreen-a15b4b6d.svg)]()
+[![Grade](.github/badges/grade-9-0-10-blue-112c6174.svg)]()
+[![Production](.github/badges/production-ready-success-0b70fb69.svg)]()
 
 **Production-Ready, Enterprise-Level Architecture**
 
@@ -22,15 +22,15 @@ A **Local-First, Plugin-Everything** Windows desktop application built with WinU
 
 <!-- agent-managed badges START -->
 <p align="center">
-  <a href="https://arcana.boo/sonarqube/dashboard?id=dotnet-app"><img src="https://img.shields.io/badge/Quality_Gate-OK-brightgreen?style=for-the-badge" alt="Quality Gate"></a>
-  <a href="https://arcana.boo/jenkins/job/windows-app-pipeline-mb/job/main/"><img src="https://img.shields.io/badge/Build-passing-brightgreen?style=for-the-badge" alt="Build"></a>
+  <a href="https://arcana.boo/sonarqube/dashboard?id=dotnet-app"><img src=".github/badges/quality-gate-ok-brightgreen-7365c32e.svg" alt="Quality Gate"></a>
+  <a href="https://arcana.boo/jenkins/job/windows-app-pipeline-mb/job/main/"><img src=".github/badges/build-passing-brightgreen-f2a434e1.svg" alt="Build"></a>
 </p>
 <!-- agent-managed badges END -->
 <!-- arch-rank START -->
 <p align="center">
-  <img src="https://img.shields.io/badge/arch--qube-100%2F100-blue?style=for-the-badge" alt="arch-qube">
-  <img src="https://img.shields.io/badge/Grade-A%2B-brightgreen?style=for-the-badge" alt="Grade">
-  <img src="https://img.shields.io/badge/Arch_Gate-PASS-brightgreen?style=for-the-badge" alt="Architecture Gate">
+  <img src=".github/badges/arch-qube-100-100-blue-2f391344.svg" alt="arch-qube">
+  <img src=".github/badges/grade-a-brightgreen-1f1e6c73.svg" alt="Grade">
+  <img src=".github/badges/arch-gate-pass-brightgreen-887cab17.svg" alt="Architecture Gate">
 </p>
 <!-- arch-rank END -->
 
